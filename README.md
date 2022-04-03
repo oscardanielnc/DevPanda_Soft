@@ -32,7 +32,7 @@ Es una instalación simple de next, next...
 
 En un terminal donde corra git ejecutar:
 
-1. git clone https://github.com/oscardanielnc/DevPanda.git
+1. git clone https://github.com/oscardanielnc/DevPanda_Soft.git
 
    -- para clonar tanto Front como Back. Puedes usar otro método, lo importente es que esté en tu PC
 
@@ -40,7 +40,7 @@ Tener 2 terminales abiertos, uno para Front y otro para Back
 
 2. yarn
 
-   -- en ambas terminales. Esto es para que se instalen todas las librerías que Sambos proyectos necesitan
+   -- en ambas terminales. Esto es para que se instalen todas las librerías que ambos proyectos necesitan
 
 3. yarn dev
 
