@@ -1,0 +1,3 @@
+-- este archivo puede removerse
+
+assets contiene todas las imágenes, videos y demás recursos que se importarán en la aplicación

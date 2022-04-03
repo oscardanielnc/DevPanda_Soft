@@ -1,0 +1,4 @@
+// este archivo puede removerse
+
+Los modelos son las entidades de los que se compondrá nuestra aplicación: alumno, profe, etc...
+Estos son objetos que serán mapeados y enviados al Front con JSON.

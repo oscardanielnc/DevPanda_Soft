@@ -1,0 +1,3 @@
+// este archivo puede removerse
+
+estas son las funciones internas del Backend. No se exponen al Frontend

@@ -1,0 +1,5 @@
+// este archivo puede removerse
+
+Los middlewares son las funciones que se ejecutan antes del método REST principal,
+sirven para hacer validaciones, de por ejemplo, si un usuario cuenta con los permisos
+para ejecutar tal acción

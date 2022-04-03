@@ -1,0 +1,57 @@
+@import '../scss/index.scss';
+
+.header {
+    padding: 2px;
+    background: $primary-color;
+    display: flex;
+
+    &__titulo {
+        color: white;
+        margin-left: 1em;
+        font-size: .5em;
+    }
+
+    &__menu {
+        text-align: center;
+        width: 100%;
+        justify-content: space-around;
+
+        &-option {
+            color: #CECECF;
+            text-decoration: none;
+            padding: 1em;
+
+            &:hover {
+                background: linear-gradient(180deg, $primary-color, $primary-color-hover);
+                text-decoration: revert;
+                font-size: 1.075em;
+            }
+        }
+    }
+}
+
+/* .header {
+    padding: 2px;
+    background: $primary-color;
+    display: flex;
+}
+.header__titulo {
+    color: white;
+    margin-left: 1em;
+    font-size: .5em;
+}
+.header__menu {
+    text-align: center;
+    width: 100%;
+    justify-content: space-around;
+}
+.header__menu-option {
+    color: #CECECF;
+    text-decoration: none;
+    padding: 1em;
+}
+.header__menu-option:hover {
+    background: linear-gradient(180deg, black, $primary-color-hover);
+    text-decoration: revert;
+    font-size: 1.075em;
+} */
