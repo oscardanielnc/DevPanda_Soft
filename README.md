@@ -53,12 +53,17 @@ Tener 2 terminales abiertos, uno para Front y otro para Back
 # Push y Pull
 
 Pull: git pull origin main
+
 Push: git push origin main
 
 NOTA 1: "origin" es el nombre de la rama remota que conectaras con tu rama local "main"
+
 NOTA 2: antes de hacer pull o push, asegurate de que todos tus commits estén al día.
+
 NOTA 3: "git status" sirve para ver si todo esta OK o si falta guardar algo.
 
 Lo siguiente sirve para hacer commits:
+
 git add .
+
 git commit -m "Nombre del commit"
