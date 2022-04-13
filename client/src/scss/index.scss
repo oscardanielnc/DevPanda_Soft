@@ -1,1 +1,12 @@
 @import "./variables";
+
+$theme-colors: (
+  "primary":    $primary-color,
+  "secondary":  $secondary-color,
+  "success":    $success-color,
+  "info":       $info-color,
+  "warning":    $warning-color,
+  "danger":     $danger-color,
+  "light":      $light-color,
+  "dark":       $dark-color
+);

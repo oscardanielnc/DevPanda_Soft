@@ -1,10 +1,11 @@
 @import "./scss/index.scss";
+@import "~bootstrap/scss/bootstrap";
 
 .success {
-  border: 1px solid $success;
+  border: 1px solid $success-color;
   background-color: $background-success;
 }
 .error {
-  border: 1px solid $error;
+  border: 1px solid $danger-color;
   background-color: $background-error;
 }
