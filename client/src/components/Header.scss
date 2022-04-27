@@ -1,17 +1,17 @@
 @import '../scss/index.scss';
 
-.header {
+.header{
     padding: 2px;
     background: $primary-color;
     display: flex;
 
-    &__titulo {
+    &__titulo{
         color: white;
         margin-left: 1em;
         font-size: .5em;
     }
 
-    &__menu {
+    &__menu{
         text-align: center;
         width: 100%;
         justify-content: space-around;
@@ -28,6 +28,24 @@
             }
         }
     }
+
+    &__nombreUsuario{
+        background-color: #042354;
+        background: $primary-color;
+        text-align: center;
+        width: 10%;
+        margin-right: 2em;
+        margin-top: 1em;
+        justify-content: space-around;
+        color:#f8f9fa;
+        
+        &-option {
+            color: #042354;
+            text-decoration: none;
+            padding: 1em;
+        }
+    }
+
 }
 
 /* .header {
