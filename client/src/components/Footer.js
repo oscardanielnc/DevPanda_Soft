@@ -5,6 +5,9 @@ import LogoDerechos from "../asserts/img/png/derechosReservados.PNG";
 import LogoMapa from "../asserts/img/png/googleMaps.png";
 import LogoInstagram from "../asserts/img/png/logoInstagram.PNG";
 import LogoTikTok from "../asserts/img/png/logoTikTok.PNG";
+import LogoFacebook from "../asserts/img/png/logoFacebook.PNG";
+import LogoLinkedin from "../asserts/img/png/logoLinkedin.PNG";
+import LogoTwitter from "../asserts/img/png/logoTwitter.PNG";
 import './Footer.scss';
 
 export default function Header (props) {
@@ -66,6 +69,12 @@ export default function Header (props) {
                     <a  href="https://www.instagram.com/pucp/"><img src={LogoInstagram} alt="LogoInstagram" width="25" 
                         height="25"/></a>
                     <a  href="https://www.tiktok.com/@pucp?lang=es"><img src={LogoTikTok} alt="LogoTikTok" width="25" 
+                        height="25"/></a>
+                    <a  href="https://www.linkedin.com/school/pucp/"><img src={LogoLinkedin} alt="LogoLinkedin" width="25" 
+                        height="25"/></a>
+                    <a  href="https://twitter.com/pucp?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Eauthor"><img src={LogoTwitter} alt="LogoTwitter" width="25" 
+                        height="25"/></a>
+                    <a  href="https://www.facebook.com/pucp"><img src={LogoFacebook} alt="LogoFacebook" width="25" 
                         height="25"/></a>
                 </div>
             </div>
