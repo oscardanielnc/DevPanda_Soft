@@ -11,13 +11,12 @@ function insert(req, res) {
     const sqlObj = {
         nombreEsp, flagMatricula, flagConvenio
     };
-    const sqlQuery = `INSERT INTO especialidad SET ?`;
+    const sqlQuery = `INSERT INTO Especialidad SET ?`;
     connection.connect(err => {
         if (err) throw err;
     });
     connection.query(sqlQuery, sqlObj, (err, result) => {
         if (err) {
-            
             res.status(505).send({
                 message: "Error inesperado en el servidor"
             })
@@ -32,7 +31,7 @@ function insert(req, res) {
 function selectAll(req, res) {
     const connection = mysql.createConnection(MYSQL_CREDENTIALS);
 
-    const sqlQuery = `SELECT * FROM especialidad`;
+    const sqlQuery = `SELECT * FROM Especialidad`;
     connection.connect(err => {
         if (err) throw err;
     });

@@ -1,15 +1,14 @@
 const API_VERSION = "v1";
 const IP_SERVER = "localhost";
 const PORT_SERVER = process.env.PORT || 3977;
-//const PORT_DB = 27017
 
 const MYSQL_CREDENTIALS = {
-    host     : 'localhost',
+    host     : 'devpandadb.c5sbfmi8wxnv.us-east-1.rds.amazonaws.com',
     port     : 3306,
-    user     : 'root',
-    password : 'admin',
-    database : 'devpanda'
-};
+    user     : 'admin',
+    password : 'DevPanda123%',
+    database : 'DevPandaDB'
+  };
 
 
 module.exports = {
@@ -20,11 +19,5 @@ module.exports = {
 };
 
 
-// const MYSQL_CREDENTIALS = {
-//     host     : 'devpandadb.c5sbfmi8wxnv.us-east-1.rds.amazonaws.com', // TODO: change with DB tokens
-//     port     : 3306, //
-//     user     : 'admin',
-//     password : 'DevPanda123%',
-//     database : 'DevPandaDB' //
-//   };
+
   

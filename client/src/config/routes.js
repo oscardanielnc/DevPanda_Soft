@@ -1,17 +1,17 @@
-import Home from "../pages/Home";
-import Home2 from "../pages/Home2"
+import GestionEspecialidad from "../pages/GestionEspecialidad";
+import AgregarEspecialidad from "../pages/AgregarEspecialidad"
 import Error404 from "../pages/Error404";
 
 const routes = [
     {
         path: "/",
         exact: true,
-        component: Home,
+        component: GestionEspecialidad,
     },
     {
         path: "/agregarEspecialidad",
         exact: true,
-        component: Home2,
+        component: AgregarEspecialidad,
     },
     {
         path: "*",

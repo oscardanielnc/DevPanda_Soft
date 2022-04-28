@@ -1,8 +1,9 @@
-import React from "react";
+import React, {useState} from "react";
 import LayoutBasic from "../layouts/LayoutBasic";
 import {Form} from 'react-bootstrap';
-//import "bootstrap";
-import './Home2.scss';
+import './AgregarEspecialidad.scss';
+import { Link } from "react-router-dom";
+import { specialtyInsertApi } from "../api/specialty";
 
 const coordinadores = [
     {
@@ -19,40 +20,55 @@ const coordinadores = [
 const facultades = [
     {
         name: "Ciencias e Ingeniería"
-    },
-    {
-        name: "Derecho"
-    },
-    {
-        name: "Ciencias Sociales"
     }
 ]
 
-export default function Home2 () {
+export default function AgregarEspecialidad () {
+    const [inputs, setInputs] = useState({
+        nombreEsp: "",
+        flagMatricula: false,
+        flagConvenio: false
+    })
+    const inputValidation = e => {
+        setInputs({
+            ...inputs,
+            [e.target.name]: e.target.value
+        })
+    }
+    const insert = async e => {
+        e.preventDefault()
+        
+        await specialtyInsertApi(inputs)
+        window.location.href = "/"
+    }
     return (
         <LayoutBasic>
-            <div className="container principal">
+            <Form className='container principal'>
                 <div className="row rows">
                     <h1>Agregar Especialidad</h1>
                 </div>
+
                 <div className="row rows">
-                    <h1>Nombre</h1>
-                </div>
-                <div className="row rows">
-                    <Form.Group className="mb-3 input" controlId="exampleForm.ControlInput1">
-                        <Form.Control type="nombreEspecialidad" placeholder="Ingrese el nombre de la Especialidad" />
+                    <Form.Group className="mb-3 input">
+                        <h3>Nombre</h3>
+                        <Form.Control placeholder="Ingrese el nombre de la Especialidad" 
+                            onChange={inputValidation}
+                            value={inputs.nombreEsp}
+                            name="nombreEsp"/>
                     </Form.Group>
                 </div>
                 <div className="row rows">
                     <div className="col-sm-8">
-                        <h2 style={{marginTop:"20px"}}>Coordinador de Especialidad</h2>
+                        <h3 style={{marginTop:"20px"}}>Coordinador de Especialidad</h3>
                     </div>
                     <div className="col-sm-4">
-                    <Form.Select aria-label="Default select example" className="select">
-                        <option>Seleccionar</option>
+                    <Form.Select className="select">
+                        <option value="-1">Seleccionar</option>
                         {
                             coordinadores.map((element, index) => (
-                                <option value="1" key={index}>{element.name}</option>
+                                <option value={index} 
+                                    key={index}>{element.name}
+                                </option>
                             ))
                         }
                     </Form.Select>
@@ -60,7 +76,7 @@ export default function Home2 () {
                 </div>
                 <div className="row rows">
                     <div className="col-sm-8">
-                        <h2 style={{marginTop:"20px"}}>Facultad</h2>
+                        <h3 style={{marginTop:"20px"}}>Facultad</h3>
                     </div>
                     <div className="col-sm-4">
                     <Form.Select aria-label="Default select example" className="select">
@@ -74,14 +90,13 @@ export default function Home2 () {
                     </div>
                 </div>
                 <div className="row rows">
-                    <h2>Representante Legal de la PUCP</h2>
+                    <h3>Representante Legal de la PUCP</h3>
                 </div>
                 <div className="row rows">
                     <div className="col-sm-6">
                         <Form.Control
                             type="text"
                             placeholder="Walter Pequeño"
-                            aria-label="Disabled input example"
                             disabled
                             readOnly
                         />
@@ -90,7 +105,6 @@ export default function Home2 () {
                         <Form.Control
                             type="text"
                             placeholder="789456458"
-                            aria-label="Disabled input example"
                             disabled
                             readOnly
                         />
@@ -101,18 +115,13 @@ export default function Home2 () {
                         
                     </div>
                     <div className="col-sm-1">
-                        <button type="button" className="btn btn-primary">Cancelar</button>
+                        <Link className="btn btn-primary" to = "/">Cancelar</Link>
                     </div>
                     <div className="col-sm-1">
-                        <button type="button" className="btn btn-primary">Guardar</button>
+                        <button className="btn btn-primary" onClick={insert}>Guardar</button>
                     </div>
                 </div>
-            </div>
-            {/* <div style={{textAlign: "center", marginTop:"15px"}}>
-                
-            </div> */}
-           
-            
+            </Form>
         </LayoutBasic>
     )
 }
