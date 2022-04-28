@@ -10,7 +10,7 @@ import LogoLinkedin from "../asserts/img/png/logoLinkedin.PNG";
 import LogoTwitter from "../asserts/img/png/logoTwitter.PNG";
 import './Footer.scss';
 
-export default function Header (props) {
+export default function Footer (props) {
     return (
         <div className="footer">
             <div className="footer__left">

@@ -49,36 +49,35 @@ export default function Home () {
     
     return (
         <LayoutBasic>
-            <div style={{textAlign: "center"}}>
-                <h1>Gestión de especialidades</h1>
-            </div>
-            <div style={{textAlign: "right"}}>
-            <button type="button" class="btn btn-primary" onClick={agregarEspecialidad} style={{"marginRight":"50px"}} >Agregar</button>
-            </div>
-            <div>
-            <button onClick={sayHello}>Tócame!</button>
-                {data && <h3>{`Mensaje: ${data}`}</h3>}
-            </div>
-            <div class="container" style={{marginBottom:"20px"}}>
-                <div class="row">
-                <div class="col-sm-8" style={{"marginTop":"15px",textAlign: "center"}}>Nombre Especialidad</div>                    
-                <div class="col-sm-4" style={{"marginTop":"15px",textAlign: "left"}}>Acciones</div>
+            <div className="container principal">
+                <div className="row rows" style={{textAlign: "center"}}>
+                    <h1>Gestión de especialidades</h1>
+                </div>
+                <div className="row rows" style={{"margin-right": "0px","margin-left":"auto", }}>
+                    <button type="button" className="btn btn-primary" onClick={agregarEspecialidad} style={{"width":"100px"}} >Agregar</button>
+                </div>
+                {/*
+                <div className="row rows" style={{textAlign: "right"}}>
+                    <button onClick={sayHello}>Tócame!</button>
+                    {data && <h3>{`Mensaje: ${data}`}</h3>}
+                </div>*/}
+                <div className="row rows">
+                    <div className="col-sm-8 modified" style={{textAlign: "center"}}>Nombre Especialidad</div>                    
+                    <div className="col-sm-4 modified" style={{textAlign: "left"}}>Acciones</div>
+                </div>
+                <div className="row rows">
+                    {
+                        dataEspecialidades.map((element,index)=>(
+                            <div className="row" key={index}>
+                            <div className="col-sm-8 modified" >{element.nombreEsp}</div>                    
+                            <div className="col-sm-2 modified"><button type="button" className="btn btn-primary">Editar</button></div>
+                            <div className="col-sm-2 modified" ><button type="button" className="btn btn-danger">Eliminar</button></div>
+                            </div>
+                        ))
+
+                    }
                 </div>
             </div>
-            <div class="container">
-            {
-                dataEspecialidades.map((element,index)=>(
-                    <div class="row" key={index}>
-                    <div class="col-sm-8" style={{"marginTop":"15px"}}>{element.nombreEsp}</div>                    
-                    <div class="col-sm-2" style={{"marginTop":"15px"}}><button type="button" class="btn btn-primary">Editar</button></div>
-                    <div class="col-sm-2" style={{"marginTop":"15px"}}><button type="button" class="btn btn-danger">Eliminar</button></div>
-                    </div>
-                ))
-
-            }
-            </div>
-                
-            
             <ModalExample show={showModal}
                 setShow={setShowModal}
                 message={data}

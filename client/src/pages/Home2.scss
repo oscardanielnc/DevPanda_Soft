@@ -1,0 +1,16 @@
+@import '../scss/index.scss';
+
+.select {
+    margin-top: 1em;
+    background: $primary-color !important;
+    color: white !important;
+
+    /*@media (max-width: 600px) {
+        background: red !important;
+        display: none !important;
+    }*/
+}
+
+.rows{
+    margin-top: 2em !important;
+}
