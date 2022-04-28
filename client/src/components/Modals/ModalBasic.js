@@ -23,7 +23,7 @@ export default function ModalBasic (props) {
             <Button variant="secondary" onClick={()=>setShow(false)}>
                 {secundaryAction}
             </Button>
-            <Button variant="primary">
+            <Button variant="primary" disabled>
                 {primaryAction}
                 </Button>
             </Modal.Footer>
