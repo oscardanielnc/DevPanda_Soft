@@ -17,6 +17,7 @@ function insert(req, res) {
     });
     connection.query(sqlQuery, sqlObj, (err, result) => {
         if (err) {
+            
             res.status(505).send({
                 message: "Error inesperado en el servidor"
             })

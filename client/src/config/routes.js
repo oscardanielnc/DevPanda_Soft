@@ -9,7 +9,7 @@ const routes = [
         component: Home,
     },
     {
-        path: "/home2",
+        path: "/agregarEspecialidad",
         exact: true,
         component: Home2,
     },
