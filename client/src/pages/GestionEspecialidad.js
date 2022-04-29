@@ -4,17 +4,19 @@ import { specialtySelectAllApi } from "../api/specialty";
 import TableSpecialtyManagement from "../components/Tables/TableSpecialtyManagement";
 import LayoutBasic from "../layouts/LayoutBasic";
 import './GestionEspecialidad.scss';
+import useAuth from "../hooks/useAuth";
 
 
 export default function GestionEspecialidad () {
     const [especialidades, setEspecialidades] = useState([]);
+    console.log(useAuth()); // el useAuth() nos permite acceder a la informacion del usuario desde cualquier lugar. Por ahora ese objeto esta hardcodeado.
+
 
     useEffect(() => {
         specialtySelectAllApi().then(response => {
             setEspecialidades(response);
         })
     }, [setEspecialidades])
-
 
     return (
         <LayoutBasic>
@@ -32,3 +34,4 @@ export default function GestionEspecialidad () {
         </LayoutBasic>
     )
 }
+
