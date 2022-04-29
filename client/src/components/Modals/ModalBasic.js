@@ -25,7 +25,7 @@ export default function ModalBasic (props) {
             </Button>
             <Button variant="primary" disabled>
                 {primaryAction}
-                </Button>
+            </Button>
             </Modal.Footer>
         </Modal>
     )

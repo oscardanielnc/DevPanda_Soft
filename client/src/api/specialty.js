@@ -15,11 +15,9 @@ export function specialtySelectAllApi() {
             return response.json()
         })
         .then(result => {
-            console.log(result)
             return result
         })
         .catch(err => {
-            console.log(err)
             return err
         })
 }
@@ -42,7 +40,6 @@ export function specialtyInsertApi(specialty) {
             return result.message
         })
         .catch(err => {
-            console.log(err)
             return err.message
         })
 }
