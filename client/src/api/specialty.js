@@ -14,11 +14,17 @@ export function specialtySelectAllApi() {
         .then(response => {
             return response.json()
         })
-        .then(result => {
-            return result
+        .then(specialties => {
+            return {
+                specialties,
+                success: true
+            }
         })
-        .catch(err => {
-            return err
+        .catch(errMsg => {
+            return {
+                errMsg,
+                success: false
+            }
         })
 }
 export function specialtyInsertApi(specialty) {
@@ -37,9 +43,15 @@ export function specialtyInsertApi(specialty) {
             return response.json()
         })
         .then(result => {
-            return result.message
+            return {
+                msg: result.message,
+                success: true
+            }
         })
         .catch(err => {
-            return err.message
+            return {
+                msg: err.message,
+                success: false
+            }
         })
 }

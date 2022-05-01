@@ -5,11 +5,9 @@ import './TableSpecialtyManagement.scss';
 
 
 export default function TableSpecialtyManagement ({rows}) {
-    if(!rows) {
+    if(rows.length === 0) {
         return (
-            <div className="row rows">
-                <p>No se han registrado especialidades todavía.</p>
-            </div>
+            <p>No se han registrado especialidades todavía.</p>
         )
     }
     return (

@@ -4,6 +4,7 @@ import {Form} from 'react-bootstrap';
 import './AgregarEspecialidad.scss';
 import { Link } from "react-router-dom";
 import { specialtyInsertApi } from "../api/specialty";
+import ToastPanda from "../components/Toast/ToastPanda";
 
 const coordinadores = [
     {
@@ -29,6 +30,10 @@ export default function AgregarEspecialidad () {
         flagMatricula: false,
         flagConvenio: false
     })
+    const [showToast, setShowToast] = useState(false);
+    const [resultInsertMsg, setResultInsertMsg] = useState("");
+
+
     const inputValidation = e => {
         setInputs({
             ...inputs,
@@ -36,10 +41,13 @@ export default function AgregarEspecialidad () {
         })
     }
     const insert = async e => {
-        e.preventDefault()
+        e.preventDefault();
         
-        await specialtyInsertApi(inputs)
-        window.location.href = "/"
+        const response = await specialtyInsertApi(inputs);
+        setResultInsertMsg(response.msg);
+        setShowToast(true);
+        if(response.success)
+            window.location.href = "/";
     }
     return (
         <LayoutBasic>
@@ -122,6 +130,10 @@ export default function AgregarEspecialidad () {
                     </div>
                 </div>
             </Form>
+            <ToastPanda title="DevPanda"
+                message={resultInsertMsg}
+                showToast={showToast}
+                setShowToast={setShowToast}/>
         </LayoutBasic>
     )
 }
