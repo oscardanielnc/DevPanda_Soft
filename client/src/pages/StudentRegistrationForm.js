@@ -9,12 +9,15 @@ import { ToastContainer, toast } from 'react-toastify';
 import AboutJob from "../components/Charts/AboutJob";
 
 export default function StudentRegistrationForm () {
-    var result=false;
+    var result=true;
     var botonPresionado=false;
     var tipo=null;
     const [datos, setDatos] = useState([]);
     const insert = e => {
-        toast('🦄Cheka esta maravilla baby!', {
+        
+
+        if(result){
+            toast.success("Se insertó de forma correcta", {
                 position: "top-right",
                 autoClose: 5000,
                 hideProgressBar: false,
@@ -23,6 +26,18 @@ export default function StudentRegistrationForm () {
                 draggable: true,
                 progress: undefined,
             });
+        }else{
+            toast.error('Ups, ha ocurrido un error', {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
+        }
+       
     }
     return (
         <LayoutBasic>
@@ -62,7 +77,7 @@ export default function StudentRegistrationForm () {
                     {/*<TableSpecialtyManagement rows={especialidades}/>*/}
                 </div>
                 <div className="row rows">
-                    <p>Acá va el componente de Sobre el Jefe Directo</p>
+                    <p>Acá va el componente de subida de archivos</p>
                     {/*<TableSpecialtyManagement rows={especialidades}/>*/}
                 </div>
                 <div className="row rows">
