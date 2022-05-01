@@ -40,42 +40,17 @@ export default function AboutJob ({data}) {
                 </div>
             </div>
             <div className="row rows" >
-                <div className="col-sm-4 subtitles">
-                    <div>Codigo PUCP</div>
-                    <Form.Control placeholder="Codigo PUCP" 
-                        onChange={inputValidation}
-                        value={inputs.codigoPUCP}
-                        name="codigoPUCP"/>
-                </div>
-                <div className="col-sm-8 subtitles">
-                    <div>Correo PUCP</div>
-                    <InputGroup className="mb-3">
-                        <FormControl
-                        placeholder="example"
-                        aria-label="example"
-                        aria-describedby="basic-addon2"
-                        />
-                        <InputGroup.Text id="basic-addon2">@pucp.edu.pe</InputGroup.Text>
-                    </InputGroup>
-
-                </div>
+                <div>Funciones Actividades</div>
+                
+                <Form.Control className="Cuadro" placeholder="Describa la funcion principal de su puesto y las actividades principales a desarrollar." 
+                    onChange={inputValidation}
+                    value={inputs.codigoPUCP}
+                    name="codigoPUCP"
+                    as="textarea"
+                    rows={6}
+                    />
             </div>
-            <div className="row rows">
-                <div className="col-sm-4 subtitles">
-                    <div>Teléfono</div>
-                    <Form.Control placeholder="Ingrese su número de celular" 
-                        onChange={inputValidation}
-                        value={inputs.nombresAlumno}
-                        name="nombresAlumno"/>
-                </div>
-                <div className="col-sm-8 subtitles">
-                    <div>Correo Personal (Opcional)</div>
-                    <Form.Control placeholder="Ingrese su correo opcional" 
-                        onChange={inputValidation}
-                        value={inputs.apellidosAlumno}
-                        name="apellidosAlumno"/>
-                </div>
-            </div>
+            
         </div>
     )
 }
