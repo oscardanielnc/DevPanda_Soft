@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 import routes from "./config/routes";
 
 import './App.scss'
+import 'react-toastify/dist/ReactToastify.css'
 import AuthProvider from "./providers/AuthProvider";
 
 function App() {
