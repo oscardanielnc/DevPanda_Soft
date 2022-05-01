@@ -7,6 +7,7 @@ import AboutCompany from "../components/Charts/AboutCompany";
 import './StudentRegistrationForm.scss';
 import { ToastContainer, toast } from 'react-toastify';
 import AboutJob from "../components/Charts/AboutJob";
+import AboutDurarionPSP from "../components/Charts/AboutDurationPSP";
 
 export default function StudentRegistrationForm () {
     var result=true;
@@ -69,7 +70,7 @@ export default function StudentRegistrationForm () {
                     {/*<TableSpecialtyManagement rows={especialidades}/>*/}
                 </div>
                 <div className="row rows">
-                    <p>Acá va el componente de Sobre duracion de la PSP</p>
+                    <AboutDurarionPSP data={datos}/>
                     {/*<TableSpecialtyManagement rows={especialidades}/>*/}
                 </div>
                 <div className="row rows">
