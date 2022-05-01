@@ -1,5 +1,6 @@
 import GestionEspecialidad from "../pages/GestionEspecialidad";
-import AgregarEspecialidad from "../pages/AgregarEspecialidad"
+import AgregarEspecialidad from "../pages/AgregarEspecialidad";
+import StudentRegistrationForm from "../pages/StudentRegistrationForm";
 import Error404 from "../pages/Error404";
 
 const routes = [
@@ -12,6 +13,11 @@ const routes = [
         path: "/agregarEspecialidad",
         exact: true,
         component: AgregarEspecialidad,
+    },
+    {
+        path: "/studentRegistrationForm",
+        exact: true,
+        component: StudentRegistrationForm,
     },
     {
         path: "*",
