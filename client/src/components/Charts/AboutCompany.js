@@ -24,22 +24,42 @@ export default function AboutCompany ({data}) {
                 <h3 style={{"marginLeft":"15px"}}>Sobre la empresa</h3>
              </nav>
             <div className="row rows" >
-                <div className="col-sm-4 subtitles">
+                <div className="col-sm-3 subtitles">
                     <div>Tipo de empresa:</div>
                 </div>
-                {/* <div className="col-sm-3 subtitles">
-                    <div className="form-check">
-                    <input className="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" checked/>
-                    <label className="form-check-label" > Nacional </label>
+                <div className="col-sm-6 subtitles">
+                    <Form>
+                        <div key={`inline-radio`} className="mb-3">
+                        <Form.Check
+                            inline
+                            label="Nacional"
+                            name="group1"
+                            type="radio"
+                            id={`inline-radio-1`}
+                        />
+                        <Form.Check
+                            inline
+                            label="Extranjera"
+                            name="group1"
+                            type="radio"
+                            id={`inline-radio-2`}
+                        />
+                        </div>
+                        </Form>
+                    {/* <div className="col-sm-3 subtitles">
+                        <div className="form-check">
+                        <input className="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" checked/>
+                        <label className="form-check-label" > Nacional </label>
+                        </div>
                     </div>
+                    <div className="col-sm-3 subtitles">
+                        <div className="form-check">
+                        <input className="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2"/>
+                        <label className="form-check-label" > Extranjera </label>
+                        </div>
+                    </div> */}
                 </div>
                 <div className="col-sm-3 subtitles">
-                    <div className="form-check">
-                    <input className="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2"/>
-                    <label className="form-check-label" > Extranjera </label>
-                    </div>
-                </div> */}
-                <div className="col-sm-2 subtitles">
                 </div>
             </div>
             <div className="row rows" >
