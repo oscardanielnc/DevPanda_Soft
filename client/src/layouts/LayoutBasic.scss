@@ -1,0 +1,22 @@
+.container{
+    padding: 0;
+    margin: 0;
+}
+
+.col{
+    height: 120%;
+    padding: 0;
+    &-sm-3{
+        padding: 0;
+    }
+}
+
+.row{
+    padding :0;
+    margin: 0%;
+    height: 100%;
+}
+
+.contenido {
+    display: initial;
+}
