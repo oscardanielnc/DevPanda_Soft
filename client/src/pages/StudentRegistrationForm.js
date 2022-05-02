@@ -8,6 +8,7 @@ import './StudentRegistrationForm.scss';
 import { ToastContainer, toast } from 'react-toastify';
 import AboutJob from "../components/Charts/AboutJob";
 import AboutDurarionPSP from "../components/Charts/AboutDurationPSP";
+import DirectBoss from "../components/Charts/DirectBoss";
 
 export default function StudentRegistrationForm () {
     var result=true;
@@ -74,7 +75,7 @@ export default function StudentRegistrationForm () {
                     {/*<TableSpecialtyManagement rows={especialidades}/>*/}
                 </div>
                 <div className="row rows">
-                    <p>Acá va el componente de Sobre el Jefe Directo</p>
+                    <DirectBoss data={datos}/>
                     {/*<TableSpecialtyManagement rows={especialidades}/>*/}
                 </div>
                 <div className="row rows">

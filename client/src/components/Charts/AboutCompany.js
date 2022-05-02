@@ -77,7 +77,7 @@ export default function AboutCompany ({data}) {
                         style={{"marginBottom":"8px !important"}}/>
                 </div>
                 <div className="col-sm-4 subtitles">
-                    <Button variant="primary" style={{"marginBottom":"8px"}}>Editar</Button>
+                    <Button variant="primary" style={{"marginBottom":"8px"}}>Buscar</Button>
 
                 </div>
             </div>

@@ -9,7 +9,7 @@
     padding-top: 0px !important;
     padding-left: 0px !important;
     padding-right: 0px !important;
-    margin-bottom: 20px !important;
+    margin-bottom: 40px !important;
     border: #a9a9a9 solid !important;
     border-radius: 6px;
     Button {
@@ -17,6 +17,38 @@
     }
 }
 
+.iconUp{
+    padding-top: 25px !important;
+    margin-left: 0px !important;
+    padding-left: 0px !important;
+}
+
+.bi-caret-up-fill{
+    margin-left: 0px !important;
+    padding-left: 0px !important;
+}
+.filas{
+    padding-left: 15px !important;
+}
+.columnas{
+    padding-top: 20px !important;
+    padding-left: 0px !important;
+}
+.horas{
+    padding-left: 0px !important;
+}
+
+.picker1{
+    width: 60%;
+    border: #E6E6E6 solid!important;
+    border-radius: 4px;
+}
+
+.picker2{
+    width: 60%;
+    border: #E6E6E6 solid!important;
+    border-radius: 4px;
+}
 .form-check-inline{
     margin-right: 100px !important;
     margin-left: 0px !important;
@@ -25,9 +57,11 @@
 .rows{
     padding-left: 20px !important;
     padding-right: 20px !important;
+    margin-left: 0px !important;
 }
 .subtitles{
     text-align: left !important;
+    padding-left: 0px !important;
 }
 
 .ini{

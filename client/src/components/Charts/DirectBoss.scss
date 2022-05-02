@@ -2,7 +2,7 @@
     margin-top: 0px !important;
 }
 
-.chartSobreEmpresa {
+.chartDirectBoss {
     border-style: solid !important;
     border-width: 2px !important;
     padding-bottom: 20px !important;
@@ -15,11 +15,11 @@
     Button {
         margin-right: 1em !important;
     }
-}
-
-.form-check-inline{
-    margin-right: 100px !important;
-    margin-left: 0px !important;
+    .Cuadro{
+        width: 98% !important;
+        margin-left: 10px !important;
+        margin-right: 10px !important;
+    }
 }
 
 .rows{
@@ -28,6 +28,8 @@
 }
 .subtitles{
     text-align: left !important;
+    padding-left: 10px !important;
+    padding-right: 10px !important;
 }
 
 .ini{
@@ -49,4 +51,4 @@ nav.navbar {
     border-width: thin;
     border-bottom: #a9a9a9 solid !important;
     border-radius: 0px;
-  }
+}

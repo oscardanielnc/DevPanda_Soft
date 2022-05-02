@@ -42,7 +42,8 @@ export default function AboutJob ({data}) {
             <div className="row rows" >
                 <div>Funciones Actividades</div>
                 
-                <Form.Control className="Cuadro" placeholder="Describa la funcion principal de su puesto y las actividades principales a desarrollar." 
+                <Form.Control className="Cuadro" style={{"marginLeft": "0px"}}
+                    placeholder="Describa la funcion principal de su puesto y las actividades principales a desarrollar." 
                     onChange={inputValidation}
                     value={inputs.codigoPUCP}
                     name="codigoPUCP"
