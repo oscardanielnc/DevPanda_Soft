@@ -11,13 +11,21 @@ import AboutDurarionPSP from "../components/Charts/AboutDurationPSP";
 import DirectBoss from "../components/Charts/DirectBoss";
 
 export default function StudentRegistrationForm () {
-    var result=true;
-    var botonPresionado=false;
-    var tipo=null;
+    let result=true;
+    let botonPresionado=false;
+    let tipo=null;
     const [datos, setDatos] = useState([]);
-    const insert = e => {
-        
+    const [inputs, setInputs] = useState([]);
+    const [aboutCompany, setAboutCompany] = useState({
+        RUCNacional: "",
+        National:true,
+        InformacionNacional:"",
+        NombreExtranjera:"",
+        grabado: false
+    })
 
+    const [isNational,setIsNacional]=useState(aboutCompany.National)
+    const insert = e => {
         if(result){
             toast.success("Se insertó de forma correcta", {
                 position: "top-right",
@@ -63,7 +71,9 @@ export default function StudentRegistrationForm () {
                     {/*<TableSpecialtyManagement rows={especialidades}/>*/}
                 </div>
                 <div className="row rows">
-                    <AboutCompany data={datos}/>
+                    <AboutCompany isNational={isNational} 
+                            setIsNacional={setIsNacional}
+                            inputs={inputs} setInputs ={setInputs}/>
                     {/*<TableSpecialtyManagement rows={especialidades}/>*/}
                 </div>
                 <div className="row rows">
@@ -71,7 +81,9 @@ export default function StudentRegistrationForm () {
                     {/*<TableSpecialtyManagement rows={especialidades}/>*/}
                 </div>
                 <div className="row rows">
-                    <AboutDurarionPSP data={datos}/>
+                    <AboutDurarionPSP isNational={isNational} 
+                            setIsNacional={setIsNacional}
+                            inputs={aboutCompany} setInputs ={setAboutCompany}/>
                     {/*<TableSpecialtyManagement rows={especialidades}/>*/}
                 </div>
                 <div className="row rows">

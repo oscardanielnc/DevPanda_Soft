@@ -9,14 +9,9 @@ import es from 'date-fns/locale/es';
 registerLocale('es', es);
 
 
-export default function AboutDurationPSP ({data}) {
-    const [inputs, setInputs] = useState({
-        nombresAlumno: "",
-        apellidosAlumno: "",
-        codigoPUCP:"",
-        correoPUCP:"",
-        flagConvenio: false
-    })
+export default function AboutDurationPSP (props) {
+    const {isNational,setIsNacional, inputs, setInputs} = props;
+
     const inputValidation = e => {
         setInputs({
             ...inputs,
@@ -56,46 +51,31 @@ export default function AboutDurationPSP ({data}) {
                 <div className="col-sm-6 columnas">
                     <div className="row filas">
                          <div className="col-sm-8 subtitles">
-                         <div  style={{"paddingLeft":"0px !important"}} >Horas Diarias Promedio</div>
+                         <div  className="horas">Horas Diarias Promedio</div>
                             <Form.Control placeholder="Ingrese número de horas diarias" 
                                 onChange={inputValidation}
-                                value={inputs.nombresAlumno}
-                                name="nombresAlumno"/>
+                                value={inputs.horasDiarias}
+                                name="nombresAlumno"
+                                type="number"/>
                          </div>
                          <div className="col-sm-1 subtitles">
-                            <div className="row iconUp">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-caret-up-fill" viewBox="0 0 16 16">
-                                <path d="m7.247 4.86-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z"/>
-                                </svg>
-                            </div>
-                            <div className="row iconDown">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-caret-down-fill" viewBox="0 0 16 16">
-                                <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
-                                </svg>
-                            </div>
+                            
                          </div>
                     </div>
                 </div>
                 <div className="col-sm-6 horas columnas">
                 <div className="row filas">
                          <div className="col-sm-8 subtitles">
-                         <div  style={{"paddingLeft":"0px !important"}} >Horas Semanales Promedio</div>
+                         <div  className="horas">Horas Semanales Promedio</div>
                             <Form.Control placeholder="Ingrese número de horas semanales" 
+                                type="number"
                                 onChange={inputValidation}
-                                value={inputs.nombresAlumno}
-                                name="nombresAlumno"/>
+                                value={inputs.horasSemanales}
+                                name="nombresAlumno1"
+                                />
                          </div>
                          <div className="col-sm-1 subtitles">
-                            <div className="row iconUp">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-caret-up-fill" viewBox="0 0 16 16">
-                                <path d="m7.247 4.86-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z"/>
-                                </svg>
-                            </div>
-                            <div className="row iconDown">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-caret-down-fill" viewBox="0 0 16 16">
-                                <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
-                                </svg>
-                            </div>
+                            
                          </div>
                     </div>
                 </div>

@@ -11,7 +11,7 @@ function StudentNavbar (){
     <div className="studentNavBar">
         <nav>
             <li >
-                <span className='titulo' style={{"padding-left":"30px"}} >
+                <span className='titulo' style={{"paddingLeft":"30px"}} >
                 Tu progreso 
                 </span>
             </li>
