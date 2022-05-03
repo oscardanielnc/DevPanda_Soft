@@ -2,6 +2,7 @@ import GestionEspecialidad from "../pages/GestionEspecialidad";
 import AgregarEspecialidad from "../pages/AgregarEspecialidad";
 import StudentRegistrationForm from "../pages/StudentRegistrationForm";
 import Error404 from "../pages/Error404";
+import SupervisorSelection from "../pages/SupervisorSelection";
 
 const routes = [
     {
@@ -23,6 +24,11 @@ const routes = [
         path: "*",
         component: Error404,
     },
+    {
+        path: "/supervisorselection",
+        exact: true,
+        component: SupervisorSelection,
+    }
 ]
 
 export default routes;
