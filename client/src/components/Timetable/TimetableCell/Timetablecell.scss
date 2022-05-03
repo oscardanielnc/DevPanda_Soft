@@ -1,0 +1,13 @@
+
+.cell{
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    padding: .4em;
+    p{
+        margin: 0;
+    }
+}
+.disponible{
+    background-color: rgb(144, 229, 255);
+}

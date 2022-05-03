@@ -1,0 +1,12 @@
+.rows{
+    margin-top: 2em !important;
+}
+.supervisors {
+    display: flex;
+
+    .supervisor {
+        width: 150px;
+        margin: 0 .5em;
+        text-align: center
+    }
+}
