@@ -39,12 +39,12 @@ div.content{
 }
 
 .dataRow{
-    width: 100%;
+    width: auto;
     height: 100%;
     list-style-type: none;
 
     padding: 5px !important;
-    display: block;
+    display: 8-ms-inline-grid;
 
     @media screen and (max-width: 575.2px){
             display: none;
@@ -112,7 +112,7 @@ div.content{
     font-size: 12px;
     padding-left: 5px;
     text-align: center;
-    display:flex;
+    display:inline;
     @media screen and (max-width: 575.2px){
         
     }
@@ -123,7 +123,7 @@ div.content{
     font-size: 12px;
     text-align: left;
     display:inline;
-    padding-left: 5px ;
+    padding-left: 5px !important;
     @media screen and (max-width: 575.2px){
         display: none;
     }
