@@ -7,6 +7,7 @@ import RevConveniosCoordEsp from "../pages/RevisionConveniosCoordEsp";
 
 import Error404 from "../pages/Error404";
 import Prueba from "../pages/Prueba";
+import SupervisorSelection from "../pages/SupervisorSelection";
 import FACINavbar from "../components/navBarCoordFACI/FACINavbar";
 import StudentNavbar from "../components/navBar/StudentNavbar";
 
@@ -52,13 +53,18 @@ const routes = [
         component: StudentNavbar,
     },
     {
-        path: "*",
-        component: Error404,
-    },
-    {
         path: "/prueba",
         exact: true,
         component: Prueba,
+    },
+    {
+        path: "/supervisorselection",
+        exact: true,
+        component: SupervisorSelection,
+    },
+    {
+        path: "*",
+        component: Error404,
     }
 ]
 
