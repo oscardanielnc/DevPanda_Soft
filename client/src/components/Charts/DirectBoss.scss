@@ -2,7 +2,7 @@
     margin-top: 0px !important;
 }
 
-.chartGeneralData {
+.chartDirectBoss {
     border-style: solid !important;
     border-width: 2px !important;
     padding-bottom: 20px !important;
@@ -16,15 +16,21 @@
     Button {
         margin-right: 1em !important;
     }
+    .Cuadro{
+        width: 98% !important;
+        margin-left: 10px !important;
+        margin-right: 10px !important;
+    }
 }
 
 .rows{
     padding-left: 20px !important;
     padding-right: 20px !important;
-    padding-bottom: 20px !important;
 }
 .subtitles{
     text-align: left !important;
+    padding-left: 10px !important;
+    padding-right: 10px !important;
 }
 
 .ini{
@@ -46,4 +52,4 @@ nav.navbar {
     border-width: thin;
     border-bottom: #a9a9a9 solid !important;
     border-radius: 0px;
-  }
+}

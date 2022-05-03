@@ -10,12 +10,12 @@ export default function LayoutBasic (props) {
     const {children} = props;
 
     return (
-        <div class="container"> 
+        <div className="container"> 
             <div className="layout-basic">
                 <Header />
                 
-                    <div class = "row">
-                        <div class = "col-sm-3">
+                    <div className = "row">
+                        <div className = "col-sm-3">
                             <StudentNavBar/>
                         </div>
                         <div className = "col align-self-center">

@@ -36,11 +36,7 @@ export default function Footer (props) {
                     </div>
                 </div>
                 <div className="footer__leftderechos">
-                        <img src={LogoDerechos} alt="Derechos"
-                        style={{marginTop: "10px",marginLeft:"20px"}}
-                        width="500" 
-                        height="35"
-                        />
+                    Pontificia Universidad Católica del Perú - Todos los derechos reservados
                 </div>
 
             </div>
