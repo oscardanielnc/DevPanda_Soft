@@ -5,23 +5,43 @@ import './AboutCompany.scss';
 
 
 export default function AboutCompany (props) {
-    const {isNational,setIsNacional, inputs, setInputs} = props;
+    const {aboutCompany, setAboutCompany} = props;
+    let notgrabadoNational=(aboutCompany.RUCNacional==null||aboutCompany.RUCNacional)?true:false;
+    let notgrabadoForeigner=(aboutCompany.NombreExtranjera==null||aboutCompany.NombreExtranjera)?true:false;
+    let notgrabado=((notgrabadoNational&&!notgrabadoForeigner)||(!notgrabadoNational&&notgrabadoForeigner))?true:false;
+    const changeNational = e=>{
+        setAboutCompany({
+            ...aboutCompany,
+            [e.target.name]: e.target.checked
+        })
+    }
+    const changeForeigner = e=>{
+        setAboutCompany({
+            ...aboutCompany,
+            [e.target.name]: !(e.target.checked)
+        })
+    }
 
-    const inputValidation = e => {
-        setInputs({
-            ...inputs,
+    const changeRucNacional= e=>{
+        setAboutCompany({
+            ...aboutCompany,
             [e.target.name]: e.target.value
         })
     }
-    
-    const changeNational = e=>{
-        setIsNacional(true);
-        console.log("Cambiamos el Nacional")
+
+    const changeInformacionNacional =e=>{
+        setAboutCompany({
+            ...aboutCompany,
+            [e.target.name]: e.target.value
+        })
     }
-    const changeForeigner = e=>{
-        setIsNacional(false);
-        console.log("Cambiamos el Extranjero")
+    const changeNombreExtranjera=e=>{
+        setAboutCompany({
+            ...aboutCompany,
+            [e.target.name]: e.target.value
+        })
     }
+
     return (
         <div className="container chartSobreEmpresa">
              <nav className="navbar navbar-fixed-top navbar-inverse bg-inverse "style={{ backgroundColor: "#E7E7E7"}}>
@@ -37,19 +57,21 @@ export default function AboutCompany (props) {
                         <Form.Check
                             inline
                             label="Nacional"
-                            name="group1"
+                            name="National"
                             type="radio"
+                            disabled={notgrabado}
                             id={`inline-radio-1`}
-                            checked={isNational}
+                            checked={aboutCompany.National}
                             onChange={changeNational}
                         />
                         <Form.Check
                             inline
                             label="Extranjera"
-                            name="group1"
+                            name="National"
                             type="radio"
+                            disabled={notgrabado}
                             id={`inline-radio-2`}
-                            checked={!isNational}
+                            checked={!aboutCompany.National}
                             onChange={changeForeigner}
                         />
                         </div>
@@ -67,21 +89,21 @@ export default function AboutCompany (props) {
                 </div>
                 <div className="col-sm-7 subtitles">
                     <Form.Control placeholder="Ingrese RUC de la empresa" 
-                        onChange={inputValidation}
-                        disabled = {!isNational}
-                        value={inputs.codigoPUCP}
-                        name="codigoPUCP"
+                        onChange={changeRucNacional}
+                        disabled = {!aboutCompany.National || notgrabado}
+                        value={aboutCompany.RUCNacional}
+                        name="RUCNacional"
                         style={{"marginBottom":"8px !important"}}/>
                 </div>
                 <div className="col-sm-4 subtitles">
-                    <Button variant="primary" style={{"marginBottom":"4px"}} disabled={!isNational}>Buscar</Button>
+                    <Button variant="primary" style={{"marginBottom":"4px"}} disabled={!aboutCompany.National}>Buscar</Button>
                 </div>
                 <Form.Control className="Cuadro" style={{"marginLeft": "0px"}}
                     placeholder=" " 
-                    onChange={inputValidation}
-                    disabled = {!isNational}
-                    value={inputs.codigoPUCP}
-                    name="codigoPUCP"
+                    onChange={changeInformacionNacional}
+                    disabled = {!aboutCompany.National || notgrabado}
+                    value={aboutCompany.InformacionNacional}
+                    name="InformacionNacional"
                     as="textarea"
                     rows={6}
                     />
@@ -91,10 +113,10 @@ export default function AboutCompany (props) {
             </div>
             <div className="row rows" >
                 <Form.Control placeholder="Escriba el nombre de la empresa" 
-                        onChange={inputValidation}
-                        disabled = {isNational}
-                        value={inputs.codigoPUCP}
-                        name="codigoPUCP"
+                        onChange={changeNombreExtranjera}
+                        disabled = {aboutCompany.National || notgrabado}
+                        value={aboutCompany.NombreExtranjera}
+                        name="NombreExtranjera"
                         style={{"marginBottom":"10px !important"}}/>
             </div>
         </div>

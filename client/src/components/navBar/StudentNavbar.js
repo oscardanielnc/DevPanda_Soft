@@ -17,7 +17,7 @@ function StudentNavbar (){
             </li>
             <ul className="sidebarList">
             {StudentSideBarData.map((val,key)=>{
-                return <li key = {key} className= "dataRow" id ={window.location.pathname == val.link ? "active" : ""}>
+                return <li key = {key} className= "dataRow" id ={window.location.pathname === val.link ? "active" : ""}>
                         <Link to = {val.link}>
                             <span className='icono'>
                             {val.icon}

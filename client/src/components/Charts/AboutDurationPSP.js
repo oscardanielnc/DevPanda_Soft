@@ -10,15 +10,39 @@ registerLocale('es', es);
 
 
 export default function AboutDurationPSP (props) {
-    const {isNational,setIsNacional, inputs, setInputs} = props;
+    const {aboutPSP,setAboutPSP} = props;
+    const [startDate, setStartDate] = useState(new Date());
+    const [endDate, setEndDate] = useState(new Date());
+    let notgrabado=(aboutPSP.dailyHours>0)?true:false;
+    const changeStartDate = e => {
+        setStartDate(e);
+        setAboutPSP({
+            ...aboutPSP,
+            dateStart:e
+        })
+    }
 
-    const inputValidation = e => {
-        setInputs({
-            ...inputs,
+    const changeEndDate = e => {
+        setEndDate(e);
+        setAboutPSP({
+            ...aboutPSP,
+            dateEnd:e
+        })
+    }
+    
+    const changeDailyHours = e => {
+        setAboutPSP({
+            ...aboutPSP,
             [e.target.name]: e.target.value
         })
     }
-    const [startDate, setStartDate] = useState(new Date());
+
+    const changeWeekHours = e => {
+        setAboutPSP({
+            ...aboutPSP,
+            [e.target.name]: e.target.value
+        })
+    }
 
     return (
         <div className="container chartAboutDurationPSP">
@@ -30,18 +54,21 @@ export default function AboutDurationPSP (props) {
                     <div>Fecha de inicio</div>
                     <DatePicker
                         selected={startDate}
-                        onChange={(date) => setStartDate(date)}
+                        onChange={changeStartDate}
                         locale="es"
+                        disabled={notgrabado}
                         className="picker1"
                         dateFormat="dd-MM-yy"
+                        name="dateStart"
                     />
                 </div>
                 <div className="col-sm-6 subtitles">
                     <div>Fecha de fin</div>
                     <DatePicker
-                        selected={startDate}
-                        onChange={(date) => setStartDate(date)}
+                        selected={endDate}
+                        onChange={changeEndDate}
                         locale="es"
+                        disabled={notgrabado}
                         className="picker2"
                         dateFormat="dd-MM-yy"
                     />
@@ -53,9 +80,10 @@ export default function AboutDurationPSP (props) {
                          <div className="col-sm-8 subtitles">
                          <div  className="horas">Horas Diarias Promedio</div>
                             <Form.Control placeholder="Ingrese número de horas diarias" 
-                                onChange={inputValidation}
-                                value={inputs.horasDiarias}
-                                name="nombresAlumno"
+                                onChange={changeDailyHours}
+                                value={aboutPSP.dailyHours}
+                                disabled={notgrabado}
+                                name="dailyHours"
                                 type="number"/>
                          </div>
                          <div className="col-sm-1 subtitles">
@@ -69,10 +97,10 @@ export default function AboutDurationPSP (props) {
                          <div  className="horas">Horas Semanales Promedio</div>
                             <Form.Control placeholder="Ingrese número de horas semanales" 
                                 type="number"
-                                onChange={inputValidation}
-                                value={inputs.horasSemanales}
-                                name="nombresAlumno1"
-                                />
+                                onChange={changeWeekHours}
+                                value={aboutPSP.weekHours}
+                                disabled={notgrabado}
+                                name="weekHours"/>
                          </div>
                          <div className="col-sm-1 subtitles">
                             
