@@ -5,8 +5,7 @@ import './DirectBoss.scss';
 
 
 export default function DirectBoss (props) {
-    const {directBoss,setDirectBoss} = props;
-    let notgrabado=(directBoss.name==null||directBoss.name)?true:false;
+    const {directBoss,setDirectBoss,notgrabado} = props;
     const changeName = e => {
         setDirectBoss({
             ...directBoss,

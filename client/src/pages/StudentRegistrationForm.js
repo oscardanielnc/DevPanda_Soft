@@ -16,8 +16,8 @@ import './StudentRegistrationForm.scss';
 
 export default function StudentRegistrationForm () {
     let result=true;
+    let idFicha=null;
     const [tipoUsuario, setTipoUsuario] = useState('A')
-    console.log(tipoUsuario);
     const[entregado,setEntregado]=useState(true);
     let tipoEntrega;
     let comentarioEntrega="";
@@ -57,14 +57,15 @@ export default function StudentRegistrationForm () {
         recorded:false
     });
     const [aboutCompany, setAboutCompany] = useState({
-        RUCNacional: "151",
+        RUCNacional: "",
         National:true,
         InformacionNacional:"",
         NombreExtranjera:"",
         grabado: false
     })
+    const notgrabado=(idFicha==null||idFicha===0)?false:true;
     const [aboutJob,setAboutJob]=useState({
-        nameArea:"asdasd",
+        nameArea:"",
         jobTitle:"",
         activities:""
     })
@@ -72,12 +73,12 @@ export default function StudentRegistrationForm () {
     const [aboutPSP,setAboutPSP]=useState({
         dateStart:null,
         dateEnd:null,
-        dailyHours: 5,
+        dailyHours: 0,
         weekHours: 0
     })
 
     const[directBoss,setDirectBoss]=useState({
-        name:"asdasd",
+        name:"",
         area:"",
         email:"",
         celephone:""
@@ -135,22 +136,22 @@ export default function StudentRegistrationForm () {
                 </div>
                 <div className="row rows">
                     <AboutCompany 
-                            aboutCompany={aboutCompany} setAboutCompany ={setAboutCompany}/>
+                            aboutCompany={aboutCompany} setAboutCompany ={setAboutCompany} notgrabado={notgrabado}/>
                 </div>
                 <div className="row rows">
-                    <AboutJob aboutJob={aboutJob} setAboutJob={setAboutJob}/>
+                    <AboutJob aboutJob={aboutJob} setAboutJob={setAboutJob} notgrabado={notgrabado}/>
                 </div>
                 <div className="row rows">
-                    <AboutDurationPSP aboutPSP={aboutPSP} setAboutPSP={setAboutPSP}/>
+                    <AboutDurationPSP aboutPSP={aboutPSP} setAboutPSP={setAboutPSP} notgrabado={notgrabado}/>
                 </div>
                 <div className="row rows">
-                    <DirectBoss directBoss={directBoss} setDirectBoss={setDirectBoss}/>
+                    <DirectBoss directBoss={directBoss} setDirectBoss={setDirectBoss} notgrabado={notgrabado}/>
                 </div>
                 <div className="row rows">
                     <p>Acá va el componente de subida de archivos</p>
                 </div>
                 {tipoUsuario=="A"?<div className="row rows BotonAlumno">
-                    <Button className="btn btn-primary" style={{width:"40%"}} onClick={insert}>Enviar</Button>
+                    <Button className="btn btn-primary" style={{width:"40%"}} onClick={insert} disabled={notgrabado}>Enviar</Button>
                     <ToastContainer />
                 </div>:<div></div>}
                 

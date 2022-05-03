@@ -5,8 +5,7 @@ import './AboutJob.scss';
 
 
 export default function AboutJob (props) {
-    const {aboutJob, setAboutJob} = props;
-    let notgrabado=(aboutJob.nameArea===""||aboutJob.nameArea==null)?false:true;
+    const {aboutJob, setAboutJob,notgrabado} = props;
     const changeNameArea = e => {
         setAboutJob({
             ...aboutJob,
