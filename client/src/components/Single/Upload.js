@@ -66,7 +66,7 @@ export default function Upload (props) {
                 fileList.length > 0 ? (
                     <div className="drop-file-preview">
                         <p className="drop-file-preview__title">
-                            Ready to upload
+                            Listo para subir
                         </p>
                         {
                             fileList.map((item, index) => (
