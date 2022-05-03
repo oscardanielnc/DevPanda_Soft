@@ -6,6 +6,8 @@ import SignUp from "../pages/SignUp";
 import RevConveniosCoordEsp from "../pages/RevisionConveniosCoordEsp";
 
 import Error404 from "../pages/Error404";
+import FACINavbar from "../components/navBarCoordFACI/FACINavbar";
+import StudentNavbar from "../components/navBar/StudentNavbar";
 
 const routes = [
     {
@@ -37,6 +39,12 @@ const routes = [
         path: "/revisionconvenioscoordinadoresp",
         exact: true,
         component: RevConveniosCoordEsp,
+        path: "/FACInavbar",
+        component: FACINavbar,
+    },
+    {
+        path: "/Stunavbar",
+        component: StudentNavbar,
     },
     {
         path: "*",
