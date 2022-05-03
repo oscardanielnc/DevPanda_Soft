@@ -5,7 +5,7 @@ export default function Home2 () {
     return (
         <LayoutBasic>
             <div>
-                <h1>We're in Home2</h1>
+                <h1>Eooooo</h1>
             </div>
         </LayoutBasic>
     )
