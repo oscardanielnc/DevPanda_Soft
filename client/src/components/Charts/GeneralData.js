@@ -4,17 +4,46 @@ import { Button, Table,Form,InputGroup,FormControl } from 'react-bootstrap';
 import './GeneralData.scss';
 
 
-export default function GeneralData ({data}) {
-    const [inputs, setInputs] = useState({
-        nombresAlumno: "",
-        apellidosAlumno: "",
-        codigoPUCP:"",
-        correoPUCP:"",
-        flagConvenio: false
-    })
-    const inputValidation = e => {
-        setInputs({
-            ...inputs,
+export default function GeneralData (props) {
+    const {generalData,setGeneralData} = props;
+    const changeNames = e => {
+        setGeneralData({
+            ...generalData,
+            [e.target.name]: e.target.value
+        })
+    }
+
+    const changeLastNames = e => {
+        setGeneralData({
+            ...generalData,
+            [e.target.name]: e.target.value
+        })
+    }
+
+    const changeCodesPUCP = e => {
+        setGeneralData({
+            ...generalData,
+            [e.target.name]: e.target.value
+        })
+    }
+
+    const changeEmailPUCP = e => {
+        setGeneralData({
+            ...generalData,
+            [e.target.name]: e.target.value
+        })
+    }
+
+    const changeCelephone = e => {
+        setGeneralData({
+            ...generalData,
+            [e.target.name]: e.target.value
+        })
+    }
+
+    const changeEmailAlternative = e => {
+        setGeneralData({
+            ...generalData,
             [e.target.name]: e.target.value
         })
     }
@@ -27,33 +56,40 @@ export default function GeneralData ({data}) {
                 <div className="col-sm-6 subtitles">
                     <div>Nombres</div>
                     <Form.Control placeholder="Escriba su nombre" 
-                        onChange={inputValidation}
-                        value={inputs.nombresAlumno}
-                        name="nombresAlumno"/>
+                        onChange={changeNames}
+                        value={generalData.names}
+                        disabled
+                        name="names"/>
                 </div>
                 <div className="col-sm-6 subtitles">
                     <div>Apellidos</div>
                     <Form.Control placeholder="Escriba sus apellidos" 
-                        onChange={inputValidation}
-                        value={inputs.apellidosAlumno}
-                        name="apellidosAlumno"/>
+                        onChange={changeLastNames}
+                        value={generalData.lastNames}
+                        disabled
+                        name="lastNames"/>
                 </div>
             </div>
             <div className="row rows" >
                 <div className="col-sm-4 subtitles">
                     <div>Codigo PUCP</div>
                     <Form.Control placeholder="Codigo PUCP" 
-                        onChange={inputValidation}
-                        value={inputs.codigoPUCP}
-                        name="codigoPUCP"/>
+                        onChange={changeCodesPUCP}
+                        value={generalData.codePUCP}
+                        disabled
+                        name="codePUCP"/>
                 </div>
                 <div className="col-sm-8 subtitles">
                     <div>Correo PUCP</div>
                     <InputGroup className="mb-3">
                         <FormControl
-                        placeholder="example"
+                        placeholder="Ingrese su correo educativo"
                         aria-label="example"
-                        aria-describedby="basic-addon2"
+                        aria-describedby="basic-asddon2"
+                        onChange={changeEmailPUCP}
+                        value={generalData.emailPUCP}
+                        disabled
+                        name="emailPUCP"
                         />
                         <InputGroup.Text id="basic-addon2">@pucp.edu.pe</InputGroup.Text>
                     </InputGroup>
@@ -64,16 +100,18 @@ export default function GeneralData ({data}) {
                 <div className="col-sm-4 subtitles">
                     <div>Teléfono</div>
                     <Form.Control placeholder="Ingrese su número de celular" 
-                        onChange={inputValidation}
-                        value={inputs.nombresAlumno}
-                        name="nombresAlumno"/>
+                        onChange={changeCelephone}
+                        value={generalData.celephone}
+                        disabled
+                        name="celephone"/>
                 </div>
                 <div className="col-sm-8 subtitles">
                     <div>Correo Personal (Opcional)</div>
                     <Form.Control placeholder="Ingrese su correo opcional" 
-                        onChange={inputValidation}
-                        value={inputs.apellidosAlumno}
-                        name="apellidosAlumno"/>
+                        onChange={changeEmailAlternative}
+                        value={generalData.emailAlternative}
+                        disabled
+                        name="emailAlternative"/>
                 </div>
             </div>
         </div>

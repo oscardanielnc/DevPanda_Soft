@@ -1,25 +1,48 @@
 import React, {useState}  from "react";
 import { Button, Table,Form,InputGroup,FormControl } from 'react-bootstrap';
-import DatePicker from "react-datepicker";
+import DatePicker,{ registerLocale, setDefaultLocale } from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import './AboutDurationPSP.scss';
+import es from 'date-fns/locale/es';
 
 
-export default function AboutDurationPSP ({data}) {
-    const [inputs, setInputs] = useState({
-        nombresAlumno: "",
-        apellidosAlumno: "",
-        codigoPUCP:"",
-        correoPUCP:"",
-        flagConvenio: false
-    })
-    const inputValidation = e => {
-        setInputs({
-            ...inputs,
+registerLocale('es', es);
+
+
+export default function AboutDurationPSP (props) {
+    const {aboutPSP,setAboutPSP} = props;
+    const [startDate, setStartDate] = useState(new Date());
+    const [endDate, setEndDate] = useState(new Date());
+    let notgrabado=(aboutPSP.dailyHours>0)?true:false;
+    const changeStartDate = e => {
+        setStartDate(e);
+        setAboutPSP({
+            ...aboutPSP,
+            dateStart:e
+        })
+    }
+
+    const changeEndDate = e => {
+        setEndDate(e);
+        setAboutPSP({
+            ...aboutPSP,
+            dateEnd:e
+        })
+    }
+    
+    const changeDailyHours = e => {
+        setAboutPSP({
+            ...aboutPSP,
             [e.target.name]: e.target.value
         })
     }
-    const [startDate, setStartDate] = useState(new Date());
+
+    const changeWeekHours = e => {
+        setAboutPSP({
+            ...aboutPSP,
+            [e.target.name]: e.target.value
+        })
+    }
 
     return (
         <div className="container chartAboutDurationPSP">
@@ -27,35 +50,62 @@ export default function AboutDurationPSP ({data}) {
                 <h3 style={{"marginLeft":"15px"}}>Sobre la duración del PSP</h3>
              </nav>
             <div className="row rows">
-                <div className="col-sm-6 subtitles">
+                <div className="col-sm-6 subtitles" >
                     <div>Fecha de inicio</div>
                     <DatePicker
                         selected={startDate}
-                        onChange={(date) => setStartDate(date)}
+                        onChange={changeStartDate}
+                        locale="es"
+                        disabled={notgrabado}
+                        className="picker1"
+                        dateFormat="dd-MM-yy"
+                        name="dateStart"
                     />
                 </div>
                 <div className="col-sm-6 subtitles">
                     <div>Fecha de fin</div>
-                    <Form.Control placeholder="Escriba el puesto a desempeñar" 
-                        onChange={inputValidation}
-                        value={inputs.apellidosAlumno}
-                        name="apellidosAlumno"/>
+                    <DatePicker
+                        selected={endDate}
+                        onChange={changeEndDate}
+                        locale="es"
+                        disabled={notgrabado}
+                        className="picker2"
+                        dateFormat="dd-MM-yy"
+                    />
                 </div>
             </div>
             <div className="row rows">
-                <div className="col-sm-6 subtitles">
-                    <div>Horas Diarias Promedio</div>
-                    <Form.Control placeholder="Escriba el nombre del área" 
-                        onChange={inputValidation}
-                        value={inputs.nombresAlumno}
-                        name="nombresAlumno"/>
+                <div className="col-sm-6 columnas">
+                    <div className="row filas">
+                         <div className="col-sm-8 subtitles">
+                         <div  className="horas">Horas Diarias Promedio</div>
+                            <Form.Control placeholder="Ingrese número de horas diarias" 
+                                onChange={changeDailyHours}
+                                value={aboutPSP.dailyHours}
+                                disabled={notgrabado}
+                                name="dailyHours"
+                                type="number"/>
+                         </div>
+                         <div className="col-sm-1 subtitles">
+                            
+                         </div>
+                    </div>
                 </div>
-                <div className="col-sm-6 subtitles">
-                    <div>Horas Semanales Promedio</div>
-                    <Form.Control placeholder="Escriba el puesto a desempeñar" 
-                        onChange={inputValidation}
-                        value={inputs.apellidosAlumno}
-                        name="apellidosAlumno"/>
+                <div className="col-sm-6 horas columnas">
+                <div className="row filas">
+                         <div className="col-sm-8 subtitles">
+                         <div  className="horas">Horas Semanales Promedio</div>
+                            <Form.Control placeholder="Ingrese número de horas semanales" 
+                                type="number"
+                                onChange={changeWeekHours}
+                                value={aboutPSP.weekHours}
+                                disabled={notgrabado}
+                                name="weekHours"/>
+                         </div>
+                         <div className="col-sm-1 subtitles">
+                            
+                         </div>
+                    </div>
                 </div>
             </div>
         </div>
