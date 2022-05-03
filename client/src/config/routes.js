@@ -39,11 +39,15 @@ const routes = [
         path: "/revisionconvenioscoordinadoresp",
         exact: true,
         component: RevConveniosCoordEsp,
+    },    
+    {   
         path: "/FACInavbar",
+        exact: true,
         component: FACINavbar,
     },
     {
         path: "/Stunavbar",
+        exact: true,
         component: StudentNavbar,
     },
     {
