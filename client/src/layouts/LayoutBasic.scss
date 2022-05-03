@@ -1,26 +1,12 @@
-.container{
-    padding: 0;
-    margin: 0;
-}
-
-.col{
-    height: 100%;
-    padding: 0;
-    &-sm-3 *{
-        padding: 0%;
-
+.main {
+    background: white;
+    .layout-basic {
+        &__navbav {
+            width: 340px;
+        }
+        &__content {
+            width: calc(100% - 340px);
         }
     }
 
-
-
-.row{
-    padding :0;
-    margin: 0%;
-    height: 100%;
 }
-
-.contenido {
-    display: initial;
-}
-
