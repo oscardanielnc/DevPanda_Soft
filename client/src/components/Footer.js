@@ -10,7 +10,7 @@ import LogoLinkedin from "../asserts/img/png/logoLinkedin.PNG";
 import LogoTwitter from "../asserts/img/png/logoTwitter.PNG";
 import './Footer.scss';
 
-export default function Header (props) {
+export default function Footer (props) {
     return (
         <div className="footer">
             <div className="footer__left">
@@ -36,11 +36,7 @@ export default function Header (props) {
                     </div>
                 </div>
                 <div className="footer__leftderechos">
-                        <img src={LogoDerechos} alt="Derechos"
-                        style={{marginTop: "10px",marginLeft:"20px"}}
-                        width="500" 
-                        height="35"
-                        />
+                    Pontificia Universidad Católica del Perú - Todos los derechos reservados
                 </div>
 
             </div>

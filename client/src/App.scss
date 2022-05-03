@@ -1,5 +1,6 @@
 @import "./scss/index.scss";
 @import "~bootstrap/scss/bootstrap";
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css");
 
 .success {
   border: 1px solid $success-color;
@@ -9,3 +10,8 @@
   border: 1px solid $danger-color;
   background-color: $background-error;
 }
+.principal {
+  padding-bottom: 1em;
+  min-height: calc(100vh - 280px);
+}
+
