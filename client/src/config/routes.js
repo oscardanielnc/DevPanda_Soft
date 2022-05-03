@@ -2,6 +2,8 @@ import GestionEspecialidad from "../pages/GestionEspecialidad";
 import AgregarEspecialidad from "../pages/AgregarEspecialidad";
 import StudentRegistrationForm from "../pages/StudentRegistrationForm";
 import Error404 from "../pages/Error404";
+import FACINavbar from "../components/navBarCoordFACI/FACINavbar";
+import StudentNavbar from "../components/navBar/StudentNavbar";
 
 const routes = [
     {
@@ -18,6 +20,14 @@ const routes = [
         path: "/studentRegistrationForm",
         exact: true,
         component: StudentRegistrationForm,
+    },
+    {
+        path: "/FACInavbar",
+        component: FACINavbar,
+    },
+    {
+        path: "/Stunavbar",
+        component: StudentNavbar,
     },
     {
         path: "*",
