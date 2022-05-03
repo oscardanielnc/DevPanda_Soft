@@ -1,9 +1,9 @@
 import React from "react";
 import LayoutBasic from "../layouts/LayoutBasic";
-import './RevisionConveniosCoordEsp.scss';
+import './Agreement.scss';
 import CompUpload from '../components/Single/CompUpload';
 
-export default function RevisionConveniosCoordEsp (){
+export default function Agreement (){
     return(
         <LayoutBasic>
             <div className="container">                

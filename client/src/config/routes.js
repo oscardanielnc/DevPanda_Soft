@@ -1,64 +1,58 @@
-import GestionEspecialidad from "../pages/GestionEspecialidad";
-import AgregarEspecialidad from "../pages/AgregarEspecialidad";
+import SpecialtyManagement from "../pages/SpecialtyManagement";
+import AddSpecialty from "../pages/AddSpecialty";
 import StudentRegistrationForm from "../pages/StudentRegistrationForm";
 import SignIn from "../pages/SignIn";
 import SignUp from "../pages/SignUp";
-import RevConveniosCoordEsp from "../pages/RevisionConveniosCoordEsp";
-
 import Error404 from "../pages/Error404";
 import Prueba from "../pages/Prueba";
 import SupervisorSelection from "../pages/SupervisorSelection";
 import FACINavbar from "../components/navBarCoordFACI/FACINavbar";
 import StudentNavbar from "../components/navBar/StudentNavbar";
+import Agreement from "../pages/Agreement";
 
 const routes = [
     {
         path: "/",
         exact: true,
-        component: GestionEspecialidad,
+        component: SpecialtyManagement,
     },
     {
-        path: "/agregarEspecialidad",
+        path: "/add-specialty",
         exact: true,
-        component: AgregarEspecialidad,
+        component: AddSpecialty,
     },
     {
-        path: "/studentRegistrationForm",
+        path: "/student-registration",
         exact: true,
         component: StudentRegistrationForm,
     },
     {
-        path: "/signin",
+        path: "/sign-in",
         exact: true,
         component: SignIn,
     },
     {
-        path: "/signup",
+        path: "/sign-up",
         exact: true,
         component: SignUp,
     },
     {
-        path: "/revisionconvenioscoordinadoresp",
+        path: "/agreement",
         exact: true,
-        component: RevConveniosCoordEsp,
+        component: Agreement,
     },    
     {   
-        path: "/FACInavbar",
+        path: "/FACInavbar", // esto no lo toco porque lo vamos a eliminar, no es una pagina
         exact: true,
         component: FACINavbar,
     },
     {
-        path: "/Stunavbar",
-        exact: true,
-        component: StudentNavbar,
-    },
-    {
-        path: "/prueba",
+        path: "/prueba",// esto no lo toco porque lo vamos a eliminar, no es una pagina
         exact: true,
         component: Prueba,
     },
     {
-        path: "/supervisorselection",
+        path: "/supervisor-selection",
         exact: true,
         component: SupervisorSelection,
     },

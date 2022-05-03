@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import LayoutBasic from "../layouts/LayoutBasic";
 import {Form} from 'react-bootstrap';
-import './AgregarEspecialidad.scss';
+import './AddSpecialty.scss';
 import { Link } from "react-router-dom";
 import { specialtyInsertApi } from "../api/specialty";
 import ToastPanda from "../components/Toast/ToastPanda";
@@ -24,7 +24,7 @@ const facultades = [
     }
 ]
 
-export default function AgregarEspecialidad () {
+export default function AddSpecialty () {
     const [inputs, setInputs] = useState({
         nombreEsp: "",
         flagMatricula: false,
@@ -118,16 +118,9 @@ export default function AgregarEspecialidad () {
                         />
                     </div>
                 </div>
-                <div className="row rows">
-                    <div className="col-sm-10">
-                        
-                    </div>
-                    <div className="col-sm-1">
+                <div className="row add-specialty__buttons">
                         <Link className="btn btn-primary" to = "/">Cancelar</Link>
-                    </div>
-                    <div className="col-sm-1">
                         <button className="btn btn-primary" onClick={insert}>Guardar</button>
-                    </div>
                 </div>
             </Form>
             <ToastPanda title="DevPanda"

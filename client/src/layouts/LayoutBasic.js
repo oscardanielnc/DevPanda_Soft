@@ -10,21 +10,20 @@ export default function LayoutBasic (props) {
     const {children} = props;
 
     return (
-        <div className="container"> 
+        <div className="main">
             <div className="layout-basic">
                 <Header />
-                
-                    <div className = "row">
-                        <div className = "col-sm-3">
-                            <StudentNavBar/>
-                        </div>
-                        <div className = "col align-self-center">
-                            {children}
-                        </div>
-                    </div>    
-                        
+                <div className = "row" style={{width: "100%"}}>
+                    <div className="layout-basic__navbav">
+                        <StudentNavBar/>
+                    </div>
+                    <div className="layout-basic__content">
+                        {children}
+                    </div>
+                </div>    
                 <Footer />
             </div>
         </div>
+
     )
 }

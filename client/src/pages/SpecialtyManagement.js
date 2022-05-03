@@ -8,7 +8,7 @@ import useAuth from "../hooks/useAuth";
 import FilterData from "../components/Filters/FilterData";
 
 
-export default function GestionEspecialidad () {
+export default function SpecialtyManagement () {
     const [especialidades, setEspecialidades] = useState([]);
     const [filteredData, setFilteredData] = useState([]);
     //console.log(useAuth()); // el useAuth() nos permite acceder a la informacion del usuario desde cualquier lugar. Por ahora ese objeto esta hardcodeado.
