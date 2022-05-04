@@ -60,45 +60,43 @@ export default function AgreementReview (){
                 </div>
                 <div className="row normalrow" style={{marginTop:"10px",marginLeft:"10px"}}>
                     <DocumentPlusIcon name="Convenio Oscar Navarro.pdf" url={Convenio}/>
-                    <Button variant="primary" size="sm" style={{width: "100px",marginTop:"5px"}}>Visualizar</Button>{' '}
+                    <Button variant="primary" size="sm" style={{width: "100px",marginTop:"5px", marginLeft:"101px"}}>Visualizar</Button>{' '}
                 </div>
                 <div className="row normalrow" style={{marginLeft:"10px",marginTop:"10px"}}>
                     <DocumentPlusIcon name="Plan de aprendizaje Oscar Navarro.pdf" url={Convenio}/>
-                    <Button variant="primary" size="sm" style={{width: "100px", marginTop:"5px"}}>Visualizar</Button>{' '}
+                    <Button variant="primary" size="sm" style={{width: "100px", marginTop:"5px",marginLeft:"30px"}}>Visualizar</Button>{' '}
                 </div>
-                <div className="row row1" style={{textAlign: "left",marginTop:"50px"}}>
-                    <div className="col-sm-4">                  
-                        <h2>Estado de los documentos</h2>
-                    </div>    
-                    <div className="col-sm-7 checkboxes" style={{textAlign: "left",marginTop:"12px"}}>                  
-                        <Form>
-                            {['radio'].map((type) => (
-                                <div key={`inline-${type}`} className="mb-3">
-                                <Form.Check
-                                    inline
-                                    label="Aprobado"
-                                    name="group1"
-                                    type={type}
-                                    id={`inline-${type}-1`}
-                                />
-                                <Form.Check
-                                    inline
-                                    label="Observado"
-                                    name="group1"
-                                    type={type}
-                                    id={`inline-${type}-2`}
-                                />
-                                <Form.Check
-                                    inline                                    
-                                    label="Pendiente de revisión"
-                                    name="group1"
-                                    type={type}
-                                    id={`inline-${type}-3`}
-                                />
-                                </div>
-                            ))}
-                        </Form>
-                    </div>                
+                <div className="row row1" style={{textAlign: "left",marginTop:"30px"}}>
+                    <h2>Estado de los documentos</h2>                    
+                </div>
+                <div className="row row1" style={{textAlign: "left",marginTop:"30px"}}>                   
+                    <Form>
+                        {['radio'].map((type) => (
+                            <div key={`inline-${type}`} className="mb-3">
+                            <Form.Check
+                                inline
+                                label="Aprobado"
+                                name="group1"
+                                type={type}
+                                id={`inline-${type}-1`}
+                            />
+                            <Form.Check
+                                inline
+                                label="Observado"
+                                name="group1"
+                                type={type}
+                                id={`inline-${type}-2`}
+                            />
+                            <Form.Check
+                                inline                                    
+                                label="Pendiente de revisión"
+                                name="group1"
+                                type={type}
+                                id={`inline-${type}-3`}
+                            />
+                            </div>
+                        ))}
+                    </Form>
                 </div>
                 <div className="row row1" style={{textAlign: "left",marginTop:"25px"}}>
                     <h2>Documentos a enviar al alumno</h2> 
