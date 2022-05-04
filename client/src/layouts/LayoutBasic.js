@@ -13,11 +13,11 @@ export default function LayoutBasic (props) {
         <div className="main">
             <div className="layout-basic">
                 <Header />
-                <div className = "row" style={{width: "100%"}}>
-                    <div className="layout-basic__navbav">
+                <div className = "row layout-basic__superContainer" >
+                    <div className="layout-basic__superContainer-navbav">
                         <StudentNavBar/>
                     </div>
-                    <div className="layout-basic__content">
+                    <div className="layout-basic__superContainer-content">
                         {children}
                     </div>
                 </div>    

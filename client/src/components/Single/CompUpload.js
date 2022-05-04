@@ -5,8 +5,8 @@ import "../../components/Single/CompUpload.scss"
 export default function CompUpload (props){
 
     return(
-        <div >
-            <h2 >
+        <div>
+            <h2 className="headUpload">
                 Archivos Subidos
             </h2>
             <Upload/>

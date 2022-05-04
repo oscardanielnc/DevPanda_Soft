@@ -1,11 +1,19 @@
 .main {
     background: white;
     .layout-basic {
-        &__navbav {
-            width: 340px;
-        }
-        &__content {
-            width: calc(100% - 340px);
+
+
+
+            &__superContainer {
+                width: 100%;
+                min-height: 100vh;
+
+                &-navbav {
+                    width: 340px;
+                }
+                &-content {
+                    width: calc(100% - 340px);
+                }
         }
     }
 
