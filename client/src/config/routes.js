@@ -9,6 +9,7 @@ import SupervisorSelection from "../pages/SupervisorSelection";
 import FACINavbar from "../components/navBarCoordFACI/FACINavbar";
 import StudentNavbar from "../components/navBar/StudentNavbar";
 import Agreement from "../pages/Agreement";
+import StudentAgreement from "../pages/StudentAgreement";
 
 const routes = [
     {
@@ -25,6 +26,11 @@ const routes = [
         path: "/student-registration",
         exact: true,
         component: StudentRegistrationForm,
+    },
+    {
+        path: "/student-agreement",
+        exact: true,
+        component: StudentAgreement,
     },
     {
         path: "/sign-in",
