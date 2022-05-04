@@ -1,20 +1,43 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import Footer from "../components/Footer";
+import GoogleLogin from 'react-google-login';
 import LayoutSignIn from "../layouts/LayoutSignIn";
-
 import { Form, Button, Row, Col } from "react-bootstrap";
-
+import { ToastContainer, toast } from 'react-toastify';
 import LogoPucp from "../asserts/img/svg/LogoPUCP.svg";
 import PicPucp from "../asserts/img/svg/PicLogoPucpColorInvertido.svg";
 import PicLogoPucp from "../asserts/img/svg/PicLogoPucpJunto.svg";
 
 import './SignIn.scss';
+import { signInApi } from "../api/auth";
 
 
 export default function SignIn (){
+    
+    const responseGoogle = async (response) => {
+        const result = await signInApi(response.profileObj.email)
+
+        if(result.success) {
+            const {accessToken} = result;
+            localStorage.setItem("ACCESS_TOKEN", accessToken)
+            window.location.href = "/"
+        } else {
+            toast.error('Fallo de autenticación!', {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
+        }
+    }
+
+
     return(
         <LayoutSignIn>
+            <ToastContainer />
             <div className="container main-sing">
                 <div className="sign-in">
                     <div className="row align-items-center">
@@ -55,6 +78,15 @@ export default function SignIn (){
                                 <Link className="btn btn-primary" to = "/">
                                     Ingresar
                                 </Link>
+                            </Row>
+                            <Row className="rows align-items-center">
+                            <GoogleLogin
+                                clientId="217315516782-dimqetb06qceps0d7su07rtlmr4s1bli.apps.googleusercontent.com"
+                                buttonText="Dímelo papi, tú quiere ingresar con gugle en serio?"
+                                onSuccess={responseGoogle}
+                                onFailure={responseGoogle}
+                                cookiePolicy={'single_host_origin'}
+                            />
                             </Row>
                             <Row className="rows align-items-center offset-4 ">                                
                                     <Form.Label className="" >No tienes una cuenta <a href="/signup" className="linkurl">Regístrate</a></Form.Label>                                

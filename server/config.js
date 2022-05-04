@@ -1,6 +1,7 @@
 const API_VERSION = "v1";
 const IP_SERVER = "localhost";
 const PORT_SERVER = process.env.PORT || 3977;
+const PANDA_KEY = "pandita69";
 
 const MYSQL_CREDENTIALS = {
     host     : 'devpandadb.c5sbfmi8wxnv.us-east-1.rds.amazonaws.com',
@@ -15,7 +16,8 @@ module.exports = {
     API_VERSION,
     IP_SERVER,
     PORT_SERVER,
-    MYSQL_CREDENTIALS
+    MYSQL_CREDENTIALS,
+    PANDA_KEY
 };
 
 
