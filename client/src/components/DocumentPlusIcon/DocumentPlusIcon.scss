@@ -1,0 +1,19 @@
+@import '../../scss/index.scss';
+
+.documentIcon{
+    width: fit-content !important;
+    margin-top: 8px !important;
+    &__doc {
+        font-size: 26px;
+        margin-right: 8px;
+    }
+    &__name {
+        color: $info-color;
+        text-decoration: underline;
+        cursor: pointer;
+
+        &:hover {
+            color: $primary-color-hover;
+        }
+    }
+}

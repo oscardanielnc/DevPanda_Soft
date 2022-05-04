@@ -1,0 +1,18 @@
+@import '../scss/index.scss';
+
+
+.main{
+    .row1{
+        color:$primary-color;
+        .checkboxes{
+            color:black;
+        }
+    }
+    .botonCancelar{
+        justify-content: center;
+        .btn-sec{
+            background-color: $secondary-color;
+            border-color: $secondary-color;
+        }
+    }     
+}
