@@ -6,36 +6,42 @@ import ToastPanda from "../components/Toast/ToastPanda";
 import SupervisorSelector from "../components/ImageSelector/SupervisorSelector"
 import { Image } from "react-bootstrap";
 import './SupervisorSelection.scss';
+import Timetable from "../components/Timetable/Timetable";
+import { Button } from "react-bootstrap";
 
-const supervisores = [
-    {
-        name: "Javier Palacios"
-    },
-    {
-        name: "Luis Flores"
-    },
-    {
-        name: "Andres Melgar"
-    },
-    {
-        name:"Christian Ramirez"
-    }
-]
+
 
 export default function SupervisorSelection () {
+    const [supervisores, setSupervisores] = useState( [
+        {
+            name: "Javier Palacios"
+        },
+        {
+            name: "Luis Flores"
+        },
+        {
+            name: "Andres Melgar"
+        },
+        {
+            name:"Pedro Castillo"
+        }
+    ])
     return(
         <LayoutBasic>
             <div className='container principal'>
                 <div className="row rows">
                     <h1>Eleccion de Supervisor</h1>
                 </div>
-                <div className="row row-sec">
-                    <h5 style={{marginTop:"10px"}}>
+                <div className="row" style={{"margin-left": "1.3em"}}>
+                    <p style={{marginTop:"10px"}}>
                     Elige al asesor que prefieras para ver su disponibilidad.
-                    </h5>
+                    </p>
                 </div>
-                <div className="row">     
+                <div className="row rows">     
                         <SupervisorSelector supervisor={supervisores}/>
+                </div>
+                <div className="row rows boton">
+                    <Button className="btn btn-primary" style={{width:"40%"}}>Agendar</Button>
                 </div>
             </div>     
         </LayoutBasic>        
