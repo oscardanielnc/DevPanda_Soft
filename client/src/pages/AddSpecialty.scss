@@ -1,0 +1,26 @@
+@import '../scss/index.scss';
+
+.select {
+    margin-top: 1em;
+    background: $primary-color !important;
+    color: white !important;
+
+    /*@media (max-width: 600px) {
+        background: red !important;
+        display: none !important;
+    }*/
+}
+
+.rows{
+    margin-top: 2em !important;
+}
+
+.add-specialty__buttons {
+    display: flex;
+    justify-content: end;
+    padding: 2em;
+    .btn {
+        width: 100px;
+        margin-left: 1em;
+    }
+}

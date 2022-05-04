@@ -4,7 +4,7 @@
     background: $primary-color;
     color: white;
     padding: 10px 10px 0px 10px;
-    bottom: 0;
+    
     width: 100%;
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -50,4 +50,10 @@
             }
         }
     }
+}
+
+.footer__leftderechos{
+    padding-left: 40px;
+    margin-top: 10px;
+    text-decoration: underline;
 }

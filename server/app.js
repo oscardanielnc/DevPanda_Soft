@@ -10,6 +10,7 @@ const usersRoutes =  require('./routers/users');
 const specialtyRoutes =  require('./routers/specialty');
 const agreementLearningPlanRoutes =  require('./routers/agreementLearningPlan');
 const inscriptionFormRoutes = require('./routers/inscriptionForm');
+const authRoutes =  require('./routers/auth');
 
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
@@ -29,5 +30,6 @@ app.use(`/api/${API_VERSION}`, usersRoutes);
 app.use(`/api/${API_VERSION}`, specialtyRoutes);
 app.use(`/api/${API_VERSION}`, agreementLearningPlanRoutes);
 app.use(`/api/${API_VERSION}`, inscriptionFormRoutes);
+app.use(`/api/${API_VERSION}`, authRoutes);
 
 module.exports = app;
