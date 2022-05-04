@@ -1,7 +1,6 @@
 import React from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import Image from 'react-bootstrap/Image';
-//import usuario from "C:/Users/chris/Documents/TA/DevPanda_Soft/client/src/asserts/img/png/usuarioImagen.PNG";
 import './SupervisorSelector.scss';
 
 
@@ -27,9 +26,9 @@ function Supervisor ({element}) {
 </svg>           
             </div>
             <div className="">
-                    <h6  style={{marginTop:"10px"}}>   
+                    <p  style={{marginTop:"10px"}}>   
                         {element.name}
-                    </h6>
+                    </p>
                 </div>
         </div>
     )
