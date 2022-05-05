@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState,useEffect} from "react";
 import LayoutBasic from "../layouts/LayoutBasic";
 import {Form,Button,Row,Col,Alert} from 'react-bootstrap';
 import { specialtyInsertApi } from "../api/specialty";
@@ -10,51 +10,30 @@ import AboutDurationPSP from "../components/Charts/AboutDurationPSP";
 import DirectBoss from "../components/Charts/DirectBoss";
 import CalificationFormStudent from "../components/Charts/CalificationFormStudent";
 import StateViewer,{StatesViewType} from "../components/StateViewer/StateViewer";
-import useAuth from "../hooks/useAuth"
+import useAuth from "../hooks/useAuth";
+import { selectSubmittedInscriptionForm } from "../api/registrationForm";
 
 import './StudentRegistrationForm.scss';
 
 export default function StudentRegistrationForm () {
-    let result=true;
-    let idFicha=null;
-    const [tipoUsuario, setTipoUsuario] = useState('A')
-    const[entregado,setEntregado]=useState(true);
-    let tipoEntrega;
-    let comentarioEntrega="";
-    if(entregado==true){
-        tipoEntrega="success";
-        comentarioEntrega="Entregado";
-    }else{
-        tipoEntrega="fileEmpty";
-        comentarioEntrega="Sin entregar";
-    }
-    let estadoCalificado= "A";//"A" es aprobado, "O" es observado, "D" es desaprobado, "N" es no calificado
-    let comentarioCalificado="";
-    
-    if(estadoCalificado=="A"){
-        estadoCalificado="success";
-        comentarioCalificado="Aprobado";
-    }
-    if(estadoCalificado=="O"){
-        estadoCalificado="warning";
-        comentarioCalificado="Observado";
-    }
-    if(estadoCalificado=="D"){
-        estadoCalificado="success";
-        comentarioCalificado="Desaprobado";
-    }
-    if(estadoCalificado=="N"){
-        estadoCalificado="pending";
-        comentarioCalificado="Sin entrega";
-    }
-    const [generalData,setGeneralData]=useState({
-        names:"Jeison Tonny",
-        lastNames:"Romero Salinas",
-        codePUCP: "20180708",
-        emailPUCP:"jeison.romero",
-        celephone:"982546546",
-        emailAlternative:"jeison@gmail.com",
-        recorded:false
+    const [user,setUser] = useState(useAuth());
+    const [dataUser,setDataUser]=useState({
+        names: user.nombres, 
+        lastNames:user.apellidos,
+        codePUCP: user.codigoPUCP,
+        emailPUCP:user.correo,
+        tipoUsuario:user.tipoUsuario
+    })
+    const [generalDataInit,setGeneralDataInit]=useState({
+        idFicha: null,
+        fidAlumnoProceso: user.fidAlumnoProceso,
+        aprobado: null,
+        estadoDocumento: null,
+        observaciones: null,
+        nota: null,//esto no sé si está en la BD pero sí lo voy a usar
+        entregado:null,//esto no sé si está en la BD pero sí lo voy a usar
+        estadoCalificado: null// esto me parece que es distinto a aprobado, ya que aprobado es boolean y esto 
+        //debe ser un caracter  "A" es aprobado, "O" es observado, "D" es desaprobado, "N" es no calificado
     });
     const [aboutCompany, setAboutCompany] = useState({
         RUCNacional: "",
@@ -63,7 +42,7 @@ export default function StudentRegistrationForm () {
         NombreExtranjera:"",
         grabado: false
     })
-    const notgrabado=(idFicha==null||idFicha===0)?false:true;
+    
     const [aboutJob,setAboutJob]=useState({
         nameArea:"",
         jobTitle:"",
@@ -86,8 +65,76 @@ export default function StudentRegistrationForm () {
 
     const[calification,setCalification]=useState({
         state:"D",
-        comments:""
+        comments:generalDataInit.observaciones,
+        grade: null,
+        aprobado: generalDataInit.aprobado
     })
+
+    const [datos, setDatos]=useState([
+        dataUser:dataUser,
+        generalDataInit:generalDataInit,
+        aboutCompany:aboutCompany,
+        aboutJob:aboutJob,
+        aboutPSP:aboutPSP,
+        directBoss:directBoss,
+        calification:calification
+    ]
+    )
+    
+    const notgrabado=(datos.generalDataInit.idFicha==null||datos.generalDataInit.idFicha===0)?false:true;
+    useEffect(() => {
+        async function fetchData() {
+            const response = await selectSubmittedInscriptionForm(1)
+            //console.log("response", response)
+            if(response.success) {
+                setDatos(response.datos);
+            }else{
+                toast.error('Ups, ha ocurrido un error', {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
+            }
+        }
+        fetchData()
+        
+    }, [setDatos])
+
+    let result=true;
+    let tipoEntrega;
+    let comentarioEntrega;
+    if(datos.generalDataInit.entregado===true){
+        tipoEntrega="success";
+        comentarioEntrega="Entregado";
+    }else{
+        tipoEntrega="fileEmpty";
+        comentarioEntrega="Sin entregar";
+    }
+    let estadoCalificado;
+    let comentarioCalificado;
+    
+    if(datos.generalDataInit.estadoCalificado==="A"){
+        estadoCalificado="success";
+        comentarioCalificado="Aprobado";
+    }else{
+        if(datos.generalDataInit.estadoCalificado==="O"){
+            estadoCalificado="warning";
+            comentarioCalificado="Observado";
+        }else{
+            if(datos.generalDataInit.estadoCalificado==="D"){
+                estadoCalificado="success";
+                comentarioCalificado="Desaprobado";
+            }else{
+                estadoCalificado="pending";
+            comentarioCalificado="Sin entrega";
+            }
+        }
+    }
+    
     const insert = e => {
         if(result){
             toast.success("Se insertó de forma correcta", {
@@ -132,31 +179,31 @@ export default function StudentRegistrationForm () {
                     <h2 style={{marginBottom:"0px"}}>Datos por rellenar</h2>
                 </div>
                 <div className="row rows">
-                    <GeneralData generalData={generalData} setGeneralData={setGeneralData}/>   
+                    <GeneralData generalData={datos.generalDataInit} setGeneralData={setGeneralDataInit}/>   
                 </div>
                 <div className="row rows">
                     <AboutCompany 
-                            aboutCompany={aboutCompany} setAboutCompany ={setAboutCompany} notgrabado={notgrabado}/>
+                            aboutCompany={datos.aboutCompany} setAboutCompany ={setAboutCompany} notgrabado={notgrabado}/>
                 </div>
                 <div className="row rows">
-                    <AboutJob aboutJob={aboutJob} setAboutJob={setAboutJob} notgrabado={notgrabado}/>
+                    <AboutJob aboutJob={datos.aboutJob} setAboutJob={setAboutJob} notgrabado={notgrabado}/>
                 </div>
                 <div className="row rows">
-                    <AboutDurationPSP aboutPSP={aboutPSP} setAboutPSP={setAboutPSP} notgrabado={notgrabado}/>
+                    <AboutDurationPSP aboutPSP={datos.aboutPSP} setAboutPSP={setAboutPSP} notgrabado={notgrabado}/>
                 </div>
                 <div className="row rows">
-                    <DirectBoss directBoss={directBoss} setDirectBoss={setDirectBoss} notgrabado={notgrabado}/>
+                    <DirectBoss directBoss={datos.directBoss} setDirectBoss={setDirectBoss} notgrabado={notgrabado}/>
                 </div>
                 <div className="row rows">
                     <p>Acá va el componente de subida de archivos</p>
                 </div>
-                {tipoUsuario=="A"?<div className="row rows BotonAlumno">
+                {tipoUsuario==="A"?<div className="row rows BotonAlumno">
                     <Button className="btn btn-primary" style={{width:"40%"}} onClick={insert} disabled={notgrabado}>Enviar</Button>
                     <ToastContainer />
                 </div>:<div></div>}
                 
                 {tipoUsuario == "C" ? <div className="row rows">
-                    <CalificationFormStudent calification={calification} setCalification={setCalification}/>
+                    <CalificationFormStudent calification={datos.calification} setCalification={setCalification}/>
                 </div> : <div></div>}
             </div>
             
