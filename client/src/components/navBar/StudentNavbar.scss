@@ -63,12 +63,15 @@ div.content{
 }
 
 .dataRow {
-    width: auto;
-    height: 100%;
-    list-style-type: none;
+    // width: auto;
+    // height: 100%;
+    //list-style-type: none;
 
-    padding: 5px !important;
-    display: 8-ms-inline-grid;
+    display: flex;
+    align-items: center;
+
+    //padding: 5px !important;
+    //display: 8-ms-inline-grid;
 
     @media screen and (max-width: 575.2px){
             display: none;
@@ -76,7 +79,9 @@ div.content{
 }
 
 .dataRow.current.dataRow.active *{
-    color: $warning-color;
+    i {
+        background-color: $warning-color;
+    }
 }
 
 
@@ -86,7 +91,9 @@ div.content{
 
 
 .dataRow.active *{  
-        color : $success-color;  
+    i {
+        background-color: $success-color;
+    }
 }
 
 .dataRow a:hover *{
@@ -122,14 +129,22 @@ div.content{
 
 .texto, .icono  {
     color: $light-color !important;
-    font-size: 12px;
+    //font-size: 12px;
     text-align: left;
     display:inline;
-    padding-left: 5px !important;
+    //padding-left: 5px !important;
     @media screen and (max-width: 575.2px){
         display: none;
     }
-  
+    
+    i {
+        color : $primary-color;
+        font-size: 2em;
+        padding: 2px;
+        display: flex;
+        border-radius: 50%;
+        background-color: white;
+    }
 }
 
 

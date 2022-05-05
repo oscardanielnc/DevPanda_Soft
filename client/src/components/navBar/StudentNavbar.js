@@ -41,7 +41,7 @@ function StudentNavbar (props){
                         className = {`dataRow ${(progreso>key)? "active": ''} ${(window.location.pathname== val.link)? "current": ''}`}
                         >
                         <span className='icono'>
-                        {val.icon}
+                            <i class="bi bi-check"></i>
                         </span>
                 
                         <span className='texto'>

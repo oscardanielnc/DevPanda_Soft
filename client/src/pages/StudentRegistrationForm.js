@@ -16,7 +16,7 @@ import './StudentRegistrationForm.scss';
 
 export default function StudentRegistrationForm () {
     let result=true;
-    const [tipoUsuario, setTipoUsuario] = useState('A')
+    const [tipoUsuario, setTipoUsuario] = useState('C')
     console.log(tipoUsuario);
     const[entregado,setEntregado]=useState(true);
     let tipoEntrega;
