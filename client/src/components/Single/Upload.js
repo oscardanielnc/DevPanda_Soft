@@ -3,19 +3,16 @@ import PropTypes from 'prop-types';
 
 import './Upload.scss';
 
-import uploadImg from '../../asserts/img/png/cloud-upload-regular-240.png';
-
-
-import fileDefault from '../../asserts/img/png/file-blank-solid-240.png';
-import fileCSS from '../../asserts/img/png/file-css-solid-240.png';
-import filePdf from '../../asserts/img/png/file-pdf-solid-240.png';
-import filePng from '../../asserts/img/png/file-png-solid-240.png';
+import fileDefault from '../../asserts/img/svg/file-earmark-arrow-up.svg';
+import fileDoc from '../../asserts/img/svg/file-earmark-word.svg';
+import filePdf from '../../asserts/img/svg/filetype-pdf.svg';
+import fileDocx from '../../asserts/img/svg/filetype-docx.svg';
 
 const ImageConfig = {
     default: fileDefault,
     pdf: filePdf,
-    png: filePng,
-    css: fileCSS
+    docx: fileDocx,
+    doc: fileDoc
 }
 
 
@@ -57,7 +54,7 @@ export default function Upload (props) {
                 onDrop={onDrop}
             >
                 <div className="drop-file-input__label">
-                    <img src={uploadImg} alt="" />
+                    <i class="bi bi-upload" style={{"font-size":"35px"}}></i>
                     <p>Arrastra & Suelta tus archivos aquí</p>
                 </div>
                 <input type="file" value="" onChange={onFileDrop}/>
@@ -74,9 +71,11 @@ export default function Upload (props) {
                                     <img src={ImageConfig[item.type.split('/')[1]] || ImageConfig['default']} alt="" />
                                     <div className="drop-file-preview__item__info">
                                         <p>{item.name}</p>
-                                        <p>{item.size}B</p>
+                                        <p>{item.size} Bytes</p>
                                     </div>
-                                    <span className="drop-file-preview__item__del" onClick={() => fileRemove(item)}>x</span>
+                                    <span className="drop-file-preview__item__del" onClick={() => fileRemove(item)}>
+                                        <i class="bi bi-x drop-file-preview__item__del-icon"></i>
+                                    </span>
                                 </div>
                             ))
                         }
