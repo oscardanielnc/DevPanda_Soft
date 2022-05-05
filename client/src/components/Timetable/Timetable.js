@@ -10,20 +10,20 @@ export default function Timetable ({horario, states}){
             {
                 name: "Lunes 4",
                 hours: [
+                    { state: 1 },
+                    { state: 1 },
+                    { state: 1 },
+                    { state: 3 },
+                    { state: 2 },
+                    { state: 2 },
+                    { state: 4 },
+                    { state: 4 },
+                    { state: 4 },
                     { state: 2 },
                     { state: 2 },
                     { state: 2 },
-                    { state: 2 },
-                    { state: 2 },
-                    { state: 2 },
-                    { state: 2 },
-                    { state: 2 },
-                    { state: 2 },
-                    { state: 2 },
-                    { state: 2 },
-                    { state: 2 },
-                    { state: 2 },
-                    { state: 2 }
+                    { state: 1 },
+                    { state: 1 }
                 ]
             }, {
                 name: "Martes 5",

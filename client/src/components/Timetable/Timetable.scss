@@ -6,6 +6,8 @@
 .hourRangeCell{
     margin: 0;
     padding: .4em;
+    border: solid rgb(222, 226, 230) 0.5px;
+    box-sizing: border-box;
 }
 .col{
     padding: 0 !important;
@@ -14,6 +16,8 @@
 }
 .headerTime{
     padding: 1em 0;
+    border: solid rgb(222, 226, 230) 0.5px;
+    box-sizing: border-box;
 }
 .row { 
     height: auto !important;
@@ -22,4 +26,5 @@
 .indicatorPage{
     display: flex;
     justify-content: center;
+    margin: 1em 0;
 }
