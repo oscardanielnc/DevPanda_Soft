@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import Footer from "../components/Footer";
 import LayoutSignIn from "../layouts/LayoutSignIn";
 
-import { Form, Button, Row, Col } from "react-bootstrap";
+import { Form, Button, Row, Col,DropdownButton,Dropdown } from "react-bootstrap";
 
 import PicLogoPucp from "../asserts/img/svg/PicLogoPucpJunto.svg";
 
@@ -59,6 +59,17 @@ export default function SignUp (){
                             <Form.Group className="mb-3" controlId="formBasicCodePucp">
                                 <Form.Label>Código PUCP</Form.Label>
                                 <Form.Control type="text" placeholder="20174562" />
+                            </Form.Group>
+                        </div>
+                        <div className="col-sm-6 offset-3">
+                            <Form.Group className="mb-3" controlId="formDropDownEsp">
+                                <Form.Label>Especialidad</Form.Label>
+                                <DropdownButton id="dropdown-basic-button" title="Seleccionar Especialidad" >
+                                    <Dropdown.Item href="#/action-1">Seleccionar Especialidad</Dropdown.Item>
+                                    <Dropdown.Item href="#/action-2">Ing. Informática</Dropdown.Item>
+                                    <Dropdown.Item href="#/action-3">Ing. Industrial</Dropdown.Item>
+                                    <Dropdown.Item href="#/action-4">Ing. de Telecomunicaciones</Dropdown.Item>
+                                </DropdownButton>
                             </Form.Group>
                         </div>
                         <div className="col-sm-6 offset-3">
