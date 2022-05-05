@@ -15,6 +15,7 @@ import { signInApi } from "../api/auth";
 export default function SignIn (){
     
     const responseGoogle = async (response) => {
+        console.log(response)
         const result = await signInApi(response.profileObj.email)
 
         if(result.success) {
@@ -82,7 +83,7 @@ export default function SignIn (){
                             <Row className="rows align-items-center">
                             <GoogleLogin
                                 clientId="217315516782-dimqetb06qceps0d7su07rtlmr4s1bli.apps.googleusercontent.com"
-                                buttonText="Dímelo papi, tú quiere ingresar con gugle en serio?"
+                                buttonText="Iniciar con Google"
                                 onSuccess={responseGoogle}
                                 onFailure={responseGoogle}
                                 cookiePolicy={'single_host_origin'}
