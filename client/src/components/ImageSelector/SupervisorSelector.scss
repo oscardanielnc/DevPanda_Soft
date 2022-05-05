@@ -7,6 +7,21 @@
     .supervisor {
         width: 150px;
         margin: 0 .5em;
-        text-align: center
+        text-align: center;
+        box-shadow: #c3c3c3 1px 1px 1px;
+        cursor: pointer;
+
+        i {
+            background-color: #c3c3c3;
+            display: flex;
+            width: fit-content;
+            padding: 0.5em;
+            border-radius: 50%;
+            font-size: 1.5em;
+            margin: auto;
+        }
+        &:hover {
+            box-shadow: #b6b6b6 2px 2px 2px;
+        }
     }
 }

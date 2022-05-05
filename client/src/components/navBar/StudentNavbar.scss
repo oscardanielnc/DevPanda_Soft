@@ -63,18 +63,15 @@ div.content{
 }
 
 .dataRow {
-    // width: auto;
-    // height: 100%;
-    //list-style-type: none;
-
+    text-decoration: auto;
     display: flex;
     align-items: center;
 
-    //padding: 5px !important;
-    //display: 8-ms-inline-grid;
-
     @media screen and (max-width: 575.2px){
             display: none;
+    }
+    &:hover {
+        background-color: $primary-color-hover;
     }
 }
 
