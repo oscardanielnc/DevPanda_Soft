@@ -10,6 +10,7 @@ import AboutDurationPSP from "../components/Charts/AboutDurationPSP";
 import DirectBoss from "../components/Charts/DirectBoss";
 import CalificationFormStudent from "../components/Charts/CalificationFormStudent";
 import StateViewer,{StatesViewType} from "../components/StateViewer/StateViewer";
+import DocumentPlusIcon from "../components/DocumentPlusIcon/DocumentPlusIcon";
 import useAuth from "../hooks/useAuth";
 import { selectSubmittedInscriptionForm } from "../api/registrationForm";
 
@@ -70,7 +71,7 @@ export default function StudentRegistrationForm () {
         aprobado: generalDataInit.aprobado
     })
 
-    const [datos, setDatos]=useState([
+    const [datos, setDatos]=useState({
         dataUser:dataUser,
         generalDataInit:generalDataInit,
         aboutCompany:aboutCompany,
@@ -78,9 +79,9 @@ export default function StudentRegistrationForm () {
         aboutPSP:aboutPSP,
         directBoss:directBoss,
         calification:calification
-    ]
+    }
     )
-    
+    console.log(datos);
     const notgrabado=(datos.generalDataInit.idFicha==null||datos.generalDataInit.idFicha===0)?false:true;
     useEffect(() => {
         async function fetchData() {
@@ -195,14 +196,14 @@ export default function StudentRegistrationForm () {
                     <DirectBoss directBoss={datos.directBoss} setDirectBoss={setDirectBoss} notgrabado={notgrabado}/>
                 </div>
                 <div className="row rows">
-                    <p>Acá va el componente de subida de archivos</p>
+                    <DocumentPlusIcon/>
                 </div>
-                {tipoUsuario==="A"?<div className="row rows BotonAlumno">
+                {datos.dataUser.tipoUsuario==="A"?<div className="row rows BotonAlumno">
                     <Button className="btn btn-primary" style={{width:"40%"}} onClick={insert} disabled={notgrabado}>Enviar</Button>
                     <ToastContainer />
                 </div>:<div></div>}
                 
-                {tipoUsuario == "C" ? <div className="row rows">
+                {datos.dataUser.tipoUsuario == "C" ? <div className="row rows">
                     <CalificationFormStudent calification={datos.calification} setCalification={setCalification}/>
                 </div> : <div></div>}
             </div>

@@ -28,7 +28,7 @@ function StudentNavbar (props){
                     <span>Tu progreso</span>
                     <Button className='studentNavBar__progress'
                         onClick={() => document.getElementById("sidebarList").addClass("displayNone")} >
-                        <i class="bi bi-chevron-down"/>
+                        <i className="bi bi-chevron-down"/>
                     </Button>
                 </div>         
             </div>

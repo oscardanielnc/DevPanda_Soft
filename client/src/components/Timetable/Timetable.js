@@ -273,7 +273,7 @@ export default function Timetable ({horario, states}){
                     <div className="btn btn-primary left" onClick={leftPage}>Anterior</div>
                     <div className="btn btn-primary right" onClick={rigthPage}>Siguiente</div>
                 </div>
-            <div class="row center">
+            <div className="row center">
                 <div className="col col-2 col-lg-1">
                     <div className="headerTime">Hora</div>
                      {
