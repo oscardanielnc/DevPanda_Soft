@@ -1,0 +1,30 @@
+@import '../scss/index.scss';
+
+
+// .comboboxSingUp{
+//     width: 100% !important;
+//     text-align: center !important;
+//     // background-color: $secondary-color;
+//     display: flex;
+// }
+
+// #formDropDownEsp{
+//     width: 100% !important;
+//     text-align: center !important;
+//     // background-color: $secondary-color;
+//     display: flex;
+// }
+
+#dropdown-basic-button{
+    width: 100%;
+}
+
+.dropdown-menu{
+    width: 100%;
+}
+
+.dropdown-toggle::after{
+    //margin-left: 12em !important;
+    //display: none !important;
+    //text-align: left !important;
+}

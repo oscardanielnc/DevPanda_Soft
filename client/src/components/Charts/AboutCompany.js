@@ -5,10 +5,7 @@ import './AboutCompany.scss';
 
 
 export default function AboutCompany (props) {
-    const {aboutCompany, setAboutCompany} = props;
-    let notgrabadoNational=(aboutCompany.RUCNacional==null||aboutCompany.RUCNacional)?true:false;
-    let notgrabadoForeigner=(aboutCompany.NombreExtranjera==null||aboutCompany.NombreExtranjera)?true:false;
-    let notgrabado=((notgrabadoNational&&!notgrabadoForeigner)||(!notgrabadoNational&&notgrabadoForeigner))?true:false;
+    const {aboutCompany, setAboutCompany,notgrabado} = props;
     const changeNational = e=>{
         setAboutCompany({
             ...aboutCompany,

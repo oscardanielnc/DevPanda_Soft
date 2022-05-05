@@ -5,7 +5,8 @@ const {MYSQL_CREDENTIALS} = require("../config");
 function selectSubmittedInscriptionForm(req, res) {
     const connection = mysql.createConnection(MYSQL_CREDENTIALS);
     
-    const  fidAlumnoProceso = req.body.fidAlumnoProceso;
+    const  fidAlumnoProceso = req.params.fidAlumnoProceso;
+    //const  fidAlumnoProceso = req.body.fidAlumnoProceso;
 
     const sqlQuery = `SELECT *
                     FROM EntregaFichaInscripcion
@@ -21,7 +22,7 @@ function selectSubmittedInscriptionForm(req, res) {
                 message: "Error inesperado en el servidor"
             })
         }else{
-            res.status(200).send(result);
+            res.status(200).send(result[0]);
         }
     });
 
@@ -32,7 +33,8 @@ function selectSubmittedInscriptionForm(req, res) {
 function selectFieldsInscriptionFormSpecialty(req, res) {
     const connection = mysql.createConnection(MYSQL_CREDENTIALS);
     
-    const  fidEspecialidad = req.body.fidEspecialidad;
+    const  fidEspecialidad = req.params.fidEspecialidad;
+    //const  fidEspecialidad = req.body.fidEspecialidad;
 
     const sqlQuery = `SELECT CF.idCampo, CF.nombreCampo, CF.seccion, CP.flag
                     FROM CampoFichaInscripcion CF, CampoFichaInscripcionProceso CP
@@ -62,7 +64,8 @@ function selectDocumentsSubmittedInscriptionForm(req, res){
     const connection = mysql.createConnection(MYSQL_CREDENTIALS);
 
     //Se pedirá el IdFicha para poder obtener los documentos asociados.
-    const fidEntregaInscripcion = req.body.fidEntregaInscripcion;
+    const  fidEntregaInscripcion = req.params.fidEntregaInscripcion;
+    //const fidEntregaInscripcion = req.body.fidEntregaInscripcion;
     const sqlQuery = `SELECT idDocumento, nombre, archivo, delAlumno 
                         FROM Documento 
                         WHERE fidEntregaInscripcion = ${fidEntregaInscripcion} 
@@ -89,7 +92,8 @@ function selectDocumentsSubmittedInscriptionForm(req, res){
 function selectFieldsFilledInscriptionFormStudent(req, res) {
     const connection = mysql.createConnection(MYSQL_CREDENTIALS);
     
-    const fidAlumnoProceso = req.body.fidAlumnoProceso;
+    const  fidAlumnoProceso = req.params.fidAlumnoProceso;
+    //const fidAlumnoProceso = req.body.fidAlumnoProceso;
 
     const sqlQuery = `SELECT CP.idCampoProceso, CL.idCampoLlenado, CF.nombreCampo, CF.seccion, CP.flag, CL.valorAlumno
                     FROM CampoFichaInscripcion CF, CampoFichaInscripcionProceso CP, CampoLlenadoFichaInscripcion CL, EntregaFichaInscripcion E

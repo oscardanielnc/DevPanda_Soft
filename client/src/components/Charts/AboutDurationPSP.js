@@ -10,10 +10,9 @@ registerLocale('es', es);
 
 
 export default function AboutDurationPSP (props) {
-    const {aboutPSP,setAboutPSP} = props;
+    const {aboutPSP,setAboutPSP,notgrabado} = props;
     const [startDate, setStartDate] = useState(new Date());
     const [endDate, setEndDate] = useState(new Date());
-    let notgrabado=(aboutPSP.dailyHours>0)?true:false;
     const changeStartDate = e => {
         setStartDate(e);
         setAboutPSP({

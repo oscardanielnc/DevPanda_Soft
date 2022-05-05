@@ -4,10 +4,10 @@ const inscriptionFormController = require("../controllers/inscriptionForm");
 
 const api = express.Router();
 
-api.get("/inscriptionForm-selectSubmittedInscriptionForm",inscriptionFormController.selectSubmittedInscriptionForm);
-api.get("/inscriptionForm-selectFieldsInscriptionFormSpecialty",inscriptionFormController.selectFieldsInscriptionFormSpecialty);
-api.get("/inscriptionForm-selectDocumentsSubmittedInscriptionForm",inscriptionFormController.selectDocumentsSubmittedInscriptionForm);
-api.get("/inscriptionForm-selectFieldsFilledInscriptionFormStudent",inscriptionFormController.selectFieldsFilledInscriptionFormStudent);
+api.get("/inscriptionForm-selectSubmittedInscriptionForm/:fidAlumnoProceso",inscriptionFormController.selectSubmittedInscriptionForm);
+api.get("/inscriptionForm-selectFieldsInscriptionFormSpecialty/:fidEspecialidad",inscriptionFormController.selectFieldsInscriptionFormSpecialty);
+api.get("/inscriptionForm-selectDocumentsSubmittedInscriptionForm/:fidEntregaInscripcion",inscriptionFormController.selectDocumentsSubmittedInscriptionForm);
+api.get("/inscriptionForm-selectFieldsFilledInscriptionFormStudent/:fidAlumnoProceso",inscriptionFormController.selectFieldsFilledInscriptionFormStudent);
 
 api.post("/inscriptionForm-insertSubmittedInscriptionForm",inscriptionFormController.insertSubmittedInscriptionForm);
 api.post("/inscriptionForm-insertDocumentSubmittedInscriptionForm",inscriptionFormController.insertDocumentSubmittedInscriptionForm);
