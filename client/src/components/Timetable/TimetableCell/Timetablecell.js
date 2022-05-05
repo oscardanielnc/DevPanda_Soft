@@ -22,7 +22,7 @@ export default function TimetableCell ({hour, change, inputsSuper, indexDay, ind
         }
         setInputs({
             ...inputs,
-            [e.target.name]: e.target.value
+            ["state"]: inputs.state
         })
         // Obtenemos una copia y lo modificamos
         const changeInputs = inputsSuper

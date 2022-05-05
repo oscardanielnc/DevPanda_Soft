@@ -10,20 +10,20 @@ export default function Timetable ({horario, states}){
             {
                 name: "Lunes 4",
                 hours: [
-                    { state: 1 },
-                    { state: 1 },
-                    { state: 1 },
                     { state: 2 },
                     { state: 2 },
                     { state: 2 },
                     { state: 2 },
-                    { state: 1 },
-                    { state: 1 },
                     { state: 2 },
                     { state: 2 },
                     { state: 2 },
-                    { state: 1 },
-                    { state: 1 }
+                    { state: 2 },
+                    { state: 2 },
+                    { state: 2 },
+                    { state: 2 },
+                    { state: 2 },
+                    { state: 2 },
+                    { state: 2 }
                 ]
             }, {
                 name: "Martes 5",
@@ -250,46 +250,48 @@ export default function Timetable ({horario, states}){
     const leftPage = e => {
         // Verifica que no se salga del limite 
         if (indexs.actual > 0){
-            setIndex({
-                actual:  indexs.actual - 1,
-                separator: indexs.separator
-            })
+            setIndex({...indexs,
+                ['actual']: (indexs.actual - 1)})
         }
     }
     const rigthPage = e => {
         // Verifica que no se salga del limite 
-        if (Math.ceil(inputs.days.length/indexs.separator) -1 > indexs.actual){
-            setIndex({
-                actual:  indexs.actual + 1,
-                separator: indexs.separator
-            })
+        if (inputs , Math.ceil(inputs.days.length/indexs.separator) -1 > indexs.actual){
+            setIndex({...indexs,
+                ['actual']: (indexs.actual + 1)})
         }
     }
-
+    var diaInicio = ""
+    var diaFin = ""
+    if (inputs, inputs.days) {
+        diaInicio = inputs.days[indexs.actual*indexs.separator].name
+        diaFin = inputs.days[(indexs.actual+1)*indexs.separator-1].name
+    }
     
-    return (
+    return ( inputs && inputs.days &&
         <div>
             <div className="indicatorPage">
                     <div className="btn btn-primary left" onClick={leftPage}>Anterior</div>
+                    <div className="btn center"><b>{diaInicio}</b> al <b>{diaFin}</b></div>
                     <div className="btn btn-primary right" onClick={rigthPage}>Siguiente</div>
                 </div>
             <div class="row center">
                 <div className="col col-2 col-lg-1">
                     <div className="headerTime">Hora</div>
                      {
-                        inputs.hourRange.map((hour, index) => (
+                        inputs.hourRange && inputs.hourRange.map((hour, index) => (
                         <p className="hourRangeCell">{hour}</p>
                         ))
                     }
                 </div>
                 {
-                    inputs.days.filter( (day, index) => index < (indexs.actual + 1)*indexs.separator && index >= indexs.actual * indexs.separator).map( (day, index) => {
+                    inputs.days.map( (day, indexDay) => {
                         return (
-                        <div className="col">
+                            (indexDay < (indexs.actual + 1)*indexs.separator && indexDay >= indexs.actual * indexs.separator) && <div className="col">
                             <div className="headerTime">{day.name}</div>
                             {
                             day.hours.map((hour, indexHour) => (
-                                <TimetableCell hour={hour} change={setInputs} inputsSuper={inputs} indexDay={index} indexHour ={indexHour}></TimetableCell>
+                                <TimetableCell hour={hour} change={setInputs} inputsSuper={inputs} indexDay={indexDay} indexHour ={indexHour}></TimetableCell>
                             ))
                             }
                         </div>
