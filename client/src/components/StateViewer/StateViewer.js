@@ -35,9 +35,9 @@ export default function StateViewer ({states}) {
             {
             states.map((states, index) => (
                 <div key={index} className="col-6 col-lg-4 box">
-                    <h5 className="title">{states.title}</h5>
+                    <h5 className="title" style={{marginBottom:"10px"}}>{states.title}</h5>
                     <img className="image" alt="Imagen" src={states.image}></img>
-                    <p className="description">{states.description}</p>
+                    <p className="description" style={{marginTop:"10px"}}>{states.description}</p>
                 </div>
             ))
             }

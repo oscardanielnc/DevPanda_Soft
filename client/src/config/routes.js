@@ -4,11 +4,11 @@ import StudentRegistrationForm from "../pages/StudentRegistrationForm";
 import SignIn from "../pages/SignIn";
 import SignUp from "../pages/SignUp";
 import Error404 from "../pages/Error404";
-import Prueba from "../pages/Prueba";
 import SupervisorSelection from "../pages/SupervisorSelection";
 import FACINavbar from "../components/navBarCoordFACI/FACINavbar";
 import StudentNavbar from "../components/navBar/StudentNavbar";
 import Agreement from "../pages/Agreement";
+import AgreementReview from "../pages/AgreementReview";
 import StudentAgreement from "../pages/StudentAgreement";
 
 const routes = [
@@ -51,16 +51,16 @@ const routes = [
         path: "/FACInavbar", // esto no lo toco porque lo vamos a eliminar, no es una pagina
         exact: true,
         component: FACINavbar,
-    },
-    {
-        path: "/prueba",// esto no lo toco porque lo vamos a eliminar, no es una pagina
-        exact: true,
-        component: Prueba,
-    },
+    },    
     {
         path: "/supervisor-selection",
         exact: true,
         component: SupervisorSelection,
+    },
+    {
+        path: "/agreementreview",
+        exact: true,
+        component: AgreementReview,
     },
     {
         path: "*",

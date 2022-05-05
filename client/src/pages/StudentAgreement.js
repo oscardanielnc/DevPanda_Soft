@@ -1,7 +1,6 @@
 import React, {useState} from "react";
 import LayoutBasic from "../layouts/LayoutBasic";
-import DocumentoIcono from "../components/DocumentoIcono";
-import "./Prueba.scss";
+import DocumentPlusIcon from "../components/DocumentPlusIcon/DocumentPlusIcon";
 import StateViewer,{StatesViewType} from "../components/StateViewer/StateViewer";
 import CompUpload from "../components/Single/CompUpload";
 import { Button } from "react-bootstrap";
@@ -63,7 +62,7 @@ export default function StudentAgreement () {
                     </p>
                 </div>
                 <div className="row rows">                                
-                    <DocumentoIcono name={doc.name}/>
+                    <DocumentPlusIcon name={doc.name}/>
                 </div>     
                 <div className="row rows estado">
                     <h2>
