@@ -11,7 +11,7 @@ export default function(){
             {FACISideBarData.map((val,key)=>{
                 return <li key = {key} className= "dataRow" id ={window.location.pathname === val.link ? "active" : ""}>
                         <Link to = {val.link}>
-                                               
+                            <i class="bi bi-person"></i>                   
                             <span className='texto'>
                                 
                                 {val.title}
