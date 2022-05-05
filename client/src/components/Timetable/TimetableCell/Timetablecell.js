@@ -6,6 +6,7 @@ import './Timetablecell.scss';
 // 1: No Disponible
 // 2: Disponible
 // 3: Seleccionado
+// 4: Ocupado
 
 export default function TimetableCell ({hour, change, inputsSuper, indexDay, indexHour}){
     const [inputs, setInputs] = useState({
@@ -22,7 +23,7 @@ export default function TimetableCell ({hour, change, inputsSuper, indexDay, ind
         }
         setInputs({
             ...inputs,
-            [e.target.name]: e.target.value
+            ["state"]: inputs.state
         })
         // Obtenemos una copia y lo modificamos
         const changeInputs = inputsSuper
@@ -35,7 +36,7 @@ export default function TimetableCell ({hour, change, inputsSuper, indexDay, ind
     switch (inputs.state) {
         case 1:  
         description = "."; 
-        color = "rgb(209, 209, 209)"
+        color = "rgb(222, 226, 230)"
         break;
         case 2:  
         description = "Disponible"; 
@@ -43,7 +44,11 @@ export default function TimetableCell ({hour, change, inputsSuper, indexDay, ind
         break;
         case 3:  
         description = "Seleccionado"; 
-        color = "rgb(130, 255, 120)"
+        color = "rgb(126, 255, 185)";
+        break;
+        case 4: 
+        description = "Ocupado";
+        color = "rgb(255, 254, 152)"
         break;
         default: break;
     }
