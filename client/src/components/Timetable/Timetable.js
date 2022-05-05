@@ -256,19 +256,19 @@ export default function Timetable ({horario, states}){
     }
     const rigthPage = e => {
         // Verifica que no se salga del limite 
-        if (Math.ceil(inputs.days.length/indexs.separator) -1 > indexs.actual){
+        if (inputs , Math.ceil(inputs.days.length/indexs.separator) -1 > indexs.actual){
             setIndex({...indexs,
                 ['actual']: (indexs.actual + 1)})
         }
     }
     var diaInicio = ""
     var diaFin = ""
-    if (inputs) {
+    if (inputs, inputs.days) {
         diaInicio = inputs.days[indexs.actual*indexs.separator].name
         diaFin = inputs.days[(indexs.actual+1)*indexs.separator-1].name
     }
     
-    return ( inputs &&
+    return ( inputs && inputs.days &&
         <div>
             <div className="indicatorPage">
                     <div className="btn btn-primary left" onClick={leftPage}>Anterior</div>
@@ -279,7 +279,7 @@ export default function Timetable ({horario, states}){
                 <div className="col col-2 col-lg-1">
                     <div className="headerTime">Hora</div>
                      {
-                        inputs.hourRange.map((hour, index) => (
+                        inputs.hourRange && inputs.hourRange.map((hour, index) => (
                         <p className="hourRangeCell">{hour}</p>
                         ))
                     }
