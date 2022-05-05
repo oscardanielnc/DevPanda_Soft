@@ -23,21 +23,17 @@ function StudentNavbar (props){
     return(
     <div className="studentNavBar">
         <nav>
-            <li >
-                <span className='titulo' >
-                <Button className='progress' >Tu progreso</Button>
-
-                    <span className='contractIcon'>
+            <div>
+                <div className='studentNavBar__titulo' >
+                    <span>Tu progreso</span>
+                    <Button className='studentNavBar__progress'
+                        onClick={() => document.getElementById("sidebarList").addClass("displayNone")} >
                         <i class="bi bi-chevron-down"/>
-                    </span>
-                    <span className='expandIcon'>
-                        <i class="bi bi-chevron-up" />
-                    </span>
-
-                </span>         
-            </li>
+                    </Button>
+                </div>         
+            </div>
             
-            <ul className="sidebarList">
+            <ul className="sidebarList" id='sidebarList'>
             {StudentSideBarData.map((val,key)=>{
                 return (
                     <NavLink key = {key}
