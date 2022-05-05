@@ -1,8 +1,15 @@
+$border-color: #4267b2;
+$input-bg: #f5f8ff;
+$txt-color: #2f2d2f;
+$txt-second-color: #ccc;
+$box-bg: #fff;
+$box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+
 .drop-file-input {
     position: relative;
     width: 10\100px;
     height: 200px;
-    border: 2px dashed var(--border-color);
+    border: 2px dashed $border-color;
     border-radius: 20px;
     
     display: flex;
@@ -11,7 +18,7 @@
 
     border: 2px dashed;
 
-    background-color: var(--input-bg);
+    background-color: $input-bg;
 }
 
 .drop-file-input input {
@@ -33,7 +40,7 @@
 
 .drop-file-input__label {
     text-align: center;
-    color: var(--txt-second-color);
+    color: $txt-second-color;
     font-weight: 600;
     padding: 10px;
     
@@ -61,7 +68,7 @@
     position: relative;
     display: flex;
     margin-bottom: 10px;
-    background-color: var(--input-bg);
+    background-color: $input-bg;
     padding: 15px;
     border-radius: 20px;
     
@@ -81,7 +88,7 @@
 }
 
 .drop-file-preview__item__del {
-    background-color: var(--box-bg);
+    background-color: $box-bg;
     width: 40px;
     height: 40px;
     border-radius: 50%;
@@ -92,10 +99,16 @@
     right: 10px;
     top: 50%;
     transform: translateY(-50%);
-    box-shadow: var(--box-shadow);
+    box-shadow: $box-shadow;
     cursor: pointer;
     opacity: 0;
     transition: opacity 0.3s ease;
+
+    &-icon {
+        font-size: 35px;
+        text-align: center;
+        display: flex;
+    }
 }
 
 .drop-file-preview__item:hover .drop-file-preview__item__del {
