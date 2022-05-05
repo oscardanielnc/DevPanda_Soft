@@ -10,6 +10,7 @@ import StudentNavbar from "../components/navBar/StudentNavbar";
 import Agreement from "../pages/Agreement";
 import AgreementReview from "../pages/AgreementReview";
 import StudentAgreement from "../pages/StudentAgreement";
+import Deliverables from "../pages/Deliverables";
 
 const routes = [
     {
@@ -61,6 +62,11 @@ const routes = [
         path: "/agreementreview",
         exact: true,
         component: AgreementReview,
+    },
+    {
+        path: "/deliverables",
+        exact: true,
+        component: Deliverables,
     },
     {
         path: "*",
