@@ -4,28 +4,20 @@ import { Button, Table,Form,InputGroup,FormControl } from 'react-bootstrap';
 import './AboutJob.scss';
 
 
-export default function AboutJob (props) {
-    const {aboutJob, setAboutJob,notgrabado} = props;
-    const changeNameArea = e => {
-        setAboutJob({
-            ...aboutJob,
-            [e.target.name]: e.target.value
+export default function AboutJob ({data, setData, notgrabado}) {
+    const {aboutJob} = data;
+
+    const handleChange = (e) => {
+        setData({
+            ...data,
+            aboutJob: {
+                ...data.aboutJob,
+                [e.target.name]: e.target.value
+            }
         })
+        console.log(data)
     }
 
-    const changeJobTitle = e => {
-        setAboutJob({
-            ...aboutJob,
-            [e.target.name]: e.target.value
-        })
-    }
-
-    const changeActivities = e => {
-        setAboutJob({
-            ...aboutJob,
-            [e.target.name]: e.target.value
-        })
-    }
     return (
         <div className="container chartAboutJob">
              <nav className="navbar navbar-fixed-top navbar-inverse bg-inverse "style={{ backgroundColor: "#E7E7E7"}}>
@@ -35,15 +27,15 @@ export default function AboutJob (props) {
                 <div className="col-sm-6 subtitles">
                     <div>Nombre del Área</div>
                     <Form.Control placeholder="Escriba el nombre del área" 
-                        onChange={changeNameArea}
+                        onChange={handleChange}
                         disabled={notgrabado}
-                        value={aboutJob.nameArea}
-                        name="nameArea"/>
+                        value={aboutJob.areaName}
+                        name="areaName"/>
                 </div>
                 <div className="col-sm-6 subtitles">
                     <div>Puesto</div>
                     <Form.Control placeholder="Escriba el puesto a desempeñar" 
-                        onChange={changeJobTitle}
+                        onChange={handleChange}
                         disabled={notgrabado}
                         value={aboutJob.jobTitle}
                         name="jobTitle"/>
@@ -54,7 +46,7 @@ export default function AboutJob (props) {
                 
                 <Form.Control className="Cuadro" style={{"marginLeft": "0px"}}
                     placeholder="Describa la funcion principal de su puesto y las actividades principales a desarrollar." 
-                    onChange={changeActivities}
+                    onChange={handleChange}
                     disabled={notgrabado}
                     value={aboutJob.activities}
                     name="activities"

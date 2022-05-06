@@ -27,31 +27,31 @@ export function selectSubmittedInscriptionForm(fidAlumnoProceso) {
             }
         })
 }
-export function specialtyInsertApi(specialty) {
-    const url = `${BASE_PATH}/${API_VERSION}/specialty`;
-    const params = {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            authorization: PANDA_KEY
-        },
-        body: JSON.stringify(specialty)
-    }
+// export function specialtyInsertApi(specialty) {
+//     const url = `${BASE_PATH}/${API_VERSION}/specialty`;
+//     const params = {
+//         method: "POST",
+//         headers: {
+//             "Content-Type": "application/json",
+//             authorization: PANDA_KEY
+//         },
+//         body: JSON.stringify(specialty)
+//     }
 
-    return fetch(url, params)
-        .then(response => {
-            return response.json()
-        })
-        .then(result => {
-            return {
-                msg: result.message,
-                success: true
-            }
-        })
-        .catch(err => {
-            return {
-                msg: err.message,
-                success: false
-            }
-        })
-}
+//     return fetch(url, params)
+//         .then(response => {
+//             return response.json()
+//         })
+//         .then(result => {
+//             return {
+//                 msg: result.message,
+//                 success: true
+//             }
+//         })
+//         .catch(err => {
+//             return {
+//                 msg: err.message,
+//                 success: false
+//             }
+//         })
+// }
