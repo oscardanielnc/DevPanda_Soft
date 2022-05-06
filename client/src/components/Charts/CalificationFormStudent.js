@@ -70,17 +70,6 @@ export default function CalificationFormStudent ({data, setData, notgrabado}) {
             }
         })
     }
-
-    const changeGrade = e => {
-        setData({
-            ...data,
-            calification: {
-                ...data.calification,
-                [e.target.name]: e.target.value
-            }
-        })
-    }
-
     return (
         <div className="container chartCalificationFormStudent">
             <nav className="navbar navbar-fixed-top navbar-inverse bg-inverse "style={{ backgroundColor: "#E7E7E7"}}>
@@ -153,22 +142,6 @@ export default function CalificationFormStudent ({data, setData, notgrabado}) {
                         style={{"marginBottom":"10px !important"}}
                         as="textarea"
                         rows={6}/>
-            </div>
-            <div className="row rows">
-            <div className="col-sm-1 grade">
-                </div>
-                <div className="col-sm-1 subtitles">
-                    <div>Nota:</div>
-                </div>
-                <div className="col-sm-4 subtitles">
-                    <Form.Control placeholder="Escriba la nota" 
-                        onChange={changeGrade}
-                        disabled={notgrabado}
-                        value={calification.grade}
-                        name="grade"/>
-                </div>
-                <div className="col-sm-5 subtitles">
-                </div>
             </div>  
             <div className="row rows" >
                 <div className="col-sm-2 subtitles">

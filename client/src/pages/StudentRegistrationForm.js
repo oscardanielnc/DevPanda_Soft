@@ -13,7 +13,7 @@ import StateViewer,{StatesViewType} from "../components/StateViewer/StateViewer"
 import DocumentPlusIcon from "../components/DocumentPlusIcon/DocumentPlusIcon";
 import CompUpload from "../components/Single/CompUpload";
 import useAuth from "../hooks/useAuth";
-import { selectSubmittedInscriptionForm } from "../api/registrationForm";
+import { selectSubmittedInscriptionForm,registrationInsertApiStudent,registrationUpdateApi } from "../api/registrationForm";
 
 import './StudentRegistrationForm.scss';
 
@@ -61,7 +61,6 @@ const dataDummy = {
     },
     "calification": {
         "comments":"Buen trabajo",
-        "grade": "18",
         "aprobado": true
     }
 }
@@ -71,37 +70,78 @@ export default function StudentRegistrationForm () {
     const [data, setData] = useState(dataDummy)
 
     useEffect(()=> {
-        // Llamado al API
-        //al inicio para traernos la data que importa
+        /*
+        selectSubmittedInscriptionForm(data.idAlumno).then(response => {
+            if(response.success) {
+                setData(response.data);
+            }
+        })*/
     }, [setData])
     
     
     let result=true;
-    const insert = e => {
+    const insert = async e => {
         //hacer una diferencia primero si es alumno o cordinador
         //en el caso del alumno por el estado de approvalState ver si es un Insertar o un Modificar
         //en el caso del coordinador ver si con el idAlumno hay alguna ficha y depende de eso Insertar o modificar 
-        if(result){
-            toast.success("Se insertó de forma correcta", {
-                position: "top-right",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-            });
-        }else{
-            toast.error('Ups, ha ocurrido un error', {
-                position: "top-right",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-            });
-        }   
+        /*
+        e.preventDefault();
+        if(data.generalData.typeUser==="A"){
+            let response=null;
+            if(data.approvalState==="Observado"){
+                response = await registrationUpdateApi(data);
+            }
+            if(data.approvalState==="Sin Entregar"){
+                response = await registrationInsertApiStudent(data)
+            }
+            
+            if(response.success){
+                toast.success("Se guardó la ficha de forma correcta", {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
+            }else{
+                toast.error('Ups, ha ocurrido un error', {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
+            }   
+        }
+        if(data.generalData.typeUser==="C"){
+            const response =await registrationUpdateApi(data);
+            if(response.success){
+                toast.success("Se registraron los datos de forma correcta", {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
+            }else{
+                toast.error('Ups, ha ocurrido un error', {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
+            }   
+        }*/
+        
     }
     console.log(data);
     const isSaved=((data.documentsState==="Sin entregar")||
@@ -112,7 +152,8 @@ export default function StudentRegistrationForm () {
         case "Observado": typeApprovalState = "warning"; break;
         case "Sin entregar": typeApprovalState = "pending"; break;
         case "Sin calificar": typeApprovalState = "pending"; break;
-        default: typeApprovalState = "success"; break;
+        case "Aprobado": typeApprovalState = "success"; break;
+        default: typeApprovalState = "error"; break;
     }
     return (
         <LayoutBasic>
