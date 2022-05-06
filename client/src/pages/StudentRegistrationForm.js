@@ -19,58 +19,58 @@ import './StudentRegistrationForm.scss';
 export default function StudentRegistrationForm () {
     const [user,setUser] = useState(useAuth());
     const [dataUser,setDataUser]=useState({
-        names: user.nombres, 
-        lastNames:user.apellidos,
-        codePUCP: user.codigoPUCP,
-        emailPUCP:user.correo,
-        tipoUsuario:user.tipoUsuario
+        names: "Oscar", 
+        lastNames:"Navarro Cieza",
+        codePUCP: "20181654",
+        emailPUCP:"oscar.navarro@pucp.edu.pe",
+        tipoUsuario:"A"
     })
     const [generalDataInit,setGeneralDataInit]=useState({
-        idFicha: null,
-        fidAlumnoProceso: user.fidAlumnoProceso,
+        idFicha: 9,
+        fidAlumnoProceso: 1,
         aprobado: null,
         estadoDocumento: null,
         observaciones: null,
         nota: null,//esto no sé si está en la BD pero sí lo voy a usar
         entregado:null,//esto no sé si está en la BD pero sí lo voy a usar
-        estadoCalificado: null// esto me parece que es distinto a aprobado, ya que aprobado es boolean y esto 
+        estadoCalificado: "O"// esto me parece que es distinto a aprobado, ya que aprobado es boolean y esto 
         //debe ser un caracter  "A" es aprobado, "O" es observado, "D" es desaprobado, "N" es no calificado
     });
     const [aboutCompany, setAboutCompany] = useState({
-        RUCNacional: "",
+        RUCNacional: "12549865248",
         National:true,
         InformacionNacional:"",
         NombreExtranjera:"",
-        grabado: false
+        grabado: true
     })
     
     const [aboutJob,setAboutJob]=useState({
-        nameArea:"",
-        jobTitle:"",
-        activities:""
+        nameArea:"TI",
+        jobTitle:"Analista de información",
+        activities:"Recopilar información de las base de datos y generar reportes"
     })
 
     const [aboutPSP,setAboutPSP]=useState({
         dateStart:null,
         dateEnd:null,
-        dailyHours: 0,
-        weekHours: 0
+        dailyHours: 6,
+        weekHours: 30
     })
 
     const[directBoss,setDirectBoss]=useState({
-        name:"",
-        area:"",
-        email:"",
-        celephone:""
+        name:"Hugo Carlos",
+        area:"TI",
+        email:"hugoCar1548@gmail.com",
+        celephone:"9856875564"
     })
 
     const[calification,setCalification]=useState({
         state:"D",
-        comments:generalDataInit.observaciones,
+        comments:"",
         grade: null,
-        aprobado: generalDataInit.aprobado
+        aprobado: ""
     })
-
+    /*
     const [datos, setDatos]=useState({
         dataUser:dataUser,
         generalDataInit:generalDataInit,
@@ -80,9 +80,11 @@ export default function StudentRegistrationForm () {
         directBoss:directBoss,
         calification:calification
     }
-    )
-    console.log(datos);
-    const notgrabado=(datos.generalDataInit.idFicha==null||datos.generalDataInit.idFicha===0)?false:true;
+    )*/
+    //console.log(datos);
+    const notgrabado=false;
+    //const notgrabado=(datos.generalDataInit.idFicha==null||datos.generalDataInit.idFicha===0)?false:true;
+    /*
     useEffect(() => {
         async function fetchData() {
             const response = await selectSubmittedInscriptionForm(1)
@@ -104,11 +106,11 @@ export default function StudentRegistrationForm () {
         fetchData()
         
     }, [setDatos])
-
+    */
     let result=true;
     let tipoEntrega;
     let comentarioEntrega;
-    if(datos.generalDataInit.entregado===true){
+    if(generalDataInit.entregado===true){
         tipoEntrega="success";
         comentarioEntrega="Entregado";
     }else{
@@ -118,15 +120,15 @@ export default function StudentRegistrationForm () {
     let estadoCalificado;
     let comentarioCalificado;
     
-    if(datos.generalDataInit.estadoCalificado==="A"){
+    if(generalDataInit.estadoCalificado==="A"){
         estadoCalificado="success";
         comentarioCalificado="Aprobado";
     }else{
-        if(datos.generalDataInit.estadoCalificado==="O"){
+        if(generalDataInit.estadoCalificado==="O"){
             estadoCalificado="warning";
             comentarioCalificado="Observado";
         }else{
-            if(datos.generalDataInit.estadoCalificado==="D"){
+            if(generalDataInit.estadoCalificado==="D"){
                 estadoCalificado="success";
                 comentarioCalificado="Desaprobado";
             }else{
@@ -180,31 +182,31 @@ export default function StudentRegistrationForm () {
                     <h2 style={{marginBottom:"0px"}}>Datos por rellenar</h2>
                 </div>
                 <div className="row rows">
-                    <GeneralData generalData={datos.generalDataInit} setGeneralData={setGeneralDataInit}/>   
+                    <GeneralData generalData={generalDataInit} setGeneralData={setGeneralDataInit}/>   
                 </div>
                 <div className="row rows">
                     <AboutCompany 
-                            aboutCompany={datos.aboutCompany} setAboutCompany ={setAboutCompany} notgrabado={notgrabado}/>
+                            aboutCompany={aboutCompany} setAboutCompany ={setAboutCompany} notgrabado={notgrabado}/>
                 </div>
                 <div className="row rows">
-                    <AboutJob aboutJob={datos.aboutJob} setAboutJob={setAboutJob} notgrabado={notgrabado}/>
+                    <AboutJob aboutJob={aboutJob} setAboutJob={setAboutJob} notgrabado={notgrabado}/>
                 </div>
                 <div className="row rows">
-                    <AboutDurationPSP aboutPSP={datos.aboutPSP} setAboutPSP={setAboutPSP} notgrabado={notgrabado}/>
+                    <AboutDurationPSP aboutPSP={aboutPSP} setAboutPSP={setAboutPSP} notgrabado={notgrabado}/>
                 </div>
                 <div className="row rows">
-                    <DirectBoss directBoss={datos.directBoss} setDirectBoss={setDirectBoss} notgrabado={notgrabado}/>
+                    <DirectBoss directBoss={directBoss} setDirectBoss={setDirectBoss} notgrabado={notgrabado}/>
                 </div>
                 <div className="row rows">
                     <DocumentPlusIcon/>
                 </div>
-                {datos.dataUser.tipoUsuario==="A"?<div className="row rows BotonAlumno">
+                {dataUser.tipoUsuario==="A"?<div className="row rows BotonAlumno">
                     <Button className="btn btn-primary" style={{width:"40%"}} onClick={insert} disabled={notgrabado}>Enviar</Button>
                     <ToastContainer />
                 </div>:<div></div>}
                 
-                {datos.dataUser.tipoUsuario == "C" ? <div className="row rows">
-                    <CalificationFormStudent calification={datos.calification} setCalification={setCalification}/>
+                {dataUser.tipoUsuario == "C" ? <div className="row rows">
+                    <CalificationFormStudent calification={calification} setCalification={setCalification}/>
                 </div> : <div></div>}
             </div>
             
