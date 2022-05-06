@@ -11,6 +11,7 @@ import DirectBoss from "../components/Charts/DirectBoss";
 import CalificationFormStudent from "../components/Charts/CalificationFormStudent";
 import StateViewer,{StatesViewType} from "../components/StateViewer/StateViewer";
 import DocumentPlusIcon from "../components/DocumentPlusIcon/DocumentPlusIcon";
+import CompUpload from "../components/Single/CompUpload";
 import useAuth from "../hooks/useAuth";
 import { selectSubmittedInscriptionForm } from "../api/registrationForm";
 
@@ -20,21 +21,26 @@ import './StudentRegistrationForm.scss';
 
 const dataDummy = {
     "idAlumno": 1,
-    "docuemntsState": "Sin entregar",
-    "approvalState": "Observado",
+    "documentsState": "Entregado",
+    "approvalState": "Desaprobado",
+    "documentAgreement":"",
+    "documentPlan":"",
     "generalData": {
         "name": "Oscar Daniel",
         "lastname": "Navarro Cieza",
         "code": "20186008",
         "email": "oscar.navarro@pucp.edu.pe",
-        "telephone": 929178606,
-        "personalEmail": "oscar@prueba.com"
+        "celephone": 929178606,
+        "personalEmail": "oscar@prueba.com",
+        "typeUser":"C"
     },
     "aboutCompany": {
         "isNational": true,
         "ruc": "1234567890",
         "info": "Este es un texto largo de prueba",
-        "foreignName": ""
+        "foreignName": "",
+        "foreignCountry":"",
+        "foreingLineBusiness":""
     },
     "aboutJob": {
         "areaName": "TI",
@@ -54,9 +60,9 @@ const dataDummy = {
         "telephone":"9856875564"
     },
     "calification": {
-        "comments":"",
-        "grade": null,
-        "aprobado": false
+        "comments":"Buen trabajo",
+        "grade": "18",
+        "aprobado": true
     }
 }
 
@@ -64,12 +70,6 @@ export default function StudentRegistrationForm () {
     const {user} = useAuth();
     const [data, setData] = useState(dataDummy)
 
-    // const[calification,setCalification]=useState({
-    //     state:"D",
-    //     comments:"",
-    //     grade: null,
-    //     aprobado: ""
-    // })
     useEffect(()=> {
         // Llamado al API
         //al inicio para traernos la data que importa
@@ -78,6 +78,9 @@ export default function StudentRegistrationForm () {
     
     let result=true;
     const insert = e => {
+        //hacer una diferencia primero si es alumno o cordinador
+        //en el caso del alumno por el estado de approvalState ver si es un Insertar o un Modificar
+        //en el caso del coordinador ver si con el idAlumno hay alguna ficha y depende de eso Insertar o modificar 
         if(result){
             toast.success("Se insertó de forma correcta", {
                 position: "top-right",
@@ -100,16 +103,17 @@ export default function StudentRegistrationForm () {
             });
         }   
     }
-    
-    const isSaved=(data.docuemntsState==="Sin entregar")? false: true;
-    const typeDocumentState = (data.docuemntsState==="Sin entregar")? "fileEmpty": "success";
+    console.log(data);
+    const isSaved=((data.documentsState==="Sin entregar")||
+        (data.documentsState==="Entregado"&&data.approvalState==="Observado"))? false: true;
+    const typeDocumentState = (data.documentsState==="Sin entregar")? "fileEmpty": "success";
     let typeApprovalState = "";
     switch(data.approvalState) {
         case "Observado": typeApprovalState = "warning"; break;
-        case "Sin entrega": typeApprovalState = "pending"; break;
+        case "Sin entregar": typeApprovalState = "pending"; break;
+        case "Sin calificar": typeApprovalState = "pending"; break;
         default: typeApprovalState = "success"; break;
     }
-
     return (
         <LayoutBasic>
             <div className="container principal" style={{"padding":"1px"}}>
@@ -123,7 +127,7 @@ export default function StudentRegistrationForm () {
                 </div>
                 <div className="row rows">
                     <StateViewer states={[
-                            StatesViewType[typeDocumentState]("Documentos", data.docuemntsState),
+                            StatesViewType[typeDocumentState]("Documentos", data.documentsState),
                     StatesViewType[typeApprovalState]("Aprobación", data.approvalState)]}/>
                 </div>
                 <div className="row rows" style={{textAlign: "left",marginBottom:"0px"}}>
@@ -144,17 +148,18 @@ export default function StudentRegistrationForm () {
                 <div className="row rows">
                     <DirectBoss data={data} setData={setData} notgrabado={isSaved}/>
                 </div>
-                {/* <div className="row rows">
-                    <DocumentPlusIcon/>
-                </div> */}
-                {user && user.tipoUsuario==="A"? <div className="row rows BotonAlumno">
+                <div className="row rows registrationFiles">
+                    <div className="row rows uploadAgreement" >                
+                        <CompUpload/>
+                    </div>
+                </div>
+                {user && data.generalData.typeUser==="A"? <div className="row rows BotonAlumno">
                     <Button className="btn btn-primary" style={{width:"40%"}} onClick={insert} disabled={isSaved}>Enviar</Button>
                     <ToastContainer />
-                </div>:<div></div>}
-{/*                 
-                {user && user.tipoUsuario == "C" ? <div className="row rows">
-                    <CalificationFormStudent calification={calification} setCalification={setCalification}/>
-                </div> : <div></div>} */}
+                </div>:<div></div>}                 
+                {user && data.generalData.typeUser === "C" ? <div className="row rows">
+                    <CalificationFormStudent data={data} setData={setData} notgrabado={false}/>
+                </div> : <div></div>}
             </div>
             
         </LayoutBasic>

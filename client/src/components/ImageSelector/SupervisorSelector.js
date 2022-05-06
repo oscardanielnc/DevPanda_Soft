@@ -20,7 +20,7 @@ export default function SupervisorSelector ({supervisor}) {
 function Supervisor ({element}) {
     return (
         <div className="supervisor">
-            <i class="bi bi-person"></i>
+            <i className="bi bi-person"></i>
             <p  style={{marginTop:"10px"}}>   
                 {element.name}
             </p>

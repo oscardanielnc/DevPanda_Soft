@@ -103,6 +103,24 @@ export default function AboutCompany ({data, setData, notgrabado}) {
                         name="foreignName"
                         style={{"marginBottom":"10px !important"}}/>
             </div>
+            <div className="row rows">
+                <div className="col-sm-6 subtitles">
+                    <div>País</div>
+                    <Form.Control placeholder="Escriba el país de la empresa extranjera" 
+                        onChange={handleChangeText}
+                        disabled={aboutCompany.isNational || notgrabado}
+                        value={aboutCompany.foreignCountry}
+                        name="foreignCountry"/>
+                </div>
+                <div className="col-sm-6 subtitles">
+                    <div>Giro de la empresa</div>
+                    <Form.Control placeholder="Escriba el giro de la empresa extranjera" 
+                        onChange={handleChangeText}
+                        disabled={aboutCompany.isNational || notgrabado}
+                        value={aboutCompany.foreingLineBusiness}
+                        name="foreingLineBusiness"/>
+                </div>
+            </div>
         </div>
     )
 }
