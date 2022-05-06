@@ -5,7 +5,7 @@ import StateViewer,{StatesViewType} from "../components/StateViewer/StateViewer"
 import "./AgreementReview.scss";
 import CompUpload from "../components/Single/CompUpload";
 
-export default function(){
+export default function Deliverables(){
     let estadoDoc= "E";//"N" no entregado, "E" entregado
     let estadoEva = "P";//"A" es aprobado, "O" es observado, , "P" pendiente de aprobación
     let comentarioCalificado="";

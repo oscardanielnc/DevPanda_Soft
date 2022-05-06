@@ -1,7 +1,10 @@
 @import '../scss/index.scss';
 
 
-.main{
+.principalFinalReview{
+    .titulo{
+        color:$primary-color;
+    }   
     .row1{
         color:$primary-color;
         margin-left: 10px;
@@ -26,4 +29,4 @@
         border-radius: 20px;
         padding-bottom: 8px;        
     }
-}   
+}
