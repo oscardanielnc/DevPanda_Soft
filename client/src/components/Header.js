@@ -7,7 +7,7 @@ import './Header.scss';
 
 export default function Header (props) {
     const {user} = useAuth()
-    console.log("user", user)
+    //console.log("user", user)
     return (
         <div className="header">
                 <div className="header__left">

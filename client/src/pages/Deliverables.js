@@ -1,8 +1,9 @@
 import React from "react";
-import LayoutBasic from "../layouts/LayoutCoordFACI";
+import LayoutBasic from "../layouts/LayoutBasic";
 import { Button, Form} from "react-bootstrap";
 import StateViewer,{StatesViewType} from "../components/StateViewer/StateViewer";
 import "./AgreementReview.scss";
+import CompUpload from "../components/Single/CompUpload";
 
 export default function(){
     let estadoDoc= "E";//"N" no entregado, "E" entregado
@@ -29,7 +30,7 @@ export default function(){
     if(estadoEva === "P"){
         estadoEva = "pending";
         comentarioCalificado = "Pendiente de aprobación";
-    }
+    } 
     return(
         <LayoutBasic>
             <div className="container">
@@ -46,6 +47,9 @@ export default function(){
                 <div className="row normalrow" style={{marginTop:"10px"}}>
                     <StateViewer states={[StatesViewType[estadoDoc]("Documentos", comentarioDoc),
                     StatesViewType[estadoEva]("Aprobación", comentarioCalificado)]}/>
+                </div>
+                <div className="row rows uploadAgreement" >                
+                    <CompUpload/>
                 </div>
                 <div className="row row1" style={{textAlign: "left",marginTop:"25px"}}>
                     <h2>Observaciones</h2>  

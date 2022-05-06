@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import LayoutBasic from "../layouts/LayoutBasic";
+import LayoutBasic from "../layouts/LayoutCoordFACI";
 import {Form} from 'react-bootstrap';
 import './AddSpecialty.scss';
 import { Link } from "react-router-dom";

@@ -47,19 +47,14 @@ const routes = [
         path: "/agreement",
         exact: true,
         component: Agreement,
-    },    
-    {   
-        path: "/FACInavbar", // esto no lo toco porque lo vamos a eliminar, no es una pagina
-        exact: true,
-        component: FACINavbar,
-    },    
+    },
     {
         path: "/supervisor-selection",
         exact: true,
         component: SupervisorSelection,
     },
     {
-        path: "/agreementreview",
+        path: "/agreement-review",
         exact: true,
         component: AgreementReview,
     },

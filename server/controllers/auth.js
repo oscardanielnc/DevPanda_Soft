@@ -34,7 +34,9 @@ function singIn(req, res) {
         activo: true,
         estadoMatriculado: true,
         estadoProceso: 1,
-        expire: moment().add(3, "days").unix()
+        expire: moment().add(3, "days").unix(),
+        fidAlumnoProceso:1
+        //Falta traer el fidAlumnoProceso de acuerdo al idPersona
     }
     const accessToken = jwt.encode(user, PANDA_KEY);
     res.status(200).send({accessToken});

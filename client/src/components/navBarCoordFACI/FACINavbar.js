@@ -1,27 +1,49 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import './FACINavbar.scss';
-import {FACISideBarData} from './FACISidebarData'
+
+const dataNavbar = [
+    {
+        title: "Convenio",
+        link: "/agreement-review"
+    },
+    {
+        title: "Gestión de Especialidades",
+        link: "/"
+    },
+    {
+        title: "Revisión de Convenios",
+        link: "/add-specialty"
+    },
+    {
+        title: "Entregables - Alumno",
+        link: "/deliverables"
+    }
+]
 
 export default function(){
     return(
         <div className="FACINavBar">
-        <nav>
-            <ul className="sidebarList">
-            {FACISideBarData.map((val,key)=>{
-                return <li key = {key} className= "dataRow" id ={window.location.pathname === val.link ? "active" : ""}>
-                        <Link to = {val.link}>
-                            <i class="bi bi-person"></i>                   
-                            <span className='texto'>
-                                
-                                {val.title}
-                            </span>
-                        </Link>
-                        </li>
-            })}
-            </ul>
-        </nav>
-    </div>
+            <nav>
+                <ul className="FACINavBar__sidebarList" id='sidebarList'>
+                    {dataNavbar.map((val,key)=>{
+                        return (
+                            <NavLink key = {key}
+                                to = {val.link}
+                                className = {`dataRow`}
+                                >
+                                <span className='texto'>
+                                    {val.title}
+                                </span>
+                            </NavLink>
+                        )
+                    })}
+                </ul>
+            </nav>
+        </div>
     )
     
 }
+
+
+
