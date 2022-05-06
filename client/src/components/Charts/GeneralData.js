@@ -4,49 +4,19 @@ import { Button, Table,Form,InputGroup,FormControl } from 'react-bootstrap';
 import './GeneralData.scss';
 
 
-export default function GeneralData (props) {
-    const {generalData,setGeneralData} = props;
-    const changeNames = e => {
-        setGeneralData({
-            ...generalData,
-            [e.target.name]: e.target.value
+export default function GeneralData ({data, setData, imStudent=true}) {
+    const {generalData} = data;
+
+    const handleChange = (e) => {
+        setData({
+            ...data,
+            generalData: {
+                ...data.generalData,
+                [e.target.name]: e.target.value
+            }
         })
     }
 
-    const changeLastNames = e => {
-        setGeneralData({
-            ...generalData,
-            [e.target.name]: e.target.value
-        })
-    }
-
-    const changeCodesPUCP = e => {
-        setGeneralData({
-            ...generalData,
-            [e.target.name]: e.target.value
-        })
-    }
-
-    const changeEmailPUCP = e => {
-        setGeneralData({
-            ...generalData,
-            [e.target.name]: e.target.value
-        })
-    }
-
-    const changeCelephone = e => {
-        setGeneralData({
-            ...generalData,
-            [e.target.name]: e.target.value
-        })
-    }
-
-    const changeEmailAlternative = e => {
-        setGeneralData({
-            ...generalData,
-            [e.target.name]: e.target.value
-        })
-    }
     return (
         <div className="container chartGeneralData">
              <nav className="navbar navbar-fixed-top navbar-inverse bg-inverse "style={{ backgroundColor: "#E7E7E7"}}>
@@ -56,16 +26,14 @@ export default function GeneralData (props) {
                 <div className="col-sm-6 subtitles">
                     <div>Nombres</div>
                     <Form.Control placeholder="Escriba su nombre" 
-                        onChange={changeNames}
-                        value={generalData.names}
+                        value={generalData.name}
                         disabled
                         name="names"/>
                 </div>
                 <div className="col-sm-6 subtitles">
                     <div>Apellidos</div>
                     <Form.Control placeholder="Escriba sus apellidos" 
-                        onChange={changeLastNames}
-                        value={generalData.lastNames}
+                        value={generalData.lastname}
                         disabled
                         name="lastNames"/>
                 </div>
@@ -74,8 +42,7 @@ export default function GeneralData (props) {
                 <div className="col-sm-4 subtitles">
                     <div>Codigo PUCP</div>
                     <Form.Control placeholder="Codigo PUCP" 
-                        onChange={changeCodesPUCP}
-                        value={generalData.codePUCP}
+                        value={generalData.code}
                         disabled
                         name="codePUCP"/>
                 </div>
@@ -86,8 +53,7 @@ export default function GeneralData (props) {
                         placeholder="Ingrese su correo educativo"
                         aria-label="example"
                         aria-describedby="basic-asddon2"
-                        onChange={changeEmailPUCP}
-                        value={generalData.emailPUCP}
+                        value={generalData.email}
                         disabled
                         name="emailPUCP"
                         />
@@ -100,18 +66,18 @@ export default function GeneralData (props) {
                 <div className="col-sm-4 subtitles">
                     <div>Teléfono</div>
                     <Form.Control placeholder="Ingrese su número de celular" 
-                        onChange={changeCelephone}
+                        onChange={handleChange}
                         value={generalData.celephone}
-                        disabled
+                        disabled = {!imStudent}
                         name="celephone"/>
                 </div>
                 <div className="col-sm-8 subtitles">
                     <div>Correo Personal (Opcional)</div>
                     <Form.Control placeholder="Ingrese su correo opcional" 
-                        onChange={changeEmailAlternative}
-                        value={generalData.emailAlternative}
-                        disabled
-                        name="emailAlternative"/>
+                        onChange={handleChange}
+                        value={generalData.personalEmail}
+                        disabled = {!imStudent}
+                        name="personalEmail"/>
                 </div>
             </div>
         </div>

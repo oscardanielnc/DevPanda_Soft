@@ -61,10 +61,10 @@ export default function SignUp (){
                                 <Form.Control type="text" placeholder="20174562" />
                             </Form.Group>
                         </div>
-                        <div className="col-sm-6 offset-3">
-                            <Form.Group className="mb-3" controlId="formDropDownEsp">
+                        <div className="col-sm-6 offset-3 d-grid">
+                            <Form.Group className="mb-3" controlId="formDropDownEsp" >
                                 <Form.Label>Especialidad</Form.Label>
-                                <DropdownButton id="dropdown-basic-button" title="Seleccionar Especialidad" >
+                                <DropdownButton id="dropdown-basic-button" title="Seleccionar Especialidad">
                                     <Dropdown.Item href="#/action-1">Seleccionar Especialidad</Dropdown.Item>
                                     <Dropdown.Item href="#/action-2">Ing. Informática</Dropdown.Item>
                                     <Dropdown.Item href="#/action-3">Ing. Industrial</Dropdown.Item>

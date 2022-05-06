@@ -40,6 +40,9 @@ export default function SupervisorSelection () {
                 <div className="row rows">     
                         <SupervisorSelector supervisor={supervisores}/>
                 </div>
+                <div className="row rows">
+                    <Timetable/>
+                </div>
                 <div className="row rows boton">
                     <Button className="btn btn-primary" style={{width:"40%"}}>Agendar</Button>
                 </div>

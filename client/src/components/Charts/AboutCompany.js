@@ -4,38 +4,25 @@ import { Button, Table,Form,InputGroup,FormControl } from 'react-bootstrap';
 import './AboutCompany.scss';
 
 
-export default function AboutCompany (props) {
-    const {aboutCompany, setAboutCompany,notgrabado} = props;
-    const changeNational = e=>{
-        setAboutCompany({
-            ...aboutCompany,
-            [e.target.name]: e.target.checked
-        })
-    }
-    const changeForeigner = e=>{
-        setAboutCompany({
-            ...aboutCompany,
-            [e.target.name]: !(e.target.checked)
-        })
-    }
+export default function AboutCompany ({data, setData, notgrabado}) {
+    const {aboutCompany} = data;
 
-    const changeRucNacional= e=>{
-        setAboutCompany({
-            ...aboutCompany,
-            [e.target.name]: e.target.value
+    const handleChangeText = (e) => {
+        setData({
+            ...data,
+            aboutCompany: {
+                ...data.aboutCompany,
+                [e.target.name]: e.target.value
+            }
         })
     }
-
-    const changeInformacionNacional =e=>{
-        setAboutCompany({
-            ...aboutCompany,
-            [e.target.name]: e.target.value
-        })
-    }
-    const changeNombreExtranjera=e=>{
-        setAboutCompany({
-            ...aboutCompany,
-            [e.target.name]: e.target.value
+    const handleChangeCheck = (e) => {
+        setData({
+            ...data,
+            aboutCompany: {
+                ...data.aboutCompany,
+                isNational: !data.aboutCompany.isNational
+            }
         })
     }
 
@@ -58,18 +45,18 @@ export default function AboutCompany (props) {
                             type="radio"
                             disabled={notgrabado}
                             id={`inline-radio-1`}
-                            checked={aboutCompany.National}
-                            onChange={changeNational}
+                            checked={aboutCompany.isNational}
+                            onChange={handleChangeCheck}
                         />
                         <Form.Check
                             inline
                             label="Extranjera"
-                            name="National"
+                            name="Extranjera"
                             type="radio"
                             disabled={notgrabado}
                             id={`inline-radio-2`}
-                            checked={!aboutCompany.National}
-                            onChange={changeForeigner}
+                            checked={!aboutCompany.isNational}
+                            onChange={handleChangeCheck}
                         />
                         </div>
                         </Form>
@@ -86,21 +73,21 @@ export default function AboutCompany (props) {
                 </div>
                 <div className="col-sm-7 subtitles">
                     <Form.Control placeholder="Ingrese RUC de la empresa" 
-                        onChange={changeRucNacional}
-                        disabled = {!aboutCompany.National || notgrabado}
-                        value={aboutCompany.RUCNacional}
-                        name="RUCNacional"
+                        onChange={handleChangeText}
+                        disabled = {!aboutCompany.isNational || notgrabado}
+                        value={aboutCompany.ruc}
+                        name="ruc"
                         style={{"marginBottom":"8px !important"}}/>
                 </div>
                 <div className="col-sm-4 subtitles">
-                    <Button variant="primary" style={{"marginBottom":"4px"}} disabled={!aboutCompany.National}>Buscar</Button>
+                    <Button variant="primary" style={{"marginBottom":"4px"}} disabled={!aboutCompany.isNational}>Buscar</Button>
                 </div>
                 <Form.Control className="Cuadro" style={{"marginLeft": "0px"}}
-                    placeholder=" " 
-                    onChange={changeInformacionNacional}
-                    disabled = {!aboutCompany.National || notgrabado}
-                    value={aboutCompany.InformacionNacional}
-                    name="InformacionNacional"
+                    placeholder="" 
+                    onChange={handleChangeText}
+                    disabled = {!aboutCompany.isNational || notgrabado}
+                    value={aboutCompany.info}
+                    name="info"
                     as="textarea"
                     rows={6}
                     />
@@ -110,10 +97,10 @@ export default function AboutCompany (props) {
             </div>
             <div className="row rows" >
                 <Form.Control placeholder="Escriba el nombre de la empresa" 
-                        onChange={changeNombreExtranjera}
-                        disabled = {aboutCompany.National || notgrabado}
-                        value={aboutCompany.NombreExtranjera}
-                        name="NombreExtranjera"
+                        onChange={handleChangeText}
+                        disabled = {aboutCompany.isNational || notgrabado}
+                        value={aboutCompany.foreignName}
+                        name="foreignName"
                         style={{"marginBottom":"10px !important"}}/>
             </div>
         </div>

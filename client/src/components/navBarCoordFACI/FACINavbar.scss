@@ -9,15 +9,14 @@
     justify-content: start;
     align-items:flex-start;
     margin: 0;
-}
 
-.sideBarList{
-    height: 180%;
-    padding: 0;
-    width: 100%;
-    margin: 0%;
+    &__sideBarList{
+        height: 180%;
+        padding: 0;
+        width: 100%;
+        margin: 0%;
+    }
 }
-
 
 .dataRow{
     width: 100%;

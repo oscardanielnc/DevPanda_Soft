@@ -2,24 +2,38 @@ import React, { useState } from 'react';
 import { NavItem,Button } from 'react-bootstrap';
 import { Link,NavLink } from 'react-router-dom';
 import './StudentNavbar.scss';
-import {StudentSideBarData} from './StudentSidebarData'
 import useAuth from "../../hooks/useAuth"
 
-
+const dataNavbar = [
+    {
+        title: "Convenio y Plan de Aprendizaje",
+        link: "/student-agreement"
+    },
+    {
+        title: "Matrícula",
+        link: "/m"
+    },
+    {
+        title: "Ficha de inscripción",
+        link: "/student-registration"
+    },
+    {
+        title: "Elección del supervisor",
+        link: "/supervisor-selection"
+    },
+    {
+        title: "Entregables",
+        link: "/deliverables"
+    },
+    {
+        title: "Coordinador Convenio",
+        link: "/agreement-review"
+    }
+]
 
 function StudentNavbar (props){
     const [progreso, setProgreso] = useState(2)
     
-    const [littleDisplay, setLittleDisplay] = useState('none')
-
-    function handleClick(){
-        if (littleDisplay == 'none'){
-            setLittleDisplay('block')
-        }else{
-            setLittleDisplay('none')
-        }
-    }
-
     return(
     <div className="studentNavBar">
         <nav>
@@ -34,14 +48,14 @@ function StudentNavbar (props){
             </div>
             
             <ul className="sidebarList" id='sidebarList'>
-            {StudentSideBarData.map((val,key)=>{
+            {dataNavbar.map((val,key)=>{
                 return (
                     <NavLink key = {key}
                         to = {val.link}
                         className = {`dataRow ${(progreso>key)? "active": ''} ${(window.location.pathname== val.link)? "current": ''}`}
                         >
                         <span className='icono'>
-                        {val.icon}
+                            <i class="bi bi-check"></i>
                         </span>
                 
                         <span className='texto'>
