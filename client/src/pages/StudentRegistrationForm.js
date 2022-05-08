@@ -62,7 +62,25 @@ const dataDummy = {
     "calification": {
         "comments":"Buen trabajo",
         "aprobado": true
-    }
+    },
+    "others": [
+        {
+            "section": "Sobre la PSP",
+            "name": "pais",
+            "value": ''
+        },
+        {
+            "section": "Sobre el jefe",
+            "name": "giro",
+            "value": "Electrodomésticos"
+        },
+        {
+            "section": "Sobre el jefe",
+            "name": "nuevodato",
+            "value": "xxxxx"
+        }
+    ]
+
 }
 
 export default function StudentRegistrationForm () {
@@ -147,6 +165,7 @@ export default function StudentRegistrationForm () {
     const isSaved=((data.documentsState==="Sin entregar")||
         (data.documentsState==="Entregado"&&data.approvalState==="Observado"))? false: true;
     const typeDocumentState = (data.documentsState==="Sin entregar")? "fileEmpty": "success";
+    const imStudent=(data.generalData.typeUser==="A")?true:false;
     let typeApprovalState = "";
     switch(data.approvalState) {
         case "Observado": typeApprovalState = "warning"; break;
@@ -175,7 +194,7 @@ export default function StudentRegistrationForm () {
                     <h2 style={{marginBottom:"0px"}}>Datos por rellenar</h2>
                 </div>
                 <div className="row rows">
-                    <GeneralData data={data} setData={setData} imStudent={true}/>   
+                    <GeneralData data={data} setData={setData} imStudent={imStudent}/>   
                 </div>
                 <div className="row rows">
                     <AboutCompany data={data} setData={setData} notgrabado={isSaved}/>
@@ -194,11 +213,11 @@ export default function StudentRegistrationForm () {
                         <CompUpload/>
                     </div>
                 </div>
-                {user && data.generalData.typeUser==="A"? <div className="row rows BotonAlumno">
+                {data.generalData.typeUser==="A"? <div className="row rows BotonAlumno">
                     <Button className="btn btn-primary" style={{width:"40%"}} onClick={insert} disabled={isSaved}>Enviar</Button>
                     <ToastContainer />
                 </div>:<div></div>}                 
-                {user && data.generalData.typeUser === "C" ? <div className="row rows">
+                {data.generalData.typeUser === "C" ? <div className="row rows">
                     <CalificationFormStudent data={data} setData={setData} notgrabado={false}/>
                 </div> : <div></div>}
             </div>
