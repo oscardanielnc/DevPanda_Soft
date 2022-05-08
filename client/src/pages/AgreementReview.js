@@ -5,6 +5,7 @@ import DocumentPlusIcon from "../components/DocumentPlusIcon/DocumentPlusIcon";
 import { Button, Form} from "react-bootstrap";
 import Convenio from "../asserts/img/pdf/Convenio.pdf"
 import "./AgreementReview.scss";
+import CompUpload from "../components/Single/CompUpload";
 export default function AgreementReview (){      
     let estadoCalificadoFACI= "A";//"A" es aprobado, "O" es observado, , "P" pendiente de aprobación
     let estadoCalificadoEsp = "P"
@@ -36,8 +37,8 @@ export default function AgreementReview (){
     }
     return (
         <LayoutCoordFACI>
-           <div className="container main" style={{"padding":"1px"}}>               
-                <div className="row title" style={{textAlign: "left",marginTop:"25px",}}>
+           <div className="container principalFinalReview" style={{"padding":"1px"}}>               
+                <div className="row titulo" style={{textAlign: "left",marginTop:"25px",}}>
                     <h1>Revisión de Convenio</h1>
                 </div>
                 <div className="shadowbox">
@@ -68,7 +69,7 @@ export default function AgreementReview (){
                         <Button variant="primary" size="sm" style={{width: "100px",marginTop:"5px", marginLeft:"101px"}}>Visualizar</Button>{' '}
                     </div>
                     <div className="row normalrow" style={{marginLeft:"10px",marginTop:"10px"}}>
-                        <DocumentPlusIcon name="Plan de aprendizaje Oscar Navarro.pdf" url={Convenio}/>
+                        <DocumentPlusIcon name="Plan de Aprendizaje Oscar Navarro.pdf" url={Convenio}/>
                         <Button variant="primary" size="sm" style={{width: "100px", marginTop:"5px",marginLeft:"30px"}}>Visualizar</Button>{' '}
                     </div>
                 </div>
@@ -80,43 +81,35 @@ export default function AgreementReview (){
                         <Form>
                             {['radio'].map((type) => (
                                 <div key={`inline-${type}`} className="mb-3">
-                                <Form.Check
-                                    inline
-                                    label="Aprobado"
-                                    name="group1"
-                                    type={type}
-                                    id={`inline-${type}-1`}
-                                />
-                                <Form.Check
-                                    inline
-                                    label="Observado"
-                                    name="group1"
-                                    type={type}
-                                    id={`inline-${type}-2`}
-                                />
-                                <Form.Check
-                                    inline                                    
-                                    label="Pendiente de revisión"
-                                    name="group1"
-                                    type={type}
-                                    id={`inline-${type}-3`}
-                                />
+                                    <Form.Check
+                                        inline
+                                        label="Aprobado"
+                                        name="group1"
+                                        type={type}
+                                        id={`inline-${type}-1`}
+                                    />
+                                    <Form.Check
+                                        inline
+                                        label="Observado"
+                                        name="group1"
+                                        type={type}
+                                        id={`inline-${type}-2`}
+                                    />
+                                    <Form.Check
+                                        inline                                    
+                                        label="Pendiente de revisión"
+                                        name="group1"
+                                        type={type}
+                                        id={`inline-${type}-3`}
+                                    />
                                 </div>
                             ))}
                         </Form>
                     </div>
                 </div>
                 <div className="shadowbox">
-                    <div className="row row1" style={{textAlign: "left",marginTop:"25px"}}>
-                        <h2 className="subtitulo">Documentos a enviar al alumno</h2> 
-                        <br></br>                           
-                        <br></br>  
-                        <br></br>  
-                        <br></br>
-                        <br></br>  
-                        <br></br> 
-                        <br></br> 
-                        <br></br>
+                    <div className="row row1" style={{textAlign: "left",marginTop:"25px"}}>                                       
+                        <CompUpload name="Documentos a enviar al alumno"/>                        
                     </div>
                 </div>
                 <div className="shadowbox">
@@ -129,11 +122,11 @@ export default function AgreementReview (){
                         </Form>                           
                     </div>
                 </div>
-                <div className="row botonCancelar" style={{marginLeft:"10px",marginTop:"10px",marginBottom:"30px"}}>                    
-                    <Button  className="btn btn-sec" style={{width:"20%",marginRight:"50px"}} >Regresar</Button>                   
+                <div className="row botones" style={{marginLeft:"10px"}}>                    
+                    <Button  className="btn btn-sec" style={{width:"20%",marginRight:"50px"}}>Regresar</Button>                   
                     <Button  className="btn btn-pri" style={{width:"20%",marginLeft:"50px"}}>Guardar</Button>                  
                 </div>           
             </div>   
         </LayoutCoordFACI>
-    )
+    );
 }

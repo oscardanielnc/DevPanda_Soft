@@ -1,7 +1,10 @@
 @import '../scss/index.scss';
 
 
-.main{
+.principalFinalReview{
+    .titulo{
+        color:$primary-color;
+    }   
     .row1{
         color:$primary-color;
         margin-left: 10px;
@@ -14,7 +17,9 @@
         margin-left: 10px;
         margin-right: 5px;
     }    
-    .botonCancelar{
+    .botones{
+        margin-top: 25px;
+        margin-bottom:25px;
         justify-content: center;
         .btn-sec{
             background-color: $secondary-color;
@@ -26,4 +31,4 @@
         border-radius: 20px;
         padding-bottom: 8px;        
     }
-}   
+}
