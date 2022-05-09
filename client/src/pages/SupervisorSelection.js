@@ -26,6 +26,52 @@ export default function SupervisorSelection () {
             name:"Pedro Castillo"
         }
     ])
+    const dataDummy = {
+        "idAlumno":1,
+        "supervisor":{
+            "nombre":"Andres Melgar",
+            "horario":{
+                "seleccionado":true,
+                "dia":5,
+                "mes":4,
+                "anio":2022,
+                "hora":8,
+            }
+        }
+    }
+    const [data, setData] = useState(dataDummy)
+    let result=true;
+    const insert = async e => {
+        /*
+        e.preventDefault();
+        //si se selecciona al menos un horario, se hace la insersion de horario
+        if(data.supervisor.horario.seleccionado === true){
+            let response=null;
+            response = await selectSupervisorSchedule(data);
+            
+            if(response.success){
+                toast.success("Se seleccionó correctmente a un supervisor", {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
+            }else{
+                toast.error('Ups, ha ocurrido un error', {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
+            }   
+        }*/
+    }
     return(
         <LayoutBasic>
             <div className='container principal'>
@@ -50,4 +96,3 @@ export default function SupervisorSelection () {
         </LayoutBasic>        
     )
 }
-
