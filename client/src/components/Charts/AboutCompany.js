@@ -26,6 +26,22 @@ export default function AboutCompany ({data, setData, notgrabado}) {
         })
     }
 
+    const handleChangeOthers = (e) => {
+        const newOthers = data.others.map(elem => {
+            if(elem.name === e.target.name) 
+                return {
+                    section: "Sobre la empresa",
+                    value: e.target.value,
+                    name: e.target.name
+                }
+            return elem;
+        })
+        setData({
+            ...data,
+            others: newOthers
+        })
+    }
+
     return (
         <div className="container chartSobreEmpresa">
              <nav className="navbar navbar-fixed-top navbar-inverse bg-inverse "style={{ backgroundColor: "#E7E7E7"}}>
@@ -103,6 +119,45 @@ export default function AboutCompany ({data, setData, notgrabado}) {
                         name="foreignName"
                         style={{"marginBottom":"10px !important"}}/>
             </div>
+            <div className="row rows">
+                <div className="col-sm-6 subtitles">
+                    <div>País</div>
+                    <Form.Control placeholder="Escriba el país de la empresa extranjera" 
+                        onChange={handleChangeText}
+                        disabled={aboutCompany.isNational || notgrabado}
+                        value={aboutCompany.foreignCountry}
+                        name="foreignCountry"/>
+                </div>
+                <div className="col-sm-6 subtitles">
+                    <div>Giro de la empresa</div>
+                    <Form.Control placeholder="Escriba el giro de la empresa extranjera" 
+                        onChange={handleChangeText}
+                        disabled={aboutCompany.isNational || notgrabado}
+                        value={aboutCompany.foreingLineBusiness}
+                        name="foreingLineBusiness"/>
+                </div>
+            </div>
+            {
+                data.others && data.others.map((e,index) => {
+                    if(e.section === "Sobre la empresa"){
+                        var one = 'Ingrese el ';
+                        var two = e.name;
+                        var texto = one + two;
+                        return (
+                            <div>
+                                <div className="rowsOthers">{texto}</div>
+                                <div className="row rows" style={{"paddingTop":"10px !important"}}>
+                                    <Form.Control placeholder={texto}
+                                    onChange={handleChangeOthers}
+                                    value={e.value}
+                                    disabled = {notgrabado}
+                                    name={e.name}/>
+                                </div>
+                            </div>
+                        )
+                    }
+                })
+            }
         </div>
     )
 }

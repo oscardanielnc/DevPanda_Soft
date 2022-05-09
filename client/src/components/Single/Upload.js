@@ -54,7 +54,7 @@ export default function Upload (props) {
                 onDrop={onDrop}
             >
                 <div className="drop-file-input__label">
-                    <i className="bi bi-upload" style={{"font-size":"35px"}}></i>
+                    <i className="bi bi-upload" style={{"fontSize":"35px"}}></i>
                     <p>Arrastra & Suelta tus archivos aquí</p>
                 </div>
                 <input type="file" value="" onChange={onFileDrop}/>

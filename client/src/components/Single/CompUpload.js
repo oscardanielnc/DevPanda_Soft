@@ -10,18 +10,15 @@ export default function CompUpload (props){
     const onFileChange = (files) => {
         console.log(files);
     }
-
     return(
         <div className="boxUpload">
             <h2 className="headUpload">
-                Archivos Subidos
+                {props.name}                
             </h2>
             <Upload
                 onFileChange={(files) => onFileChange(files)}
-            />
-            {/* <LoadingButton /> */}
+            />           
         </div>
-    );
-    
+    );   
 
 }

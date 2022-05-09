@@ -4,42 +4,72 @@ import { Button, Table,Form,InputGroup,FormControl } from 'react-bootstrap';
 import './CalificationFormStudent.scss';
 
 
-export default function CalificationFormStudent (props) {
-    const {calification,setCalification} = props;
-    let pass=(calification.state==="A")?true:false;
-    let disapproved=(calification.state==="D")?true:false;
-    let unrated=(calification.state==="U")?true:false;
+export default function CalificationFormStudent ({data, setData, notgrabado}) {
+
+    const {calification} = data;
+
+    
+    let pass=(data.approvalState==="Aprobado")?true:false;
+    let disapproved=(data.approvalState==="Desaprobado")?true:false;
+    let unrated=(data.approvalState==="Sin calificar")?true:false;
+    let observed=(data.approvalState==="Observado")?true:false;
+
     const changeStatePassed = e => {
         pass=!pass;
-        setCalification({
-            ...calification,
-            state:"A"
+        setData({
+            ...data,
+            approvalState: "Aprobado",
+            calification: {
+                ...data.calification,
+                aprobado: true
+            }
         })
     }
 
     const changeStateDisapproved = e => {
         disapproved=!disapproved;
-        setCalification({
-            ...calification,
-            state:"D"
+        setData({
+            ...data,
+            approvalState: "Desaprobado",
+            calification: {
+                ...data.calification,
+                aprobado: false
+            }
         })
     }
 
     const changeStateUnrated = e => {
         unrated=!unrated;
-        setCalification({
-            ...calification,
-            state:"U"
+        setData({
+            ...data,
+            approvalState: "Sin calificar",
+            calification: {
+                ...data.calification,
+                aprobado: false
+            }
         })
     }
-
+    
+    const changeStateObserved = e => {
+        observed=!observed;
+        setData({
+            ...data,
+            approvalState: "Observado",
+            calification: {
+                ...data.calification,
+                aprobado: false
+            }
+        })
+    }
     const changeComments = e => {
-        setCalification({
-            ...calification,
-            [e.target.name]: e.target.value
+        setData({
+            ...data,
+            calification: {
+                ...data.calification,
+                [e.target.name]: e.target.value
+            }
         })
     }
-
     return (
         <div className="container chartCalificationFormStudent">
             <nav className="navbar navbar-fixed-top navbar-inverse bg-inverse "style={{ backgroundColor: "#E7E7E7"}}>
@@ -60,6 +90,7 @@ export default function CalificationFormStudent (props) {
                             label="Aprobado"
                             name="Aprobado"
                             type="radio"
+                            disabled={notgrabado}
                             id={`inline-radio-1`}
                             checked={pass}
                             onChange={changeStatePassed}
@@ -70,8 +101,19 @@ export default function CalificationFormStudent (props) {
                             name="Desaprobado"
                             type="radio"
                             id={`inline-radio-2`}
+                            disabled={notgrabado}
                             checked={disapproved}
                             onChange={changeStateDisapproved}
+                        />
+                        <Form.Check
+                            inline
+                            label="Observado"
+                            name="Observado"
+                            type="radio"
+                            id={`inline-radio-3`}
+                            disabled={notgrabado}
+                            checked={observed}
+                            onChange={changeStateObserved}
                         />
                         <Form.Check
                             inline
@@ -79,6 +121,7 @@ export default function CalificationFormStudent (props) {
                             name="SinCalificar"
                             type="radio"
                             id={`inline-radio-3`}
+                            disabled={notgrabado}
                             checked={unrated}
                             onChange={changeStateUnrated}
                         />
@@ -95,10 +138,11 @@ export default function CalificationFormStudent (props) {
                         onChange={changeComments}
                         value={calification.comments}
                         name="comments"
+                        disabled={notgrabado}
                         style={{"marginBottom":"10px !important"}}
                         as="textarea"
                         rows={6}/>
-            </div>
+            </div>  
             <div className="row rows" >
                 <div className="col-sm-2 subtitles">
                 </div>
@@ -110,7 +154,8 @@ export default function CalificationFormStudent (props) {
                 </div>
                 <div className="col-sm-2 subtitles">
                 </div>
-            </div>    
+            </div>  
+            
         </div>
     )
 }

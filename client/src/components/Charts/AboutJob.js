@@ -18,6 +18,22 @@ export default function AboutJob ({data, setData, notgrabado}) {
         console.log(data)
     }
 
+    const handleChangeOthers = (e) => {
+        const newOthers = data.others.map(elem => {
+            if(elem.name === e.target.name) 
+                return {
+                    section: "Sobre el puesto",
+                    value: e.target.value,
+                    name: e.target.name
+                }
+            return elem;
+        })
+        setData({
+            ...data,
+            others: newOthers
+        })
+    }
+
     return (
         <div className="container chartAboutJob">
              <nav className="navbar navbar-fixed-top navbar-inverse bg-inverse "style={{ backgroundColor: "#E7E7E7"}}>
@@ -54,7 +70,27 @@ export default function AboutJob ({data, setData, notgrabado}) {
                     rows={6}
                     />
             </div>
-            
+            {
+                data.others && data.others.map((e,index) => {
+                    if(e.section === "Sobre el puesto"){
+                        var one = 'Ingrese el ';
+                        var two = e.name;
+                        var texto = one + two;
+                        return (
+                            <div>
+                                <div className="rowsOthers">{texto}</div>
+                                <div className="row rows" style={{"paddingTop":"10px !important"}}>
+                                    <Form.Control placeholder={texto}
+                                    onChange={handleChangeOthers}
+                                    value={e.value}
+                                    disabled = {notgrabado}
+                                    name={e.name}/>
+                                </div>
+                            </div>
+                        )
+                    }
+                })
+            }
         </div>
     )
 }

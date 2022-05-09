@@ -1,7 +1,7 @@
 import {API_VERSION, BASE_PATH, PANDA_KEY} from './config';
 
-export function selectSubmittedInscriptionForm(fidAlumnoProceso) {
-    const url = `${BASE_PATH}/${API_VERSION}/inscriptionForm-selectSubmittedInscriptionForm/${fidAlumnoProceso}`;
+export function selectSubmittedInscriptionForm(idAlumno) {
+    const url = `${BASE_PATH}/${API_VERSION}/inscriptionForm-selectSubmittedInscriptionForm/${idAlumno}`;
     const params = {
         method: "GET",
         headers: {
@@ -27,31 +27,59 @@ export function selectSubmittedInscriptionForm(fidAlumnoProceso) {
             }
         })
 }
-// export function specialtyInsertApi(specialty) {
-//     const url = `${BASE_PATH}/${API_VERSION}/specialty`;
-//     const params = {
-//         method: "POST",
-//         headers: {
-//             "Content-Type": "application/json",
-//             authorization: PANDA_KEY
-//         },
-//         body: JSON.stringify(specialty)
-//     }
+ export function registrationInsertApiStudent({data}) {
+     const url = `${BASE_PATH}/${API_VERSION}/specialty`;
+     const params = {
+         method: "POST",
+         headers: {
+             "Content-Type": "application/json",
+             authorization: PANDA_KEY
+        },
+         body: JSON.stringify(data)
+     }
 
-//     return fetch(url, params)
-//         .then(response => {
-//             return response.json()
-//         })
-//         .then(result => {
-//             return {
-//                 msg: result.message,
-//                 success: true
-//             }
-//         })
-//         .catch(err => {
-//             return {
-//                 msg: err.message,
-//                 success: false
-//             }
-//         })
-// }
+     return fetch(url, params)
+         .then(response => {
+             return response.json()
+         })
+         .then(result => {
+             return {
+                 msg: result.message,
+                 success: true
+             }
+         })
+         .catch(err => {
+             return {
+                 msg: err.message,
+                 success: false
+             }
+         })
+ }
+ export function registrationUpdateApi({data}) {
+    const url = `${BASE_PATH}/${API_VERSION}/specialty`;
+    const params = {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            authorization: PANDA_KEY
+       },
+        body: JSON.stringify(data)
+    }
+
+    return fetch(url, params)
+        .then(response => {
+            return response.json()
+        })
+        .then(result => {
+            return {
+                msg: result.message,
+                success: true
+            }
+        })
+        .catch(err => {
+            return {
+                msg: err.message,
+                success: false
+            }
+        })
+}

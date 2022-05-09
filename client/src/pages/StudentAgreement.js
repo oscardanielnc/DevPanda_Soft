@@ -39,6 +39,53 @@ export default function StudentAgreement () {
         default: typeApprovalState = "success"; break;
     }
 
+    const datadummy = {
+        "idAlumno":1,
+        "numDocumentos":2,
+        "documento":{
+            "idDocumento":1,
+            "nombre":"convenioOscar",
+            "archivo":null,
+            "estadofaci":"entregado",
+            "estadoEspecialidad":"entregado"
+        },
+    }
+    const [data, setData] = useState(datadummy)
+    const numDocumentos=0;
+    let result=true;
+    const insert = async e => {
+        /*
+        e.preventDefault();
+        //tenemos que saber que se han entregado dos documentos, tanto el convenio como el plan de aprendizaje para poder hacer la subida
+        if(numDocumentos === 2){
+            let response=null;
+            response = await agreementAndPlanRegistration(data);
+            
+            if(response.success){
+                toast.success("Se entregó correctamente a revisión tu plan de aprendizaje y convenio", {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
+            }else{
+                toast.error('Ups, ha ocurrido un error', {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
+            }   
+        }
+        }*/
+        
+    }
     return (
         <LayoutBasic>
             <div className="container"  style={{"padding":"1px"}}>
