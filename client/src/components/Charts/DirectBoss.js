@@ -75,7 +75,7 @@ export default function DirectBoss ({data, setData, notgrabado}) {
                 </div>
             </div>
             {
-                data.others.map((e,index) => {
+                data.others && data.others.map((e,index) => {
                     if(e.section === "Sobre el jefe"){
                         var one = 'Ingrese el ';
                         var two = e.name;

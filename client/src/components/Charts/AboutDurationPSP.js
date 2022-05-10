@@ -119,7 +119,7 @@ export default function AboutDurationPSP ({data, setData, notgrabado}) {
                 </div>
             </div>
             {
-                data.others.map((e,index) => {
+                data.others && data.others.map((e,index) => {
                     if(e.section === "Sobre la PSP"){
                         var one = 'Ingrese el ';
                         var two = e.name;

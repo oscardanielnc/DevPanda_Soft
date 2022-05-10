@@ -96,7 +96,7 @@ export default function GeneralData ({data, setData, imStudent=true}) {
                 </div>
             </div>
             {
-                data.others.map((e,index) => {
+                data.others && data.others.map((e,index) => {
                     if(e.section === "Datos Generales"){
                         var one = 'Ingrese el ';
                         var two = e.name;

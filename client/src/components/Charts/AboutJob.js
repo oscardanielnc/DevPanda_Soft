@@ -71,7 +71,7 @@ export default function AboutJob ({data, setData, notgrabado}) {
                     />
             </div>
             {
-                data.others.map((e,index) => {
+                data.others && data.others.map((e,index) => {
                     if(e.section === "Sobre el puesto"){
                         var one = 'Ingrese el ';
                         var two = e.name;

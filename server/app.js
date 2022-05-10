@@ -1,5 +1,6 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+const cors = require('cors');
 
 const app = express()
 const { API_VERSION } = require('./config');
@@ -11,9 +12,11 @@ const specialtyRoutes =  require('./routers/specialty');
 const agreementLearningPlanRoutes =  require('./routers/agreementLearningPlan');
 const inscriptionFormRoutes = require('./routers/inscriptionForm');
 const authRoutes =  require('./routers/auth');
+const filesRoutes =  require('./routers/files');
 
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
+app.use(cors());
 //app.use(pandaKey);
 
 // Configure Header HTTP
@@ -31,5 +34,6 @@ app.use(`/api/${API_VERSION}`, specialtyRoutes);
 app.use(`/api/${API_VERSION}`, agreementLearningPlanRoutes);
 app.use(`/api/${API_VERSION}`, inscriptionFormRoutes);
 app.use(`/api/${API_VERSION}`, authRoutes);
+app.use(`/api/${API_VERSION}`, filesRoutes);
 
 module.exports = app;
