@@ -32,7 +32,7 @@ export default function(){
     }
     return(
         <LayoutBasic>
-            <div className="container">
+            <div className="container deliverables">
             <div className="row row1" style={{textAlign: "left",marginTop:"25px"}}>
                     <h1>Certificado del taller</h1>
                 </div>
