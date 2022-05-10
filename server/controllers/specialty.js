@@ -41,6 +41,7 @@ function selectAll(req, res) {
                 message: "Error inesperado en el servidor"
             })
         }
+        
         res.status(200).send(result)
     });
 

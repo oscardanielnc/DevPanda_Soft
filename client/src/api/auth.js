@@ -19,6 +19,9 @@ function willExpireToken(accessToken) {
     return now > expire;
 }
 
+export function logout() {
+    localStorage.removeItem("ACCESS_TOKEN")
+}
 
 export function signInApi (email) {
     const url = `${BASE_PATH}/${API_VERSION}/sign-in`

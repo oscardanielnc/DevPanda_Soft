@@ -1,43 +1,109 @@
-import React from "react";
+import React,{ useState } from "react";
 import LayoutCoordFACI from "../layouts/LayoutCoordFACI";
 import StateViewer,{StatesViewType} from "../components/StateViewer/StateViewer";
 import DocumentPlusIcon from "../components/DocumentPlusIcon/DocumentPlusIcon";
 import { Button, Form} from "react-bootstrap";
 import Convenio from "../asserts/img/pdf/Convenio.pdf"
 import "./AgreementReview.scss";
-import CompUpload from "../components/Single/CompUpload";
-export default function AgreementReview (){      
-    let estadoCalificadoFACI= "A";//"A" es aprobado, "O" es observado, , "P" pendiente de aprobación
-    let estadoCalificadoEsp = "P"
-    let comentarioCalificado="";
+import FileManagement from "../components/FileManagement/FileManagement";
 
-    if(estadoCalificadoFACI === "A"){
-        estadoCalificadoFACI="success";
-        comentarioCalificado="Aprobado";
+// "fileData" : {           
+//     //TO DO
+// },
+
+// "fileReview" :{
+//     //TO DO
+// },
+
+const dataDummy = {
+    "faciState" : "Aprobado", // consumir API GET "Aprobado,Pendiente de revision, Observado"
+    "espState" : "Pendiente de revision",// consumir API GET "Aprobado,Pendiente de revision, Observado"
+    "reviewCoord" :{
+        "documentState" : "Observado", //"Aprobado,Pendiente de revision, Observado"
+       "observations" : "JIANFRANCO",           
     }
-    if(estadoCalificadoFACI === "O"){
-        estadoCalificadoFACI = "warning";
-        comentarioCalificado="Observado";
-    }    
-    if(estadoCalificadoFACI === "P"){
-        estadoCalificadoFACI = "pending";
-        comentarioCalificado = "Pendiente de aprobación";
+}
+
+export default function AgreementReview (){      
+        
+
+    const [data, setData] = useState(dataDummy);
+
+    const  save = e => {
+		e.preventDefault();//Permite ya no recargar el formulario
+		//console.log(data);
+	};
+
+    /* --- */
+    let pass=(data.reviewCoord.documentState==="Aprobado")?true:false;
+    let pending=(data.reviewCoord.documentState==="Pendiente de revision")?true:false;
+    let observed=(data.reviewCoord.documentState==="Observado")?true:false;
+
+    const changeStatePassed = e => {
+        pass=!pass;
+        setData({
+            ...data,            
+            reviewCoord: {
+                ...data.reviewCoord,
+                documentState : "Aprobado"
+            }
+        })
     }
-    if(estadoCalificadoEsp === "A"){
-        estadoCalificadoEsp="success";
-        comentarioCalificado="Aprobado";
+
+    const changeStatePending = e => {
+        pending=!pending;
+        setData({
+            ...data,            
+            reviewCoord: {
+                ...data.reviewCoord,
+                documentState : "Pendiente de revision"
+            }
+        })
     }
-    if(estadoCalificadoEsp === "O"){
-        estadoCalificadoEsp = "warning";
-        comentarioCalificado="Observado";
-    }    
-    if(estadoCalificadoEsp === "P"){
-        estadoCalificadoEsp = "pending";
-        comentarioCalificado = "Pendiente de aprobación";
+    
+    const changeStateObserved = e => {
+        observed=!observed;
+        setData({
+            ...data,            
+            reviewCoord: {
+                ...data.reviewCoord,
+                documentState : "Observado"
+            }
+        })
     }
+
+    const changeComments = e => {
+        setData({
+            ...data,
+            reviewCoord: {
+                ...data.reviewCoord,
+                [e.target.name]: e.target.value
+            }
+        })
+    }
+
+
+    /* --- */
+
+    let typeApprovalStateFACI = "";
+    switch(data.faciState) {
+        case "Observado": typeApprovalStateFACI = "warning"; break;
+        case "Aprobado": typeApprovalStateFACI = "success"; break;
+        case "Pendiente de revision": typeApprovalStateFACI = "pending"; break;        
+        default: typeApprovalStateFACI = "error"; break;
+    }
+    let typeApprovalStateEsp = "";
+    switch(data.espState) {
+        case "Observado": typeApprovalStateEsp = "warning"; break;
+        case "Aprobado": typeApprovalStateEsp = "success"; break;
+        case "Pendiente de revision": typeApprovalStateEsp = "pending"; break;        
+        default: typeApprovalStateEsp = "error"; break;
+    }
+
+
     return (
         <LayoutCoordFACI>
-           <div className="container principalFinalReview" style={{"padding":"1px"}}>               
+           <div className="container principalFinalReview" style={{"padding":"1px"}} onSubmit={save} >               
                 <div className="row titulo" style={{textAlign: "left",marginTop:"25px",}}>
                     <h1>Revisión de Convenio</h1>
                 </div>
@@ -56,8 +122,8 @@ export default function AgreementReview (){
                         <h2 className="subtitulo">Estado de la revisión</h2>
                     </div>
                     <div className="row normalrow" style={{marginTop:"10px"}}>
-                        <StateViewer states={[StatesViewType[estadoCalificadoFACI]("Aprobación FACI", comentarioCalificado),
-                        StatesViewType[estadoCalificadoEsp]("Aprobación Especialidad", comentarioCalificado)]}/>
+                        <StateViewer states={[StatesViewType[typeApprovalStateFACI]("Aprobación FACI", data.faciState),
+                        StatesViewType[typeApprovalStateEsp]("Aprobación Especialidad", data.espState)]}/>
                     </div>
                 </div>
                 <div className="shadowbox">
@@ -87,6 +153,8 @@ export default function AgreementReview (){
                                         name="group1"
                                         type={type}
                                         id={`inline-${type}-1`}
+                                        checked={pass}
+                                        onChange={changeStatePassed}
                                     />
                                     <Form.Check
                                         inline
@@ -94,6 +162,8 @@ export default function AgreementReview (){
                                         name="group1"
                                         type={type}
                                         id={`inline-${type}-2`}
+                                        checked={observed}
+                                        onChange={changeStateObserved}
                                     />
                                     <Form.Check
                                         inline                                    
@@ -101,6 +171,8 @@ export default function AgreementReview (){
                                         name="group1"
                                         type={type}
                                         id={`inline-${type}-3`}
+                                        checked={pending}
+                                        onChange={changeStatePending}
                                     />
                                 </div>
                             ))}
@@ -109,7 +181,7 @@ export default function AgreementReview (){
                 </div>
                 <div className="shadowbox">
                     <div className="row row1" style={{textAlign: "left",marginTop:"25px"}}>                                       
-                        <CompUpload name="Documentos a enviar al alumno"/>                        
+                        <FileManagement name="Documentos a enviar al alumno"/>                        
                     </div>
                 </div>
                 <div className="shadowbox">
@@ -117,7 +189,12 @@ export default function AgreementReview (){
                         <h2 className="subtitulo">Observaciones</h2>  
                         <Form>                        
                             <Form.Group className="mb-3" controlId="ControlTextarea1">                            
-                                <Form.Control as="textarea" rows={10}  />
+                                <Form.Control 
+                                    as="textarea" 
+                                    rows={10} 
+                                    value = {data.reviewCoord.observations}
+                                    onChange = {changeComments}                                    
+                                />
                             </Form.Group>
                         </Form>                           
                     </div>

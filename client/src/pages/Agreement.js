@@ -1,13 +1,13 @@
 import React from "react";
 import LayoutBasic from "../layouts/LayoutBasic";
 import './Agreement.scss';
-import CompUpload from '../components/Single/CompUpload';
+import FileManagement from '../components/FileManagement/FileManagement';
 
 export default function Agreement (){
     return(
         <LayoutBasic>
             <div className="container">                
-                <CompUpload/>
+                <FileManagement/>
             </div>
         </LayoutBasic>
     );
