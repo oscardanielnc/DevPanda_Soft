@@ -11,7 +11,7 @@ import Agreement from "../pages/Agreement";
 import AgreementReview from "../pages/AgreementReview";
 import StudentAgreement from "../pages/StudentAgreement";
 import Deliverables from "../pages/Deliverables";
-
+import FinalReport from "../pages/FinalReport"
 const routes = [
     {
         path: "/",
@@ -47,21 +47,21 @@ const routes = [
         path: "/agreement",
         exact: true,
         component: Agreement,
-    },    
-    {   
-        path: "/FACInavbar", // esto no lo toco porque lo vamos a eliminar, no es una pagina
-        exact: true,
-        component: FACINavbar,
-    },    
+    },
     {
         path: "/supervisor-selection",
         exact: true,
         component: SupervisorSelection,
     },
     {
-        path: "/agreementreview",
+        path: "/agreement-review",
         exact: true,
         component: AgreementReview,
+    },
+    {
+        path: "/final-report",
+        exact: true,
+        component: FinalReport,
     },
     {
         path: "/deliverables",

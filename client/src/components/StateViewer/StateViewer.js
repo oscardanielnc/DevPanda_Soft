@@ -5,6 +5,7 @@ import './StateViewer.scss';
 const SuccessImage = "./StateViewerImages/success.png"
 const FileEmptyImage = "./StateViewerImages/fileEmpty.png"
 const PendingImage = "./StateViewerImages/pending.png"
+const ErrorImage = "./StateViewerImages/error.png"
 const WarningImage = "./StateViewerImages/warning.png"
 
 export class StatesViewType {
@@ -25,6 +26,9 @@ export class StatesViewType {
     }
     static warning( title, description){
         return  new StatesViewType(title, WarningImage, description)
+    }
+    static error( title, description){
+        return  new StatesViewType(title, ErrorImage, description)
     }
 }
 

@@ -12,8 +12,32 @@
     @media screen and (max-width: 575.2px){
        height: 100%;
     }
-}
+    &__titulo{
+        color: $light-color;
+        font-size: 12px;
+        padding-left: 5px;
+        text-align: center;
+        display:inline;
+        @media screen and (max-width: 575.2px){
+            
+        }
+    }
+    &__progress{
+        background-color: $primary-color !important;
+        border-radius: 0px !important;
+        border: 0px !important;
+        color: white !important ;
+        display: grid !important;
+        width: auto !important;
+        height: 100% !important;
+        text-align:  left !important;
+        cursor: default !important;
 
+    }
+}
+.displayNone {
+    display: none;
+}
 
 
 div.content{
@@ -38,21 +62,23 @@ div.content{
     }
 }
 
-.dataRow{
-    width: auto;
-    height: 100%;
-    list-style-type: none;
-
-    padding: 5px !important;
-    display: 8-ms-inline-grid;
+.dataRow {
+    text-decoration: auto;
+    display: flex;
+    align-items: center;
 
     @media screen and (max-width: 575.2px){
             display: none;
     }
+    &:hover {
+        background-color: $primary-color-hover;
+    }
 }
 
 .dataRow.current.dataRow.active *{
-    color: $warning-color;
+    i {
+        background-color: $warning-color;
+    }
 }
 
 
@@ -62,24 +88,13 @@ div.content{
 
 
 .dataRow.active *{  
-        color : $success-color;  
+    i {
+        background-color: $success-color;
+    }
 }
 
 .dataRow a:hover *{
     color : $primary-color-hover;
-}
-
-.progress{
-    background-color: $primary-color !important;
-    border-radius: 0px !important;
-    border: 0px !important;
-    color: white !important ;
-    display: grid !important;
-    width: auto !important;
-    height: 100% !important;
-    text-align:  left !important;
-    cursor: default !important;
-
 }
 
 .progress:focus{
@@ -107,27 +122,26 @@ div.content{
     }
 }
 
-.titulo{
-    color: $light-color;
-    font-size: 12px;
-    padding-left: 5px;
-    text-align: center;
-    display:inline;
-    @media screen and (max-width: 575.2px){
-        
-    }
-}
+
 
 .texto, .icono  {
     color: $light-color !important;
-    font-size: 12px;
+    //font-size: 12px;
     text-align: left;
     display:inline;
-    padding-left: 5px !important;
+    //padding-left: 5px !important;
     @media screen and (max-width: 575.2px){
         display: none;
     }
-  
+    
+    i {
+        color : $primary-color;
+        font-size: 2em;
+        padding: 2px;
+        display: flex;
+        border-radius: 50%;
+        background-color: white;
+    }
 }
 
 

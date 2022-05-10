@@ -3,11 +3,11 @@ import LogoTelefono from "../asserts/img/png/telefono.PNG";
 import LogoSobre from "../asserts/img/png/sobreEmail.PNG";
 import LogoDerechos from "../asserts/img/png/derechosReservados.PNG";
 import LogoMapa from "../asserts/img/png/googleMaps.png";
-import LogoInstagram from "../asserts/img/png/logoInstagram.PNG";
-import LogoTikTok from "../asserts/img/png/logoTikTok.PNG";
-import LogoFacebook from "../asserts/img/png/logoFacebook.PNG";
-import LogoLinkedin from "../asserts/img/png/logoLinkedin.PNG";
-import LogoTwitter from "../asserts/img/png/logoTwitter.PNG";
+import LogoInstagram from "../asserts/img/svg/Boton IG.svg";
+import LogoTikTok from "../asserts/img/svg/Boton Tiktok.svg";
+import LogoFacebook from "../asserts/img/svg/Boton Facebook.svg";
+import LogoLinkedin from "../asserts/img/svg/Logo LinkedIn.svg";
+import LogoTwitter from "../asserts/img/svg/Boton Twitter.svg";
 import './Footer.scss';
 
 export default function Footer (props) {
@@ -21,17 +21,11 @@ export default function Footer (props) {
                 </div>
                 <div className="footer__leftcontactanosInfo">
                     <div>
-                        <img src={LogoTelefono} alt="Telefono"
-                        style={{marginLeft: "8px",marginRight:"5px"}}
-                        width="20" 
-                        height="20" />
+                        <i class="bi bi-telephone-fill telfIcon"></i>
                         959300449 de L-V de 9:00 am a 1:00 pm<br/>
                     </div>
                     <div>
-                        <img src={LogoSobre} alt="SobreEmail"
-                        style={{marginLeft: "8px",marginRight:"5px"}}
-                        width="20" 
-                        height="20" />
+                        <i className = "bi bi-envelope-fill mailIcon"></i>
                         informes-fci@pucp.edu.pe<br/>
                     </div>
                 </div>
@@ -50,12 +44,9 @@ export default function Footer (props) {
                     <div>
                         Av. Universitaria 1801 San Miguel, 15088, Lima - Perú<br/>
                     </div>
-                    <img src={LogoMapa} alt="GoogleMapa"
-                        style={{marginLeft: "0px",marginRight:"5px"}}
-                        width="15" 
-                        height="18" />
+                    <i className="bi bi-geo-alt-fill mapIcon"></i>
                     <a href="https://www.google.com/maps/place/Pontificia+Universidad+Cat%C3%B3lica+del+Per%C3%BA/@-12.069512,-77.0793592,15z/data=!4m2!3m1!1s0x0:0xd7a0bfb797e5862e?sa=X&ved=2ahUKEwibiLP_qLX3AhUoGLkGHc7mDKYQ_BJ6BAhkEAU" 
-                    className="icon-linkedin" style={{marginTop:"20px"}}>Ver ubicación en Google Maps</a>
+                     style={{marginTop:"25px" , lineHeight:"1em"}}>Ver ubicación en Google Maps</a>
                     <div>
                         <br/>
                     </div>

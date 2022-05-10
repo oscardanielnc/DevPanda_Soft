@@ -4,41 +4,41 @@ import { Button, Table,Form,InputGroup,FormControl } from 'react-bootstrap';
 import './AboutCompany.scss';
 
 
-export default function AboutCompany (props) {
-    const {aboutCompany, setAboutCompany} = props;
-    let notgrabadoNational=(aboutCompany.RUCNacional==null||aboutCompany.RUCNacional)?true:false;
-    let notgrabadoForeigner=(aboutCompany.NombreExtranjera==null||aboutCompany.NombreExtranjera)?true:false;
-    let notgrabado=((notgrabadoNational&&!notgrabadoForeigner)||(!notgrabadoNational&&notgrabadoForeigner))?true:false;
-    const changeNational = e=>{
-        setAboutCompany({
-            ...aboutCompany,
-            [e.target.name]: e.target.checked
+export default function AboutCompany ({data, setData, notgrabado}) {
+    const {aboutCompany} = data;
+
+    const handleChangeText = (e) => {
+        setData({
+            ...data,
+            aboutCompany: {
+                ...data.aboutCompany,
+                [e.target.name]: e.target.value
+            }
         })
     }
-    const changeForeigner = e=>{
-        setAboutCompany({
-            ...aboutCompany,
-            [e.target.name]: !(e.target.checked)
+    const handleChangeCheck = (e) => {
+        setData({
+            ...data,
+            aboutCompany: {
+                ...data.aboutCompany,
+                isNational: !data.aboutCompany.isNational
+            }
         })
     }
 
-    const changeRucNacional= e=>{
-        setAboutCompany({
-            ...aboutCompany,
-            [e.target.name]: e.target.value
+    const handleChangeOthers = (e) => {
+        const newOthers = data.others.map(elem => {
+            if(elem.name === e.target.name) 
+                return {
+                    section: "Sobre la empresa",
+                    value: e.target.value,
+                    name: e.target.name
+                }
+            return elem;
         })
-    }
-
-    const changeInformacionNacional =e=>{
-        setAboutCompany({
-            ...aboutCompany,
-            [e.target.name]: e.target.value
-        })
-    }
-    const changeNombreExtranjera=e=>{
-        setAboutCompany({
-            ...aboutCompany,
-            [e.target.name]: e.target.value
+        setData({
+            ...data,
+            others: newOthers
         })
     }
 
@@ -61,18 +61,18 @@ export default function AboutCompany (props) {
                             type="radio"
                             disabled={notgrabado}
                             id={`inline-radio-1`}
-                            checked={aboutCompany.National}
-                            onChange={changeNational}
+                            checked={aboutCompany.isNational}
+                            onChange={handleChangeCheck}
                         />
                         <Form.Check
                             inline
                             label="Extranjera"
-                            name="National"
+                            name="Extranjera"
                             type="radio"
                             disabled={notgrabado}
                             id={`inline-radio-2`}
-                            checked={!aboutCompany.National}
-                            onChange={changeForeigner}
+                            checked={!aboutCompany.isNational}
+                            onChange={handleChangeCheck}
                         />
                         </div>
                         </Form>
@@ -89,21 +89,21 @@ export default function AboutCompany (props) {
                 </div>
                 <div className="col-sm-7 subtitles">
                     <Form.Control placeholder="Ingrese RUC de la empresa" 
-                        onChange={changeRucNacional}
-                        disabled = {!aboutCompany.National || notgrabado}
-                        value={aboutCompany.RUCNacional}
-                        name="RUCNacional"
+                        onChange={handleChangeText}
+                        disabled = {!aboutCompany.isNational || notgrabado}
+                        value={aboutCompany.ruc}
+                        name="ruc"
                         style={{"marginBottom":"8px !important"}}/>
                 </div>
                 <div className="col-sm-4 subtitles">
-                    <Button variant="primary" style={{"marginBottom":"4px"}} disabled={!aboutCompany.National}>Buscar</Button>
+                    <Button variant="primary" style={{"marginBottom":"4px"}} disabled={!aboutCompany.isNational}>Buscar</Button>
                 </div>
                 <Form.Control className="Cuadro" style={{"marginLeft": "0px"}}
-                    placeholder=" " 
-                    onChange={changeInformacionNacional}
-                    disabled = {!aboutCompany.National || notgrabado}
-                    value={aboutCompany.InformacionNacional}
-                    name="InformacionNacional"
+                    placeholder="" 
+                    onChange={handleChangeText}
+                    disabled = {!aboutCompany.isNational || notgrabado}
+                    value={aboutCompany.info}
+                    name="info"
                     as="textarea"
                     rows={6}
                     />
@@ -113,12 +113,51 @@ export default function AboutCompany (props) {
             </div>
             <div className="row rows" >
                 <Form.Control placeholder="Escriba el nombre de la empresa" 
-                        onChange={changeNombreExtranjera}
-                        disabled = {aboutCompany.National || notgrabado}
-                        value={aboutCompany.NombreExtranjera}
-                        name="NombreExtranjera"
+                        onChange={handleChangeText}
+                        disabled = {aboutCompany.isNational || notgrabado}
+                        value={aboutCompany.foreignName}
+                        name="foreignName"
                         style={{"marginBottom":"10px !important"}}/>
             </div>
+            <div className="row rows">
+                <div className="col-sm-6 subtitles">
+                    <div>País</div>
+                    <Form.Control placeholder="Escriba el país de la empresa extranjera" 
+                        onChange={handleChangeText}
+                        disabled={aboutCompany.isNational || notgrabado}
+                        value={aboutCompany.foreignCountry}
+                        name="foreignCountry"/>
+                </div>
+                <div className="col-sm-6 subtitles">
+                    <div>Giro de la empresa</div>
+                    <Form.Control placeholder="Escriba el giro de la empresa extranjera" 
+                        onChange={handleChangeText}
+                        disabled={aboutCompany.isNational || notgrabado}
+                        value={aboutCompany.foreingLineBusiness}
+                        name="foreingLineBusiness"/>
+                </div>
+            </div>
+            {
+                data.others && data.others.map((e,index) => {
+                    if(e.section === "Sobre la empresa"){
+                        var one = 'Ingrese el ';
+                        var two = e.name;
+                        var texto = one + two;
+                        return (
+                            <div>
+                                <div className="rowsOthers">{texto}</div>
+                                <div className="row rows" style={{"paddingTop":"10px !important"}}>
+                                    <Form.Control placeholder={texto}
+                                    onChange={handleChangeOthers}
+                                    value={e.value}
+                                    disabled = {notgrabado}
+                                    name={e.name}/>
+                                </div>
+                            </div>
+                        )
+                    }
+                })
+            }
         </div>
     )
 }

@@ -9,38 +9,47 @@ import es from 'date-fns/locale/es';
 registerLocale('es', es);
 
 
-export default function AboutDurationPSP (props) {
-    const {aboutPSP,setAboutPSP} = props;
-    const [startDate, setStartDate] = useState(new Date());
-    const [endDate, setEndDate] = useState(new Date());
-    let notgrabado=(aboutPSP.dailyHours>0)?true:false;
-    const changeStartDate = e => {
-        setStartDate(e);
-        setAboutPSP({
-            ...aboutPSP,
-            dateStart:e
+export default function AboutDurationPSP ({data, setData, notgrabado}) {
+    const {aboutPSP} = data;
+
+    const handleChangeText = (e) => {
+        setData({
+            ...data,
+            aboutPSP: {
+                ...data.aboutPSP,
+                [e.target.name]: e.target.value
+            }
         })
     }
 
-    const changeEndDate = e => {
-        setEndDate(e);
-        setAboutPSP({
-            ...aboutPSP,
-            dateEnd:e
-        })
-    }
-    
-    const changeDailyHours = e => {
-        setAboutPSP({
-            ...aboutPSP,
-            [e.target.name]: e.target.value
+    const handleChangeDate = (e, name) => {
+        const day = (e.getDate()<10)? `0${e.getDate()}`: `${e.getDate()}`;
+        const month = (e.getMonth()<10)? `0${e.getMonth()}`: `${e.getMonth()}`;
+        const year = ((e.getFullYear()%100)<10)? `0${e.getFullYear()%100}`: `${e.getFullYear()%100}`;
+        const date = `${day}-${month}-${year}`;
+
+        setData({
+            ...data,
+            aboutPSP: {
+                ...data.aboutPSP,
+                [name]: date
+            }
         })
     }
 
-    const changeWeekHours = e => {
-        setAboutPSP({
-            ...aboutPSP,
-            [e.target.name]: e.target.value
+    const handleChangeOthers = (e) => {
+        const newOthers = data.others.map(elem => {
+            if(elem.name === e.target.name) 
+                return {
+                    section: "Sobre la PSP",
+                    value: e.target.value,
+                    name: e.target.name
+                }
+            return elem;
+        })
+        setData({
+            ...data,
+            others: newOthers
         })
     }
 
@@ -53,24 +62,25 @@ export default function AboutDurationPSP (props) {
                 <div className="col-sm-6 subtitles" >
                     <div>Fecha de inicio</div>
                     <DatePicker
-                        selected={startDate}
-                        onChange={changeStartDate}
+                        onChange={(e)=> handleChangeDate(e, "dateStart")}
                         locale="es"
                         disabled={notgrabado}
                         className="picker1"
                         dateFormat="dd-MM-yy"
                         name="dateStart"
+                        value={aboutPSP.dateStart}
                     />
                 </div>
                 <div className="col-sm-6 subtitles">
                     <div>Fecha de fin</div>
                     <DatePicker
-                        selected={endDate}
-                        onChange={changeEndDate}
+                        onChange={(e)=> handleChangeDate(e, "dateEnd")}
                         locale="es"
                         disabled={notgrabado}
                         className="picker2"
                         dateFormat="dd-MM-yy"
+                        name="dateEnd"
+                        value={aboutPSP.dateEnd}
                     />
                 </div>
             </div>
@@ -80,7 +90,7 @@ export default function AboutDurationPSP (props) {
                          <div className="col-sm-8 subtitles">
                          <div  className="horas">Horas Diarias Promedio</div>
                             <Form.Control placeholder="Ingrese número de horas diarias" 
-                                onChange={changeDailyHours}
+                                onChange={handleChangeText}
                                 value={aboutPSP.dailyHours}
                                 disabled={notgrabado}
                                 name="dailyHours"
@@ -97,7 +107,7 @@ export default function AboutDurationPSP (props) {
                          <div  className="horas">Horas Semanales Promedio</div>
                             <Form.Control placeholder="Ingrese número de horas semanales" 
                                 type="number"
-                                onChange={changeWeekHours}
+                                onChange={handleChangeText}
                                 value={aboutPSP.weekHours}
                                 disabled={notgrabado}
                                 name="weekHours"/>
@@ -108,6 +118,27 @@ export default function AboutDurationPSP (props) {
                     </div>
                 </div>
             </div>
+            {
+                data.others && data.others.map((e,index) => {
+                    if(e.section === "Sobre la PSP"){
+                        var one = 'Ingrese el ';
+                        var two = e.name;
+                        var texto = one + two;
+                        return (
+                            <div>
+                                <div className="rowsOthers">{texto}</div>
+                                <div className="row rows" style={{"paddingTop":"10px !important"}}>
+                                    <Form.Control placeholder={texto}
+                                    onChange={handleChangeOthers}
+                                    value={e.value}
+                                    disabled = {notgrabado}
+                                    name={e.name}/>
+                                </div>
+                            </div>
+                        )
+                    }
+                })
+            }
         </div>
     )
 }

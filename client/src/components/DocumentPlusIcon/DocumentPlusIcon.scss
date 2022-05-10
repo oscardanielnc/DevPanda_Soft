@@ -8,12 +8,12 @@
         margin-right: 8px;
     }
     &__name {
-        color: $info-color;
+        color: $link-color;
         text-decoration: underline;
         cursor: pointer;
 
         &:hover {
-            color: $primary-color-hover;
+            color: $info-color;
         }
     }
 }
