@@ -4,16 +4,27 @@ const inscriptionFormController = require("../controllers/inscriptionForm");
 
 const api = express.Router();
 
-api.get("/inscriptionForm-selectSubmittedInscriptionForm/:fidAlumnoProceso",inscriptionFormController.selectSubmittedInscriptionForm);
-api.get("/inscriptionForm-selectFieldsInscriptionFormSpecialty/:fidEspecialidad",inscriptionFormController.selectFieldsInscriptionFormSpecialty);
-api.get("/inscriptionForm-selectDocumentsSubmittedInscriptionForm/:fidEntregaInscripcion",inscriptionFormController.selectDocumentsSubmittedInscriptionForm);
-api.get("/inscriptionForm-selectFieldsFilledInscriptionFormStudent/:fidAlumnoProceso",inscriptionFormController.selectFieldsFilledInscriptionFormStudent);
+// api.get("/inscriptionForm-SubmittedInscriptionForm/:fidAlumnoProceso",inscriptionFormController.selectSubmittedInscriptionForm);
+// api.get("/inscriptionForm-FieldsInscriptionFormSpecialty/:fidEspecialidad",inscriptionFormController.selectFieldsInscriptionFormSpecialty);
+// api.get("/inscriptionForm-DocumentsSubmittedInscriptionForm/:fidEntregaInscripcion",inscriptionFormController.selectDocumentsSubmittedInscriptionForm);
+// api.get("/inscriptionForm-FieldsFilledInscriptionFormStudent/:fidAlumnoProceso",inscriptionFormController.selectFieldsFilledInscriptionFormStudent);
+// api.post("/inscriptionForm-SubmittedInscriptionForm",inscriptionFormController.insertSubmittedInscriptionForm);
+// api.post("/inscriptionForm-DocumentSubmittedInscriptionForm",inscriptionFormController.insertDocumentSubmittedInscriptionForm);
+// api.post("/inscriptionForm-FieldFilledInscriptionForm",inscriptionFormController.insertFieldFilledInscriptionForm);
+// api.put("/inscriptionForm-DocumentSubmittedInscriptionForm",inscriptionFormController.updateDocumentSubmittedInscriptionForm);
 
-api.post("/inscriptionForm-insertSubmittedInscriptionForm",inscriptionFormController.insertSubmittedInscriptionForm);
-api.post("/inscriptionForm-insertDocumentSubmittedInscriptionForm",inscriptionFormController.insertDocumentSubmittedInscriptionForm);
-api.post("/inscriptionForm-insertFieldFilledInscriptionForm",inscriptionFormController.insertFieldFilledInscriptionForm);
 
-api.put("/inscriptionForm-updateSubmittedInscriptionForm",inscriptionFormController.updateSubmittedInscriptionForm);
-api.put("/inscriptionForm-updateFieldFilledInscriptionForm",inscriptionFormController.updateFieldFilledInscriptionForm);
-api.put("/inscriptionForm-updateDocumentSubmittedInscriptionForm",inscriptionFormController.updateDocumentSubmittedInscriptionForm);
+
+
+//SIRVEN
+api.get("/studentInscriptionForm/:idAlumno",inscriptionFormController.getstudentInscriptionForm);
+api.get("/studentListInscriptionForm/:idEspecialidad",inscriptionFormController.getListStudentsInscriptionForm);
+api.put("/studentDataInscriptionForm",inscriptionFormController.updateInscriptionForm);
+api.put("/studentFieldsInscriptionForm",inscriptionFormController.updateFieldsInscriptionForm);
+
+
+
+
+
+
 module.exports = api;
