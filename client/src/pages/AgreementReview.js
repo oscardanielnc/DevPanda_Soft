@@ -117,7 +117,7 @@ export default function AgreementReview (){
                         <h2 className="subtitulo">Observaciones</h2>  
                         <Form>                        
                             <Form.Group className="mb-3" controlId="ControlTextarea1">                            
-                                <Form.Control as="textarea" rows={10} />
+                                <Form.Control as="textarea" rows={10}  />
                             </Form.Group>
                         </Form>                           
                     </div>
