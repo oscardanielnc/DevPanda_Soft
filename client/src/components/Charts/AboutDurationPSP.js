@@ -39,11 +39,14 @@ export default function AboutDurationPSP ({data, setData, notgrabado}) {
 
     const handleChangeOthers = (e) => {
         const newOthers = data.others.map(elem => {
-            if(elem.name === e.target.name) 
+            if(elem.nombreCampo === e.target.name)
                 return {
-                    section: "Sobre la PSP",
-                    value: e.target.value,
-                    name: e.target.name
+                    idCampoProceso:elem.idCampoProceso,
+                    idCampoLlenado:elem.idCampoLlenado,
+                    nombreCampo: e.target.name,
+                    seccion: "Sobre la PSP",
+                    flag: elem.flag,
+                    valorAlumno: e.target.value   
                 }
             return elem;
         })
@@ -120,9 +123,9 @@ export default function AboutDurationPSP ({data, setData, notgrabado}) {
             </div>
             {
                 data.others && data.others.map((e,index) => {
-                    if(e.section === "Sobre la PSP"){
+                    if(e.seccion === "Sobre la PSP"){
                         var one = 'Ingrese el ';
-                        var two = e.name;
+                        var two = e.nombreCampo;
                         var texto = one + two;
                         return (
                             <div>
@@ -130,9 +133,9 @@ export default function AboutDurationPSP ({data, setData, notgrabado}) {
                                 <div className="row rows" style={{"paddingTop":"10px !important"}}>
                                     <Form.Control placeholder={texto}
                                     onChange={handleChangeOthers}
-                                    value={e.value}
+                                    value={e.valorAlumno}
                                     disabled = {notgrabado}
-                                    name={e.name}/>
+                                    name={e.nombreCampo}/>
                                 </div>
                             </div>
                         )

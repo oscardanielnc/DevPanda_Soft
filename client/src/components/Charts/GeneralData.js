@@ -18,11 +18,14 @@ export default function GeneralData ({data, setData, imStudent=true}) {
     }
     const handleChangeOthers = (e) => {
         const newOthers = data.others.map(elem => {
-            if(elem.name === e.target.name) 
+            if(elem.nombreCampo === e.target.name)
                 return {
-                    section: "Datos Generales",
-                    value: e.target.value,
-                    name: e.target.name
+                    idCampoProceso:elem.idCampoProceso,
+                    idCampoLlenado:elem.idCampoLlenado,
+                    nombreCampo: e.target.name,
+                    seccion: "Datos Generales",
+                    flag: elem.flag,
+                    valorAlumno: e.target.value   
                 }
             return elem;
         })
@@ -97,9 +100,9 @@ export default function GeneralData ({data, setData, imStudent=true}) {
             </div>
             {
                 data.others && data.others.map((e,index) => {
-                    if(e.section === "Datos Generales"){
+                    if(e.seccion === "Datos Generales"){
                         var one = 'Ingrese el ';
-                        var two = e.name;
+                        var two = e.nombreCampo;
                         var texto = one + two;
                         return (
                             <div>
@@ -107,9 +110,9 @@ export default function GeneralData ({data, setData, imStudent=true}) {
                                 <div className="row rows" style={{"paddingTop":"10px !important"}}>
                                     <Form.Control placeholder={texto}
                                     onChange={handleChangeOthers}
-                                    value={e.value}
+                                    value={e.valorAlumno}
                                     disabled = {!imStudent}
-                                    name={e.name}/>
+                                    name={e.nombreCampo}/>
                                 </div>
                             </div>
                         )

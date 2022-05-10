@@ -18,11 +18,7 @@ export default function CalificationFormStudent ({data, setData, notgrabado}) {
         pass=!pass;
         setData({
             ...data,
-            approvalState: "Aprobado",
-            calification: {
-                ...data.calification,
-                aprobado: true
-            }
+            approvalState: "Aprobado", 
         })
     }
 
@@ -31,10 +27,6 @@ export default function CalificationFormStudent ({data, setData, notgrabado}) {
         setData({
             ...data,
             approvalState: "Desaprobado",
-            calification: {
-                ...data.calification,
-                aprobado: false
-            }
         })
     }
 
@@ -43,10 +35,6 @@ export default function CalificationFormStudent ({data, setData, notgrabado}) {
         setData({
             ...data,
             approvalState: "Sin calificar",
-            calification: {
-                ...data.calification,
-                aprobado: false
-            }
         })
     }
     
@@ -55,10 +43,6 @@ export default function CalificationFormStudent ({data, setData, notgrabado}) {
         setData({
             ...data,
             approvalState: "Observado",
-            calification: {
-                ...data.calification,
-                aprobado: false
-            }
         })
     }
     const changeComments = e => {

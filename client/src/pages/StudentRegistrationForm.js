@@ -17,14 +17,17 @@ import { selectSubmittedInscriptionForm,registrationInsertApiStudent,registratio
 
 import './StudentRegistrationForm.scss';
 
+//consultar a Oscar
+const documents={
 
+}
 
 const dataDummy = {
     "idAlumno": 1,
-    "documentsState": "Entregado",
+    "idAlumnoProceso": 1,
+    "idFicha": 9,
+    "documentsState": "Sin entregar",
     "approvalState": "Desaprobado",
-    "documentAgreement":"",
-    "documentPlan":"",
     "generalData": {
         "name": "Oscar Daniel",
         "lastname": "Navarro Cieza",
@@ -32,7 +35,6 @@ const dataDummy = {
         "email": "oscar.navarro@pucp.edu.pe",
         "celephone": 929178606,
         "personalEmail": "oscar@prueba.com",
-        "typeUser":"C"
     },
     "aboutCompany": {
         "isNational": true,
@@ -57,27 +59,35 @@ const dataDummy = {
         "name":"Hugo Carlos",
         "area":"TI",
         "email":"hugoCar1548@gmail.com",
-        "telephone":"9856875564"
+        "cellphone":"9856875564"
     },
     "calification": {
-        "comments":"Buen trabajo",
-        "aprobado": true
+        "comments":"Buen trabajo"
     },
     "others": [
         {
-            "section": "Sobre la PSP",
-            "name": "pais",
-            "value": ''
+            "idCampoProceso":28,
+            "idCampoLlenado":7,
+            "nombreCampo":"Pais",
+            "seccion": "Sobre la PSP",
+            "flag": "obligatorio",
+            "valorAlumno": 'AA'
         },
         {
-            "section": "Sobre el jefe",
-            "name": "giro",
-            "value": "Electrodomésticos"
+            "idCampoProceso":29,
+            "idCampoLlenado":9,
+            "nombreCampo": "Giro",
+            "seccion": "Sobre el jefe",
+            "flag": "opcional",
+            "valorAlumno": "Electrodomésticos"
         },
         {
-            "section": "Sobre el jefe",
-            "name": "nuevodato",
-            "value": "xxxxx"
+            "idCampoProceso":30,
+            "idCampoLlenado":10,
+            "nombreCampo": "nuevodato",
+            "seccion": "Sobre el jefe",
+            "flag": "opcional",
+            "valorAlumno": "xxxxx"
         }
     ]
 
@@ -86,7 +96,8 @@ const dataDummy = {
 export default function StudentRegistrationForm () {
     const {user} = useAuth();
     const [data, setData] = useState(dataDummy)
-
+    //let typeUser=user.tipoPersona;
+    let typeUser="A";
     useEffect(()=> {
         /*
         selectSubmittedInscriptionForm(data.idAlumno).then(response => {
@@ -104,7 +115,7 @@ export default function StudentRegistrationForm () {
         //en el caso del coordinador ver si con el idAlumno hay alguna ficha y depende de eso Insertar o modificar 
         /*
         e.preventDefault();
-        if(data.generalData.typeUser==="A"){
+        if(typeUser==="A"){
             let response=null;
             if(data.approvalState==="Observado"){
                 response = await registrationUpdateApi(data);
@@ -135,7 +146,7 @@ export default function StudentRegistrationForm () {
                 });
             }   
         }
-        if(data.generalData.typeUser==="C"){
+        if(typeUser==="C"){
             const response =await registrationUpdateApi(data);
             if(response.success){
                 toast.success("Se registraron los datos de forma correcta", {
@@ -165,7 +176,7 @@ export default function StudentRegistrationForm () {
     const isSaved=((data.documentsState==="Sin entregar")||
         (data.documentsState==="Entregado"&&data.approvalState==="Observado"))? false: true;
     const typeDocumentState = (data.documentsState==="Sin entregar")? "fileEmpty": "success";
-    const imStudent=(data.generalData.typeUser==="A")?true:false;
+    const imStudent=(typeUser==="A")?true:false;
     let typeApprovalState = "";
     switch(data.approvalState) {
         case "Observado": typeApprovalState = "warning"; break;
@@ -213,11 +224,11 @@ export default function StudentRegistrationForm () {
                         <CompUpload/>
                     </div>
                 </div>
-                {data.generalData.typeUser==="A"? <div className="row rows BotonAlumno">
+                {typeUser==="A"? <div className="row rows BotonAlumno">
                     <Button className="btn btn-primary" style={{width:"40%"}} onClick={insert} disabled={isSaved}>Enviar</Button>
                     <ToastContainer />
                 </div>:<div></div>}                 
-                {data.generalData.typeUser === "C" ? <div className="row rows">
+                {typeUser === "C" ? <div className="row rows">
                     <CalificationFormStudent data={data} setData={setData} notgrabado={false}/>
                 </div> : <div></div>}
             </div>
