@@ -1,7 +1,7 @@
 import {API_VERSION, BASE_PATH, PANDA_KEY} from './config';
 
-export function getAllDocs(code, isStudent) {
-    //code: idAlumno-idEspecialidad-ETAPA-idProceso
+//code: idProceso-idEspecialidad-ETAPA-idAlumno
+export function getAllDocsApi(code, isStudent) {
     const url = `${BASE_PATH}/${API_VERSION}/docs/${code}/${isStudent}`;
     const params = {
         method: "GET",
@@ -10,7 +10,6 @@ export function getAllDocs(code, isStudent) {
             //Authorization: PANDA_KEY
         }
     }
-//getAllOwnDocs
     return fetch(url, params)
         .then(response => {
             return response.json()
@@ -29,34 +28,37 @@ export function getAllDocs(code, isStudent) {
         })
 }
 
-// export function getDocApi(path, name) {
-//     console.log(path)
-//     const url = `${BASE_PATH}/${API_VERSION}/doc/${path}/${name}`;
-//     const params = {
-//         method: "GET",
-//         headers: {
-//             "Content-Type": "application/json",
-//             //Authorization: PANDA_KEY
-//         }
-//     }
+export function uploadDocsApi(files, code, isStudent) {
+    const url = `${BASE_PATH}/${API_VERSION}/docs/${code}/${isStudent}`;
+    const formData = new FormData(); // si queremos enviar archivo imagen
 
-//     fetch(url, params)
-//         // .then(response => {
-//         //     console.log("response", response)
-//         //     // return response.json()
-//         //     return response
-//         // })
-//         // // // .then(result => {
-//         // // //     console.log("result", result)
-//         // // //     return {
-//         // // //         msg: result,
-//         // // //         success: true
-//         // // //     }
-//         // // // })
-//         // .catch(errMsg => {
-//         //     return {
-//         //         msg: errMsg,
-//         //         success: false
-//         //     }
-//         // })
-// }
+    for(const i in files) {
+        formData.append(`file${i}`, files[i]);
+    }
+    
+    const params = {
+        method: "PUT",
+        // headers: {
+        //     // "Content-Type": "application/json",
+        //     'Content-Type': 'multipart/form-data',
+        //     //Authorization: token
+        // },
+        body: formData
+    }
+    return fetch(url, params)
+        .then(response => {
+            return response.json()
+        })
+        .then(result => {
+            return {
+                msg: result.message,
+                success: true
+            }
+        })
+        .catch(err => {
+            return {
+                msg: err.message,
+                success: false
+            };
+        })
+}

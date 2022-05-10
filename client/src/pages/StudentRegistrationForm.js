@@ -11,7 +11,7 @@ import DirectBoss from "../components/Charts/DirectBoss";
 import CalificationFormStudent from "../components/Charts/CalificationFormStudent";
 import StateViewer,{StatesViewType} from "../components/StateViewer/StateViewer";
 import DocumentPlusIcon from "../components/DocumentPlusIcon/DocumentPlusIcon";
-import CompUpload from "../components/Single/CompUpload";
+import FileManagement from "../components/FileManagement/FileManagement";
 import useAuth from "../hooks/useAuth";
 import { selectSubmittedInscriptionForm,registrationInsertApiStudent,registrationUpdateApi } from "../api/registrationForm";
 
@@ -210,7 +210,7 @@ export default function StudentRegistrationForm () {
                 </div>
                 <div className="row rows registrationFiles">
                     <div className="row rows uploadAgreement" >                
-                        <CompUpload/>
+                        <FileManagement/>
                     </div>
                 </div>
                 {data.generalData.typeUser==="A"? <div className="row rows BotonAlumno">

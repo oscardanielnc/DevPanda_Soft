@@ -1,14 +1,16 @@
 import React, { useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 
-import './Upload.scss';
+import './Upload.scss'; 
 
 import fileDefault from '../../asserts/img/svg/file-earmark-arrow-up.svg';
 import fileDoc from '../../asserts/img/svg/file-earmark-word.svg';
 import filePdf from '../../asserts/img/svg/filetype-pdf.svg';
 import fileDocx from '../../asserts/img/svg/filetype-docx.svg';
+import { Button } from 'react-bootstrap';
+import { ToastContainer, toast } from 'react-toastify';
 
-const ImageConfig = {
+const listImgConfig = {
     default: fileDefault,
     pdf: filePdf,
     docx: fileDocx,
@@ -16,7 +18,7 @@ const ImageConfig = {
 }
 
 
-export default function Upload (props) {
+export default function Upload ({maxFiles, onFileChange}) {
 
     const wrapperRef = useRef(null);
 
@@ -33,7 +35,6 @@ export default function Upload (props) {
         if (newFile) {
             const updatedList = [...fileList, newFile];
             setFileList(updatedList);
-            props.onFileChange(updatedList);
         }
     }
 
@@ -41,11 +42,26 @@ export default function Upload (props) {
         const updatedList = [...fileList];
         updatedList.splice(fileList.indexOf(file), 1);
         setFileList(updatedList);
-        props.onFileChange(updatedList);
+    }
+    const sendFiles = () => {
+        if(fileList.length === maxFiles)
+            onFileChange(fileList)
+        else {
+            toast.warning(`Se requieren ${maxFiles} archivos para esta entrega.`, {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
+        }
     }
 
     return (
         <>
+            <ToastContainer />
             <div
                 ref={wrapperRef}
                 className="drop-file-input"
@@ -55,7 +71,7 @@ export default function Upload (props) {
             >
                 <div className="drop-file-input__label">
                     <i className="bi bi-upload" style={{"fontSize":"35px"}}></i>
-                    <p>Arrastra & Suelta tus archivos aquí</p>
+                    <p>Arrastra o suelta tus archivos aquí. Máximo {maxFiles} archivos.</p>
                 </div>
                 <input type="file" value="" onChange={onFileDrop}/>
             </div>
@@ -68,7 +84,7 @@ export default function Upload (props) {
                         {
                             fileList.map((item, index) => (
                                 <div key={index} className="drop-file-preview__item">
-                                    <img src={ImageConfig[item.type.split('/')[1]] || ImageConfig['default']} alt="" />
+                                    <img src={listImgConfig[item.name.split('.')[1]] || listImgConfig['default']} alt="" />
                                     <div className="drop-file-preview__item__info">
                                         <p>{item.name}</p>
                                         <p>{item.size} Bytes</p>
@@ -82,6 +98,9 @@ export default function Upload (props) {
                     </div>
                 ) : null
             }
+            <div className="row rows boton">
+                <Button className="btn btn-primary" style={{width:"40%"}} onClick={sendFiles}>Entregar</Button>
+            </div>
         </>
     );
 }

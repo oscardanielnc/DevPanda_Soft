@@ -2,12 +2,12 @@ import React, {useState, useEffect} from "react";
 import LayoutBasic from "../layouts/LayoutBasic";
 import DocumentPlusIcon from "../components/DocumentPlusIcon/DocumentPlusIcon";
 import StateViewer,{StatesViewType} from "../components/StateViewer/StateViewer";
-import CompUpload from "../components/Single/CompUpload";
+import FileManagement from "../components/FileManagement/FileManagement";
 import { Button } from "react-bootstrap";
 import "./StudentAgreement.scss";
 import { Link } from "react-router-dom";
-import { getAllDocs } from "../api/files";
-import UploadFiles from "../components/UploadFiles/UploadFiles";
+import { getAllDocsApi } from "../api/files";
+import ShowFiles from "../components/FileManagement/ShowFiles";
 
 
 const docuemntsState = "Entregado";
@@ -17,14 +17,14 @@ export default function StudentAgreement () {
     const [docs, setDocs] = useState([])
     const [studentDocs, setStudentDocs] = useState([])
     useEffect(() => {
-        getAllDocs("1-1-CONV", 0).then(response => {
+        getAllDocsApi("1-1-CONV", 0).then(response => {
             if(response.success) {
                 setDocs(response.docs)
             }
         })
     },[setDocs])
     useEffect(() => {
-        getAllDocs("1-1-CONV-1", 1).then(response => {
+        getAllDocsApi("1-1-CONV-1", 1).then(response => {
             if(response.success) {
                 setStudentDocs(response.docs)
             }
@@ -101,11 +101,7 @@ export default function StudentAgreement () {
                     <p>
                     A continuación se presenta el modelo para convenio y plan de aprendizaje:
                     </p>
-                    {
-                        docs.length>0 && docs.map((e, index) => (
-                            <DocumentPlusIcon name={e.nombre} path={e.ruta} key={index}/>
-                        ))
-                    }
+                    <ShowFiles docs={docs} />
                 </div>
                 <div className="row rows estado">
                     <h2>
@@ -117,12 +113,8 @@ export default function StudentAgreement () {
                         StatesViewType[typeDocumentState]("Documentos", docuemntsState),
                         StatesViewType[typeApprovalState]("Aprobación", approvalState)]}/>
                 </div>
-                <UploadFiles docs={studentDocs} />
                 <div className="row rows uploadAgreement" >                
-                    <CompUpload/>
-                </div>
-                <div className="row rows boton">
-                    <Button className="btn btn-primary" style={{width:"40%"}}>Entregar</Button>
+                    <FileManagement canUpload={true} docs={studentDocs} maxFiles={2}/>
                 </div>
             </div>
         </LayoutBasic>

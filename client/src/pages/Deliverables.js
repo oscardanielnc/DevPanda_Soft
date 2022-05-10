@@ -3,7 +3,7 @@ import LayoutBasic from "../layouts/LayoutBasic";
 import { Button, Form} from "react-bootstrap";
 import StateViewer,{StatesViewType} from "../components/StateViewer/StateViewer";
 import "./AgreementReview.scss";
-import CompUpload from "../components/Single/CompUpload";
+import FileManagement from "../components/FileManagement/FileManagement";
 
 const dataDummy={
     "idAlumno": 1,    
@@ -80,7 +80,7 @@ export default function Deliverables(){
                     StatesViewType[estadoEva]("Aprobación", comentarioCalificado)]}/>
                 </div>
                 <div className="row rows uploadAgreement" >                
-                    <CompUpload/>
+                    <FileManagement/>
                 </div>
                 <div className="row row1" style={{textAlign: "left",marginTop:"25px"}}>
                     <h2>Observaciones</h2>  
