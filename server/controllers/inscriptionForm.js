@@ -243,10 +243,20 @@ async function getstudentInscriptionForm(req, res){
     //#########  Obtenemos la Ficha de inscripción del alumno ######
     //##############################################################
 
-    sqlQuery = `SELECT *
+    sqlQuery = `SELECT  idFicha, fidAlumnoProceso, aprobado, estadoDocumento, observaciones, nombres, apellidos, codigoPUCP, correoPUCP, 
+                    coalesce(celular, "") as celular,
+                    coalesce(correoPersonal, "") as correoPersonal,
+                    esNacional,
+                    coalesce(ruc, "") as ruc,
+                    coalesce(infoEmpresa, "") as infoEmpresa,
+                    coalesce(nombreEmpresaExtranjera, "") as nombreEmpresaExtranjera,
+                    coalesce(paisEmpresaExtranjera, "") as paisEmpresaExtranjera,
+                    coalesce(lineaNegocioEmpresaExtranjera, "") as lineaNegocioEmpresaExtranjera,
+                    nombreArea, puesto, funcionesActividades, fechaInicio, fechaFin, horasDiarias, horasSemanales, nombreJefe, areaJefe,
+                    correoJefe,
+                    coalesce(celularJefe, "") as celularJefe
                 FROM EntregaFichaInscripcion
                 WHERE fidAlumnoProceso = ${fidAlumnoProceso}`;
-
     try{
         resultElement = await functionSelect();
     }catch(e){
@@ -284,7 +294,7 @@ async function getstudentInscriptionForm(req, res){
         data.approvalState = aprobado
 
         //Agregamos los campos extras
-        sqlQuery = `SELECT CP.idCampoProceso, null as idCampoLlenado, CF.nombreCampo, CF.seccion, CP.flag, null as valorAlumno
+        sqlQuery = `SELECT CP.idCampoProceso, null as idCampoLlenado, CF.nombreCampo, CF.seccion, CP.flag, "" as valorAlumno
                     FROM CampoFichaInscripcion CF, CampoFichaInscripcionProceso CP, Proceso P, AlumnoProceso A
                     WHERE CF.fidEspecialidad = P.fidEspecialidad
                     AND A.idAlumnoProceso = ${fidAlumnoProceso}
@@ -367,7 +377,7 @@ async function getstudentInscriptionForm(req, res){
         data.calification.comments = resultElement[0].observaciones;
 
         //Traemos los campos extras
-        sqlQuery = `SELECT CP.idCampoProceso, CL.idCampoLlenado, CF.nombreCampo, CF.seccion, CP.flag, CL.valorAlumno
+        sqlQuery = `SELECT CP.idCampoProceso, CL.idCampoLlenado, CF.nombreCampo, CF.seccion, CP.flag, coalesce(CL.valorAlumno, "") as valorAlumno
                     FROM CampoFichaInscripcion CF, CampoFichaInscripcionProceso CP, CampoLlenadoFichaInscripcion CL, EntregaFichaInscripcion E
                     WHERE CF.idCampo = CP.fidCampoFicha
                     AND CF.flag = "activo"
