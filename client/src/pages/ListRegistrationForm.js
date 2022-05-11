@@ -12,6 +12,7 @@ import {getListStudentsInscriptionForm} from  "../api/registrationForm";
 
 
 const dataDummy = [
+    /*
     {
         idAlumno : "1",
         nombreAlumno: "Carlos Lescano",
@@ -57,6 +58,7 @@ const dataDummy = [
         nombreAlumno: "Diego Rodriguez",
         estado: "Aprobado"
     }
+    */
 ]
 
 const states = [
@@ -65,12 +67,16 @@ const states = [
     value: "Aprobado"
     },
     {
-        name: "Desaprobado",
-        value: "Desaprobado"
+        name: "Observado",
+        value: "Observado"
     },
     {
-        name: "Sin Calificar",
-        value: "Sin Calificar"
+        name: "Sin calificar",
+        value: "Sin calificar"
+    },
+    {
+        name: "Sin entregar",
+        value: "Sin entregar"
     }
 ]
 
@@ -82,7 +88,7 @@ let textSelect = "-1"
 
 export default function ListRegistrationForm () {
     
-    const [alumnos, setAlumnos] = useState(dataDummy);
+    const [alumnos, setAlumnos] = useState([]);
     const [filteredData, setFilteredData] = useState(dataDummy);
     // const [textFilter, setTextFilter] = useState("");
     // const [textSelect, setTextSelect] = useState("-1");
