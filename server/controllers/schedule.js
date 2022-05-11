@@ -40,7 +40,7 @@ function getSupervisorSchedule(req, res) {
     //Busca una lista de horarios segun un asesor
     const connection = mysql.createConnection(MYSQL_CREDENTIALS);
 
-    const idAsesor = req.body.idAsesor;
+    const idAsesor = req.params.idAsesor;
 
     const sqlQuery = `SELECT * FROM HorarioDisponibilidad
                         WHERE fidAsesor = ${idAsesor} AND activo = 1;`
@@ -48,7 +48,7 @@ function getSupervisorSchedule(req, res) {
     connection.connect(err => {
         if (err) throw err;
     });
-    connection.query(sqlQuery, sqlObj, (err, result) => {
+    connection.query(sqlQuery, (err, result) => {
         if (err) {
             res.status(505).send({
                 message: "Error inesperado en el servidor"
@@ -60,15 +60,30 @@ function getSupervisorSchedule(req, res) {
             })
         } else {
             const data = [];
+            const dataOrdered = result.sort((a,b) => {
+                const fechaA = a.fecha
+                const fechaB = b.fecha
+                const horaA = a.hora
+                const horaB = b.hora
+                const auxArrA = fechaA.split('-');
+                const numA = Number(auxArrA[2])*1000000 + Number(auxArrA[1])*10000 + Number(auxArrA[0])*100 + horaA
+                const auxArrB = fechaB.split('-');
+                const numB = Number(auxArrB[2])*1000000 + Number(auxArrB[1])*10000 + Number(auxArrB[0])*100 + horaB
+                if(numA>numB) return 1
+                else if(numA<numB) return -1
+                return 0
+            })
             for(let i=0; i<10; i++) {
+                console.log("dataOrdered[i*14]", dataOrdered[i*14])
                 const newDay = {
-                    day: getDay(result[i*14].fecha),
-                    date: result[i*14].fecha,
+                    day: getDay(dataOrdered[i*14].fecha),
+                    date: dataOrdered[i*14].fecha,
                     hours: []
                 }
-
+                
                 for(let j=0; j<14; j++) {
-                    newDay.hours.push(result[i*14 + j].estado)
+                    console.log(`dataOrdered[${i}*14+${j}]`, dataOrdered[i*14+j])
+                    newDay.hours.push(dataOrdered[i*14 + j].estado)
                 }
                 data.push(newDay)
             }
