@@ -14,6 +14,9 @@ import DocumentPlusIcon from "../components/DocumentPlusIcon/DocumentPlusIcon";
 import FileManagement from "../components/FileManagement/FileManagement";
 import useAuth from "../hooks/useAuth";
 import { getstudentInscriptionForm,registrationUpdateApiStudent,registrationUpdateApiStudentCamps } from "../api/registrationForm";
+import { getAllDocsApi } from "../api/files";
+import ShowFiles from "../components/FileManagement/ShowFiles";
+
 
 import './StudentRegistrationForm.scss';
 
@@ -97,7 +100,10 @@ export default function StudentRegistrationForm () {
     const {user} = useAuth();
     let idAlumno=1;
     const [aux,setAux]=useState([]);
-    const [data, setData] = useState(dataDummy)
+    const [data, setData] = useState(dataDummy);
+    const [docs, setDocs] = useState([]);
+    const [studentDocs, setStudentDocs] = useState([]);
+
     //let typeUser=user.tipoPersona;
     let typeUser="C";
     useEffect(()=> {
@@ -113,8 +119,31 @@ export default function StudentRegistrationForm () {
                 setData(response.infoFicha.infoFicha);
             }
         })
+        if(typeUser==="A"){
+            /*
+            data.generalData.name=user.name;
+            data.generalData.lastname=user.lastname;
+            data.generalData.code=user.code;
+            data.generalData.email=user.email;*/
+        }
     }, [setData])
-    
+
+    useEffect(() => {
+        getAllDocsApi("1-1-CONV", 0).then(response => {
+            if(response.success) {
+                setDocs(response.docs)
+            }
+        })
+    },[setDocs])
+
+    useEffect(() => {
+        getAllDocsApi("1-1-CONV-1", 1).then(response => {
+            if(response.success) {
+                setStudentDocs(response.docs)
+            }
+        })
+    },[setStudentDocs])
+
     let result=true;
     const insert = async e => {
         //hacer una diferencia primero si es alumno o cordinador
@@ -178,12 +207,18 @@ export default function StudentRegistrationForm () {
         })
     }
     let isSaved=null;
-    let savedCoordinator=null;
+    let canUpload=null;
     if(typeUser==="A"){
         isSaved=((data.documentsState==="Sin entregar")||
         (data.documentsState==="Entregado"&&data.approvalState==="Observado"))? false: true;
+        if(isSaved===false){
+            canUpload=true;
+        }else{
+            canUpload=false;
+        }
     }else{
         isSaved=true;
+        canUpload=false;
     }
 
     const typeDocumentState = (data.documentsState==="Sin entregar")? "fileEmpty": "success";
@@ -254,6 +289,10 @@ export default function StudentRegistrationForm () {
                     <p>
                     Aquí deberá de rellenar la información solicitada más abajo para poder continuar con el proceso. Una vez que la complete, esta será revisada para su aprobación.
                     </p>
+                    <p>
+                    A continuación se presenta la rúbrica para la ficha de inscripción:
+                    </p>
+                    <ShowFiles docs={docs} />
                 </div>
                 <div className="row rows">
                     <StateViewer states={[
@@ -296,15 +335,15 @@ export default function StudentRegistrationForm () {
                         </div> 
                     </div>
                 </div>
-                <div className="row rows registrationFiles">
-                    <div className="row rows uploadAgreement" >                
-                        <FileManagement/>
-                    </div>
+                
+                <div className="row rows uploadRegistration" >                            
+                    <FileManagement canUpload={canUpload} docs={studentDocs} maxFiles={2} titleUploadedFiles="Archivos subidos por el alumno"/>
                 </div>
                 {typeUser==="A"? <div className="row rows BotonAlumno">
                     <Button className="btn btn-primary" style={{width:"40%"}} onClick={insert} disabled={isSaved}>Enviar</Button>
                     <ToastContainer />
-                </div>:<div></div>}                 
+                </div>:<div></div>}
+                                
                 {typeUser === "C" ? <div className="row rows">
                     <CalificationFormStudent data={data} setData={setData} notgrabado={false}/>
                 </div> : <div></div>}
