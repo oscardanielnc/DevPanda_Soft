@@ -1,4 +1,4 @@
-import React, { useState }  from "react"; 
+import React, { useEffect, useState }  from "react"; 
 
 import './Timetable.scss';
 import TimetableCell from "./TimetableCell/Timetablecell";
@@ -73,16 +73,20 @@ const dataDummy = [
     }
 ]
 
-export default function Timetable ({horario, states}){
-    const [inputs, setInputs] = useState(dataDummy)
+export default function Timetable ({idSupervisor}){
+    const [inputs, setInputs] = useState([])
     const [indexs, setIndex] = useState({
         actual:0, // page actual
         separator: 5
     })
+    useEffect(()=> {
+        
+        setInputs(dataDummy)
+    },setInputs)
 
     const leftPage = e => {
         // Verifica que no se salga del limite 
-        if (inputs && indexs.actual > 0){
+        if (inputs.length>0 && indexs.actual > 0){
             setIndex({
                 actual: indexs.actual - 1,
                 separator: indexs.separator
@@ -91,7 +95,7 @@ export default function Timetable ({horario, states}){
     }
     const rigthPage = e => {
         // Verifica que no se salga del limite 
-        if (inputs && indexs.actual < inputs.length - indexs.separator){
+        if (inputs.length>0 && indexs.actual < inputs.length - indexs.separator){
             setIndex({
                 actual: indexs.actual + 1,
                 separator: indexs.separator
@@ -99,7 +103,7 @@ export default function Timetable ({horario, states}){
         }
     }
     
-    return ( inputs &&
+    return ( inputs.length>0 &&
         <div>
             <div className="indicatorPage">
                     <div className="btn btn-primary left" onClick={leftPage}>Anterior</div>
