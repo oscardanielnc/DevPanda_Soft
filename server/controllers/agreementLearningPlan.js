@@ -257,6 +257,48 @@ function updateDocumentByAgreement(req, res){
     connection.end();
 }
 
+function selectDocumentsInfoByProcess(req, res){
+    const connection = mysql.createConnection(MYSQL_CREDENTIALS);
+    //Se pedirá el idAlumno e idAsesor para poder obtener la info documentos asociados.
+    const fidAlumno = req.body.fidAlumno;
+    const fidAsesor = req.body.fidAsesor;
+    const sqlQuery = `  SELECT
+                            idEntregaConvenio, estadoFaci, estadoEspecialidad, observaciones
+                        FROM
+                            EntregaConvenioYPlan
+                        WHERE
+                            fidConvenioYPlan = (SELECT
+                                                    idAlumnoProceso
+                                                FROM
+                                                    AlumnoProceso
+                                                WHERE
+                                                    fidAlumno = ${fidAlumno}
+                                                    AND fidAsesor = ${fidAsesor}
+                                                    AND estado = 'C');`;
+
+    connection.connect(err => {
+        if (err) throw err;
+    });
+
+    connection.query(sqlQuery, (err, result) => {
+        if (err) {
+            if(!idEntregaConvenio){
+                res.status(505).send({
+                    message: "No se ha enviado un idEntregaConvenio"
+                })
+            }else{
+                res.status(505).send({
+                    message: "Error inesperado en el servidor"
+                })
+            }
+            
+        } else{
+            res.status(200).send(result)
+        }
+    });
+
+    connection.end();
+}
 
 module.exports = {
     select,
@@ -265,5 +307,6 @@ module.exports = {
     insertInfoByStudent,
     insertDocumentByAgreement,
     updateInfoByStudent,
-    updateDocumentByAgreement
+    updateDocumentByAgreement,
+    selectDocumentsInfoByProcess
 }
