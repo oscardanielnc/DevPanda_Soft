@@ -101,15 +101,12 @@ export default function StudentRegistrationForm () {
     //let typeUser=user.tipoPersona;
     let typeUser="A";
     useEffect(()=> {
-        console.log("En el useEffect");
         getstudentInscriptionForm(idAlumno).then(response => {
             if(response.success===true) {
-                console.log("En el success el response es: ",response);
                 setData(response.infoFicha.infoFicha);
             }
         })
     }, [setData])
-    //console.log("Luego de jalar la info: ",data);
     
     let result=true;
     const insert = async e => {
@@ -173,7 +170,6 @@ export default function StudentRegistrationForm () {
             others: data.others,
         })
     }
-    console.log(data);
     let isSaved=null;
     let savedCoordinator=null;
     if(typeUser==="A"){

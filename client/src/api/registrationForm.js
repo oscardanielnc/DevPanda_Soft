@@ -29,7 +29,6 @@ export function getstudentInscriptionForm(idAlumno) {
 }
  export function registrationUpdateApiStudent(data) {
      const url = `${BASE_PATH}/${API_VERSION}/studentDataInscriptionForm`;
-     console.log("En la funcion registrationUpdateApiStudent: ",data);
      const params = {
          method: "PUT",
          headers: {
@@ -38,15 +37,11 @@ export function getstudentInscriptionForm(idAlumno) {
         },
          body: JSON.stringify(data)
      }
-     console.log("Antes del fetch");
      return fetch(url, params)
          .then(response => {
-             console.log("En el fetch");
-             console.log("En el fecth eñ response: ",response);
              return response.json()
          })
          .then(result => {
-            console.log("En el result");
              return {
                  msg: result.message,
                  success: true
@@ -61,7 +56,6 @@ export function getstudentInscriptionForm(idAlumno) {
  }
  export function registrationUpdateApiStudentCamps(data) {
     const url = `${BASE_PATH}/${API_VERSION}/studentFieldsInscriptionForm`;
-    console.log("En la funcion registrationUpdateApiStudentCamps: ",data);
     const params = {
         method: "PUT",
         headers: {

@@ -12,7 +12,6 @@ async function updateFieldsInscriptionForm(req, res){
     const fidAlumnoProceso = req.body.idAlumnoProceso;
     const fidFicha = req.body.idFicha;
     var resultElement;
-    //console.log("El body tiene: ",req.body);
     functionUpdate = () =>{
         return new Promise((resolve, reject)=>{
             connection.query(sqlQuery, async (err, result) => {
@@ -24,8 +23,6 @@ async function updateFieldsInscriptionForm(req, res){
             })
         })
     }
-    console.log("Antes de update: ");
-    console.log("El body tiene: ",req.body);
     var sqlQuery = `UPDATE EntregaFichaInscripcion
                     SET 
                     aprobado = "${req.body.approvalState}",
@@ -66,9 +63,7 @@ async function updateFieldsInscriptionForm(req, res){
 
 
     try{
-        console.log("Antes de await: ");
         resultElement = await functionUpdate();
-        console.log("Despues de await: ");
         if(!resultElement){
             res.status(404).send({ message: "No se actualizó ninguna fila"})
             return 
@@ -79,7 +74,6 @@ async function updateFieldsInscriptionForm(req, res){
     }  
 
     var campos = req.body.others;
-    console.log("Antes del for");
     for(element of campos){
         
         sqlQuery = `UPDATE CampoLlenadoFichaInscripcion
@@ -99,18 +93,15 @@ async function updateFieldsInscriptionForm(req, res){
             return 
         }  
     }
-    console.log("Despues del for");
     res.status(200).send({
         message: "Campos actualizados correctamente"
     })
     connection.end();
-    console.log("Despues del end");
 }
 
 //Te permite actualizar los datos de la ficha de inscripcion
 async function updateInscriptionForm(req, res){
     const connection = mysql.createConnection(MYSQL_CREDENTIALS);
-    console.log("El body tiene: ",req.body);
     const idFicha = req.body.idFicha;
     const idAlumnoProceso = req.body.idAlumnoProceso;
     const aprobado = req.body.approvalState;
@@ -350,8 +341,6 @@ async function getstudentInscriptionForm(req, res){
         data.aboutBoss.cellphone = resultElement[0].celularJefe;
         data.aboutBoss.area = resultElement[0].areaJefe;
 
-        const fecha = new Date();
-        console.log(fecha)
         data.calification.comments = resultElement[0].observaciones;
 
         //Agregamos los campos extras
