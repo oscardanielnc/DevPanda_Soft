@@ -8,12 +8,16 @@ import "./StudentAgreement.scss";
 import { Link } from "react-router-dom";
 import { getAllDocsApi } from "../api/files";
 import ShowFiles from "../components/FileManagement/ShowFiles";
+import { ToastContainer, toast } from 'react-toastify';
+
 
 
 const docuemntsState = "Entregado";
 const approvalState = "Aprobado"
+const maxFiles = 2;
 
 export default function StudentAgreement () {
+    const [fileList, setFileList] = useState([])
     const [docs, setDocs] = useState([])
     const [studentDocs, setStudentDocs] = useState([])
     useEffect(() => {
@@ -81,10 +85,57 @@ export default function StudentAgreement () {
             }   
         }
         }*/
-        
+    }
+    const deliver = () => {
+        if(fileList.length === maxFiles) {
+            // const response = await uploadDocsApi(files, "1-1-CONV-1", 1);
+            // if(response.success) {
+            //     toast.success(response.msg, {
+            //         position: "top-right",
+            //         autoClose: 3000,
+            //         hideProgressBar: false,
+            //         closeOnClick: true,
+            //         pauseOnHover: true,
+            //         draggable: true,
+            //         progress: undefined,
+            //     });
+            //     window.location.reload()
+            // } else {
+            //     toast.error(response.msg, {
+            //         position: "top-right",
+            //         autoClose: 3000,
+            //         hideProgressBar: false,
+            //         closeOnClick: true,
+            //         pauseOnHover: true,
+            //         draggable: true,
+            //         progress: undefined,
+            //     });
+            // }
+            toast.error("NO NO NO, equivocadiño. No debes tocar este botón!", {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
+        }
+        else {
+            toast.warning(`Se requieren ${maxFiles} archivos para esta entrega.`, {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
+        }
     }
     return (
         <LayoutBasic>
+            <ToastContainer/>
             <div className="container"  style={{"padding":"1px"}}>
                 <div className="row rows" style={{textAlign: "left"}}>
                     <h1>
@@ -111,7 +162,10 @@ export default function StudentAgreement () {
                         StatesViewType[typeApprovalState]("Aprobación", approvalState)]}/>
                 </div>
                 <div className="row rows uploadAgreement" >                
-                    <FileManagement canUpload={true} docs={studentDocs} maxFiles={2}/>
+                    <FileManagement canUpload={true} docs={studentDocs} maxFiles={maxFiles} fileList={fileList} setFileList={setFileList}/>
+                </div>
+                <div className="row rows boton">
+                    <Button className="btn btn-primary" style={{width:"40%"}} onClick={deliver}>Entregar</Button>
                 </div>
             </div>
         </LayoutBasic>
