@@ -1,16 +1,15 @@
 const mysql = require('mysql');
 const {MYSQL_CREDENTIALS} = require("../config");
 
-function makeAnAppointment(req, res){
-    //Coloca como ocupado un horario seleccionado
+function changeOneHourSchedule(req, res){
+    //cambia de estado un horario seleccionado
     const connection = mysql.createConnection(MYSQL_CREDENTIALS);
 
-    const idHorario = req.body.idHorario;
+    const {idHorario, idPersona, isStudent, estado} = req.body;
 
     const sqlQuery = `UPDATE HorarioDisponibilidad 
-    SET ocupado = 1
-    WHERE idHorario = ${idHorario}
-    AND ocupado = 0`;
+    SET estado = ${estado}, idAlumno=${isStudent? idPersona: null}
+    WHERE idHorario = ${idHorario}`;
 
     connection.connect(err => {
         if (err) throw err;
@@ -29,7 +28,7 @@ function makeAnAppointment(req, res){
                 })
             }else{
                 res.status(200).send({
-                    message: "Valores actualizados correctamente"
+                    message: "Registro correcto!"
                 })
             }
         }   
@@ -37,24 +36,14 @@ function makeAnAppointment(req, res){
     connection.end();
 }
 
-function getAssessorScheduleByWeek(req, res) {
-    //Busca una lista de horarios segun un asesor y una semana
+function getSupervisorSchedule(req, res) {
+    //Busca una lista de horarios segun un asesor
     const connection = mysql.createConnection(MYSQL_CREDENTIALS);
 
     const idAsesor = req.body.idAsesor;
-    const semana = req.body.semana;
-    const fechaInicio = semana.fechaInicio;
-    const fechaFin = semana.fechaFin;
 
-    const sqlQuery = `  SELECT
-                            idHorario, fecha, estado, hora
-                        FROM
-                            HorarioDisponibilidad
-                        WHERE
-                            fidAsesor = ${idAsesor}
-                            AND fecha >= "${fechaInicio}"
-                            AND fecha <= "${fechaFin}"
-                            AND activo = 1;`
+    const sqlQuery = `SELECT * FROM HorarioDisponibilidad
+                        WHERE fidAsesor = ${idAsesor} AND activo = 1;`
 
     connection.connect(err => {
         if (err) throw err;
@@ -65,13 +54,64 @@ function getAssessorScheduleByWeek(req, res) {
                 message: "Error inesperado en el servidor"
             })
         }
-        res.status(200).send(result)
+        else if(result.length === 0) {
+            res.status(404).send({
+                message: "No se han encontrado horarios para este Supervisor"
+            })
+        } else {
+            const data = [];
+            for(let i=0; i<10; i++) {
+                const newDay = {
+                    day: getDay(result[i*14].fecha),
+                    date: result[i*14].fecha,
+                    hours: []
+                }
+
+                for(let j=0; j<14; j++) {
+                    newDay.hours.push(result[i*14 + j].estado)
+                }
+                data.push(newDay)
+            }
+            
+            res.status(200).send(data)
+        }
     });
 
     connection.end();
 }
+function getSupervisorsBySpecialty(req, res) {
+    const connection = mysql.createConnection(MYSQL_CREDENTIALS);
+
+    const {idSpecialty} = req.params;
+    const obj = {
+        id:1,
+        name: "Javier Palacios",
+        idfacultad:"informatica",
+        isSelected: true,
+        isMySupervisor: false
+    }
+
+    console.log("Aqui debemos conseguir la lista de supervisores de esta especialidad, devolviendo un array de obj")
+}
+function getDay(date) {
+    const auxArr = date.split('-');
+    const newDate = `${auxArr[1]}-${auxArr[0]}-${auxArr[2]}`;
+    const a = new Date(newDate);
+    const b = a.toString().substr(0, 3);
+    switch (b) {
+        case "Mon": return "Lunes";
+        case "Tue": return "Martes";
+        case "Wed": return "Miércoles";
+        case "Thu": return "Jueves";
+        case "Fri": return "Viernes";
+        case "Sat": return "Sábado";
+        default: return "Domingo";
+    }
+}
+
 
 module.exports = {
-    makeAnAppointment,
-    getAssessorScheduleByWeek
+    changeOneHourSchedule,
+    getSupervisorSchedule,
+    getSupervisorsBySpecialty
 }
