@@ -1,6 +1,7 @@
 import React, {useState}  from "react";
 import { Button, Table,Form,InputGroup,FormControl } from 'react-bootstrap';
-
+import { registrationUpdateApiStudent} from "../../api/registrationForm";
+import { ToastContainer, toast } from 'react-toastify';
 import './CalificationFormStudent.scss';
 
 
@@ -45,15 +46,7 @@ export default function CalificationFormStudent ({data, setData, notgrabado}) {
             approvalState: "Observado",
         })
     }
-    const changeComments = e => {
-        setData({
-            ...data,
-            calification: {
-                ...data.calification,
-                [e.target.name]: e.target.value
-            }
-        })
-    }
+
     return (
         calification && <div className="container chartCalificationFormStudent">
             <nav className="navbar navbar-fixed-top navbar-inverse bg-inverse "style={{ backgroundColor: "#E7E7E7"}}>
@@ -113,32 +106,7 @@ export default function CalificationFormStudent ({data, setData, notgrabado}) {
                     </Form>
                 </div>
             </div>
-            <div className="row rows">
-                <h3>Observaciones:</h3>
-            </div>
-            <div className="row rows" >
-                <Form.Control className="observaciones"
-                        placeholder="Esciba las observaciones de la entrega" 
-                        onChange={changeComments}
-                        value={calification.comments}
-                        name="comments"
-                        disabled={notgrabado}
-                        style={{"marginBottom":"10px !important"}}
-                        as="textarea"
-                        rows={6}/>
-            </div>  
-            <div className="row rows" >
-                <div className="col-sm-2 subtitles">
-                </div>
-                <div className="col-sm-4 botons">
-                    <Button variant="primary" style={{"marginBottom":"4px"}}>Regresar</Button>
-                </div>
-                <div className="col-sm-4 botons">
-                    <Button variant="primary" style={{"marginBottom":"4px"}}>Guardar</Button>
-                </div>
-                <div className="col-sm-2 subtitles">
-                </div>
-            </div>  
+            
             
         </div>
     )

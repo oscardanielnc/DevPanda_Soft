@@ -137,8 +137,8 @@ export default function AboutCompany ({data, setData, notgrabado}) {
                     <Form.Control placeholder="Escriba el giro de la empresa extranjera" 
                         onChange={handleChangeText}
                         disabled={aboutCompany.isNational || notgrabado}
-                        value={aboutCompany.foreingLineBusiness}
-                        name="foreingLineBusiness"/>
+                        value={aboutCompany.foreignLineBusiness}
+                        name="foreignLineBusiness"/>
                 </div>
             </div>
             {

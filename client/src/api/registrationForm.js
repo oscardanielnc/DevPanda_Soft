@@ -27,17 +27,16 @@ export function getstudentInscriptionForm(idAlumno) {
             }
         })
 }
- export function registrationUpdateApiStudent({data}) {
-     const url = `${BASE_PATH}/${API_VERSION}/studentDataInscriptionForm"`;
+ export function registrationUpdateApiStudent(data) {
+     const url = `${BASE_PATH}/${API_VERSION}/studentDataInscriptionForm`;
      const params = {
-         method: "POST",
+         method: "PUT",
          headers: {
              "Content-Type": "application/json",
              authorization: PANDA_KEY
         },
          body: JSON.stringify(data)
      }
-
      return fetch(url, params)
          .then(response => {
              return response.json()
@@ -55,10 +54,10 @@ export function getstudentInscriptionForm(idAlumno) {
              }
          })
  }
- export function registrationUpdateApiStudentCamps({data}) {
+ export function registrationUpdateApiStudentCamps(data) {
     const url = `${BASE_PATH}/${API_VERSION}/studentFieldsInscriptionForm`;
     const params = {
-        method: "POST",
+        method: "PUT",
         headers: {
             "Content-Type": "application/json",
             authorization: PANDA_KEY
