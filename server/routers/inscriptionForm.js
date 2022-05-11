@@ -16,9 +16,10 @@ const api = express.Router();
 
 
 
-//SIRVEN
 api.get("/studentInscriptionForm/:idAlumno",inscriptionFormController.getstudentInscriptionForm);
+
 api.get("/studentListInscriptionForm/:idEspecialidad",inscriptionFormController.getListStudentsInscriptionForm);
+
 api.put("/studentDataInscriptionForm",inscriptionFormController.updateInscriptionForm);
 api.put("/studentFieldsInscriptionForm",inscriptionFormController.updateFieldsInscriptionForm);
 
