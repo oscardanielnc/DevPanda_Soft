@@ -16,6 +16,7 @@ const filesRoutes =  require('./routers/files');
 const administrativesRoutes =  require('./routers/administratives');
 const weekRoutes =  require('./routers/week');
 const scheduleRoutes =  require('./routers/schedule');
+const deliverablesRoutes = require('./routers/deliverable');
 
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
@@ -41,5 +42,6 @@ app.use(`/api/${API_VERSION}`, filesRoutes);
 app.use(`/api/${API_VERSION}`, administrativesRoutes);
 app.use(`/api/${API_VERSION}`, weekRoutes);
 app.use(`/api/${API_VERSION}`, scheduleRoutes);
+app.use(`/api/${API_VERSION}`, deliverablesRoutes);
 
 module.exports = app;

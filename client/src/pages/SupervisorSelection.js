@@ -14,33 +14,35 @@ import { Button } from "react-bootstrap";
 export default function SupervisorSelection () {
     const [supervisores, setSupervisores] = useState( [
         {
-            name: "Javier Palacios"
+            id:1,
+            name: "Javier Palacios",
+            idfacultad:"informatica",
+            isSelected: true,
+            isMySupervisor: false
         },
         {
-            name: "Luis Flores"
+            id:2,
+            name: "Luis Flores",
+            idfacultad:"informatica",
+            isSelected: false,
+            isMySupervisor: false
         },
         {
-            name: "Andres Melgar"
+            id:3,
+            name: "Andres Melgar",
+            idfacultad:"informatica",
+            isSelected: false,
+            isMySupervisor: false
         },
         {
-            name:"Pedro Castillo"
+            id:4,
+            name:"Pedro Castillo",
+            idfacultad:"informatica",
+            isSelected: false,
+            isMySupervisor: false
         }
     ])
-    const dataDummy = {
-        "idAlumno":1,
-        "supervisor":{
-            "nombre":"Andres Melgar",
-            "horario":{
-                "seleccionado":true,
-                "dia":5,
-                "mes":4,
-                "anio":2022,
-                "hora":8,
-            }
-        }
-    }
-    const [data, setData] = useState(dataDummy)
-    let result=true;
+
     const insert = async e => {
         /*
         e.preventDefault();
@@ -72,6 +74,7 @@ export default function SupervisorSelection () {
             }   
         }*/
     }
+
     return(
         <LayoutBasic>
             <div className='container principal'>
@@ -84,7 +87,7 @@ export default function SupervisorSelection () {
                     </p>
                 </div>
                 <div className="row rows">     
-                        <SupervisorSelector supervisor={supervisores}/>
+                        <SupervisorSelector supervisores={supervisores} setSupervisores={setSupervisores}/>
                 </div>
                 <div className="row rows">
                     <Timetable/>

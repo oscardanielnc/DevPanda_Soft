@@ -1,7 +1,7 @@
 import {API_VERSION, BASE_PATH, PANDA_KEY} from './config';
 
-export function selectSubmittedInscriptionForm(idAlumno) {
-    const url = `${BASE_PATH}/${API_VERSION}/inscriptionForm-selectSubmittedInscriptionForm/${idAlumno}`;
+export function getstudentInscriptionForm(idAlumno) {
+    const url = `${BASE_PATH}/${API_VERSION}/studentInscriptionForm/${idAlumno}`;
     const params = {
         method: "GET",
         headers: {
@@ -14,9 +14,9 @@ export function selectSubmittedInscriptionForm(idAlumno) {
         .then(response => {
             return response.json()
         })
-        .then(generalData => {
+        .then(infoFicha => {
             return {
-                generalData,
+                infoFicha,
                 success: true
             }
         })
@@ -27,8 +27,8 @@ export function selectSubmittedInscriptionForm(idAlumno) {
             }
         })
 }
- export function registrationInsertApiStudent({data}) {
-     const url = `${BASE_PATH}/${API_VERSION}/specialty`;
+ export function registrationUpdateApiStudent({data}) {
+     const url = `${BASE_PATH}/${API_VERSION}/studentDataInscriptionForm"`;
      const params = {
          method: "POST",
          headers: {
@@ -55,8 +55,8 @@ export function selectSubmittedInscriptionForm(idAlumno) {
              }
          })
  }
- export function registrationUpdateApi({data}) {
-    const url = `${BASE_PATH}/${API_VERSION}/specialty`;
+ export function registrationUpdateApiStudentCamps({data}) {
+    const url = `${BASE_PATH}/${API_VERSION}/studentFieldsInscriptionForm`;
     const params = {
         method: "POST",
         headers: {
