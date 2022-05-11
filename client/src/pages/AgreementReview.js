@@ -28,13 +28,29 @@ const dataDummy = {
         "observations" : "Bien hecho crack"        
     }
 }
-export default function AgreementReview (){
 
-    const [data, setData] = useState(dataDummy); 
+
+let staticFaci = "Pendiente";
+let staticEsp = "Pendiente";
+
+export default function AgreementReview (){
+    const [radios, setRadios] = useState({
+        pass: false, 
+        observed: false,
+        pending: false
+    })
+    const [data, setData] = useState({}); 
     const [docs, setDocs] = useState([])
     const [docsStudent, setDocsStudent] = useState([])
     const [docsCoord, setDocsCoord] = useState([])
 
+    useEffect(()=> {
+        //aqui haan su llmada al API
+        // xxxxx .... suponenido que dataDummy sea el objeto que les devuelva
+        staticFaci = dataDummy.entregaConvenioyPlan.faciState
+        staticEsp = dataDummy.entregaConvenioyPlan.staticEsp
+        setData(dataDummy)
+    }, [])
     useEffect(() => {
         getAllDocsApi("1-1-CONV", 0).then(response => {
             if(response.success) {
@@ -60,10 +76,10 @@ export default function AgreementReview (){
     },[setDocsCoord])
 
     let documentState ="";
-    if(tipoPersonal === "F")        
+    if(data.entregaConvenioyPlan>0 && tipoPersonal === "F")        
         documentState = data.entregaConvenioyPlan.faciState;
     else
-        if(tipoPersonal === "E")
+        if(data.entregaConvenioyPlan>0 && tipoPersonal === "E")
             documentState = data.entregaConvenioyPlan.espState;
     
     // useEffect(()=> {
@@ -92,102 +108,84 @@ export default function AgreementReview (){
         */        
     }
     
-    
-    let pass=(documentState==="Aprobado")?true:false;
-    let pending=(documentState==="Pendiente")?true:false;
-    let observed=(documentState==="Observado")?true:false;
-
     let comentarioFACI="";
     let comentarioEsp="";
 
     const flag = 0;
     
     
-    if(data.entregaConvenioyPlan.espState === "Aprobado")
+    if(staticEsp === "Aprobado")
         comentarioEsp="Aprobado";
     else{
-        if(data.entregaConvenioyPlan.espState === "Observado")
+        if(staticEsp === "Observado")
             comentarioEsp = "Observado";
         else{
-            if(data.entregaConvenioyPlan.espState === "Pendiente")
+            if(staticEsp === "Pendiente")
                 comentarioEsp = "Pendiente de revisión";
         }            
     }
 
-    if(data.entregaConvenioyPlan.faciState === "Aprobado")
+    if(staticFaci === "Aprobado")
         comentarioFACI="Aprobado"
     else{
-        if(data.entregaConvenioyPlan.faciState === "Observado")
+        if(staticFaci === "Observado")
             comentarioFACI = "Observado"
         else{
-            if(data.entregaConvenioyPlan.faciState === "Pendiente")
+            if(staticFaci === "Pendiente")
                 comentarioFACI = "Pendiente de revisión"
         }            
     }
-    
+
+
+
     const changeStatePassed = e => {
-        pass=!pass;                
         if(tipoPersonal === "F"){
-            setData({
-                ...data,            
-                entregaConvenioyPlan: {
-                    ...data.entregaConvenioyPlan,
-                    faciState : "Aprobado"
-                }
+            setRadios({
+                observed: false,
+                pass: true,
+                pending: false                
             })
         }else{
             if(tipoPersonal === "E"){
-                setData({
-                    ...data,            
-                    entregaConvenioyPlan: {
-                        ...data.entregaConvenioyPlan,
-                        espState : "Aprobado"
-                    }
+                setRadios({
+                    observed: false,
+                    pass: true,
+                    pending: false                
                 })
             }
         }
     }
     const changeStatePending = e => {
-        pending=!pending;        
         if(tipoPersonal === "F"){
-            setData({
-                ...data,            
-                entregaConvenioyPlan: {
-                    ...data.entregaConvenioyPlan,
-                    faciState : "Pendiente"
-                }
+            setRadios({
+                observed: false,
+                pass: false,
+                pending: true               
             })
         }else{
             if(tipoPersonal === "E"){
-                setData({
-                    ...data,            
-                    entregaConvenioyPlan: {
-                        ...data.entregaConvenioyPlan,
-                        espState : "Pendiente"
-                    }
+                setRadios({
+                    observed: false,
+                    pass: false,
+                    pending: true                
                 })
             }
         }
     }
     
     const changeStateObserved = e => {
-        observed=!observed;        
         if(tipoPersonal === "F"){
-            setData({
-                ...data,            
-                entregaConvenioyPlan: {
-                    ...data.entregaConvenioyPlan,
-                    faciState : "Observado"
-                }
+            setRadios({
+                observed: true,
+                pass: false,
+                pending: false               
             })
         }else{
             if(tipoPersonal === "E"){
-                setData({
-                    ...data,            
-                    entregaConvenioyPlan: {
-                        ...data.entregaConvenioyPlan,
-                        espState : "Observado"
-                    }
+                setRadios({
+                    observed: true,
+                    pass: false,
+                    pending: false                
                 })
             }
         }
@@ -203,25 +201,24 @@ export default function AgreementReview (){
         })
     }    
     let typeApprovalStateFACI = "";
-    let typeApprovalStateEsp = "";    
-    
-    switch(data.entregaConvenioyPlan.faciState) {
+    switch(staticFaci) {
         case "Observado": typeApprovalStateFACI = "warning"; break;
         case "Aprobado": typeApprovalStateFACI = "success"; break;
         case "Pendiente": typeApprovalStateFACI = "pending"; break;        
         default: typeApprovalStateFACI = "error"; break;
     }
-    
-    switch(data.entregaConvenioyPlan.espState) {
+    let typeApprovalStateEsp = "";
+    switch(staticEsp) {
         case "Observado": typeApprovalStateEsp = "warning"; break;
         case "Aprobado": typeApprovalStateEsp = "success"; break;
         case "Pendiente": typeApprovalStateEsp = "pending"; break;        
         default: typeApprovalStateEsp = "error"; break;
     }
 
+
     return (
-        <LayoutCoordFACI>
-           <div className="container principalFinalReview" style={{"padding":"1px"}}>               
+        data.entregaConvenioyPlan && <LayoutCoordFACI>
+           <div className="container principalFinalReview" style={{"padding":"1px"}}  >               
                 <div className="row titulo" style={{textAlign: "left",marginTop:"25px",}}>
                     <h1>Revisión de Convenio</h1>                    
                 </div>
@@ -268,8 +265,8 @@ export default function AgreementReview (){
                                         name="group1"
                                         type={type}
                                         id={`inline-${type}-1`}
-                                        checked={pass}
-                                        onChange={changeStatePassed}                                        
+                                        checked={radios.pass}
+                                        onChange={changeStatePassed}
                                     />
                                     <Form.Check
                                         inline
@@ -277,8 +274,8 @@ export default function AgreementReview (){
                                         name="group1"
                                         type={type}
                                         id={`inline-${type}-2`}
-                                        checked={observed}
-                                        onChange={changeStateObserved}                                        
+                                        checked={radios.observed}
+                                        onChange={changeStateObserved}
                                     />
                                     <Form.Check
                                         inline                                    
@@ -286,8 +283,8 @@ export default function AgreementReview (){
                                         name="group1"
                                         type={type}
                                         id={`inline-${type}-3`}
-                                        checked={pending}
-                                        onChange={changeStatePending}                                        
+                                        checked={radios.pending}
+                                        onChange={changeStatePending}
                                     />
                                 </div>
                             ))}

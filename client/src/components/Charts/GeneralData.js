@@ -4,9 +4,8 @@ import { Button, Table,Form,InputGroup,FormControl } from 'react-bootstrap';
 import './GeneralData.scss';
 
 
-export default function GeneralData ({data, setData, imStudent=true}) {
+export default function GeneralData ({data, setData, imStudent=true,isSaved}) {
     const {generalData} = data;
-    console.log("El general data es: ",generalData);
     const handleChange = (e) => {
         setData({
             ...data,
@@ -85,16 +84,16 @@ export default function GeneralData ({data, setData, imStudent=true}) {
                     <div>Teléfono</div>
                     <Form.Control placeholder="Ingrese su número de celular" 
                         onChange={handleChange}
-                        value={generalData.celephone}
-                        disabled = {!imStudent}
-                        name="celephone"/>
+                        value={generalData.cellphone}
+                        disabled = {isSaved}
+                        name="cellphone"/>
                 </div>
                 <div className="col-sm-8 subtitles">
                     <div>Correo Personal (Opcional)</div>
                     <Form.Control placeholder="Ingrese su correo opcional" 
                         onChange={handleChange}
                         value={generalData.personalEmail}
-                        disabled = {!imStudent}
+                        disabled = {isSaved}
                         name="personalEmail"/>
                 </div>
             </div>
@@ -111,7 +110,7 @@ export default function GeneralData ({data, setData, imStudent=true}) {
                                     <Form.Control placeholder={texto}
                                     onChange={handleChangeOthers}
                                     value={e.valorAlumno}
-                                    disabled = {!imStudent}
+                                    disabled = {isSaved}
                                     name={e.nombreCampo}/>
                                 </div>
                             </div>
