@@ -12,6 +12,23 @@
     @media screen and (max-width: 575.2px){
        height: 100%;
     }
+
+    &__Nav{
+        z-index: 1;
+    }
+
+    &__progressbar {
+        position: absolute;
+
+        top: 289px;
+        left: -35px;
+        width: 250px;
+        height: 20px;
+        @media screen and (max-width: 575.2px){
+            display: none !important;
+        }
+    }
+
     &__titulo{
         color: $light-color;
         font-size: 12px;
