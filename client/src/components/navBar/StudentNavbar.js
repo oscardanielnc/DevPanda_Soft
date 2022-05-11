@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { NavItem,Button } from 'react-bootstrap';
+import { NavItem,Button, ProgressBar } from 'react-bootstrap';
 import { Link,NavLink } from 'react-router-dom';
 import './StudentNavbar.scss';
 import useAuth from "../../hooks/useAuth"
@@ -12,7 +12,7 @@ const dataNavbar = [
     {
         title: "Matrícula",
         link: "/m"
-    },
+    } ,
     {
         title: "Ficha de inscripción",
         link: "/student-registration"
@@ -24,21 +24,35 @@ const dataNavbar = [
     {
         title: "Entregables",
         link: "/deliverables"
-    },
+    },    
     {
         title: "Coordinador Convenio",
         link: "/agreement-review"
     }
+
 ]
+
+const offsets =[-380,-160,-70,-30,0,20,32]
+    
+
 
 function StudentNavbar (props){
     const [progreso, setProgreso] = useState(2)
-    
+    const transformText = "rotate(90deg) scaleY(.4) scaleX(" + (0.25 + 0.2*(dataNavbar.length-2)) + ") translateX(" + offsets[dataNavbar.length-2] + "px)" 
+    // const {user} = useAuth()
+    // if(!user) return ""
+    //console.log(dataNavbar.length)
     return(
+        
     <div className="studentNavBar">
-        <nav>
+        {<ProgressBar className= "studentNavBar__progressbar" 
+            now={(100*progreso/(dataNavbar.length-1))} 
+            variant="success"
+            style={{transform: transformText}}
+        />}
+        <nav className='studentNavBar__Nav'>
             <div>
-                <div className='studentNavBar__titulo' >
+                <div className='studentNavBar__titulo'>
                     <span>Tu progreso</span>
                     <Button className='studentNavBar__progress'
                         onClick={() => document.getElementById("sidebarList").addClass("displayNone")} >

@@ -13,18 +13,21 @@ import StateViewer,{StatesViewType} from "../components/StateViewer/StateViewer"
 import DocumentPlusIcon from "../components/DocumentPlusIcon/DocumentPlusIcon";
 import FileManagement from "../components/FileManagement/FileManagement";
 import useAuth from "../hooks/useAuth";
-import { selectSubmittedInscriptionForm,registrationInsertApiStudent,registrationUpdateApi } from "../api/registrationForm";
+import { getstudentInscriptionForm,registrationUpdateApiStudent,registrationUpdateApiStudentCamps } from "../api/registrationForm";
 
 import './StudentRegistrationForm.scss';
 
+//consultar a Oscar
+const documents={
 
+}
 
 const dataDummy = {
     "idAlumno": 1,
-    "documentsState": "Entregado",
+    "idAlumnoProceso": 1,
+    "idFicha": 9,
+    "documentsState": "Sin entregar",
     "approvalState": "Desaprobado",
-    "documentAgreement":"",
-    "documentPlan":"",
     "generalData": {
         "name": "Oscar Daniel",
         "lastname": "Navarro Cieza",
@@ -32,7 +35,6 @@ const dataDummy = {
         "email": "oscar.navarro@pucp.edu.pe",
         "celephone": 929178606,
         "personalEmail": "oscar@prueba.com",
-        "typeUser":"C"
     },
     "aboutCompany": {
         "isNational": true,
@@ -57,27 +59,35 @@ const dataDummy = {
         "name":"Hugo Carlos",
         "area":"TI",
         "email":"hugoCar1548@gmail.com",
-        "telephone":"9856875564"
+        "cellphone":"9856875564"
     },
     "calification": {
-        "comments":"Buen trabajo",
-        "aprobado": true
+        "comments":"Buen trabajo"
     },
     "others": [
         {
-            "section": "Sobre la PSP",
-            "name": "pais",
-            "value": ''
+            "idCampoProceso":28,
+            "idCampoLlenado":7,
+            "nombreCampo":"Pais",
+            "seccion": "Sobre la PSP",
+            "flag": "obligatorio",
+            "valorAlumno": 'AA'
         },
         {
-            "section": "Sobre el jefe",
-            "name": "giro",
-            "value": "Electrodomésticos"
+            "idCampoProceso":29,
+            "idCampoLlenado":9,
+            "nombreCampo": "Giro",
+            "seccion": "Sobre el jefe",
+            "flag": "opcional",
+            "valorAlumno": "Electrodomésticos"
         },
         {
-            "section": "Sobre el jefe",
-            "name": "nuevodato",
-            "value": "xxxxx"
+            "idCampoProceso":30,
+            "idCampoLlenado":10,
+            "nombreCampo": "nuevodato",
+            "seccion": "Sobre el jefe",
+            "flag": "opcional",
+            "valorAlumno": "xxxxx"
         }
     ]
 
@@ -85,87 +95,69 @@ const dataDummy = {
 
 export default function StudentRegistrationForm () {
     const {user} = useAuth();
+    let idAlumno=1;
+    const [aux,setAux]=useState([]);
     const [data, setData] = useState(dataDummy)
-
+    //let typeUser=user.tipoPersona;
+    let typeUser="A";
     useEffect(()=> {
-        /*
-        selectSubmittedInscriptionForm(data.idAlumno).then(response => {
-            if(response.success) {
-                setData(response.data);
+        getstudentInscriptionForm(idAlumno).then(response => {
+            if(response.success===true) {
+                console.log("En el success el response es: ",response);
+                setData(response.infoFicha.infoFicha);
             }
-        })*/
-    }, [setData])
-    
+        })
+    }, [setAux])
+    //console.log("Luego de jalar la info: ",data);
     
     let result=true;
     const insert = async e => {
         //hacer una diferencia primero si es alumno o cordinador
         //en el caso del alumno por el estado de approvalState ver si es un Insertar o un Modificar
         //en el caso del coordinador ver si con el idAlumno hay alguna ficha y depende de eso Insertar o modificar 
-        /*
         e.preventDefault();
-        if(data.generalData.typeUser==="A"){
-            let response=null;
-            if(data.approvalState==="Observado"){
-                response = await registrationUpdateApi(data);
-            }
-            if(data.approvalState==="Sin Entregar"){
-                response = await registrationInsertApiStudent(data)
-            }
-            
-            if(response.success){
-                toast.success("Se guardó la ficha de forma correcta", {
-                    position: "top-right",
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                });
-            }else{
-                toast.error('Ups, ha ocurrido un error', {
-                    position: "top-right",
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                });
-            }   
+        let response=null;
+        response = await registrationUpdateApiStudentCamps(data);
+        if(!response.success){
+            toast.error(response.msg, {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
         }
-        if(data.generalData.typeUser==="C"){
-            const response =await registrationUpdateApi(data);
-            if(response.success){
-                toast.success("Se registraron los datos de forma correcta", {
-                    position: "top-right",
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                });
-            }else{
-                toast.error('Ups, ha ocurrido un error', {
-                    position: "top-right",
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                });
-            }   
-        }*/
-        
+
+        response = await registrationUpdateApiStudent(data);
+        if(response.success){
+            toast.success("Se guardó la ficha de forma correcta", {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
+        }else{
+            toast.error(response.msg, {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
+        }  
     }
-    console.log(data);
+    //console.log(data);
     const isSaved=((data.documentsState==="Sin entregar")||
         (data.documentsState==="Entregado"&&data.approvalState==="Observado"))? false: true;
     const typeDocumentState = (data.documentsState==="Sin entregar")? "fileEmpty": "success";
-    const imStudent=(data.generalData.typeUser==="A")?true:false;
+    const imStudent=(typeUser==="A")?true:false;
     let typeApprovalState = "";
     switch(data.approvalState) {
         case "Observado": typeApprovalState = "warning"; break;
@@ -213,11 +205,11 @@ export default function StudentRegistrationForm () {
                         <FileManagement/>
                     </div>
                 </div>
-                {data.generalData.typeUser==="A"? <div className="row rows BotonAlumno">
+                {typeUser==="A"? <div className="row rows BotonAlumno">
                     <Button className="btn btn-primary" style={{width:"40%"}} onClick={insert} disabled={isSaved}>Enviar</Button>
                     <ToastContainer />
                 </div>:<div></div>}                 
-                {data.generalData.typeUser === "C" ? <div className="row rows">
+                {typeUser === "C" ? <div className="row rows">
                     <CalificationFormStudent data={data} setData={setData} notgrabado={false}/>
                 </div> : <div></div>}
             </div>

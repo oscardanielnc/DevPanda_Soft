@@ -28,11 +28,14 @@ export default function AboutCompany ({data, setData, notgrabado}) {
 
     const handleChangeOthers = (e) => {
         const newOthers = data.others.map(elem => {
-            if(elem.name === e.target.name) 
+            if(elem.nombreCampo === e.target.name)
                 return {
-                    section: "Sobre la empresa",
-                    value: e.target.value,
-                    name: e.target.name
+                    idCampoProceso:elem.idCampoProceso,
+                    idCampoLlenado:elem.idCampoLlenado,
+                    nombreCampo: e.target.name,
+                    seccion: "Sobre la empresa",
+                    flag: elem.flag,
+                    valorAlumno: e.target.value   
                 }
             return elem;
         })
@@ -43,7 +46,8 @@ export default function AboutCompany ({data, setData, notgrabado}) {
     }
 
     return (
-        <div className="container chartSobreEmpresa">
+        aboutCompany &&
+            <div className="container chartSobreEmpresa">
              <nav className="navbar navbar-fixed-top navbar-inverse bg-inverse "style={{ backgroundColor: "#E7E7E7"}}>
                 <h3 style={{"marginLeft":"15px"}}>Sobre la empresa</h3>
              </nav>
@@ -139,19 +143,19 @@ export default function AboutCompany ({data, setData, notgrabado}) {
             </div>
             {
                 data.others && data.others.map((e,index) => {
-                    if(e.section === "Sobre la empresa"){
+                    if(e.seccion === "Sobre la empresa"){
                         var one = 'Ingrese el ';
-                        var two = e.name;
+                        var two = e.nombreCampo;
                         var texto = one + two;
                         return (
-                            <div>
+                            <div key={index}>
                                 <div className="rowsOthers">{texto}</div>
                                 <div className="row rows" style={{"paddingTop":"10px !important"}}>
                                     <Form.Control placeholder={texto}
                                     onChange={handleChangeOthers}
-                                    value={e.value}
+                                    value={e.valorAlumno}
                                     disabled = {notgrabado}
-                                    name={e.name}/>
+                                    name={e.nombreCampo}/>
                                 </div>
                             </div>
                         )
