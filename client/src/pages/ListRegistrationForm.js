@@ -8,8 +8,11 @@ import useAuth from "../hooks/useAuth";
 import FilterData from "../components/Filters/FilterData";
 import {Form, FormControl} from 'react-bootstrap';
 import useWindowDimensions from "../hooks/useWindowResize";
+import {getListStudentsInscriptionForm} from  "../api/registrationForm";
+
 
 const dataDummy = [
+    /*
     {
         idAlumno : "1",
         nombreAlumno: "Carlos Lescano",
@@ -55,6 +58,7 @@ const dataDummy = [
         nombreAlumno: "Diego Rodriguez",
         estado: "Aprobado"
     }
+    */
 ]
 
 const states = [
@@ -63,12 +67,16 @@ const states = [
     value: "Aprobado"
     },
     {
-        name: "Desaprobado",
-        value: "Desaprobado"
+        name: "Observado",
+        value: "Observado"
     },
     {
-        name: "Sin Calificar",
-        value: "Sin Calificar"
+        name: "Sin calificar",
+        value: "Sin calificar"
+    },
+    {
+        name: "Sin entregar",
+        value: "Sin entregar"
     }
 ]
 
@@ -80,16 +88,25 @@ let textSelect = "-1"
 
 export default function ListRegistrationForm () {
     
-    const [alumnos, setAlumnos] = useState(dataDummy);
+    const [alumnos, setAlumnos] = useState([]);
     const [filteredData, setFilteredData] = useState(dataDummy);
     // const [textFilter, setTextFilter] = useState("");
     // const [textSelect, setTextSelect] = useState("-1");
 
-    
+    let idEspecialidad = 1
     //console.log(useAuth()); // el useAuth() nos permite acceder a la informacion del usuario desde cualquier lugar. Por ahora ese objeto esta hardcodeado.
 
 
-    
+    useEffect(()=> {
+        getListStudentsInscriptionForm(1).then(response => {
+            if(response.success===true) {
+                console.log("En el success el response es: ",response);
+                setAlumnos(response.data);
+                setFilteredData(response.data);
+            }
+        })
+    }, [setAlumnos])
+
     const filter = e => {
         const text = e.target.value.toUpperCase();
         
