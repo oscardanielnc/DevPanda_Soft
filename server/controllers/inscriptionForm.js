@@ -78,7 +78,6 @@ async function updateFieldsInscriptionForm(req, res){
     var campos = req.body.others;
 
     for(element of campos){
-        
         sqlQuery = `UPDATE CampoLlenadoFichaInscripcion
                     SET valorAlumno = "${element.valorAlumno}"
                     WHERE idCampoLlenado= ${element.idCampoLlenado}
@@ -305,8 +304,32 @@ async function getstudentInscriptionForm(req, res){
             res.status(505).send({ message: "Error inesperado en el servidor " + e.message})
             return 
         }   
-
+        console.log(resultElement);
         data.others = resultElement;
+        var valorAlumno = null;
+        var fidFicha = data.idFicha;
+        for(element of data.others){
+
+            sqlQuery = `INSERT INTO 
+                        CampoLlenadoFichaInscripcion SET ?`;
+            
+            var fidCampoProceso = element.idCampoProceso
+            sqlObj = {
+                fidCampoProceso, fidFicha , valorAlumno
+            };
+
+            try{
+                resultElement  = await functionInsert();
+                if(!resultElement){
+                    res.status(404).send({ message: "No se pudo insertar un campo de la sección 'Otros' al alumno"})
+                    return 
+                } 
+            }catch(e){
+                res.status(505).send({ message: "Error en el servidor " + e.message})
+                return 
+            }  
+            element.idCampoLlenado = resultElement;
+        }
         
     }else{
 
@@ -346,11 +369,9 @@ async function getstudentInscriptionForm(req, res){
         data.aboutBoss.cellphone = resultElement[0].celularJefe;
         data.aboutBoss.area = resultElement[0].areaJefe;
 
-        const fecha = new Date();
-        console.log(fecha)
         data.calification.comments = resultElement[0].observaciones;
 
-        //Agregamos los campos extras
+        //Traemos los campos extras
         sqlQuery = `SELECT CP.idCampoProceso, CL.idCampoLlenado, CF.nombreCampo, CF.seccion, CP.flag, CL.valorAlumno
                     FROM CampoFichaInscripcion CF, CampoFichaInscripcionProceso CP, CampoLlenadoFichaInscripcion CL, EntregaFichaInscripcion E
                     WHERE CF.idCampo = CP.fidCampoFicha
@@ -365,7 +386,7 @@ async function getstudentInscriptionForm(req, res){
             res.status(505).send({ message: "Error inesperado en el servidor " + e.message})
             return 
         }   
-
+        
         data.others = resultElement;
     }
 
