@@ -7,7 +7,7 @@ import ShowFiles from "./ShowFiles";
 import { uploadDocsApi } from "../../api/files";
 import {ToastContainer, toast} from "react-toastify";
 
-export default function FileManagement ({canUpload=true, docs, maxFiles=2}){
+export default function FileManagement ({canUpload=true, docs, maxFiles=2, titleUpload="Subir archivos",titleUploadedFiles="Archivos subidos"}){
 
     const onFileChange = async (files) => {
         // const response = await uploadDocsApi(files, "1-1-CONV-1", 1);
@@ -51,7 +51,7 @@ export default function FileManagement ({canUpload=true, docs, maxFiles=2}){
                     <>
                     <h2>
                         {
-                            (canUpload)? "Archivos Observados": "Archivos subidos"
+                            titleUploadedFiles
                         }
                     </h2>
                     <ShowFiles docs={docs}/>
@@ -59,7 +59,7 @@ export default function FileManagement ({canUpload=true, docs, maxFiles=2}){
                 )
             }
             <h2 className="headUpload">
-                {canUpload && "Subir archivos"}                
+                {canUpload && titleUpload}                
             </h2>
             {
                 canUpload && <Upload maxFiles={maxFiles}

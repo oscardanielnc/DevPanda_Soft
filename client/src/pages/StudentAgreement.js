@@ -41,17 +41,14 @@ export default function StudentAgreement () {
 
     const datadummy = {
         "idAlumno":1,
-        "numDocumentos":2,
         "documento":{
             "idDocumento":1,
-            "nombre":"convenioOscar",
-            "archivo":null,
             "estadofaci":"entregado",
-            "estadoEspecialidad":"entregado"
+            "estadoEspecialidad":"entregado",
+            "esAlumno":1,
         },
     }
     const [data, setData] = useState(datadummy)
-    const numDocumentos=0;
     let result=true;
     const insert = async e => {
         /*
