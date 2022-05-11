@@ -8,6 +8,8 @@ import useAuth from "../hooks/useAuth";
 import FilterData from "../components/Filters/FilterData";
 import {Form, FormControl} from 'react-bootstrap';
 import useWindowDimensions from "../hooks/useWindowResize";
+import {getListStudentsInscriptionForm} from  "../api/registrationForm";
+
 
 const dataDummy = [
     {
@@ -85,11 +87,20 @@ export default function ListRegistrationForm () {
     // const [textFilter, setTextFilter] = useState("");
     // const [textSelect, setTextSelect] = useState("-1");
 
-    
+    let idEspecialidad = 1
     //console.log(useAuth()); // el useAuth() nos permite acceder a la informacion del usuario desde cualquier lugar. Por ahora ese objeto esta hardcodeado.
 
 
-    
+    useEffect(()=> {
+        getListStudentsInscriptionForm(1).then(response => {
+            if(response.success===true) {
+                console.log("En el success el response es: ",response);
+                setAlumnos(response.data);
+                setFilteredData(response.data);
+            }
+        })
+    }, [setAlumnos])
+
     const filter = e => {
         const text = e.target.value.toUpperCase();
         
