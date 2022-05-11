@@ -12,7 +12,6 @@ async function updateFieldsInscriptionForm(req, res){
     const fidAlumnoProceso = req.body.idAlumnoProceso;
     const fidFicha = req.body.idFicha;
     var resultElement;
-
     functionUpdate = () =>{
         return new Promise((resolve, reject)=>{
             connection.query(sqlQuery, async (err, result) => {
@@ -24,7 +23,6 @@ async function updateFieldsInscriptionForm(req, res){
             })
         })
     }
-
     var sqlQuery = `UPDATE EntregaFichaInscripcion
                     SET 
                     aprobado = "${req.body.approvalState}",
@@ -76,7 +74,6 @@ async function updateFieldsInscriptionForm(req, res){
     }  
 
     var campos = req.body.others;
-
     for(element of campos){
         sqlQuery = `UPDATE CampoLlenadoFichaInscripcion
                     SET valorAlumno = "${element.valorAlumno}"
@@ -95,7 +92,6 @@ async function updateFieldsInscriptionForm(req, res){
             return 
         }  
     }
-    
     res.status(200).send({
         message: "Campos actualizados correctamente"
     })
@@ -105,7 +101,6 @@ async function updateFieldsInscriptionForm(req, res){
 //Te permite actualizar los datos de la ficha de inscripcion
 async function updateInscriptionForm(req, res){
     const connection = mysql.createConnection(MYSQL_CREDENTIALS);
-
     const idFicha = req.body.idFicha;
     const idAlumnoProceso = req.body.idAlumnoProceso;
     const aprobado = req.body.approvalState;

@@ -27,17 +27,16 @@ export function getstudentInscriptionForm(idAlumno) {
             }
         })
 }
- export function registrationUpdateApiStudent({data}) {
-     const url = `${BASE_PATH}/${API_VERSION}/studentDataInscriptionForm"`;
+ export function registrationUpdateApiStudent(data) {
+     const url = `${BASE_PATH}/${API_VERSION}/studentDataInscriptionForm`;
      const params = {
-         method: "POST",
+         method: "PUT",
          headers: {
              "Content-Type": "application/json",
              authorization: PANDA_KEY
         },
          body: JSON.stringify(data)
      }
-
      return fetch(url, params)
          .then(response => {
              return response.json()
@@ -55,10 +54,10 @@ export function getstudentInscriptionForm(idAlumno) {
              }
          })
  }
- export function registrationUpdateApiStudentCamps({data}) {
+ export function registrationUpdateApiStudentCamps(data) {
     const url = `${BASE_PATH}/${API_VERSION}/studentFieldsInscriptionForm`;
     const params = {
-        method: "POST",
+        method: "PUT",
         headers: {
             "Content-Type": "application/json",
             authorization: PANDA_KEY
@@ -79,6 +78,34 @@ export function getstudentInscriptionForm(idAlumno) {
         .catch(err => {
             return {
                 msg: err.message,
+                success: false
+            }
+        })
+}
+
+export function getListStudentsInscriptionForm(idEspecialidad){
+    const url = `${BASE_PATH}/${API_VERSION}/studentListInscriptionForm/${idEspecialidad}`;
+    const params = {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            //Authorization: PANDA_KEY
+        }
+    }
+
+    return fetch(url, params)
+        .then(response => {
+            return response.json()
+        })
+        .then(data => {
+            return {
+                data,
+                success: true
+            }
+        })
+        .catch(errMsg => {
+            return {
+                errMsg,
                 success: false
             }
         })

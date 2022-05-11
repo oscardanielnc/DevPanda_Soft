@@ -17,6 +17,7 @@ export default function TimetableCell ({state, setInputs, inputs, indexDay, inde
                     return hour
                 })
             return {
+                day: day.day,
                 date: day.date,
                 hours: newHours
             }

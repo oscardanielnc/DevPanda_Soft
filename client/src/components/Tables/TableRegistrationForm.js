@@ -1,7 +1,9 @@
 import React from "react";
 import { Button, Table } from 'react-bootstrap';
+import { useNavigate,Link } from "react-router-dom";
 
 import './TableRegistrationForm.scss';
+
 
 
 export default function TableRegistrationForm ({rows}) {
@@ -10,6 +12,8 @@ export default function TableRegistrationForm ({rows}) {
             <p>No se han registrado entregas todavía.</p>
         )
     }
+
+
     return (
         <Table striped bordered hover className="TableRegistrationForm">
             <thead>
@@ -28,7 +32,7 @@ export default function TableRegistrationForm ({rows}) {
                         <td>{row.nombreAlumno}</td>
                         <td>{row.estado}</td>
                         <td>
-                            <Button variant="primary">Visualizar</Button>
+                        <Link to ={"/student-registration/" + row.idAlumno} className= "btn btn-primary">Visualizar</Link>
                         </td>
                     </tr>
                 ))

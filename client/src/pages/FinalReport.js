@@ -3,7 +3,6 @@ import LayoutBasic from "../layouts/LayoutBasic";
 import StateViewer,{StatesViewType} from "../components/StateViewer/StateViewer";
 import DocumentPlusIcon from "../components/DocumentPlusIcon/DocumentPlusIcon";
 import { Button, Form} from "react-bootstrap";
-import Convenio from "../asserts/img/pdf/Convenio.pdf";
 
 import "./FinalReport.scss";
 import FileManagement from "../components/FileManagement/FileManagement";
@@ -28,13 +27,13 @@ export default function AgreementReview(){
                         </p>
                     </div>
                     <div className="row normalrow" style={{marginLeft:"10px"}}>
-                        <DocumentPlusIcon name="Guía de Elaboración del Informe.pdf" url={Convenio}/>                       
+                        {/* <DocumentPlusIcon name="Guía de Elaboración del Informe.pdf" url={Convenio}/> */}                       
                     </div>
                     <div className="row normalrow" style={{marginLeft:"10px"}}>
-                        <DocumentPlusIcon name="Modelo del Informe del Practicante.pdf" url={Convenio}/>                       
+                       {/*  <DocumentPlusIcon name="Modelo del Informe del Practicante.pdf" url={Convenio}/>  */}                      
                     </div> 
                     <div className="row normalrow" style={{marginLeft:"10px"}}>
-                        <DocumentPlusIcon name="Carta de Conformidad de la Empresa.pdf" url={Convenio}/>                       
+                        {/* <DocumentPlusIcon name="Carta de Conformidad de la Empresa.pdf" url={Convenio}/>   */}                     
                     </div> 
                 </div>
                 <div className="shadowbox">
