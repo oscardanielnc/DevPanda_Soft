@@ -82,3 +82,31 @@ export function getstudentInscriptionForm(idAlumno) {
             }
         })
 }
+
+export function getListStudentsInscriptionForm(idEspecialidad){
+    const url = `${BASE_PATH}/${API_VERSION}/studentListInscriptionForm/${idEspecialidad}`;
+    const params = {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            //Authorization: PANDA_KEY
+        }
+    }
+
+    return fetch(url, params)
+        .then(response => {
+            return response.json()
+        })
+        .then(data => {
+            return {
+                data,
+                success: true
+            }
+        })
+        .catch(errMsg => {
+            return {
+                errMsg,
+                success: false
+            }
+        })
+}
