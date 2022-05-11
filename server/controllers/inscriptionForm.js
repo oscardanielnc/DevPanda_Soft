@@ -1,5 +1,7 @@
 const { send } = require('express/lib/response');
+const { now } = require('moment');
 const mysql = require('mysql');
+const { DATE } = require('mysql/lib/protocol/constants/types');
 const {MYSQL_CREDENTIALS, API_VERSION, PORT_SERVER, IP_SERVER} = require("../config");
 
 
@@ -344,7 +346,9 @@ async function getstudentInscriptionForm(req, res){
         data.aboutBoss.email = resultElement[0].correoJefe;
         data.aboutBoss.cellphone = resultElement[0].celularJefe;
         data.aboutBoss.area = resultElement[0].areaJefe;
-    
+
+        const fecha = new Date();
+        console.log(fecha)
         data.calification.comments = resultElement[0].observaciones;
 
         //Agregamos los campos extras
@@ -376,7 +380,7 @@ function getListStudentsInscriptionForm(req, res){
     
     const  fidEspecialidad = req.params.idEspecialidad;
 
-    const sqlQuery = `select Pe.nombres, Pe.apellidos, E.aprobado, AP.fidAlumno
+    const sqlQuery = `select AP.fidAlumno as idAlumno, concat(Pe.nombres, ' ' ,Pe.apellidos) as nombreAlumno, E.aprobado as estado
                         from EntregaFichaInscripcion E, AlumnoProceso AP, Alumno A, Proceso P, Persona Pe
                         where P.fidEspecialidad = ${fidEspecialidad}
                         and Pe.idPersona = A.idAlumno 
