@@ -1,5 +1,7 @@
 const { send } = require('express/lib/response');
+const { now } = require('moment');
 const mysql = require('mysql');
+const { DATE } = require('mysql/lib/protocol/constants/types');
 const {MYSQL_CREDENTIALS, API_VERSION, PORT_SERVER, IP_SERVER} = require("../config");
 
 
@@ -25,6 +27,8 @@ async function updateFieldsInscriptionForm(req, res){
 
     var sqlQuery = `UPDATE EntregaFichaInscripcion
                     SET 
+                    aprobado = "${req.body.approvalState}",
+                    estadoDocumento = "${req.body.documentsState}",
                     nombres = "${req.body.generalData.name}",
                     apellidos = "${req.body.generalData.lastname}",
                     codigoPUCP = "${req.body.generalData.code}",
@@ -261,8 +265,8 @@ async function getstudentInscriptionForm(req, res){
         //TO DO:
         //Debemos insertar una Entrega de ficha de inscripcion al alumno
 
-        const aprobado = 0;
-        const estadoDocumento = 1;
+        const aprobado = "Sin entregar";
+        const estadoDocumento = "Sin entregar";
         const observaciones = "";
 
         var sqlObj = {
@@ -311,39 +315,41 @@ async function getstudentInscriptionForm(req, res){
         //######## Seteamos la data del alumno dentro del objeto ####### 
         //##############################################################
 
-        data.idFicha = resultElement[0].idFicha
-        data.documentsState = resultElement[0].estadoDocumento
-        data.approvalState = resultElement[0].aprobado
+        data.idFicha = resultElement[0].idFicha;
+        data.documentsState = resultElement[0].estadoDocumento;
+        data.approvalState = resultElement[0].aprobado;
     
-        data.generalData.name = resultElement[0].nombres
-        data.generalData.lastname = resultElement[0].apellidos
-        data.generalData.code = resultElement[0].codigoPUCP
-        data.generalData.email = resultElement[0].correoPUCP
-        data.generalData.personalEmail = resultElement[0].correoPersonal
-        data.generalData.cellphone = resultElement[0].celular
+        data.generalData.name = resultElement[0].nombres;
+        data.generalData.lastname = resultElement[0].apellidos;
+        data.generalData.code = resultElement[0].codigoPUCP,
+        data.generalData.email = resultElement[0].correoPUCP;
+        data.generalData.personalEmail = resultElement[0].correoPersonal;
+        data.generalData.cellphone = resultElement[0].celular;
     
-        data.aboutCompany.isNational = resultElement[0].esNacional
-        data.aboutCompany.ruc = resultElement[0].ruc
-        data.aboutCompany.info = resultElement[0].infoEmpresa
-        data.aboutCompany.foreignName = resultElement[0].nombreEmpresaExtranjera
-        data.aboutCompany.foreignCountry = resultElement[0].paisEmpresaExtranjera
-        data.aboutCompany.foreignLineBusiness = resultElement[0].lineaNegocioEmpresaExtranjera
+        data.aboutCompany.isNational = resultElement[0].esNacional;
+        data.aboutCompany.ruc = resultElement[0].ruc;
+        data.aboutCompany.info = resultElement[0].infoEmpresa;
+        data.aboutCompany.foreignName = resultElement[0].nombreEmpresaExtranjera;
+        data.aboutCompany.foreignCountry = resultElement[0].paisEmpresaExtranjera;
+        data.aboutCompany.foreignLineBusiness = resultElement[0].lineaNegocioEmpresaExtranjera;
         
         data.aboutJob.areaName = resultElement[0].nombreArea;
-        data.aboutJob.jobTitle = resultElement[0].puesto
-        data.aboutJob.activities = resultElement[0].funcionesActividades
+        data.aboutJob.jobTitle = resultElement[0].puesto;
+        data.aboutJob.activities = resultElement[0].funcionesActividades;
+   
+        data.aboutPSP.dateStart = resultElement[0].fechaInicio;
+        data.aboutPSP.dateEnd = resultElement[0].fechaFin;
+        data.aboutPSP.dailyHours = resultElement[0].horasDiarias;
+        data.aboutPSP.weekHours = resultElement[0].horasSemanales;
     
-        data.aboutPSP.dateStart = resultElement[0].fechaInicio
-        data.aboutPSP.dateEnd = resultElement[0].fechaFin
-        data.aboutPSP.dailyHours = resultElement[0].horasDiarias
-        data.aboutPSP.weekHours = resultElement[0].horasSemanales
-    
-        data.aboutBoss.name = resultElement[0].nombreJefe
-        data.aboutBoss.email = resultElement[0].correoJefe
-        data.aboutBoss.cellphone = resultElement[0].celularJefe
-        data.aboutBoss.area = resultElement[0].areaJefe
-    
-        data.calification.comments = resultElement[0].observaciones
+        data.aboutBoss.name = resultElement[0].nombreJefe;
+        data.aboutBoss.email = resultElement[0].correoJefe;
+        data.aboutBoss.cellphone = resultElement[0].celularJefe;
+        data.aboutBoss.area = resultElement[0].areaJefe;
+
+        const fecha = new Date();
+        console.log(fecha)
+        data.calification.comments = resultElement[0].observaciones;
 
         //Agregamos los campos extras
         sqlQuery = `SELECT CP.idCampoProceso, CL.idCampoLlenado, CF.nombreCampo, CF.seccion, CP.flag, CL.valorAlumno
@@ -374,7 +380,7 @@ function getListStudentsInscriptionForm(req, res){
     
     const  fidEspecialidad = req.params.idEspecialidad;
 
-    const sqlQuery = `select Pe.nombres, Pe.apellidos, E.aprobado, AP.fidAlumno
+    const sqlQuery = `select AP.fidAlumno as idAlumno, concat(Pe.nombres, ' ' ,Pe.apellidos) as nombreAlumno, E.aprobado as estado
                         from EntregaFichaInscripcion E, AlumnoProceso AP, Alumno A, Proceso P, Persona Pe
                         where P.fidEspecialidad = ${fidEspecialidad}
                         and Pe.idPersona = A.idAlumno 

@@ -3,6 +3,7 @@ const ScheduleController = require("../controllers/schedule");
 
 const api = express.Router();
 
-api.put("/makeAnAppointment", ScheduleController.makeAnAppointment);
+api.put("/schedule-makeAnAppointment", ScheduleController.makeAnAppointment);
+api.get("/schedule-getAssessorScheduleByWeek", ScheduleController.getAssessorScheduleByWeek);
 
 module.exports = api;

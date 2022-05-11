@@ -21,7 +21,7 @@ export default function Footer (props) {
                 </div>
                 <div className="footer__leftcontactanosInfo">
                     <div>
-                        <i class="bi bi-telephone-fill telfIcon"></i>
+                        <i className="bi bi-telephone-fill telfIcon"></i>
                         959300449 de L-V de 9:00 am a 1:00 pm<br/>
                     </div>
                     <div>

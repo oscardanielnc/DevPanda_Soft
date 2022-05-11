@@ -13,6 +13,10 @@ const agreementLearningPlanRoutes =  require('./routers/agreementLearningPlan');
 const inscriptionFormRoutes = require('./routers/inscriptionForm');
 const authRoutes =  require('./routers/auth');
 const filesRoutes =  require('./routers/files');
+const administrativesRoutes =  require('./routers/administratives');
+const weekRoutes =  require('./routers/week');
+const scheduleRoutes =  require('./routers/schedule');
+const deliverablesRoutes = require('./routers/deliverable');
 
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
@@ -35,5 +39,9 @@ app.use(`/api/${API_VERSION}`, agreementLearningPlanRoutes);
 app.use(`/api/${API_VERSION}`, inscriptionFormRoutes);
 app.use(`/api/${API_VERSION}`, authRoutes);
 app.use(`/api/${API_VERSION}`, filesRoutes);
+app.use(`/api/${API_VERSION}`, administrativesRoutes);
+app.use(`/api/${API_VERSION}`, weekRoutes);
+app.use(`/api/${API_VERSION}`, scheduleRoutes);
+app.use(`/api/${API_VERSION}`, deliverablesRoutes);
 
 module.exports = app;
