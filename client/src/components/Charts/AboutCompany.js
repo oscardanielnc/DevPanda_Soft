@@ -46,7 +46,8 @@ export default function AboutCompany ({data, setData, notgrabado}) {
     }
 
     return (
-        <div className="container chartSobreEmpresa">
+        aboutCompany &&
+            <div className="container chartSobreEmpresa">
              <nav className="navbar navbar-fixed-top navbar-inverse bg-inverse "style={{ backgroundColor: "#E7E7E7"}}>
                 <h3 style={{"marginLeft":"15px"}}>Sobre la empresa</h3>
              </nav>
@@ -147,7 +148,7 @@ export default function AboutCompany ({data, setData, notgrabado}) {
                         var two = e.nombreCampo;
                         var texto = one + two;
                         return (
-                            <div>
+                            <div key={index}>
                                 <div className="rowsOthers">{texto}</div>
                                 <div className="row rows" style={{"paddingTop":"10px !important"}}>
                                     <Form.Control placeholder={texto}

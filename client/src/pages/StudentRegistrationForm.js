@@ -13,7 +13,7 @@ import StateViewer,{StatesViewType} from "../components/StateViewer/StateViewer"
 import DocumentPlusIcon from "../components/DocumentPlusIcon/DocumentPlusIcon";
 import CompUpload from "../components/Single/CompUpload";
 import useAuth from "../hooks/useAuth";
-import { selectSubmittedInscriptionForm,registrationInsertApiStudent,registrationUpdateApi } from "../api/registrationForm";
+import { getstudentInscriptionForm,registrationUpdateApiStudent,registrationUpdateApiStudentCamps } from "../api/registrationForm";
 
 import './StudentRegistrationForm.scss';
 
@@ -95,84 +95,65 @@ const dataDummy = {
 
 export default function StudentRegistrationForm () {
     const {user} = useAuth();
+    let idAlumno=1;
+    const [aux,setAux]=useState([]);
     const [data, setData] = useState(dataDummy)
     //let typeUser=user.tipoPersona;
     let typeUser="A";
     useEffect(()=> {
-        /*
-        selectSubmittedInscriptionForm(data.idAlumno).then(response => {
-            if(response.success) {
-                setData(response.data);
+        getstudentInscriptionForm(idAlumno).then(response => {
+            if(response.success===true) {
+                console.log("En el success el response es: ",response);
+                setData(response.infoFicha.infoFicha);
             }
-        })*/
-    }, [setData])
-    
+        })
+    }, [setAux])
+    //console.log("Luego de jalar la info: ",data);
     
     let result=true;
     const insert = async e => {
         //hacer una diferencia primero si es alumno o cordinador
         //en el caso del alumno por el estado de approvalState ver si es un Insertar o un Modificar
         //en el caso del coordinador ver si con el idAlumno hay alguna ficha y depende de eso Insertar o modificar 
-        /*
         e.preventDefault();
-        if(typeUser==="A"){
-            let response=null;
-            if(data.approvalState==="Observado"){
-                response = await registrationUpdateApi(data);
-            }
-            if(data.approvalState==="Sin Entregar"){
-                response = await registrationInsertApiStudent(data)
-            }
-            
-            if(response.success){
-                toast.success("Se guardó la ficha de forma correcta", {
-                    position: "top-right",
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                });
-            }else{
-                toast.error('Ups, ha ocurrido un error', {
-                    position: "top-right",
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                });
-            }   
+        let response=null;
+        response = await registrationUpdateApiStudentCamps(data);
+        if(!response.success){
+            toast.error(response.msg, {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
         }
-        if(typeUser==="C"){
-            const response =await registrationUpdateApi(data);
-            if(response.success){
-                toast.success("Se registraron los datos de forma correcta", {
-                    position: "top-right",
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                });
-            }else{
-                toast.error('Ups, ha ocurrido un error', {
-                    position: "top-right",
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                });
-            }   
-        }*/
-        
+
+        response = await registrationUpdateApiStudent(data);
+        if(response.success){
+            toast.success("Se guardó la ficha de forma correcta", {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
+        }else{
+            toast.error(response.msg, {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
+        }  
     }
-    console.log(data);
+    //console.log(data);
     const isSaved=((data.documentsState==="Sin entregar")||
         (data.documentsState==="Entregado"&&data.approvalState==="Observado"))? false: true;
     const typeDocumentState = (data.documentsState==="Sin entregar")? "fileEmpty": "success";

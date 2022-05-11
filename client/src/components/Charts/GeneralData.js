@@ -6,7 +6,7 @@ import './GeneralData.scss';
 
 export default function GeneralData ({data, setData, imStudent=true}) {
     const {generalData} = data;
-
+    console.log("El general data es: ",generalData);
     const handleChange = (e) => {
         setData({
             ...data,
@@ -36,7 +36,8 @@ export default function GeneralData ({data, setData, imStudent=true}) {
     }
 
     return (
-        <div className="container chartGeneralData">
+        generalData &&
+            <div className="container chartGeneralData">
              <nav className="navbar navbar-fixed-top navbar-inverse bg-inverse "style={{ backgroundColor: "#E7E7E7"}}>
                 <h3 style={{"marginLeft":"15px"}}>Datos Generales</h3>
              </nav>
@@ -75,7 +76,6 @@ export default function GeneralData ({data, setData, imStudent=true}) {
                         disabled
                         name="emailPUCP"
                         />
-                        <InputGroup.Text id="basic-addon2">@pucp.edu.pe</InputGroup.Text>
                     </InputGroup>
 
                 </div>
@@ -105,7 +105,7 @@ export default function GeneralData ({data, setData, imStudent=true}) {
                         var two = e.nombreCampo;
                         var texto = one + two;
                         return (
-                            <div>
+                            <div key={index}>
                                 <div className="rowsOthers">{texto}</div>
                                 <div className="row rows" style={{"paddingTop":"10px !important"}}>
                                     <Form.Control placeholder={texto}

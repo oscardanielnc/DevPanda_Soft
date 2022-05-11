@@ -38,7 +38,7 @@ export default function AboutJob ({data, setData, notgrabado}) {
     }
 
     return (
-        <div className="container chartAboutJob">
+        aboutJob && <div className="container chartAboutJob">
              <nav className="navbar navbar-fixed-top navbar-inverse bg-inverse "style={{ backgroundColor: "#E7E7E7"}}>
                 <h3 style={{"marginLeft":"15px"}}>Sobre el puesto</h3>
              </nav>
@@ -80,7 +80,7 @@ export default function AboutJob ({data, setData, notgrabado}) {
                         var two = e.nombreCampo;
                         var texto = one + two;
                         return (
-                            <div>
+                            <div key={index}>
                                 <div className="rowsOthers">{texto}</div>
                                 <div className="row rows" style={{"paddingTop":"10px !important"}}>
                                     <Form.Control placeholder={texto}

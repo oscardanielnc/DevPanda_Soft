@@ -55,7 +55,7 @@ export default function CalificationFormStudent ({data, setData, notgrabado}) {
         })
     }
     return (
-        <div className="container chartCalificationFormStudent">
+        calification && <div className="container chartCalificationFormStudent">
             <nav className="navbar navbar-fixed-top navbar-inverse bg-inverse "style={{ backgroundColor: "#E7E7E7"}}>
                 <h3 style={{"marginLeft":"15px"}}>Retroalimentación</h3>
              </nav>
