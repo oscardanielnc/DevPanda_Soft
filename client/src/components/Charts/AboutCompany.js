@@ -17,13 +17,29 @@ export default function AboutCompany ({data, setData, notgrabado}) {
         })
     }
     const handleChangeCheck = (e) => {
-        setData({
-            ...data,
-            aboutCompany: {
-                ...data.aboutCompany,
-                isNational: !data.aboutCompany.isNational
+        if(data.aboutCompany.isNational===true){
+            const newData = {
+                ...data,
+                aboutCompany: {
+                    isNational: !data.aboutCompany.isNational,
+                    ruc:"",
+                    info:""
+                }
             }
-        })
+            setData(newData);
+        }else{
+            const newData = {
+                ...data,
+                aboutCompany: {
+                    isNational: !data.aboutCompany.isNational,
+                    foreignName:"",
+                    foreignCountry:"",
+                    foreignLineBusiness:""
+                }
+            }
+            setData(newData);
+        }
+        
     }
 
     const handleChangeOthers = (e) => {

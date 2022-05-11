@@ -95,28 +95,31 @@ const dataDummy = {
     ]
 
 }
+let oscar = 0
+const arrayCadena = window.location.pathname.split("/");
+const idAlumno=parseInt(arrayCadena[2]);
 
 export default function StudentRegistrationForm () {
     const {user} = useAuth();
-    let idAlumno=1;
     const [aux,setAux]=useState([]);
-    const [data, setData] = useState(dataDummy);
+    const [data, setData] = useState({});
     const [docs, setDocs] = useState([]);
     const [studentDocs, setStudentDocs] = useState([]);
-
+    console.log("En el StudentRegistrationForm", oscar);
+    console.log("En el StudentRegistrationForm:", data);
     //let typeUser=user.tipoPersona;
-    let typeUser="C";
+    let typeUser="A";
     useEffect(()=> {
-        if(typeUser==="C"){
-            var arrayCadena = window.location.pathname.split("/");
-            idAlumno=parseInt(arrayCadena[2]);
-            console.log(idAlumno);
-        }else{
-            //idAlumno=user.idAlumno;
-        }
         getstudentInscriptionForm(idAlumno).then(response => {
             if(response.success===true) {
+                console.log("En el success1", oscar);
+                oscar++
+                console.log("En el response, ", response.infoFicha.infoFicha);
+                
                 setData(response.infoFicha.infoFicha);
+                console.log("En el success2", oscar);
+            }else{
+                console.log("En el else");
             }
         })
         if(typeUser==="A"){
@@ -127,7 +130,7 @@ export default function StudentRegistrationForm () {
             data.generalData.email=user.email;*/
         }
     }, [setData])
-
+    console.log(data);
     useEffect(() => {
         getAllDocsApi("1-1-CONV", 0).then(response => {
             if(response.success) {
@@ -137,23 +140,33 @@ export default function StudentRegistrationForm () {
     },[setDocs])
 
     useEffect(() => {
-        getAllDocsApi("1-1-CONV-1", 1).then(response => {
+        getAllDocsApi(`1-1-CONV-${idAlumno}`, 1).then(response => {
             if(response.success) {
                 setStudentDocs(response.docs)
             }
         })
     },[setStudentDocs])
 
-    let result=true;
     const insert = async e => {
         //hacer una diferencia primero si es alumno o cordinador
         //en el caso del alumno por el estado de approvalState ver si es un Insertar o un Modificar
         //en el caso del coordinador ver si con el idAlumno hay alguna ficha y depende de eso Insertar o modificar 
         e.preventDefault();
-        let response=null;
-        data.documentsState="Entregado";
-        data.approvalState="Sin calificar";
-        response = await registrationUpdateApiStudentCamps(data);
+        // let response=null;
+        const newData = {
+            ...data,
+            documentsState: "Entregado",
+            approvalState: "Sin calificar"
+        }
+        // setData({
+        //     ...data,
+        //     documentsState: "Entregado",
+        //     approvalState: "Sin calificar"
+        // })
+        // data.documentsState="Entregado";
+        // data.approvalState="Sin calificar";
+        console.log("antes de enviar: ",data);
+        const response = await registrationUpdateApiStudentCamps(newData);
         if(!response.success){
             toast.error(response.msg, {
                 position: "top-right",
@@ -164,6 +177,7 @@ export default function StudentRegistrationForm () {
                 draggable: true,
                 progress: undefined,
             });
+            console.log(response.msg);
             setData({
                 ...data,
                 idAlumno: data.idAlumno,
@@ -189,22 +203,9 @@ export default function StudentRegistrationForm () {
                 draggable: true,
                 progress: undefined,
             });
+            setData(newData);
+            console.log(response.msg);
         }
-        setData({
-            ...data,
-            idAlumno: data.idAlumno,
-            idAlumnoProceso: data.idAlumnoProceso,
-            idFicha: data.idFicha,
-            documentsState: data.documentsState,
-            approvalState: data.approvalState,
-            generalData: data.generalData,
-            aboutCompany: data.aboutCompany,
-            aboutJob:data.aboutJob,
-            aboutPSP: data.aboutPSP,
-            aboutBoss:data.aboutBoss,
-            calification:data.calification,
-            others: data.others,
-        })
     }
     let isSaved=null;
     let canUpload=null;
@@ -280,7 +281,7 @@ export default function StudentRegistrationForm () {
      }
 
     return (
-        <LayoutBasic>
+        data.calification && <LayoutBasic>
             <div className="container principal" style={{"padding":"1px"}}>
                 <div className="row rows" style={{textAlign: "left"}}>
                     <h1>Ficha de Inscripción</h1>
