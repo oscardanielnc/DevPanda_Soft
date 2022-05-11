@@ -25,7 +25,7 @@ export default function AboutDurationPSP ({data, setData, notgrabado}) {
     const handleChangeDate = (e, name) => {
         const day = (e.getDate()<10)? `0${e.getDate()}`: `${e.getDate()}`;
         const month = (e.getMonth()<10)? `0${e.getMonth()}`: `${e.getMonth()}`;
-        const year = ((e.getFullYear()%100)<10)? `0${e.getFullYear()%100}`: `${e.getFullYear()%100}`;
+        const year = (e.getFullYear());
         const date = `${day}-${month}-${year}`;
 
         setData({
@@ -69,7 +69,7 @@ export default function AboutDurationPSP ({data, setData, notgrabado}) {
                         locale="es"
                         disabled={notgrabado}
                         className="picker1"
-                        dateFormat="dd-MM-yy"
+                        dateFormat="dd-MM-yyyy"
                         name="dateStart"
                         value={aboutPSP.dateStart}
                     />
@@ -81,7 +81,7 @@ export default function AboutDurationPSP ({data, setData, notgrabado}) {
                         locale="es"
                         disabled={notgrabado}
                         className="picker2"
-                        dateFormat="dd-MM-yy"
+                        dateFormat="dd-MM-yyyy"
                         name="dateEnd"
                         value={aboutPSP.dateEnd}
                     />
