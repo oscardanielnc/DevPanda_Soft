@@ -12,6 +12,10 @@ const dataNavbar = [
         link: "/"
     },
     {
+        title: "Revisión Ficha de Inscripción",
+        link: "/listRegistrationForm"
+    },
+    {
         title: "Revisión de Convenios",
         link: "/add-specialty"
     },
@@ -19,6 +23,7 @@ const dataNavbar = [
         title: "Entregables - Alumno",
         link: "/deliverables"
     }
+
 ]
 
 export default function(){
