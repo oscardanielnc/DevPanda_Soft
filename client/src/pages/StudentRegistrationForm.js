@@ -117,6 +117,18 @@ export default function StudentRegistrationForm () {
         //en el caso del coordinador ver si con el idAlumno hay alguna ficha y depende de eso Insertar o modificar 
         e.preventDefault();
         let response=null;
+        if(data.documentsState==="Sin entregar"){
+            setData({
+                ...data,
+                documentsState: "Entregado",
+            })
+        }
+        if(data.approvalState==="Sin entregar"){
+            setData({
+                ...data,
+                approvalState: "Sin calificar",
+            })
+        }
         response = await registrationUpdateApiStudentCamps(data);
         if(!response.success){
             toast.error(response.msg, {
@@ -128,6 +140,11 @@ export default function StudentRegistrationForm () {
                 draggable: true,
                 progress: undefined,
             });
+            setData({
+                ...data,
+                approvalState: "Sin entregar",
+                documentsState: "Sin entregar",
+            })
         }
 
         response = await registrationUpdateApiStudent(data);
@@ -151,9 +168,14 @@ export default function StudentRegistrationForm () {
                 draggable: true,
                 progress: undefined,
             });
+            setData({
+                ...data,
+                approvalState: "Sin entregar",
+                documentsState: "Sin entregar",
+            })
         }  
     }
-    //console.log(data);
+    console.log(data);
     const isSaved=((data.documentsState==="Sin entregar")||
         (data.documentsState==="Entregado"&&data.approvalState==="Observado"))? false: true;
     const typeDocumentState = (data.documentsState==="Sin entregar")? "fileEmpty": "success";

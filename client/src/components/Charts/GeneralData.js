@@ -6,7 +6,6 @@ import './GeneralData.scss';
 
 export default function GeneralData ({data, setData, imStudent=true}) {
     const {generalData} = data;
-    console.log("El general data es: ",generalData);
     const handleChange = (e) => {
         setData({
             ...data,

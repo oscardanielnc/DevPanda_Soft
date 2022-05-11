@@ -30,7 +30,7 @@ export function getstudentInscriptionForm(idAlumno) {
  export function registrationUpdateApiStudent({data}) {
      const url = `${BASE_PATH}/${API_VERSION}/studentDataInscriptionForm"`;
      const params = {
-         method: "POST",
+         method: "PUT",
          headers: {
              "Content-Type": "application/json",
              authorization: PANDA_KEY
@@ -58,7 +58,7 @@ export function getstudentInscriptionForm(idAlumno) {
  export function registrationUpdateApiStudentCamps({data}) {
     const url = `${BASE_PATH}/${API_VERSION}/studentFieldsInscriptionForm`;
     const params = {
-        method: "POST",
+        method: "PUT",
         headers: {
             "Content-Type": "application/json",
             authorization: PANDA_KEY
