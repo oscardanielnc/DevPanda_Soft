@@ -16,6 +16,21 @@ export default function GeneralData ({data, setData, imStudent=true}) {
             }
         })
     }
+    const handleChangeOthers = (e) => {
+        const newOthers = data.others.map(elem => {
+            if(elem.name === e.target.name) 
+                return {
+                    section: "Datos Generales",
+                    value: e.target.value,
+                    name: e.target.name
+                }
+            return elem;
+        })
+        setData({
+            ...data,
+            others: newOthers
+        })
+    }
 
     return (
         <div className="container chartGeneralData">
@@ -80,6 +95,27 @@ export default function GeneralData ({data, setData, imStudent=true}) {
                         name="personalEmail"/>
                 </div>
             </div>
+            {
+                data.others && data.others.map((e,index) => {
+                    if(e.section === "Datos Generales"){
+                        var one = 'Ingrese el ';
+                        var two = e.name;
+                        var texto = one + two;
+                        return (
+                            <div>
+                                <div className="rowsOthers">{texto}</div>
+                                <div className="row rows" style={{"paddingTop":"10px !important"}}>
+                                    <Form.Control placeholder={texto}
+                                    onChange={handleChangeOthers}
+                                    value={e.value}
+                                    disabled = {!imStudent}
+                                    name={e.name}/>
+                                </div>
+                            </div>
+                        )
+                    }
+                })
+            }
         </div>
     )
 }

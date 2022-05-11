@@ -1,5 +1,5 @@
 import React, {useState, useEffect, createContext} from "react";
-import { getAccessTokenApi } from "../api/auth";
+import { getAccessTokenApi, logout } from "../api/auth";
 import jwtDecode from "jwt-decode";
 // import {
 //     getAccessTokenApi, 
@@ -36,6 +36,7 @@ function checkUserLogin(setUserLoading) {
             isLoading: false
         })
     } else {
+        logout();
         setUserLoading({
             user: null,
             isLoading: false
