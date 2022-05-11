@@ -5,11 +5,12 @@ import './SupervisorSelector.scss';
 
 
 
-export default function SupervisorSelector ({supervisor}) {
+export default function SupervisorSelector ({supervisores,setSupervisores}) {
     return (
-        <div className="supervisors">{
-            supervisor.map((element) => (                
-            <Supervisor element={element} />
+        <div className="supervisors" >
+            {
+            supervisores.map((element) => (                
+            <Supervisor element={element} key={element.id} setSupervisores={setSupervisores} supervisores={supervisores}/>
             ))
             }
         </div>
@@ -17,9 +18,25 @@ export default function SupervisorSelector ({supervisor}) {
     )
 }
 
-function Supervisor ({element}) {
+function Supervisor ({element, setSupervisores, supervisores}) {
+    const selectSup = () =>{
+        const newSupervisors = supervisores.map(e => {
+            const isThisObj = e.id === element.id
+            const sup = {
+                id: e.id,
+                name: e.name,
+                isSelected: isThisObj,
+                isMySupervisor: e.isMySupervisor
+            }
+            return sup
+        })
+
+        setSupervisores(newSupervisors);
+    }
     return (
-        <div className="supervisor">
+        
+        <div className="supervisor" onClick={selectSup} seleccionSup={selectSup} style={element.isSelected?{backgroundColor: 'gray'}:{backgroundColor: 'white'}}>
+
             <i className="bi bi-person"></i>
             <p  style={{marginTop:"10px"}}>   
                 {element.name}
