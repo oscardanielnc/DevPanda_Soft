@@ -108,7 +108,7 @@ useEffect(() => {
                         <SupervisorSelector supervisores={supervisores} setSupervisores={setSupervisores}/>
                 </div>
                 <div className="row rows">
-                    <Timetable idSupervisor={9}/>
+                    <Timetable idSupervisor={10}/>
                 </div>
                 <div className="row rows boton">
                     <Button className="btn btn-primary" style={{width:"40%"}}>Agendar</Button>

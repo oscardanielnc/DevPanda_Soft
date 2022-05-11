@@ -1,4 +1,5 @@
 import React, { useEffect, useState }  from "react"; 
+import { getSupervisorScheduleApi } from "../../api/schedule";
 
 import './Timetable.scss';
 import TimetableCell from "./TimetableCell/Timetablecell";
@@ -80,8 +81,11 @@ export default function Timetable ({idSupervisor}){
         separator: 5
     })
     useEffect(()=> {
-        
-        setInputs(dataDummy)
+        getSupervisorScheduleApi(idSupervisor).then(response => {
+            if(response.success) {
+                setInputs(response.schedule)
+            }
+        })
     },setInputs)
 
     const leftPage = e => {
