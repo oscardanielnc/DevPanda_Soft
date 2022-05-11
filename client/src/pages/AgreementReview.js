@@ -5,7 +5,7 @@ import DocumentPlusIcon from "../components/DocumentPlusIcon/DocumentPlusIcon";
 import { Button, Form} from "react-bootstrap";
 import Convenio from "../asserts/img/pdf/Convenio.pdf"
 import "./AgreementReview.scss";
-import CompUpload from "../components/Single/CompUpload";
+import FileManagement from "../components/FileManagement/FileManagement";
 
 // "fileData" : {           
 //     //TO DO
@@ -181,7 +181,7 @@ export default function AgreementReview (){
                 </div>
                 <div className="shadowbox">
                     <div className="row row1" style={{textAlign: "left",marginTop:"25px"}}>                                       
-                        <CompUpload name="Documentos a enviar al alumno"/>                        
+                        <FileManagement name="Documentos a enviar al alumno"/>                        
                     </div>
                 </div>
                 <div className="shadowbox">

@@ -12,12 +12,16 @@ import AgreementReview from "../pages/AgreementReview";
 import StudentAgreement from "../pages/StudentAgreement";
 import Deliverables from "../pages/Deliverables";
 import FinalReport from "../pages/FinalReport"
+import ListRegistrationForm from "../pages/ListRegistrationForm";
 const routes = [
     {
         path: "/",
         exact: true,
         component: SpecialtyManagement,
     },
+    {  path: "/listRegistrationForm",
+        exact: true,
+        component: ListRegistrationForm},
     {
         path: "/add-specialty",
         exact: true,
@@ -68,6 +72,7 @@ const routes = [
         exact: true,
         component: Deliverables,
     },
+
     {
         path: "*",
         component: Error404,
