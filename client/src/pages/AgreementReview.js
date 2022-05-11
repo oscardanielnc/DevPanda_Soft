@@ -13,13 +13,17 @@ import { getAllDocsApi } from "../api/files";
 //1) Realizar el select
 //2) Realizar los updates de faci y de especialidad
 
-const idAlumno = 1;
-//const idCoordinador ="";
+
+//const idProceso =1; posible que se necesite
+const idAlumno = 1;  //posible que se necesite
+//const idCoordinador = ""; posible que se necesite
+//o 
+//const idEntregaConvenio= 1; posible que se necesite
 const tipoPersonal = "F"; //F = FACI, E = Especialidad // NO
-//const idEntregaConvenio= 1; // NO
+
 const dataDummy = {
     "entregaConvenioyPlan":{        
-        "faciState" : "Aprobado", // consumir API GET (A = "Aprobado", P = "Pendiente" de revisión, O ="Observado")
+        "faciState" : "Observado", // consumir API GET (A = "Aprobado", P = "Pendiente" de revisión, O ="Observado")
         "espState" : "Observado",    // consumir API GET  (A = Aprobado, P = Pendiente de revisión, O = Observado)
         "observations" : "Bien hecho crack"        
     }
@@ -88,11 +92,16 @@ export default function AgreementReview (){
         */        
     }
     
+    
     let pass=(documentState==="Aprobado")?true:false;
     let pending=(documentState==="Pendiente")?true:false;
-    let observed=(documentState==="Observado")?true:false;    
+    let observed=(documentState==="Observado")?true:false;
+
     let comentarioFACI="";
     let comentarioEsp="";
+
+    const flag = 0;
+    
     
     if(data.entregaConvenioyPlan.espState === "Aprobado")
         comentarioEsp="Aprobado";
@@ -115,9 +124,9 @@ export default function AgreementReview (){
                 comentarioFACI = "Pendiente de revisión"
         }            
     }
-
+    
     const changeStatePassed = e => {
-        pass=!pass;
+        pass=!pass;                
         if(tipoPersonal === "F"){
             setData({
                 ...data,            
@@ -139,7 +148,7 @@ export default function AgreementReview (){
         }
     }
     const changeStatePending = e => {
-        pending=!pending;
+        pending=!pending;        
         if(tipoPersonal === "F"){
             setData({
                 ...data,            
@@ -162,7 +171,7 @@ export default function AgreementReview (){
     }
     
     const changeStateObserved = e => {
-        observed=!observed;
+        observed=!observed;        
         if(tipoPersonal === "F"){
             setData({
                 ...data,            
@@ -192,16 +201,17 @@ export default function AgreementReview (){
                 [e.target.name]: e.target.value
             }
         })
-    }
-    
+    }    
     let typeApprovalStateFACI = "";
+    let typeApprovalStateEsp = "";    
+    
     switch(data.entregaConvenioyPlan.faciState) {
         case "Observado": typeApprovalStateFACI = "warning"; break;
         case "Aprobado": typeApprovalStateFACI = "success"; break;
         case "Pendiente": typeApprovalStateFACI = "pending"; break;        
         default: typeApprovalStateFACI = "error"; break;
     }
-    let typeApprovalStateEsp = "";
+    
     switch(data.entregaConvenioyPlan.espState) {
         case "Observado": typeApprovalStateEsp = "warning"; break;
         case "Aprobado": typeApprovalStateEsp = "success"; break;
@@ -211,7 +221,7 @@ export default function AgreementReview (){
 
     return (
         <LayoutCoordFACI>
-           <div className="container principalFinalReview" style={{"padding":"1px"}}  >               
+           <div className="container principalFinalReview" style={{"padding":"1px"}}>               
                 <div className="row titulo" style={{textAlign: "left",marginTop:"25px",}}>
                     <h1>Revisión de Convenio</h1>                    
                 </div>
@@ -259,7 +269,7 @@ export default function AgreementReview (){
                                         type={type}
                                         id={`inline-${type}-1`}
                                         checked={pass}
-                                        onChange={changeStatePassed}
+                                        onChange={changeStatePassed}                                        
                                     />
                                     <Form.Check
                                         inline
@@ -268,7 +278,7 @@ export default function AgreementReview (){
                                         type={type}
                                         id={`inline-${type}-2`}
                                         checked={observed}
-                                        onChange={changeStateObserved}
+                                        onChange={changeStateObserved}                                        
                                     />
                                     <Form.Check
                                         inline                                    
@@ -277,7 +287,7 @@ export default function AgreementReview (){
                                         type={type}
                                         id={`inline-${type}-3`}
                                         checked={pending}
-                                        onChange={changeStatePending}
+                                        onChange={changeStatePending}                                        
                                     />
                                 </div>
                             ))}
