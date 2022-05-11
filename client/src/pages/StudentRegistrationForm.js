@@ -99,8 +99,15 @@ export default function StudentRegistrationForm () {
     const [aux,setAux]=useState([]);
     const [data, setData] = useState(dataDummy)
     //let typeUser=user.tipoPersona;
-    let typeUser="A";
+    let typeUser="C";
     useEffect(()=> {
+        if(typeUser==="C"){
+            var arrayCadena = window.location.pathname.split("/");
+            idAlumno=parseInt(arrayCadena[2]);
+            console.log(idAlumno);
+        }else{
+            //idAlumno=user.idAlumno;
+        }
         getstudentInscriptionForm(idAlumno).then(response => {
             if(response.success===true) {
                 setData(response.infoFicha.infoFicha);
