@@ -8,32 +8,25 @@ import './Timetablecell.scss';
 // 3: Seleccionado
 // 4: Ocupado
 
-export default function TimetableCell ({hour, change, inputsSuper, indexDay, indexHour}){
-    const [inputs, setInputs] = useState({
-        state: hour.state,
-        hour: hour.time
-    })
-
-    const updateState = e => {
-        switch (inputs.state) {
-            // Cambia de Disponible a Seleccionado
-            case 2: inputs.state = 3; break;
-            case 3: inputs.state = 2; break;
-            default: break;
-        }
-        setInputs({
-            ...inputs,
-            ["state"]: inputs.state
+export default function TimetableCell ({state, setInputs, inputs, indexDay, indexHour}){
+    const selectState = e => {
+        const newSchude = inputs.map((day, index) => {
+            const newHours = day.hours.map((hour, i) => {
+                    if(index===indexDay && i===indexHour && state===2) return 3
+                    else if (hour===3) return 2
+                    return hour
+                })
+            return {
+                date: day.date,
+                hours: newHours
+            }
         })
-        // Obtenemos una copia y lo modificamos
-        const changeInputs = inputsSuper
-        changeInputs.days[indexDay].hours[indexHour].state = inputs.state
-        change(changeInputs)
+        setInputs(newSchude)
     }
 
-    var description
-    var color 
-    switch (inputs.state) {
+    let description
+    let color 
+    switch (state) {
         case 1:  
         description = "."; 
         color = "rgb(222, 226, 230)"
@@ -55,7 +48,7 @@ export default function TimetableCell ({hour, change, inputsSuper, indexDay, ind
 
     return (
         <div className="cell" 
-            state={inputs.state} onClick={updateState}
+            onClick={selectState}
             style={{backgroundColor: color}}>
             {description}
         </div>
