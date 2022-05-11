@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState,useEffect} from "react";
 import LayoutBasic from "../layouts/LayoutBasic";
 import {Form} from 'react-bootstrap';
 import { Link } from "react-router-dom";
@@ -8,10 +8,11 @@ import { Image } from "react-bootstrap";
 import './SupervisorSelection.scss';
 import Timetable from "../components/Timetable/Timetable";
 import { Button } from "react-bootstrap";
-
+import {searchAssessorsBySpecialty} from "../api/administratives"
 
 
 export default function SupervisorSelection () {
+    /*
     const [supervisores, setSupervisores] = useState( [
         {
             id:1,
@@ -42,7 +43,24 @@ export default function SupervisorSelection () {
             isMySupervisor: false
         }
     ])
+*/
+const [alumno, setAlumno] = useState( [
+    {
+        idAlumno:1,
+        
+    }
+])
 
+const [supervisores, setSupervisores] = useState([]);
+useEffect(() => {
+    searchAssessorsBySpecialty(alumno).then(response => {
+        /*
+        if(response.success) {
+            setSupervisores(response.supervisores);
+        }*/
+        console.log('Respuesta:',response)
+    })
+}, [setSupervisores])
     const insert = async e => {
         /*
         e.preventDefault();
@@ -90,7 +108,7 @@ export default function SupervisorSelection () {
                         <SupervisorSelector supervisores={supervisores} setSupervisores={setSupervisores}/>
                 </div>
                 <div className="row rows">
-                    <Timetable/>
+                    <Timetable idSupervisor={10}/>
                 </div>
                 <div className="row rows boton">
                     <Button className="btn btn-primary" style={{width:"40%"}}>Agendar</Button>

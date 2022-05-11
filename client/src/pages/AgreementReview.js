@@ -3,7 +3,6 @@ import LayoutCoordFACI from "../layouts/LayoutCoordFACI";
 import StateViewer,{StatesViewType} from "../components/StateViewer/StateViewer";
 import DocumentPlusIcon from "../components/DocumentPlusIcon/DocumentPlusIcon";
 import { Button, Form} from "react-bootstrap";
-import Convenio from "../asserts/img/pdf/Convenio.pdf"
 import "./AgreementReview.scss";
 import FileManagement from "../components/FileManagement/FileManagement";
 import ShowFiles from "../components/FileManagement/ShowFiles";
@@ -24,12 +23,23 @@ const dataDummy = {
         "observations" : "Bien hecho crack"        
     }
 }
-export default function AgreementReview (){
 
+let staticFaci = "Pendiente";
+let staticEsp = "Pendiente";
+export default function AgreementReview (){    
     const [data, setData] = useState(dataDummy); 
     const [docs, setDocs] = useState([])
     const [docsStudent, setDocsStudent] = useState([])
     const [docsCoord, setDocsCoord] = useState([])
+
+
+    useEffect(()=> {
+        //aqui haan su llmada al API
+        // xxxxx .... suponenido que dataDummy sea el objeto que les devuelva
+        staticFaci = dataDummy.entregaConvenioyPlan.faciState
+        staticEsp = dataDummy.entregaConvenioyPlan.espState
+        setData(dataDummy)
+    }, [])
 
     useEffect(() => {
         getAllDocsApi("1-1-CONV", 0).then(response => {
@@ -56,10 +66,10 @@ export default function AgreementReview (){
     },[setDocsCoord])
 
     let documentState ="";
-    if(tipoPersonal === "F")        
+    if(data.entregaConvenioyPlan && tipoPersonal === "F")        
         documentState = data.entregaConvenioyPlan.faciState;
     else
-        if(tipoPersonal === "E")
+        if(data.entregaConvenioyPlan && tipoPersonal === "E")
             documentState = data.entregaConvenioyPlan.espState;
     
     // useEffect(()=> {
@@ -90,96 +100,96 @@ export default function AgreementReview (){
     
     let pass=(documentState==="Aprobado")?true:false;
     let pending=(documentState==="Pendiente")?true:false;
-    let observed=(documentState==="Observado")?true:false;    
+    let observed=(documentState==="Observado")?true:false;  
+
     let comentarioFACI="";
     let comentarioEsp="";
     
-    if(data.entregaConvenioyPlan.espState === "Aprobado")
+    if(staticEsp === "Aprobado")
         comentarioEsp="Aprobado";
     else{
-        if(data.entregaConvenioyPlan.espState === "Observado")
+        if(staticEsp === "Observado")
             comentarioEsp = "Observado";
         else{
-            if(data.entregaConvenioyPlan.espState === "Pendiente")
+            if(staticEsp === "Pendiente")
                 comentarioEsp = "Pendiente de revisión";
         }            
     }
-
-    if(data.entregaConvenioyPlan.faciState === "Aprobado")
+    if(staticFaci === "Aprobado")
         comentarioFACI="Aprobado"
     else{
-        if(data.entregaConvenioyPlan.faciState === "Observado")
+        if(staticFaci === "Observado")
             comentarioFACI = "Observado"
         else{
-            if(data.entregaConvenioyPlan.faciState === "Pendiente")
+            if(staticFaci === "Pendiente")
                 comentarioFACI = "Pendiente de revisión"
         }            
     }
 
-    const changeStatePassed = e => {
-        pass=!pass;
+    const changeStatePassed = e => {     
+           
         if(tipoPersonal === "F"){
             setData({
-                ...data,            
+                           
                 entregaConvenioyPlan: {
                     ...data.entregaConvenioyPlan,
                     faciState : "Aprobado"
                 }
-            })
+            })            
         }else{
             if(tipoPersonal === "E"){
                 setData({
-                    ...data,            
+                              
                     entregaConvenioyPlan: {
                         ...data.entregaConvenioyPlan,
                         espState : "Aprobado"
                     }
-                })
+                })                
             }
         }
     }
-    const changeStatePending = e => {
-        pending=!pending;
+    const changeStatePending = e => {   
+           
         if(tipoPersonal === "F"){
             setData({
-                ...data,            
+                            
                 entregaConvenioyPlan: {
                     ...data.entregaConvenioyPlan,
                     faciState : "Pendiente"
                 }
-            })
+            })            
         }else{
             if(tipoPersonal === "E"){
                 setData({
-                    ...data,            
+                               
                     entregaConvenioyPlan: {
                         ...data.entregaConvenioyPlan,
                         espState : "Pendiente"
                     }
-                })
+                })                
             }
         }
     }
     
     const changeStateObserved = e => {
-        observed=!observed;
+        
         if(tipoPersonal === "F"){
             setData({
-                ...data,            
+                            
                 entregaConvenioyPlan: {
                     ...data.entregaConvenioyPlan,
                     faciState : "Observado"
                 }
-            })
+            })            
         }else{
             if(tipoPersonal === "E"){
                 setData({
-                    ...data,            
+                                
                     entregaConvenioyPlan: {
                         ...data.entregaConvenioyPlan,
                         espState : "Observado"
                     }
-                })
+                })                
             }
         }
     }
@@ -195,14 +205,14 @@ export default function AgreementReview (){
     }
     
     let typeApprovalStateFACI = "";
-    switch(data.entregaConvenioyPlan.faciState) {
+    switch(staticFaci) {
         case "Observado": typeApprovalStateFACI = "warning"; break;
         case "Aprobado": typeApprovalStateFACI = "success"; break;
         case "Pendiente": typeApprovalStateFACI = "pending"; break;        
         default: typeApprovalStateFACI = "error"; break;
     }
     let typeApprovalStateEsp = "";
-    switch(data.entregaConvenioyPlan.espState) {
+    switch(staticEsp) {
         case "Observado": typeApprovalStateEsp = "warning"; break;
         case "Aprobado": typeApprovalStateEsp = "success"; break;
         case "Pendiente": typeApprovalStateEsp = "pending"; break;        
