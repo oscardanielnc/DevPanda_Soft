@@ -109,13 +109,13 @@ async function updateInscriptionForm(req, res){
 
     const idFicha = req.body.idFicha;
     const idAlumnoProceso = req.body.idAlumnoProceso;
-    const aprobado = req.body.approvalState?1:0;
-    const estadoDocumento = req.body.documentsState?1:0;
+    const aprobado = req.body.approvalState;
+    const estadoDocumento = req.body.documentsState;
     const observaciones = req.body.calification.comments;
     
     const sqlQuery = `UPDATE EntregaFichaInscripcion 
-                    SET aprobado=${aprobado}, 
-                    estadoDocumento=${estadoDocumento}, 
+                    SET aprobado="${aprobado}", 
+                    estadoDocumento="${estadoDocumento}", 
                     observaciones="${observaciones}"
                     WHERE fidAlumnoProceso = ${idAlumnoProceso}
                     AND idFicha = ${idFicha}`;
@@ -225,7 +225,7 @@ async function getstudentInscriptionForm(req, res){
     var sqlQuery = `SELECT idAlumnoProceso 
                     FROM AlumnoProceso 
                     WHERE fidAlumno = ${data.idAlumno}
-                    AND nota is null`;
+                    AND estado = "C"`;
 
     connection.connect(err => {
         if (err) throw err;
@@ -262,7 +262,6 @@ async function getstudentInscriptionForm(req, res){
     
     //Si no hay una ficha Asociada:
     if(!resultElement.length){
-        //TO DO:
         //Debemos insertar una Entrega de ficha de inscripcion al alumno
 
         const aprobado = "Sin entregar";
