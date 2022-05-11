@@ -8,7 +8,6 @@ import fileDoc from '../../asserts/img/svg/file-earmark-word.svg';
 import filePdf from '../../asserts/img/svg/filetype-pdf.svg';
 import fileDocx from '../../asserts/img/svg/filetype-docx.svg';
 import { Button } from 'react-bootstrap';
-import { ToastContainer, toast } from 'react-toastify';
 
 const listImgConfig = {
     default: fileDefault,
@@ -18,11 +17,9 @@ const listImgConfig = {
 }
 
 
-export default function Upload ({maxFiles, onFileChange}) {
+export default function Upload ({maxFiles, onFileChange, fileList, setFileList}) {
 
     const wrapperRef = useRef(null);
-
-    const [fileList, setFileList] = useState([]);
 
     const onDragEnter = () => wrapperRef.current.classList.add('dragover');
 
@@ -43,25 +40,8 @@ export default function Upload ({maxFiles, onFileChange}) {
         updatedList.splice(fileList.indexOf(file), 1);
         setFileList(updatedList);
     }
-    const sendFiles = () => {
-        if(fileList.length === maxFiles)
-            onFileChange(fileList)
-        else {
-            toast.warning(`Se requieren ${maxFiles} archivos para esta entrega.`, {
-                position: "top-right",
-                autoClose: 3000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-            });
-        }
-    }
-
     return (
         <>
-            <ToastContainer />
             <div
                 ref={wrapperRef}
                 className="drop-file-input"
@@ -98,9 +78,6 @@ export default function Upload ({maxFiles, onFileChange}) {
                     </div>
                 ) : null
             }
-            <div className="row rows boton">
-                <Button className="btn btn-primary" style={{width:"40%"}} onClick={sendFiles}>Entregar</Button>
-            </div>
         </>
     );
 }
