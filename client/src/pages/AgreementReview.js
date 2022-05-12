@@ -6,18 +6,15 @@ import { Button, Form} from "react-bootstrap";
 import "./AgreementReview.scss";
 import FileManagement from "../components/FileManagement/FileManagement";
 import ShowFiles from "../components/FileManagement/ShowFiles";
-import { getAllDocsApi } from "../api/files";
+import { getAllDocsApi,uploadDocsApi } from "../api/files";
 import { getAgreement} from "../api/agreementRev";
-
-//TO DO
-//1) Realizar el select
-//2) Realizar los updates de faci y de especialidad
+import useAuth from "../hooks/useAuth";
+import { ToastContainer, toast } from 'react-toastify';
 
 /*PENDIENTE */
 const idAlumno = 1;
 const idCoordinador = 10;
 const tipoPersonal = "F"; //F = FACI, E = Especialidad // NO
-
 
 // const dataDummy = {
 //     "entregaConvenioyPlan":{        
@@ -30,31 +27,27 @@ const tipoPersonal = "F"; //F = FACI, E = Especialidad // NO
 // let staticFaci = "Pendiente";
 // let staticEsp = "Pendiente";
 
-let convenio = {
-    "faciState" : "",
-    "espState" : "",
-    "observations": "",
-}
+
 
 let staticFaci;
 let staticEsp;
 
+let flag=1;
 export default function AgreementReview (){    
-
-    const [data, setData] = useState({}); 
-
+    const {user} = useAuth();
+    const [fileList, setFileList] = useState([])
+    const [data, setData] = useState({});
     const [docs, setDocs] = useState([])
     const [docsStudent, setDocsStudent] = useState([])
     const [docsCoord, setDocsCoord] = useState([])
-
+    //console.log("El user tiene: ",user);
 
     //Enviar idAlumno, idRevisor
     useEffect(() => {
-        getAgreement(idAlumno,idCoordinador).then(response => {
-            console.log(response)
+        getAgreement(idAlumno,idCoordinador).then(response => {                
             if(response.success) {  
-                setData(response.agreement);          
-            }
+                setData(response.agreement[0]);            
+            }            
         })
     }, [setData])
 
@@ -80,36 +73,26 @@ export default function AgreementReview (){
                 setDocsCoord(response.docs)
             }
         })
-    },[setDocsCoord])
+    },[setDocsCoord])       
 
-        convenio = data;
-
-        staticFaci = convenio.faciState;
-        staticEsp =  convenio.espState;
-
-   
-
+    
+    if(data.estadoFaci && flag){         
+        staticFaci = data.estadoFaci;
+        staticEsp =  data.estadoEspecialidad;
+        flag=0;                
+    }
 
     let documentState ="";
     if(data.estadoFaci && tipoPersonal === "F") {
-        documentState = data[0].estadoFaci;
+        documentState = data.estadoFaci;        
     }       
     else
-        if(data.estadoEspecialidad && tipoPersonal === "E"){
-            documentState = data[0].estadoEspecialidad;
-        }
+        if(data.estadoFaci && tipoPersonal === "E")
+            documentState = data.estadoEspecialidad;       
     
-    // useEffect(()=> {
-    //     /*
-    //     selectAgreementReview(data.idCoordinador, idEntregaConvenio).then(response => {
-    //         if(response.success) {
-    //             setData(response.data);
-    //         }
-    //     })*/
-    // }, [setData])
-    
+        
     let result=true;
-    const update = async e => {
+    //const update = async e => {
         //se hace una diferencia entre si es coordinador FACI o de Especialidad        
         /*
         e.preventDefault();
@@ -123,113 +106,165 @@ export default function AgreementReview (){
             }
         }        
         */        
+    //}
+    const update = async e => {
+        if(fileList.length === 2) {
+            console.log(fileList)
+            //const response = await uploadDocsApi(fileList, "1-1-CONV-${idAlumno}", 1);
+            // if(response.success) {
+            //     toast.success(response.msg, {
+            //         position: "top-right",
+            //         autoClose: 3000,
+            //         hideProgressBar: false,
+            //         closeOnClick: true,
+            //         pauseOnHover: true,
+            //         draggable: true,
+            //         progress: undefined,
+            //     });
+            //     window.location.reload()
+            // } else {
+            //     toast.error(response.msg, {
+            //         position: "top-right",
+            //         autoClose: 3000,
+            //         hideProgressBar: false,
+            //         closeOnClick: true,
+            //         pauseOnHover: true,
+            //         draggable: true,
+            //         progress: undefined,
+            //     });
+            // }
+            toast.error("NO NO NO, equivocadiño. No debes tocar este botón!", {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
+        }
+        else {
+            toast.warning(`Se requieren 2 archivos para esta entrega.`, {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
+        }
     }
+
     
-    let pass=(documentState==="Aprobado")?true:false;
-    let pending=(documentState==="Pendiente")?true:false;
-    let observed=(documentState==="Observado")?true:false;  
+    let pass=(documentState==="A")?true:false;
+    let pending=(documentState==="P")?true:false;
+    let observed=(documentState==="O")?true:false;
 
     let comentarioFACI="";
     let comentarioEsp="";
     
-    if(staticEsp === "Aprobado")
+    if(staticEsp === "A")
         comentarioEsp="Aprobado";
     else{
-        if(staticEsp === "Observado")
+        if(staticEsp === "O")
             comentarioEsp = "Observado";
         else{
-            if(staticEsp === "Pendiente")
+            if(staticEsp === "P")
                 comentarioEsp = "Pendiente de revisión";
         }            
     }
-    if(staticFaci === "Aprobado")
+    if(staticFaci === "A")
         comentarioFACI="Aprobado"
     else{
-        if(staticFaci === "Observado")
+        if(staticFaci === "O")
             comentarioFACI = "Observado"
         else{
-            if(staticFaci === "Pendiente")
+            if(staticFaci === "P")
                 comentarioFACI = "Pendiente de revisión"
         }            
     }
 
-    const changeStatePassed = e => {
-        if(tipoPersonal === "F"){
-            setData({
+    const changeStatePassed = e => {         
+        pass=!pass;       
+        if(tipoPersonal === "F"){            
+            setData({                                
                 ...data,
-                estadoFaci : "Aprobado"                           
-            })            
+                estadoFaci:"A"                                        
+            })                                 
         }else{
             if(tipoPersonal === "E"){
                 setData({
                     ...data,
-                    estadoEspecialidad: "Aprobado"          
+                    estadoEspecialidad: "A",          
                 })                
             }
-        }
+        } 
+        console.log(data)             
     }
-    const changeStatePending = e => {       
 
+    const changeStatePending = e => {       
+        pending=!pending;
         if(tipoPersonal === "F"){
             setData({
                 ...data,
-                estadoFaci: "Pendiente"             
-            })            
+                estadoFaci: "P",             
+            })                       
         }else{
             if(tipoPersonal === "E"){
                 setData({
                     ...data,
-                    estadoEspecialidad: "Pendiente"           
+                    estadoEspecialidad: "P" ,          
                 })                
             }
-        }
+        }        
     }
     
-    const changeStateObserved = e => {                
+    const changeStateObserved = e => { 
+        observed =!observed               
         if(tipoPersonal === "F"){
             setData({
                 ...data,
-                estadoFaci: "Observado"            
+                estadoFaci: "O",            
             })            
         }else{
             if(tipoPersonal === "E"){
                 setData({
                     ...data,
-                    estadoEspecialidad: "Observado"            
+                    estadoEspecialidad: "O",            
                 })                
             }
-        }
+        }        
     }
 
-    const changeComments = e => {
-        console.log(data);   
-        setData({
-            ...data,
-            [e.target.name]: e.target.value
-            // entregaConvenioyPlan: {
-            //     ...data.entregaConvenioyPlan,
-            //     [e.target.name]: e.target.value
-            // }
-        })
+    const changeComments = e => { 
+            setData({
+                ...data,
+                [e.target.name]: e.target.value
+                // entregaConvenioyPlan: {
+                //     ...data.entregaConvenioyPlan,
+                //     [e.target.name]: e.target.value
+                // }
+            })        
     }
     
     let typeApprovalStateFACI = "";
     switch(staticFaci) {
-        case "Observado": typeApprovalStateFACI = "warning"; break;
-        case "Aprobado": typeApprovalStateFACI = "success"; break;
-        case "Pendiente": typeApprovalStateFACI = "pending"; break;        
+        case "O": typeApprovalStateFACI = "warning"; break;
+        case "A": typeApprovalStateFACI = "success"; break;
+        case "P": typeApprovalStateFACI = "pending"; break;        
         default: typeApprovalStateFACI = "error"; break;
     }
     let typeApprovalStateEsp = "";
     switch(staticEsp) {
-        case "Observado": typeApprovalStateEsp = "warning"; break;
-        case "Aprobado": typeApprovalStateEsp = "success"; break;
-        case "Pendiente": typeApprovalStateEsp = "pending"; break;        
+        case "O": typeApprovalStateEsp = "warning"; break;
+        case "A": typeApprovalStateEsp = "success"; break;
+        case "P": typeApprovalStateEsp = "pending"; break;        
         default: typeApprovalStateEsp = "error"; break;
     }
 
     return (
-        <LayoutCoordFACI>
+        data.estadoFaci && <LayoutCoordFACI>
            <div className="container principalFinalReview" style={{"padding":"1px"}}  >               
                 <div className="row titulo" style={{textAlign: "left",marginTop:"25px",}}>
                     <h1>Revisión de Convenio</h1>                    
@@ -303,7 +338,12 @@ export default function AgreementReview (){
                         </Form>
                     </div>
                 </div>
-                
+               
+                <div className="shadowbox">
+                    <div className="row row1" style={{textAlign: "left",marginTop:"25px"}}>                                       
+                        <FileManagement canUpload={true} docs={docsCoord} maxFiles={2} fileList={fileList} setFileList={setFileList} titleUpload="Documentos a enviar al alumno" titleUploadedFiles="Documentos enviados al alumno"/>
+                    </div>
+                </div>
                 <div className="shadowbox">
                     <div className="row row2" style={{textAlign: "left",marginTop:"25px"}}>
                         <h2 className="subtitulo">Observaciones</h2>                                               
@@ -318,15 +358,10 @@ export default function AgreementReview (){
                             />                                         
                     </div>
                 </div>
-                <div className="shadowbox">
-                    <div className="row row1" style={{textAlign: "left",marginTop:"25px"}}>                                       
-                        <FileManagement canUpload={true} docs={docsCoord} maxFiles={2} titleUpload="Documentos a enviar al alumno" titleUploadedFiles="Documentos enviados al alumno"/>
-                    </div>
-                </div>
-                {/* <div className="row botones" style={{marginLeft:"10px"}}>                    
+                <div className="row botones" style={{marginLeft:"10px"}}>                    
                     <Button  className="btn btn-sec" style={{width:"20%",marginRight:"50px"}}>Regresar</Button>                   
                     <Button  className="btn btn-pri" style={{width:"20%",marginLeft:"50px"}} onClick={update}>Guardar</Button>                  
-                </div>  */}          
+                </div>           
             </div>   
         </LayoutCoordFACI>
     );
