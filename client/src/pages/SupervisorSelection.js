@@ -47,8 +47,6 @@ export default function SupervisorSelection () {
 
     const [supervisores, setSupervisores] = useState([]);
     var [idSupSelected, setIdSupSelected] = useState(9);
-    var [flagSeleccion,setflagSeleccion]=useState(0);
-    const [horarioSeleccionado,setHorarioSeleccionado]=useState([])
     useEffect(() => {
           searchAssessorsBySpecialty(idEspecialidad).then(response => {
               
@@ -110,7 +108,7 @@ export default function SupervisorSelection () {
                     <SupervisorSelector supervisores={supervisores} setSupervisores={setSupervisores} setIdSupSelected={setIdSupSelected}/>
                 </div>
                 <div className="row rows">
-                    <Timetable idSupervisor={idSupSelected} setflagSeleccion={setflagSeleccion} setHorarioSeleccionado={setHorarioSeleccionado}/>
+                    <Timetable idSupervisor={idSupSelected} />
                 </div>
                 <div className="row rows boton">
                     <Button className="btn btn-primary" style={{width:"40%"}} onClick={insertHorario}>Agendar</Button>

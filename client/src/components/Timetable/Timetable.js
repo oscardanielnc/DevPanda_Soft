@@ -74,7 +74,7 @@ const dataDummy = [
     }
 ]
 
-export default function Timetable ({idSupervisor},setflagSeleccion,setHorarioSeleccionado){
+export default function Timetable ({idSupervisor}){
     const [inputs, setInputs] = useState([])
     const [indexs, setIndex] = useState({
         actual:0, // page actual
@@ -85,7 +85,6 @@ export default function Timetable ({idSupervisor},setflagSeleccion,setHorarioSel
             console.log("sup",idSupervisor)
             if(response.success) {
                 setInputs(response.schedule)
-                setHorarioSeleccionado(response.schedule)
             }
         })
     },setInputs)
@@ -133,7 +132,7 @@ export default function Timetable ({idSupervisor},setflagSeleccion,setHorarioSel
                                 <div className="headerTime">{`${day.day}  ${day.date}`}</div>
                                 {
                                 day.hours.map((state, indexHour) => (
-                                    <TimetableCell state={state} setInputs={setInputs} inputs={inputs} indexDay={indexDay} key={indexHour} indexHour={indexHour} setflagSeleccion={setflagSeleccion}></TimetableCell>
+                                    <TimetableCell state={state} setInputs={setInputs} inputs={inputs} indexDay={indexDay} key={indexHour} indexHour={indexHour} ></TimetableCell>
                                 ))
                                 }
                             </div>
