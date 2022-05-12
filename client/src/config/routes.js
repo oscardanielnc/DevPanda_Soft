@@ -28,7 +28,7 @@ const routes = [
         component: AddSpecialty,
     },
     {
-        path: "/student-registration/*",
+        path: "/student-registration/:idAlumno",
         exact: true,
         component: StudentRegistrationForm,
     },
