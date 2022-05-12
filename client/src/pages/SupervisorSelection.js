@@ -74,15 +74,16 @@ export default function SupervisorSelection () {
         return isSelected
     }
     const comprobarModal=() => {
-        <ModalBasic>
 
+        <ModalBasic show ={true}>
+            
         </ModalBasic>
     }
 
     const insertHorario = () => {
         if(schedule.length>0) {
             if(isSomeHourSelected()) {
-                if(comprobarModal === true){
+                if(comprobarModal() === true){
                     changeOneHourSchedule(hourSelecteds[hourSelecteds.length-1]).then(response => {
                         const resultState = response.success? "success": "error";
                         toast[resultState](response.msg, {

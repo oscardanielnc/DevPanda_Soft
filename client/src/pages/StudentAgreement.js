@@ -14,14 +14,14 @@ import {selectDocumentsInfoByProcessOnlyStudent} from "../api/agreementLearnigPl
 
 
 let docuemntsState = "Entregado";
-let approvalState = "Sin entrega"
+let approvalState = ""
 const maxFiles = 2;
 const idAlumno=1;
 export default function StudentAgreement () {
     const [fileList, setFileList] = useState([])
     const [docs, setDocs] = useState([])
     const [studentDocs, setStudentDocs] = useState([])
-    const [docState,setDocState]=useState([])
+    const [data, setData] = useState({}); 
     useEffect(() => {
         getAllDocsApi("1-1-CONV", 0).then(response => {
             if(response.success) {
@@ -46,19 +46,26 @@ export default function StudentAgreement () {
     useEffect(()=>{
         selectDocumentsInfoByProcessOnlyStudent(idAlumno).then(response => {
             if(response.success) {
-                setDocState(response.files)
-                console.log("consola:",docState)
+                setData(response.files)
+                console.log("consola:",response)
             }
         }
         )
-    },[setDocState])
-    if(docState.estadoFaci) return null
+    },[setData])
 
-    const convenio = docState;
-    console.log("convenio",convenio)
+
     const typeDocumentState = (docuemntsState==="Sin entregar")? "fileEmpty": "success";
     let typeApprovalState = "";
-    //approvalState = (docState[0].estad=== "p")? "Sin entrega" : "warning"
+    if(data[0].estadoFaci === "P"){
+        approvalState = "Sin entrega"
+    }
+    else if(data[0].estadoFaci == "a"){
+        approvalState= "Aprobado"
+    }
+    else{
+        approvalState= "observado"
+    }
+    
     switch(approvalState) {
         case "Observado": typeApprovalState = "warning"; break;
         case "Sin entrega": typeApprovalState = "pending"; break;
