@@ -16,7 +16,7 @@ import useAuth from "../hooks/useAuth";
 import { getstudentInscriptionForm,registrationUpdateApiStudent,registrationUpdateApiStudentCamps } from "../api/registrationForm";
 import { getAllDocsApi } from "../api/files";
 import ShowFiles from "../components/FileManagement/ShowFiles";
-
+import {uploadDocsApi} from "../api/files";
 
 import './StudentRegistrationForm.scss';
 
@@ -97,10 +97,11 @@ const dataDummy = {
 }
 const arrayCadena = window.location.pathname.split("/");
 const idAlumno=parseInt(arrayCadena[2]);
-
+const maxFiles = 4;
 export default function StudentRegistrationForm () {
     const {user} = useAuth();
     const [data, setData] = useState({});
+    const [fileList, setFileList] = useState([])
     const [docs, setDocs] = useState([]);
     const [studentDocs, setStudentDocs] = useState([]);
     console.log("El user tiene: ",user);
@@ -148,16 +149,17 @@ export default function StudentRegistrationForm () {
         })
         
     }, [setData])
+    //sacamos los documentos subidos por el encargado
     useEffect(() => {
-        getAllDocsApi("1-1-CONV", 0).then(response => {
+        getAllDocsApi(`1-${user.fidEspecialidad}-RFOR`, 0).then(response => {
             if(response.success) {
                 setDocs(response.docs)
             }
         })
     },[setDocs])
-
+    //sacamos los documentos subidor por el alumno
     useEffect(() => {
-        getAllDocsApi(`1-1-CONV-${idAlumno}`, 1).then(response => {
+        getAllDocsApi(`1-${user.fidEspecialidad}-RFOR-${idAlumno}`, 1).then(response => {
             if(response.success) {
                 setStudentDocs(response.docs)
             }
@@ -217,6 +219,42 @@ export default function StudentRegistrationForm () {
             setData(newData);
             console.log(response.msg);
         }
+        if(fileList.length <= maxFiles) {
+            const response = await uploadDocsApi(fileList, `1-${user.fidEspecialidad}-RFOR-${idAlumno}`, 1);
+            if(response.success) {
+                toast.success(response.msg, {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
+                window.location.reload()
+           } else {
+               toast.error(response.msg, {
+                   position: "top-right",
+                  autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
+           }
+       }
+       else {
+           toast.warning(`Se aceptan como máximo ${maxFiles} archivos para esta entrega.`, {
+               position: "top-right",
+               autoClose: 3000,
+               hideProgressBar: false,
+               closeOnClick: true,
+               pauseOnHover: true,
+               draggable: true,
+               progress: undefined,
+           });
+       }
     }
     let isSaved=null;
     let canUpload=null;
@@ -285,6 +323,42 @@ export default function StudentRegistrationForm () {
             });
             isSaved=true;
         } 
+        if(fileList.length <= maxFiles) {
+             const response = await uploadDocsApi(fileList, `1-${user.fidEspecialidad}-RFOR-${idAlumno}`, 1);
+             if(response.success) {
+                 toast.success(response.msg, {
+                     position: "top-right",
+                     autoClose: 3000,
+                     hideProgressBar: false,
+                     closeOnClick: true,
+                     pauseOnHover: true,
+                     draggable: true,
+                     progress: undefined,
+                 });
+                 window.location.reload()
+            } else {
+                toast.error(response.msg, {
+                    position: "top-right",
+                   autoClose: 3000,
+                     hideProgressBar: false,
+                     closeOnClick: true,
+                     pauseOnHover: true,
+                     draggable: true,
+                     progress: undefined,
+                 });
+            }
+        }
+        else {
+            toast.warning(`Se aceptan como máximo ${maxFiles} archivos para esta entrega.`, {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
+        }
     }
 
     const goBack = e => {
@@ -349,7 +423,7 @@ export default function StudentRegistrationForm () {
                 </div>
                 
                 <div className="row rows uploadRegistration" >                            
-                    <FileManagement canUpload={canUpload} docs={studentDocs} maxFiles={2} titleUploadedFiles="Archivos subidos por el alumno"/>
+                    <FileManagement canUpload={canUpload} docs={studentDocs} maxFiles={4} fileList={fileList} titleUploadedFiles="Archivos subidos por el alumno"/>
                 </div>
                 {typeUser==="e"? <div className="row rows BotonAlumno">
                     <Button className="btn btn-primary" style={{width:"40%"}} onClick={insert} disabled={isSaved}>Enviar</Button>
