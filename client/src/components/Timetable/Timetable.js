@@ -1,6 +1,4 @@
-import React, { useEffect, useState }  from "react"; 
-import { getSupervisorScheduleApi } from "../../api/schedule";
-
+import React, { useState }  from "react"; 
 import './Timetable.scss';
 import TimetableCell from "./TimetableCell/Timetablecell";
 
@@ -74,22 +72,11 @@ const dataDummy = [
     }
 ]
 
-export default function Timetable ({idSupervisor},setflagSeleccion,setHorarioSeleccionado){
-    const [inputs, setInputs] = useState([])
+export default function Timetable ({inputs, setInputs, setHourSelecteds, hourSelecteds}){
     const [indexs, setIndex] = useState({
         actual:0, // page actual
         separator: 5
     })
-    useEffect(()=> {
-        getSupervisorScheduleApi(idSupervisor).then(response => {
-            console.log("sup",idSupervisor)
-            if(response.success) {
-                console.log(response)
-                setInputs(response.schedule)
-                setHorarioSeleccionado(response.schedule)
-            }
-        })
-    },setInputs)
 
     const leftPage = e => {
         // Verifica que no se salga del limite 
@@ -134,7 +121,9 @@ export default function Timetable ({idSupervisor},setflagSeleccion,setHorarioSel
                                 <div className="headerTime">{`${day.day}  ${day.date}`}</div>
                                 {
                                 day.hours.map((state, indexHour) => (
-                                    <TimetableCell state={state} setInputs={setInputs} inputs={inputs} indexDay={indexDay} key={indexHour} indexHour={indexHour} setflagSeleccion={setflagSeleccion}></TimetableCell>
+                                    <TimetableCell state={state} setInputs={setInputs} hourSelecteds={hourSelecteds}
+                                        inputs={inputs} indexDay={indexDay} key={indexHour} 
+                                        indexHour={indexHour} setHourSelecteds={setHourSelecteds}/>
                                 ))
                                 }
                             </div>
