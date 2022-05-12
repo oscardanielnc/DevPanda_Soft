@@ -8,9 +8,9 @@ import { Image } from "react-bootstrap";
 import './SupervisorSelection.scss';
 import Timetable from "../components/Timetable/Timetable";
 import { Button } from "react-bootstrap";
-import {searchAssessorsBySpecialty} from "../api/administratives"
+import {searchAssessorsBySpecialty} from "../api/schedule"
 
-const idAlumno = 5
+const idEspecialidad = 1
 export default function SupervisorSelection () {
     /*
     const [supervisores, setSupervisores] = useState( [
@@ -46,26 +46,33 @@ export default function SupervisorSelection () {
 */
 
     const [supervisores, setSupervisores] = useState([]);
-    const [idSupSelected, setIdSupSelected] = useState(1);
-    // useEffect(() => {
-    //     // searchAssessorsBySpecialty(idAlumno).then(response => {
-    //     //     /*
-    //     //     if(response.success) {
-    //     //         setSupervisores(response.supervisores);
-    //     //     }*/
-    //     //     console.log('Respuesta:',response)
-    //     // })
-    // }, [setSupervisores])
-    const insert = async e => {
+    var [idSupSelected, setIdSupSelected] = useState(9);
+    var [flagSeleccion,setflagSeleccion]=useState(0);
+    const [horarioSeleccionado,setHorarioSeleccionado]=useState([])
+    useEffect(() => {
+          searchAssessorsBySpecialty(idEspecialidad).then(response => {
+              
+              if(response.success) {
+                  setSupervisores(response.supervisors);
+              }
+              console.log('Respuesta:',response)
+          })
+     }, [setSupervisores])
+
+    useEffect(() => {
+
+   }, [setIdSupSelected])
+
+    const insertHorario = async e => {
         /*
         e.preventDefault();
         //si se selecciona al menos un horario, se hace la insersion de horario
-        if(data.supervisor.horario.seleccionado === true){
+        if(flagSeleccion === 1){
             let response=null;
-            response = await selectSupervisorSchedule(data);
+            response = await changeOneHourSchedule(horarioSeleccionado);
             
             if(response.success){
-                toast.success("Se seleccionó correctmente a un supervisor", {
+                toast.success("Se seleccionó correctmente a un horario", {
                     position: "top-right",
                     autoClose: 5000,
                     hideProgressBar: false,
@@ -88,13 +95,13 @@ export default function SupervisorSelection () {
         }*/
     }
 
-    return(
+    return( supervisores.length>0 &&
         <LayoutBasic>
             <div className='container principal'>
                 <div className="row rows">
                     <h1>Eleccion de Supervisor</h1>
                 </div>
-                <div className="row" style={{"margin-left": "1.3em"}}>
+                <div className="row" style={{marginLeft: "1.3em"}}>
                     <p style={{marginTop:"10px"}}>
                     Elige al asesor que prefieras para ver su disponibilidad.
                     </p>
@@ -103,10 +110,10 @@ export default function SupervisorSelection () {
                     <SupervisorSelector supervisores={supervisores} setSupervisores={setSupervisores} setIdSupSelected={setIdSupSelected}/>
                 </div>
                 <div className="row rows">
-                    <Timetable idSupervisor={9}/>
+                    <Timetable idSupervisor={idSupSelected} setflagSeleccion={setflagSeleccion} setHorarioSeleccionado={setHorarioSeleccionado}/>
                 </div>
                 <div className="row rows boton">
-                    <Button className="btn btn-primary" style={{width:"40%"}}>Agendar</Button>
+                    <Button className="btn btn-primary" style={{width:"40%"}} onClick={insertHorario}>Agendar</Button>
                 </div>
             </div>     
         </LayoutBasic>        

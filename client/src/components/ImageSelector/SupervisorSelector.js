@@ -32,12 +32,19 @@ function Supervisor ({element, setSupervisores, supervisores, setIdSupSelected})
             }
             return sup
         })
-        setIdSupSelected(element.id)
+
         setSupervisores(newSupervisors);
+        supervisores.map(e=>{
+            if(e.isSelected){
+                setIdSupSelected(e.id)
+                console.log("Id seleccionado",e.id)
+            }
+            
+        })
     }
     return (
         
-        <div className="supervisor" onClick={selectSup} seleccionSup={selectSup} style={element.isSelected?{backgroundColor: 'gray'}:{backgroundColor: 'white'}}>
+        <div className="supervisor" onClick={selectSup} style={element.isSelected?{backgroundColor: 'gray'}:{backgroundColor: 'white'}}>
 
             <i className="bi bi-person"></i>
             <p  style={{marginTop:"10px"}}>   
