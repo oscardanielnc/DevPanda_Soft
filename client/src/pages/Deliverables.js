@@ -4,65 +4,115 @@ import { Button, Form} from "react-bootstrap";
 import StateViewer,{StatesViewType} from "../components/StateViewer/StateViewer";
 import "./AgreementReview.scss";
 import FileManagement from "../components/FileManagement/FileManagement";
+import { getDeliverableStudent } from "../api/deliverables";
+import useAuth from "../hooks/useAuth";
+import { getAllDocsApi, uploadDocsApi } from "../api/files";
 
-const dataDummy={
-    "idAlumno": 1,    
-    "deliverable":{
-        "idEntregable": 1,
-        "name": "Certificado del Taller",
-        "description": "A continuación suba los documentos solicitados.",
-        "flagIni": true,
-        "fechaIni": "",
-        "flagFin": true,
-        "fechaFin": "",
-        "flagNota": false
-    },
-    "deliverableResponse":{
-        "docState":"E",
-        "evaState": "P",
-        "observation": "",
-    }
-}
+// const dataDummy={
+//     "idAlumno": 1,
+//     "idAlumnoProceso": 1,
+//     "deliverable": {
+//         "idEntregable": 2,
+//         "name": "Certificado Taller",
+//         "description": "Entrega del certificado del taller al que se debio asistir durante el curso.",
+//         "flagIni": 0,
+//         "fechaIni": null,
+//         "flagFin": 0,
+//         "fechaFin": null,
+//         "flagNota": 0
+//     },
+//     "deliverableResponse": {
+//        "idRespuestaEntregable": 2,
+//        "docState": "E",
+//        "evaState": "P",
+//        "observation": "",
+//        "grade": null,
+//        "uploadDate": null
+//     }
+// }
+
+const idEntregable=2;
+const maxFiles = 1;
+
+let estadoDoc= "";
+let estadoEva = "";
+let comentarioCalificado="";
+let comentarioDoc="";
+
 
 export default function Deliverables(){
     //let estadoDoc= "E";//"N" no entregado, "E" entregado
     //let estadoEva = "P";//"A" es aprobado, "O" es observado, , "P" pendiente de aprobación
-    let estadoDoc= "E";
-    let estadoEva = "P";
-    let comentarioCalificado="";
-    let comentarioDoc="";
-    const [data, setData] = useState(dataDummy)
-
+    const [fileList, setFileList] = useState([])
+    const [docs, setDocs] = useState([])
+    const [studentDocs, setStudentDocs] = useState([])
+    const {user} = useAuth();
+    const [data, setData] = useState({})
+    console.log("user",user);
     useEffect(()=> {
-        /*
-        selectDeliverable(data.idAlumno).then(response => {
+        getDeliverableStudent(user.idPersona,idEntregable).then(response => {
             if(response.success) {
-                setData(response.data);
+                console.log("response",response);
+                setData(response.data.valor);
             }
-        })*/
+        })
     }, [setData])
 
-    if(data.deliverableResponse.docState === "N"){
-        estadoDoc="fileEmpty";
-        comentarioDoc="Archivo no enviado";
+    
+
+    useEffect(() => {
+        getAllDocsApi(`1-${user.fidEspecialidad}-DELIV`, 0).then(response => {
+            if(response.success) {
+                setDocs(response.docs)
+            }
+        })
+    },[setDocs])
+    
+    useEffect(() => {
+        getAllDocsApi(`1-${user.fidEspecialidad}-DELIV-${user.idPersona}`, 1).then(response => {
+            if(response.success) {
+                setStudentDocs(response.docs)
+            }
+        })
+    },[setStudentDocs])
+
+    const deliver = async() => {
+        if(fileList.length === maxFiles) {
+            const response = await uploadDocsApi(fileList, `1-${user.fidEspecialidad}-DELIV-${user.idPersona}`, 1);
+            // if(response.success) {
+        }
     }
-    if(data.deliverableResponse.docState === "E"){
-        estadoDoc = "success";
-        comentarioDoc="Entregado";
-    }    
-    if(data.deliverableResponse.evaState === "A"){
-        estadoEva="success";
-        comentarioCalificado="Aprobado";
+
+    console.log("data", data)
+    if(data.deliverableResponse) {
+        console.log("---->", data.deliverableResponse)
+        if(data.deliverableResponse.docState === "S"){
+            estadoDoc="fileEmpty";
+            comentarioDoc="Archivo no enviado";
+        }
+        if(data.deliverableResponse.docState === "E"){
+            estadoDoc = "success";
+            comentarioDoc="Entregado";
+        }    
+        if(data.deliverableResponse.evaState === "A"){
+            estadoEva="success";
+            comentarioCalificado="Aprobado";
+        }
+        if(data.deliverableResponse.evaState === "O"){
+            estadoEva = "warning";
+            comentarioCalificado="Observado";
+        }    
+        if(data.deliverableResponse.evaState === "P"){
+            estadoEva = "pending";
+            comentarioCalificado = "Pendiente de aprobación";
+        } 
+    } else {
+        console.log("estoy dentro del else")
+        return null
     }
-    if(data.deliverableResponse.evaState === "O"){
-        estadoEva = "warning";
-        comentarioCalificado="Observado";
-    }    
-    if(data.deliverableResponse.evaState === "P"){
-        estadoEva = "pending";
-        comentarioCalificado = "Pendiente de aprobación";
-    } 
+    
     return(
+        data.deliverable &&
         <LayoutBasic>
             <div className="container deliverables">
             <div className="row row1" style={{textAlign: "left",marginTop:"25px"}}>
@@ -80,7 +130,7 @@ export default function Deliverables(){
                     StatesViewType[estadoEva]("Aprobación", comentarioCalificado)]}/>
                 </div>
                 <div className="row rows uploadAgreement" >                
-                    <FileManagement/>
+                    <FileManagement canUpload={true} docs={studentDocs} maxFiles={maxFiles} fileList={fileList} setFileList={setFileList}/>
                 </div>
                 <div className="row row1" style={{textAlign: "left",marginTop:"25px"}}>
                     <h2>Observaciones</h2>  
@@ -92,7 +142,7 @@ export default function Deliverables(){
                 </div>
                 <div className="row botonCancelar" style={{marginLeft:"10px",marginTop:"10px",marginBottom:"30px"}}>                    
                     <Button  className="btn btn-sec" style={{width:"20%",marginRight:"50px"}} >Regresar</Button>                   
-                    <Button  className="btn btn-pri" style={{width:"20%",marginLeft:"50px"}}>Guardar</Button>                  
+                    <Button  className="btn btn-pri" style={{width:"20%",marginLeft:"50px"}} onClick={deliver}>Guardar</Button>                  
                 </div>
             </div>
         </LayoutBasic>

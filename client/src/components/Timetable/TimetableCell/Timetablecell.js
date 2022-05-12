@@ -8,11 +8,21 @@ import './Timetablecell.scss';
 // 3: Seleccionado
 // 4: Ocupado
 
-export default function TimetableCell ({state, setInputs, inputs, indexDay, indexHour,setflagSeleccion}){
+export default function TimetableCell (props){
+    const {state, setInputs, inputs, indexDay, indexHour, setHourSelecteds, hourSelecteds} = props;
     const selectState = e => {
         const newSchude = inputs.map((day, index) => {
             const newHours = day.hours.map((hour, i) => {
-                    if(index===indexDay && i===indexHour && state===2) return 3
+                    if(index===indexDay && i===indexHour && state===2) {
+                        setHourSelecteds([
+                            ...hourSelecteds,
+                            {
+                                date: day.date,
+                                index: i
+                            }
+                        ])
+                        return 3
+                    }
                     else if (hour===3) return 2
                     return hour
                 })
@@ -22,8 +32,8 @@ export default function TimetableCell ({state, setInputs, inputs, indexDay, inde
                 hours: newHours
             }
         })
+        
         setInputs(newSchude)
-        setflagSeleccion(1)
     }
 
     let description

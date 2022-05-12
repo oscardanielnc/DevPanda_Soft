@@ -54,15 +54,15 @@ export function searchAssessorsBySpecialty(idEspecialidad) {
             }
         })
     }
-export function changeOneHourSchedule(horario) {
+export function changeOneHourSchedule(hour) {
             const url = `${BASE_PATH}/${API_VERSION}/schedule-changeOneHour`;
             const params = {
-                method: "POST",
+                method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
                     //Authorization: PANDA_KEY
                 },
-                body:JSON.stringify(horario)
+                body:JSON.stringify(hour)
             }
         
             return fetch(url, params)

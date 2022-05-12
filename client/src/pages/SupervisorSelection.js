@@ -8,93 +8,122 @@ import { Image } from "react-bootstrap";
 import './SupervisorSelection.scss';
 import Timetable from "../components/Timetable/Timetable";
 import { Button } from "react-bootstrap";
-import {searchAssessorsBySpecialty} from "../api/schedule"
+import {changeOneHourSchedule, getSupervisorScheduleApi, searchAssessorsBySpecialty} from "../api/schedule"
+import useAuth from "../hooks/useAuth";
+import {ToastContainer, toast} from "react-toastify";
 
-const idEspecialidad = 1
+const supervisoresDummy = [
+    {
+        id:1,
+        name: "Javier Palacios",
+        idfacultad:"informatica",
+        isSelected: true,
+        isMySupervisor: false
+    },
+    {
+        id:2,
+        name: "Luis Flores",
+        idfacultad:"informatica",
+        isSelected: false,
+        isMySupervisor: false
+    },
+    {
+        id:3,
+        name: "Andres Melgar",
+        idfacultad:"informatica",
+        isSelected: false,
+        isMySupervisor: false
+    },
+    {
+        id:4,
+        name:"Pedro Castillo",
+        idfacultad:"informatica",
+        isSelected: false,
+        isMySupervisor: false
+    }
+]
+
 export default function SupervisorSelection () {
-    /*
-    const [supervisores, setSupervisores] = useState( [
-        {
-            id:1,
-            name: "Javier Palacios",
-            idfacultad:"informatica",
-            isSelected: true,
-            isMySupervisor: false
-        },
-        {
-            id:2,
-            name: "Luis Flores",
-            idfacultad:"informatica",
-            isSelected: false,
-            isMySupervisor: false
-        },
-        {
-            id:3,
-            name: "Andres Melgar",
-            idfacultad:"informatica",
-            isSelected: false,
-            isMySupervisor: false
-        },
-        {
-            id:4,
-            name:"Pedro Castillo",
-            idfacultad:"informatica",
-            isSelected: false,
-            isMySupervisor: false
-        }
-    ])
-*/
-
+    const {user} = useAuth()
     const [supervisores, setSupervisores] = useState([]);
-    var [idSupSelected, setIdSupSelected] = useState(9);
+    const [schedule, setSchedule] = useState([])
+    const [hourSelecteds, setHourSelecteds] = useState([])
     useEffect(() => {
-          searchAssessorsBySpecialty(idEspecialidad).then(response => {
-              
+          searchAssessorsBySpecialty(user.fidEspecialidad).then(response => {
               if(response.success) {
                   setSupervisores(response.supervisors);
               }
-              console.log('Respuesta:',response)
           })
      }, [setSupervisores])
 
-    useEffect(() => {
+    const getSchedule = (idSup) => {
+        getSupervisorScheduleApi(idSup).then(response => {
+            if(response.success) {
+                setSchedule(response.schedule)
+            }
+        })
+    }
+    const isSomeHourSelected = () => {
+        let isSelected = false
+        schedule.forEach(day => {
+            day.hours.forEach(hour => {
+                if(hour===3) isSelected = true
+            })
+        })
+        return isSelected
+    }
 
-   }, [setIdSupSelected])
-
-    const insertHorario = async e => {
-        /*
-        e.preventDefault();
-        //si se selecciona al menos un horario, se hace la insersion de horario
-        if(flagSeleccion === 1){
-            let response=null;
-            response = await changeOneHourSchedule(horarioSeleccionado);
-            
-            if(response.success){
-                toast.success("Se seleccionó correctmente a un horario", {
+    const insertHorario = () => {
+        if(schedule.length>0) {
+            if(isSomeHourSelected()) {
+                changeOneHourSchedule(hourSelecteds[hourSelecteds.length-1]).then(response => {
+                    const resultState = response.success? "success": "error";
+                    toast[resultState](response.msg, {
+                        position: "top-right",
+                        autoClose: 3000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                    });
+                })
+                toast.success("Se ha registrado su eleccion correctamente!", {
                     position: "top-right",
-                    autoClose: 5000,
+                    autoClose: 3000,
                     hideProgressBar: false,
                     closeOnClick: true,
                     pauseOnHover: true,
                     draggable: true,
                     progress: undefined,
                 });
-            }else{
-                toast.error('Ups, ha ocurrido un error', {
+            } else {
+                toast.warning("No tiene ningun horario seleccionado!", {
                     position: "top-right",
-                    autoClose: 5000,
+                    autoClose: 3000,
                     hideProgressBar: false,
                     closeOnClick: true,
                     pauseOnHover: true,
                     draggable: true,
                     progress: undefined,
                 });
-            }   
-        }*/
+            }
+        } else {
+            toast.warning("No tiene ningun supervisor seleccionado!", {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
+        }
     }
 
     return( supervisores.length>0 &&
         <LayoutBasic>
+            <ToastContainer />
             <div className='container principal'>
                 <div className="row rows">
                     <h1>Eleccion de Supervisor</h1>
@@ -105,10 +134,10 @@ export default function SupervisorSelection () {
                     </p>
                 </div>
                 <div className="row rows">     
-                    <SupervisorSelector supervisores={supervisores} setSupervisores={setSupervisores} setIdSupSelected={setIdSupSelected}/>
+                    <SupervisorSelector supervisores={supervisores} setSupervisores={setSupervisores} getSchedule={getSchedule}/>
                 </div>
                 <div className="row rows">
-                    <Timetable idSupervisor={idSupSelected} />
+                    <Timetable inputs={schedule} setInputs={setSchedule} setHourSelecteds={setHourSelecteds} hourSelecteds={hourSelecteds}/>
                 </div>
                 <div className="row rows boton">
                     <Button className="btn btn-primary" style={{width:"40%"}} onClick={insertHorario}>Agendar</Button>

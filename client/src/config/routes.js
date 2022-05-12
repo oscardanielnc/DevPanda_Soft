@@ -33,6 +33,11 @@ const routes = [
         component: StudentRegistrationForm,
     },
     {
+        path: "/student-registration-review/:idAlumno",
+        exact: true,
+        component: StudentRegistrationForm,
+    },
+    {
         path: "/student-agreement",
         exact: true,
         component: StudentAgreement,
@@ -72,7 +77,6 @@ const routes = [
         exact: true,
         component: Deliverables,
     },
-
     {
         path: "*",
         component: Error404,
