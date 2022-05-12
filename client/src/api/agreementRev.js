@@ -31,3 +31,30 @@ export function getAgreement(fidAlumno,fidAsesor){
         })
 
 }
+export function agreementReviewUpdateApi(data) {
+    const url = `${BASE_PATH}/${API_VERSION}/agreementLearningPlan-updateInfoByStudent`;
+    const params = {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+            //authorization: PANDA_KEY
+       },
+        body: JSON.stringify(data)
+    }
+    return fetch(url, params)
+        .then(response => {
+            return response.json()
+        })
+        .then(result => {
+            return {
+                msg: result.message,
+                success: true
+            }
+        })
+        .catch(err => {
+            return {
+                msg: err.message,
+                success: false
+            }
+        })
+}

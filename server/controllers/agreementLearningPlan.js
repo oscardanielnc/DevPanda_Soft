@@ -185,7 +185,7 @@ function updateInfoByStudent(req, res){
     const observaciones = req.body.observaciones;
     
     const sqlQuery = `UPDATE EntregaConvenioYPlan 
-                        SET estadoFaci = ${estadoFaci}, estadoEspecialidad= ${estadoEspecialidad}, observaciones = "${observaciones}" 
+                        SET estadoFaci = "${estadoFaci}", estadoEspecialidad= "${estadoEspecialidad}", observaciones = "${observaciones}" 
                         WHERE idEntregaConvenio = ${idEntregaConvenio} 
                         AND fidAlumnoProceso = ${fidAlumnoProceso}`;
 
@@ -272,8 +272,7 @@ function selectDocumentsInfoByProcess(req, res){
                                                 FROM
                                                     AlumnoProceso
                                                 WHERE
-                                                    fidAlumno = ${fidAlumno}
-                                                    AND fidAsesor = ${fidAsesor}
+                                                    fidAlumno = ${fidAlumno}                                                    
                                                     AND estado = 'C');`;
 
     connection.connect(err => {

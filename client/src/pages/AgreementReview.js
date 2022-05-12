@@ -7,15 +7,21 @@ import "./AgreementReview.scss";
 import FileManagement from "../components/FileManagement/FileManagement";
 import ShowFiles from "../components/FileManagement/ShowFiles";
 import { getAllDocsApi,uploadDocsApi } from "../api/files";
-import { getAgreement} from "../api/agreementRev";
+import { getAgreement, agreementReviewUpdateApi} from "../api/agreementRev";
 import useAuth from "../hooks/useAuth";
 import { ToastContainer, toast } from 'react-toastify';
 
 /*PENDIENTE */
 const idAlumno = 1;
-const idCoordinador = 10;
-const tipoPersonal = "F"; //F = FACI, E = Especialidad // NO
+const fidAlumnoProceso = 1;
 
+let dataForApi = {
+    idEntregaConvenio: "",
+    fidAlumnoProceso:"",
+    estadoFaci:"",
+    estadoEspecialidad: "",
+    observaciones: ""
+}
 // const dataDummy = {
 //     "entregaConvenioyPlan":{        
 //         "faciState" : "Aprobado", // consumir API GET (A = "Aprobado", P = "Pendiente" de revisión, O ="Observado")
@@ -24,33 +30,33 @@ const tipoPersonal = "F"; //F = FACI, E = Especialidad // NO
 //     }
 // }
 
-// let staticFaci = "Pendiente";
-// let staticEsp = "Pendiente";
-
-
-
 let staticFaci;
 let staticEsp;
 
 let flag=1;
-export default function AgreementReview (){    
+export default function AgreementReview (){
+
     const {user} = useAuth();
     const [fileList, setFileList] = useState([])
     const [data, setData] = useState({});
     const [docs, setDocs] = useState([])
     const [docsStudent, setDocsStudent] = useState([])
     const [docsCoord, setDocsCoord] = useState([])
-    //console.log("El user tiene: ",user);
-
+    console.log(user)    
     //Enviar idAlumno, idRevisor
+    
+        
     useEffect(() => {
-        getAgreement(idAlumno,idCoordinador).then(response => {                
+        getAgreement(idAlumno,user.idPersona).then(response => {                
             if(response.success) {  
                 setData(response.agreement[0]);            
+            }else{
+                console.log(response.errMsg)
             }            
         })
     }, [setData])
 
+    //VER BIEN LO DEL FORMATO 1-1
     useEffect(() => {
         getAllDocsApi("1-1-CONV", 0).then(response => {
             if(response.success) {
@@ -68,7 +74,7 @@ export default function AgreementReview (){
     },[setDocsStudent])
 
     useEffect(() => {
-        getAllDocsApi(`1-1-CONV-${idAlumno}`, 0).then(response => {
+        getAllDocsApi(`1-${user.fidEspecialidad}-CONV-${idAlumno}`, 0).then(response => {
             if(response.success) {
                 setDocsCoord(response.docs)
             }
@@ -76,72 +82,54 @@ export default function AgreementReview (){
     },[setDocsCoord])       
 
     
-    if(data.estadoFaci && flag){         
+    if(flag && data.estadoFaci){         
         staticFaci = data.estadoFaci;
         staticEsp =  data.estadoEspecialidad;
         flag=0;                
     }
 
     let documentState ="";
-    if(data.estadoFaci && tipoPersonal === "F") {
+    if(data.estadoFaci && user.tipoPersonal === "F") {
         documentState = data.estadoFaci;        
     }       
     else
-        if(data.estadoFaci && tipoPersonal === "E")
+        if(data.estadoFaci && user.tipoPersonal === "E")
             documentState = data.estadoEspecialidad;       
     
         
-    let result=true;
-    //const update = async e => {
-        //se hace una diferencia entre si es coordinador FACI o de Especialidad        
-        /*
-        e.preventDefault();
-        if(numDocumentos === 2){
-            let response=null;
-            if(tipoPersonal==="F"){               
-                response = await agreementAndPlanReviewFACIUpdate(data);
-            }
-            if(tipoPersonal==="E"){
-                response = await agreementAndPlanReviewEspUpdate(data);
-            }
-        }        
-        */        
-    //}
+    
     const update = async e => {
-        if(fileList.length === 2) {
-            console.log(fileList)
-            //const response = await uploadDocsApi(fileList, "1-1-CONV-${idAlumno}", 1);
-            // if(response.success) {
-            //     toast.success(response.msg, {
-            //         position: "top-right",
-            //         autoClose: 3000,
-            //         hideProgressBar: false,
-            //         closeOnClick: true,
-            //         pauseOnHover: true,
-            //         draggable: true,
-            //         progress: undefined,
-            //     });
-            //     window.location.reload()
-            // } else {
-            //     toast.error(response.msg, {
-            //         position: "top-right",
-            //         autoClose: 3000,
-            //         hideProgressBar: false,
-            //         closeOnClick: true,
-            //         pauseOnHover: true,
-            //         draggable: true,
-            //         progress: undefined,
-            //     });
-            // }
-            toast.error("NO NO NO, equivocadiño. No debes tocar este botón!", {
-                position: "top-right",
-                autoClose: 3000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-            });
+        if(fileList.length === 2) {                        
+            dataForApi.idEntregaConvenio = data.idEntregaConvenio
+            dataForApi.fidAlumnoProceso = fidAlumnoProceso
+            dataForApi.estadoFaci = data.estadoFaci
+            dataForApi.estadoEspecialidad = data.estadoEspecialidad
+            dataForApi.observaciones = data.observaciones
+            
+            //const response1 = await uploadDocsApi(fileList, "1-1-CONV-${idAlumno}", 1);
+            const response2 = await agreementReviewUpdateApi(dataForApi)
+            if(response2.success) {                
+                toast.success(response2.msg, {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });            
+                window.location.reload()
+            } else {
+                toast.error(response2.msg, {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
+            }            
         }
         else {
             toast.warning(`Se requieren 2 archivos para esta entrega.`, {
@@ -187,31 +175,30 @@ export default function AgreementReview (){
 
     const changeStatePassed = e => {         
         pass=!pass;       
-        if(tipoPersonal === "F"){            
+        if(user.tipoPersonal === "F"){            
             setData({                                
                 ...data,
                 estadoFaci:"A"                                        
             })                                 
         }else{
-            if(tipoPersonal === "E"){
+            if(user.tipoPersonal === "E"){
                 setData({
                     ...data,
                     estadoEspecialidad: "A",          
                 })                
             }
-        } 
-        console.log(data)             
+        }                           
     }
 
     const changeStatePending = e => {       
         pending=!pending;
-        if(tipoPersonal === "F"){
+        if(user.tipoPersonal === "F"){
             setData({
                 ...data,
                 estadoFaci: "P",             
             })                       
         }else{
-            if(tipoPersonal === "E"){
+            if(user.tipoPersonal === "E"){
                 setData({
                     ...data,
                     estadoEspecialidad: "P" ,          
@@ -222,13 +209,13 @@ export default function AgreementReview (){
     
     const changeStateObserved = e => { 
         observed =!observed               
-        if(tipoPersonal === "F"){
+        if(user.tipoPersonal === "F"){
             setData({
                 ...data,
                 estadoFaci: "O",            
             })            
         }else{
-            if(tipoPersonal === "E"){
+            if(user.tipoPersonal === "E"){
                 setData({
                     ...data,
                     estadoEspecialidad: "O",            
@@ -240,11 +227,7 @@ export default function AgreementReview (){
     const changeComments = e => { 
             setData({
                 ...data,
-                [e.target.name]: e.target.value
-                // entregaConvenioyPlan: {
-                //     ...data.entregaConvenioyPlan,
-                //     [e.target.name]: e.target.value
-                // }
+                observaciones: e.target.value                
             })        
     }
     
