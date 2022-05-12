@@ -40,7 +40,7 @@ function StudentNavbar (props){
     
     const transformText = "rotate(90deg) scaleY(.4) scaleX(" + (0.25 + 0.2*(dataNavbar.length-2)) + ") translateX(" + offsets[dataNavbar.length-2] + "px)" 
     const {user} = useAuth()
-    const linkProgreso = "student-registration/" + user.idPersona
+    const linkProgreso = "/student-registration/" + user.idPersona
     // if(!user) return ""
     const [progreso, setProgreso] = useState(user.estadoProceso)
     return(
@@ -67,7 +67,7 @@ function StudentNavbar (props){
                 return (
                     <NavLink key = {key}
                         to = {(val.link === "/student-registration")? linkProgreso : val.link}
-                        className = {`dataRow ${(progreso>key)? "active": ''} ${(window.location.pathname== val.link)? "current": ''}`}
+                        className = {`dataRow ${(progreso>key)? "active": ((window.location.pathname=== val.link) )? "current": ((window.location.pathname=== linkProgreso) )? "current" : '' }`}
                         >
                         <span className='icono'>
                             <i className="bi bi-check"></i>
