@@ -10,10 +10,10 @@ import { getAllDocsApi } from "../api/files";
 import ShowFiles from "../components/FileManagement/ShowFiles";
 import { ToastContainer, toast } from 'react-toastify';
 import {selectDocumentsInfoByProcessOnlyStudent} from "../api/agreementLearnigPlan"
+import useAuth from "../hooks/useAuth";
 
 
-
-let docuemntsState = "Entregado";
+let docuemntsState = "Sin entregar";
 let approvalState = ""
 const maxFiles = 2;
 const idAlumno=1;
@@ -22,21 +22,26 @@ export default function StudentAgreement () {
     const [docs, setDocs] = useState([])
     const [studentDocs, setStudentDocs] = useState([])
     const [data, setData] = useState({}); 
+    const {user} = useAuth();
+    console.log("user",user.idPersona)
+    console.log("esp",user.fidEspecialidad)
     useEffect(() => {
-        getAllDocsApi("1-1-CONV", 0).then(response => {
+        getAllDocsApi(`1-${user.fidEspecialidad}-CONV`, 0).then(response => {
             if(response.success) {
                 setDocs(response.docs)
+                console.log("Primer doc",response)
             }
         })
     },[setDocs])
     
     useEffect(() => {
-        getAllDocsApi("1-1-CONV-1", 1).then(response => {
+        getAllDocsApi(`1-${user.fidEspecialidad}-CONV-${user.idPersona}`, 1).then(response => {
             if(response.success) {
                 setStudentDocs(response.docs)
-            }
-            else{
-                docuemntsState = "Sin entregar"
+                console.log("Segundo doc",response.docs)
+                if(response.length>0){
+                    docuemntsState = "Entregado"
+                }
             }
         })
     },[setStudentDocs])
@@ -44,7 +49,7 @@ export default function StudentAgreement () {
 
     
     useEffect(()=>{
-        selectDocumentsInfoByProcessOnlyStudent(idAlumno).then(response => {
+        selectDocumentsInfoByProcessOnlyStudent(user.idPersona).then(response => {
             if(response.success) {
                 setData(response.files)
                 console.log("consola:",response)
@@ -56,14 +61,15 @@ export default function StudentAgreement () {
 
     const typeDocumentState = (docuemntsState==="Sin entregar")? "fileEmpty": "success";
     let typeApprovalState = "";
-    if(data[0].estadoFaci === "P"){
-        approvalState = "Sin entrega"
+
+    if(data.estadoFaci === "o"){
+        approvalState = "Observado"
     }
-    else if(data[0].estadoFaci == "a"){
+    else if(data.estadoFaci === "a"){
         approvalState= "Aprobado"
     }
     else{
-        approvalState= "observado"
+        approvalState= "Sin entrega"
     }
     
     switch(approvalState) {
@@ -85,8 +91,9 @@ export default function StudentAgreement () {
 
     const deliver = () => {
         if(fileList.length === maxFiles) {
-            // const response = await uploadDocsApi(files, "1-1-CONV-1", 1);
+            // const response = await uploadDocsApi(files, "1-${user.fidEspecialidad}-CONV-${user.idPersona}", 1);
             // if(response.success) {
+            //     docuemntsState = "Entregado"
             //     toast.success(response.msg, {
             //         position: "top-right",
             //         autoClose: 3000,
