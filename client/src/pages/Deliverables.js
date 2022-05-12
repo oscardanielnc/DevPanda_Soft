@@ -5,32 +5,32 @@ import StateViewer,{StatesViewType} from "../components/StateViewer/StateViewer"
 import "./AgreementReview.scss";
 import FileManagement from "../components/FileManagement/FileManagement";
 import { getDeliverableStudent } from "../api/deliverables";
+import useAuth from "../hooks/useAuth";
 
-const dataDummy={
-    "idAlumno": 1,
-    "idAlumnoProceso": 1,
-    "deliverable": {
-        "idEntregable": 2,
-        "name": "Certificado Taller",
-        "description": "Entrega del certificado del taller al que se debio asistir durante el curso.",
-        "flagIni": 0,
-        "fechaIni": null,
-        "flagFin": 0,
-        "fechaFin": null,
-        "flagNota": 0
-    },
-    "deliverableResponse": {
-       "idRespuestaEntregable": 2,
-       "docState": "E",
-       "evaState": "P",
-       "observation": "",
-       "grade": null,
-       "uploadDate": null
-    }
-}
+// const dataDummy={
+//     "idAlumno": 1,
+//     "idAlumnoProceso": 1,
+//     "deliverable": {
+//         "idEntregable": 2,
+//         "name": "Certificado Taller",
+//         "description": "Entrega del certificado del taller al que se debio asistir durante el curso.",
+//         "flagIni": 0,
+//         "fechaIni": null,
+//         "flagFin": 0,
+//         "fechaFin": null,
+//         "flagNota": 0
+//     },
+//     "deliverableResponse": {
+//        "idRespuestaEntregable": 2,
+//        "docState": "E",
+//        "evaState": "P",
+//        "observation": "",
+//        "grade": null,
+//        "uploadDate": null
+//     }
+// }
 
-const idAlumno=1;
-const idEntregable=2;
+const idEntregable=1;
 
 let estadoDoc= "";
 let estadoEva = "";
@@ -40,11 +40,11 @@ let comentarioDoc="";
 export default function Deliverables(){
     //let estadoDoc= "E";//"N" no entregado, "E" entregado
     //let estadoEva = "P";//"A" es aprobado, "O" es observado, , "P" pendiente de aprobación
-
+    const {user} = useAuth();
     const [data, setData] = useState({})
 
     useEffect(()=> {
-        getDeliverableStudent(idEntregable,idAlumno).then(response => {
+        getDeliverableStudent(idEntregable,user.idAlumno).then(response => {
             if(response.success) {
                 console.log(response);
                 setData(response.data.valor);
