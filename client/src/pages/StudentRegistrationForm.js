@@ -15,9 +15,8 @@ import DocumentPlusIcon from "../components/DocumentPlusIcon/DocumentPlusIcon";
 import FileManagement from "../components/FileManagement/FileManagement";
 import useAuth from "../hooks/useAuth";
 import { getstudentInscriptionForm,registrationUpdateApiStudent,registrationUpdateApiStudentCamps } from "../api/registrationForm";
-import { getAllDocsApi } from "../api/files";
+import { getAllDocsApi,uploadDocsApi } from "../api/files";
 import ShowFiles from "../components/FileManagement/ShowFiles";
-import {uploadDocsApi} from "../api/files";
 
 import './StudentRegistrationForm.scss';
 
@@ -171,7 +170,34 @@ export default function StudentRegistrationForm () {
     console.log(data);
     console.log("Luego de hacer el new data: ",data);
 
+    const deliver = async () => {
+        if(fileList.length === maxFiles) {
+            const response = await uploadDocsApi(fileList, `1-${user.fidEspecialidad}-RFOR-${idAlumno}`, 1);
+            if(response.success) {
+                toast.success(response.msg, {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
+                window.location.reload()
+           } else {
+               toast.error(response.msg, {
+                   position: "top-right",
+                  autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
+           }
 
+        }
+    }
     const insert = async e => {
         e.preventDefault();
         const newData = {
@@ -220,42 +246,6 @@ export default function StudentRegistrationForm () {
             setData(newData);
             console.log(response.msg);
         }
-        if(fileList.length <= maxFiles) {
-            const response = await uploadDocsApi(fileList, `1-${user.fidEspecialidad}-RFOR-${idAlumno}`, 1);
-            if(response.success) {
-                toast.success(response.msg, {
-                    position: "top-right",
-                    autoClose: 3000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                });
-                window.location.reload()
-           } else {
-               toast.error(response.msg, {
-                   position: "top-right",
-                  autoClose: 3000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                });
-           }
-       }
-       else {
-           toast.warning(`Se aceptan como máximo ${maxFiles} archivos para esta entrega.`, {
-               position: "top-right",
-               autoClose: 3000,
-               hideProgressBar: false,
-               closeOnClick: true,
-               pauseOnHover: true,
-               draggable: true,
-               progress: undefined,
-           });
-       }
     }
     let isSaved=null;
     let canUpload=null;
@@ -263,13 +253,16 @@ export default function StudentRegistrationForm () {
         isSaved=((data.documentsState==="Sin entregar")||
         (data.documentsState==="Entregado"&&data.approvalState==="Observado"))? false: true;
         if(isSaved===false){
+            console.log("En el alumno el cantUpload es: true");
             canUpload=true;
         }else{
             canUpload=false;
+            console.log("En el alumno el cantUpload es: false");
         }
     }else{
         isSaved=true;
-        canUpload=false;
+        canUpload=true;
+        console.log("En el coordinador el cantUpload es: true");
     }
 
     const typeDocumentState = (data.documentsState==="Sin entregar")? "fileEmpty": "success";
@@ -324,42 +317,6 @@ export default function StudentRegistrationForm () {
             });
             isSaved=true;
         } 
-        if(fileList.length <= maxFiles) {
-             const response = await uploadDocsApi(fileList, `1-${user.fidEspecialidad}-RFOR-${idAlumno}`, 1);
-             if(response.success) {
-                 toast.success(response.msg, {
-                     position: "top-right",
-                     autoClose: 3000,
-                     hideProgressBar: false,
-                     closeOnClick: true,
-                     pauseOnHover: true,
-                     draggable: true,
-                     progress: undefined,
-                 });
-                 window.location.reload()
-            } else {
-                toast.error(response.msg, {
-                    position: "top-right",
-                   autoClose: 3000,
-                     hideProgressBar: false,
-                     closeOnClick: true,
-                     pauseOnHover: true,
-                     draggable: true,
-                     progress: undefined,
-                 });
-            }
-        }
-        else {
-            toast.warning(`Se aceptan como máximo ${maxFiles} archivos para esta entrega.`, {
-                position: "top-right",
-                autoClose: 3000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-            });
-        }
     }
 
     const goBack = e => {
@@ -430,15 +387,9 @@ export default function StudentRegistrationForm () {
                     <Button className="btn btn-primary" style={{width:"40%"}} onClick={insert} disabled={isSaved}>Enviar</Button>
                     <ToastContainer />
                 </div>           
-                <div className="col-sm-4 botons">
-                    <Button variant="primary" onClick={insertCoordinator} style={{"marginBottom":"4px"}}>Guardar</Button>
-                </div>
                 <div className="col-sm-2 subtitles">
                 </div>
-              
-                
                 <div className="row rows">
-                    
                 </div>
 
                 
@@ -500,7 +451,7 @@ export default function StudentRegistrationForm () {
                 </div>
                 
                 <div className="row rows uploadRegistration" >                            
-                    <FileManagement canUpload={canUpload} docs={studentDocs} maxFiles={2} titleUploadedFiles="Archivos subidos por el alumno"/>
+                    <FileManagement canUpload={canUpload} docs={studentDocs} maxFiles={4} titleUploadedFiles="Archivos subidos por el alumno"/>
                 </div>
            
                 <div className="row rows">
