@@ -37,11 +37,12 @@ const offsets =[-380,-160,-70,-30,0,20,32]
 
 
 function StudentNavbar (props){
-    const [progreso, setProgreso] = useState(2)
+    
     const transformText = "rotate(90deg) scaleY(.4) scaleX(" + (0.25 + 0.2*(dataNavbar.length-2)) + ") translateX(" + offsets[dataNavbar.length-2] + "px)" 
-    // const {user} = useAuth()
+    const {user} = useAuth()
+    const linkProgreso = "student-registration/" + user.idPersona
     // if(!user) return ""
-    //console.log(dataNavbar.length)
+    const [progreso, setProgreso] = useState(user.estadoProceso)
     return(
         
     <div className="studentNavBar">
@@ -65,7 +66,7 @@ function StudentNavbar (props){
             {dataNavbar.map((val,key)=>{
                 return (
                     <NavLink key = {key}
-                        to = {val.link}
+                        to = {(val.link === "/student-registration")? linkProgreso : val.link}
                         className = {`dataRow ${(progreso>key)? "active": ''} ${(window.location.pathname== val.link)? "current": ''}`}
                         >
                         <span className='icono'>
