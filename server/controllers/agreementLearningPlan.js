@@ -263,11 +263,11 @@ function selectDocumentsInfoByProcess(req, res){
     const fidAlumno = req.params.fidAlumno;
     const fidAsesor = req.params.fidAsesor;
     const sqlQuery = `  SELECT
-                            idEntregaConvenio, estadoFaci, estadoEspecialidad, observaciones
+                            estadoFaci, estadoEspecialidad, observaciones
                         FROM
                             EntregaConvenioYPlan
                         WHERE
-                            fidConvenioYPlan = (SELECT
+                            fidAlumnoProceso = (SELECT
                                                     idAlumnoProceso
                                                 FROM
                                                     AlumnoProceso
@@ -300,6 +300,58 @@ function selectDocumentsInfoByProcess(req, res){
     connection.end();
 }
 
+function selectDocumentsInfoByProcessOnlyStudent(req, res){
+    const connection = mysql.createConnection(MYSQL_CREDENTIALS);
+    //Se pedirá el idAlumno e idAsesor para poder obtener la info documentos asociados.
+    const fidAlumno = req.params.fidAlumno;
+    const sqlQuery = `  SELECT
+                            estadoFaci, estadoEspecialidad, observaciones
+                        FROM
+                            EntregaConvenioYPlan
+                        WHERE
+                            fidAlumnoProceso = (SELECT
+                                                    idAlumnoProceso
+                                                FROM
+                                                    AlumnoProceso
+                                                WHERE
+                                                    fidAlumno = ${fidAlumno}
+                                                    AND fidProceso = (  SELECT
+                                                                            idProceso
+                                                                        FROM
+                                                                            Proceso
+                                                                        WHERE
+                                                                            fidEspecialidad =(  SELECT
+                                                                                                    fidEspecialidad
+                                                                                                FROM
+                                                                                                    Persona
+                                                                                                WHERE
+                                                                                                    idPersona = ${fidAlumno})
+                                                                            AND activo = 1)
+                                                    AND estado = 'C');`;
+
+    connection.connect(err => {
+        if (err) throw err;
+    });
+
+    connection.query(sqlQuery, (err, result) => {
+        if (err) {
+            if(!idEntregaConvenio){
+                res.status(505).send({
+                    message: "No se ha enviado un idEntregaConvenio"
+                })
+            }else{
+                res.status(505).send({
+                    message: "Error inesperado en el servidor"
+                })
+            }
+            
+        } else{
+            res.status(200).send(result)
+        }
+    });
+
+    connection.end();
+}
 module.exports = {
     select,
     selectInfoByStudent,
@@ -308,5 +360,6 @@ module.exports = {
     insertDocumentByAgreement,
     updateInfoByStudent,
     updateDocumentByAgreement,
-    selectDocumentsInfoByProcess
+    selectDocumentsInfoByProcess,
+    selectDocumentsInfoByProcessOnlyStudent
 }
