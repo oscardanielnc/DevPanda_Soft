@@ -10,15 +10,32 @@ import jwtDecode from "jwt-decode";
 
 export const AuthContext = createContext();
 export default function AuthProvider({children}) {
-    const [userLoading, setUserLoading] = useState({
+    // const [userLoading, setUserLoading] = useState({
+    //     user: null,
+    //     isLoading: true
+    // }) 
+
+    // useEffect(()=>{
+    //     checkUserLogin(setUserLoading)
+    // }, [setUserLoading])
+    const accessToken = getAccessTokenApi();
+    let userLoading={
         user: null,
         isLoading: true
-    }) 
-
-    useEffect(()=>{
-        checkUserLogin(setUserLoading)
-    }, [setUserLoading])
-
+    }
+    if(accessToken) {
+        userLoading = {
+            user: jwtDecode(accessToken),
+            //user: accessToken,
+            isLoading: false
+        }
+    } else {
+        logout();
+        userLoading = {
+            user: null,
+            isLoading: false
+        }
+    }
     return (
         <AuthContext.Provider value={userLoading}>
             {children}

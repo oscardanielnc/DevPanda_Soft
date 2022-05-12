@@ -21,14 +21,20 @@
 }
 
 .registrationFiles{
+    margin-top: 1em !important;
     margin-top: 0px !important;
 }
 
-.uploadAgreement{
+.uploadRegistration{
+    margin-top: 1em !important;
     margin-top: 0px !important;
     
 }
 
+.uploadRegistrationObserved{
+    margin-top: 1em !important;
+    margin-top: 0px !important;
+}
 .Comments{
     border-style: solid !important;
     border-width: 2px !important;
@@ -40,6 +46,7 @@
     border: #a9a9a9 solid !important;
     border-radius: 6px;
     display: inline-grid;
+    margin-bottom: 2px !important;
     Button {
         margin-right: 1em !important;
     }

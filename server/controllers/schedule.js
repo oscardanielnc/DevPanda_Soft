@@ -74,7 +74,6 @@ function getSupervisorSchedule(req, res) {
                 return 0
             })
             for(let i=0; i<10; i++) {
-                console.log("dataOrdered[i*14]", dataOrdered[i*14])
                 const newDay = {
                     day: getDay(dataOrdered[i*14].fecha),
                     date: dataOrdered[i*14].fecha,
@@ -82,7 +81,6 @@ function getSupervisorSchedule(req, res) {
                 }
                 
                 for(let j=0; j<14; j++) {
-                    console.log(`dataOrdered[${i}*14+${j}]`, dataOrdered[i*14+j])
                     newDay.hours.push(dataOrdered[i*14 + j].estado)
                 }
                 data.push(newDay)
@@ -98,13 +96,6 @@ function getSupervisorsBySpecialty(req, res) {
     const connection = mysql.createConnection(MYSQL_CREDENTIALS);
 
     const {idSpecialty} = req.params;
-    const obj = {
-        id:1,
-        name: "Javier Palacios",
-        idfacultad:"informatica",
-        isSelected: true,
-        isMySupervisor: false
-    }
 
     const sqlQuery = `SELECT
 	                    P.nombres, P.apellidos, P.idPersona, E.nombreEsp
@@ -120,7 +111,7 @@ function getSupervisorsBySpecialty(req, res) {
         if (err) throw err;
     });
 
-    connection.query(sqlQuery, sqlObj, (err, result) => {
+    connection.query(sqlQuery, (err, result) => {
         if (err) {
             res.status(505).send({
                 message: "Error inesperado en el servidor"
@@ -134,7 +125,7 @@ function getSupervisorsBySpecialty(req, res) {
             const data =  result.map(e => {
                 return {
                     id:e.idPersona,
-                    name: e.nombres + e.apellidos,
+                    name: e.nombres + " " + e.apellidos,
                     idfacultad:e.nombreEsp,
                     isSelected: true,
                     isMySupervisor: false

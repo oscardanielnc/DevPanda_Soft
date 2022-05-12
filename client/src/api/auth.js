@@ -24,11 +24,10 @@ export function logout() {
 }
 
 export function signInApi (email) {
-    const url = `${BASE_PATH}/${API_VERSION}/sign-in`
+    const url = `${BASE_PATH}/${API_VERSION}/sign-in/${email}`
 
     const params = {
-        method: "POST",
-        body: JSON.stringify({email}),
+        method: "GET",
         headers: {
             'Content-type': 'application/json'
         }
@@ -42,10 +41,16 @@ export function signInApi (email) {
         })
         .then(result => {
             console.log("result", result)
-
-            return {
-                success: true,
-                accessToken: result.accessToken
+            if(result.accessToken) {
+                return {
+                    success: true,
+                    accessToken: result.accessToken
+                }
+            } else {
+                return {
+                    success: false,
+                    message: result.message
+                }
             }
         })
         .catch(err => {
