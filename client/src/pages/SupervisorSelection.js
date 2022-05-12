@@ -10,7 +10,7 @@ import Timetable from "../components/Timetable/Timetable";
 import { Button } from "react-bootstrap";
 import {searchAssessorsBySpecialty} from "../api/administratives"
 
-
+const idAlumno = 5
 export default function SupervisorSelection () {
     /*
     const [supervisores, setSupervisores] = useState( [
@@ -44,23 +44,18 @@ export default function SupervisorSelection () {
         }
     ])
 */
-const [alumno, setAlumno] = useState( [
-    {
-        idAlumno:1,
-        
-    }
-])
 
-const [supervisores, setSupervisores] = useState([]);
-useEffect(() => {
-    searchAssessorsBySpecialty(alumno).then(response => {
-        /*
-        if(response.success) {
-            setSupervisores(response.supervisores);
-        }*/
-        console.log('Respuesta:',response)
-    })
-}, [setSupervisores])
+    const [supervisores, setSupervisores] = useState([]);
+    const [idSupSelected, setIdSupSelected] = useState(1);
+    // useEffect(() => {
+    //     // searchAssessorsBySpecialty(idAlumno).then(response => {
+    //     //     /*
+    //     //     if(response.success) {
+    //     //         setSupervisores(response.supervisores);
+    //     //     }*/
+    //     //     console.log('Respuesta:',response)
+    //     // })
+    // }, [setSupervisores])
     const insert = async e => {
         /*
         e.preventDefault();
@@ -105,10 +100,10 @@ useEffect(() => {
                     </p>
                 </div>
                 <div className="row rows">     
-                        <SupervisorSelector supervisores={supervisores} setSupervisores={setSupervisores}/>
+                    <SupervisorSelector supervisores={supervisores} setSupervisores={setSupervisores} setIdSupSelected={setIdSupSelected}/>
                 </div>
                 <div className="row rows">
-                    <Timetable idSupervisor={10}/>
+                    <Timetable idSupervisor={9}/>
                 </div>
                 <div className="row rows boton">
                     <Button className="btn btn-primary" style={{width:"40%"}}>Agendar</Button>
