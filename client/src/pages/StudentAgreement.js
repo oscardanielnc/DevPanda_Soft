@@ -62,10 +62,10 @@ export default function StudentAgreement () {
     const typeDocumentState = (docuemntsState==="Sin entregar")? "fileEmpty": "success";
     let typeApprovalState = "";
 
-    if(data.estadoFaci === "o"){
+    if(data.estadoFaci === "o" || data.estadoEspecialidad === "o"){
         approvalState = "Observado"
     }
-    else if(data.estadoFaci === "a"){
+    else if(data.estadoFaci === "a" || data.estadoEspecialidad ==="a"  ){
         approvalState= "Aprobado"
     }
     else{
