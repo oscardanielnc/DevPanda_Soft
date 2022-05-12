@@ -1,5 +1,6 @@
 import React, {useState}  from "react";
 import { Button, Table,Form,InputGroup,FormControl } from 'react-bootstrap';
+import {emailValidation,numberValidation,maxLengthValidation} from "../../utils/formValidation"
 
 import './GeneralData.scss';
 
@@ -7,13 +8,45 @@ import './GeneralData.scss';
 export default function GeneralData ({data, setData, imStudent=true,isSaved}) {
     const {generalData} = data;
     const handleChange = (e) => {
-        setData({
-            ...data,
-            generalData: {
-                ...data.generalData,
-                [e.target.name]: e.target.value
+        if(e.target.name==="personalEmail"){
+            if(emailValidation(e.target)){
+                e.target.classList.add("success");
+            }else{
+                e.target.classList.add("error");
             }
-        })
+            setData({
+                ...data,
+                generalData: {
+                    ...data.generalData,
+                    [e.target.name]: e.target.value
+                }
+            })
+            
+        }else{
+            if(e.target.name==="cellphone"){
+                if(numberValidation(e.target) && e.target.value.length===9){
+                    e.target.classList.add("success");
+                } else {
+                    e.target.classList.add("error");
+                }
+                setData({
+                    ...data,
+                    generalData: {
+                        ...data.generalData,
+                        [e.target.name]: e.target.value
+                    }
+                })
+            }else{
+                setData({
+                    ...data,
+                    generalData: {
+                        ...data.generalData,
+                        [e.target.name]: e.target.value
+                    }
+                })
+            }
+        }
+        
     }
     const handleChangeOthers = (e) => {
         const newOthers = data.others.map(elem => {

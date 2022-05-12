@@ -14,6 +14,9 @@ import DocumentPlusIcon from "../components/DocumentPlusIcon/DocumentPlusIcon";
 import FileManagement from "../components/FileManagement/FileManagement";
 import useAuth from "../hooks/useAuth";
 import { getstudentInscriptionForm,registrationUpdateApiStudent,registrationUpdateApiStudentCamps } from "../api/registrationForm";
+import { getAllDocsApi } from "../api/files";
+import ShowFiles from "../components/FileManagement/ShowFiles";
+
 
 import './StudentRegistrationForm.scss';
 
@@ -92,39 +95,89 @@ const dataDummy = {
     ]
 
 }
+const arrayCadena = window.location.pathname.split("/");
+const idAlumno=parseInt(arrayCadena[2]);
 
 export default function StudentRegistrationForm () {
     const {user} = useAuth();
-    let idAlumno=1;
-    const [aux,setAux]=useState([]);
-    const [data, setData] = useState(dataDummy)
+    const [data, setData] = useState({});
+    const [docs, setDocs] = useState([]);
+    const [studentDocs, setStudentDocs] = useState([]);
+    console.log("El user tiene: ",user);
+    //console.log("En el StudentRegistrationForm", oscar);
+    console.log("En el StudentRegistrationForm:", data);
     //let typeUser=user.tipoPersona;
-    let typeUser="C";
+    let typeUser=user.tipoPersona;
+    if(typeUser==="p"){
+        typeUser=user.tipoPersonal;
+    }
+    console.log("El tipo de usuario es: ",typeUser);
     useEffect(()=> {
-        if(typeUser==="C"){
-            var arrayCadena = window.location.pathname.split("/");
-            idAlumno=parseInt(arrayCadena[2]);
-            console.log(idAlumno);
-        }else{
-            //idAlumno=user.idAlumno;
-        }
+        console.log("En el useeffect principal");
         getstudentInscriptionForm(idAlumno).then(response => {
+            const resData = response.infoFicha.infoFicha;
             if(response.success===true) {
-                setData(response.infoFicha.infoFicha);
+                console.log("En el success");
+                if(typeUser==="e"){
+                    console.log("Estos aqui aies", data)
+                    const newData = {
+                        idAlumno: resData.idAlumno,
+                        idAlumnoProceso: resData.idAlumnoProceso,
+                        idFicha: resData.idFicha,
+                        documentsState: resData.documentsState,
+                        approvalState: resData.approvalState,
+                        generalData: {
+                            name: user.nombres,
+                            lastname:user.apellidos,
+                            code:user.codigo,
+                            email:user.correo,
+                            cellphone: resData.generalData.cellphone,
+                            personalEmail: resData.generalData.personalEmail
+                        },
+                        aboutCompany: resData.aboutCompany,
+                        aboutJob:resData.aboutJob,
+                        aboutPSP: resData.aboutPSP,
+                        aboutBoss:resData.aboutBoss,
+                        calification:resData.calification,
+                        others: resData.others,
+                    }
+                    setData(newData)
+                } else
+                    setData(resData);
             }
         })
+        
     }, [setData])
+    useEffect(() => {
+        getAllDocsApi("1-1-CONV", 0).then(response => {
+            if(response.success) {
+                setDocs(response.docs)
+            }
+        })
+    },[setDocs])
+
+    useEffect(() => {
+        getAllDocsApi(`1-1-CONV-${idAlumno}`, 1).then(response => {
+            if(response.success) {
+                setStudentDocs(response.docs)
+            }
+        })
+    },[setStudentDocs])
+    if(!data.generalData) return null
     
-    let result=true;
+    console.log(data);
+    console.log("Luego de hacer el new data: ",data);
+
+
     const insert = async e => {
-        //hacer una diferencia primero si es alumno o cordinador
-        //en el caso del alumno por el estado de approvalState ver si es un Insertar o un Modificar
-        //en el caso del coordinador ver si con el idAlumno hay alguna ficha y depende de eso Insertar o modificar 
         e.preventDefault();
-        let response=null;
-        data.documentsState="Entregado";
-        data.approvalState="Sin calificar";
-        response = await registrationUpdateApiStudentCamps(data);
+        const newData = {
+            ...data,
+            documentsState: "Entregado",
+            approvalState: "Sin calificar"
+        }
+        console.log("antes de enviar: ",data);
+        const response = await registrationUpdateApiStudentCamps(newData);
         if(!response.success){
             toast.error(response.msg, {
                 position: "top-right",
@@ -135,6 +188,7 @@ export default function StudentRegistrationForm () {
                 draggable: true,
                 progress: undefined,
             });
+            console.log(response.msg);
             setData({
                 ...data,
                 idAlumno: data.idAlumno,
@@ -160,34 +214,27 @@ export default function StudentRegistrationForm () {
                 draggable: true,
                 progress: undefined,
             });
+            setData(newData);
+            console.log(response.msg);
         }
-        setData({
-            ...data,
-            idAlumno: data.idAlumno,
-            idAlumnoProceso: data.idAlumnoProceso,
-            idFicha: data.idFicha,
-            documentsState: data.documentsState,
-            approvalState: data.approvalState,
-            generalData: data.generalData,
-            aboutCompany: data.aboutCompany,
-            aboutJob:data.aboutJob,
-            aboutPSP: data.aboutPSP,
-            aboutBoss:data.aboutBoss,
-            calification:data.calification,
-            others: data.others,
-        })
     }
     let isSaved=null;
-    let savedCoordinator=null;
-    if(typeUser==="A"){
+    let canUpload=null;
+    if(typeUser==="e"){
         isSaved=((data.documentsState==="Sin entregar")||
         (data.documentsState==="Entregado"&&data.approvalState==="Observado"))? false: true;
+        if(isSaved===false){
+            canUpload=true;
+        }else{
+            canUpload=false;
+        }
     }else{
         isSaved=true;
+        canUpload=false;
     }
 
     const typeDocumentState = (data.documentsState==="Sin entregar")? "fileEmpty": "success";
-    const imStudent=(typeUser==="C")?true:false;
+    const imStudent=(typeUser==="E")?true:false;
     let typeApprovalState = "";
     switch(data.approvalState) {
         case "Observado": typeApprovalState = "warning"; break;
@@ -245,7 +292,7 @@ export default function StudentRegistrationForm () {
      }
 
     return (
-        <LayoutBasic>
+        data.calification && <LayoutBasic>
             <div className="container principal" style={{"padding":"1px"}}>
                 <div className="row rows" style={{textAlign: "left"}}>
                     <h1>Ficha de Inscripción</h1>
@@ -254,6 +301,10 @@ export default function StudentRegistrationForm () {
                     <p>
                     Aquí deberá de rellenar la información solicitada más abajo para poder continuar con el proceso. Una vez que la complete, esta será revisada para su aprobación.
                     </p>
+                    <p>
+                    A continuación se presenta la rúbrica para la ficha de inscripción:
+                    </p>
+                    <ShowFiles docs={docs} />
                 </div>
                 <div className="row rows">
                     <StateViewer states={[
@@ -289,27 +340,27 @@ export default function StudentRegistrationForm () {
                                     onChange={changeComments}
                                     value={data.calification.comments}
                                     name="comments"
-                                    disabled={typeUser==="A"? true: false}
+                                    disabled={typeUser==="e"? true: false}
                                     style={{"marginBottom":"10px !important"}}
                                     as="textarea"
                                     rows={6}/>
                         </div> 
                     </div>
                 </div>
-                <div className="row rows registrationFiles">
-                    <div className="row rows uploadAgreement" >                
-                        <FileManagement/>
-                    </div>
+                
+                <div className="row rows uploadRegistration" >                            
+                    <FileManagement canUpload={canUpload} docs={studentDocs} maxFiles={2} titleUploadedFiles="Archivos subidos por el alumno"/>
                 </div>
-                {typeUser==="A"? <div className="row rows BotonAlumno">
+                {typeUser==="e"? <div className="row rows BotonAlumno">
                     <Button className="btn btn-primary" style={{width:"40%"}} onClick={insert} disabled={isSaved}>Enviar</Button>
                     <ToastContainer />
-                </div>:<div></div>}                 
-                {typeUser === "C" ? <div className="row rows">
+                </div>:<div></div>}
+                                
+                {typeUser === "E" ? <div className="row rows">
                     <CalificationFormStudent data={data} setData={setData} notgrabado={false}/>
                 </div> : <div></div>}
 
-                {typeUser === "C" ? <div className="row rows" >
+                {typeUser === "E" ? <div className="row rows" >
                 <div className="col-sm-2 subtitles">
                 </div>
                 <div className="col-sm-4 botons">
