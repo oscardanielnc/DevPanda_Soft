@@ -6,8 +6,7 @@ import "./AgreementReview.scss";
 import FileManagement from "../components/FileManagement/FileManagement";
 import { getDeliverableStudent } from "../api/deliverables";
 import useAuth from "../hooks/useAuth";
-import { getAllDocsApi } from "../api/files";
-
+import { getAllDocsApi, uploadDocsApi } from "../api/files";
 
 // const dataDummy={
 //     "idAlumno": 1,
@@ -77,6 +76,13 @@ export default function Deliverables(){
         })
     },[setStudentDocs])
 
+    const deliver = async() => {
+        if(fileList.length === maxFiles) {
+            const response = await uploadDocsApi(fileList, `1-${user.fidEspecialidad}-DELIV-${user.idPersona}`, 1);
+            // if(response.success) {
+        }
+    }
+
     console.log("data", data)
     if(data.deliverableResponse) {
         console.log("---->", data.deliverableResponse)
@@ -136,7 +142,7 @@ export default function Deliverables(){
                 </div>
                 <div className="row botonCancelar" style={{marginLeft:"10px",marginTop:"10px",marginBottom:"30px"}}>                    
                     <Button  className="btn btn-sec" style={{width:"20%",marginRight:"50px"}} >Regresar</Button>                   
-                    <Button  className="btn btn-pri" style={{width:"20%",marginLeft:"50px"}}>Guardar</Button>                  
+                    <Button  className="btn btn-pri" style={{width:"20%",marginLeft:"50px"}} onClick={deliver}>Guardar</Button>                  
                 </div>
             </div>
         </LayoutBasic>
