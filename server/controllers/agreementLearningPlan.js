@@ -263,11 +263,11 @@ function selectDocumentsInfoByProcess(req, res){
     const fidAlumno = req.params.fidAlumno;
     const fidAsesor = req.params.fidAsesor;
     const sqlQuery = `  SELECT
-                            idEntregaConvenio, estadoFaci, estadoEspecialidad, observaciones
+                            estadoFaci, estadoEspecialidad, observaciones
                         FROM
                             EntregaConvenioYPlan
                         WHERE
-                            fidConvenioYPlan = (SELECT
+                            fidAlumnoProceso = (SELECT
                                                     idAlumnoProceso
                                                 FROM
                                                     AlumnoProceso
