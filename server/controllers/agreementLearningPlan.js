@@ -260,8 +260,8 @@ function updateDocumentByAgreement(req, res){
 function selectDocumentsInfoByProcess(req, res){
     const connection = mysql.createConnection(MYSQL_CREDENTIALS);
     //Se pedirá el idAlumno e idAsesor para poder obtener la info documentos asociados.
-    const fidAlumno = req.body.fidAlumno;
-    const fidAsesor = req.body.fidAsesor;
+    const fidAlumno = req.params.fidAlumno;
+    const fidAsesor = req.params.fidAsesor;
     const sqlQuery = `  SELECT
                             idEntregaConvenio, estadoFaci, estadoEspecialidad, observaciones
                         FROM

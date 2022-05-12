@@ -74,7 +74,6 @@ function getSupervisorSchedule(req, res) {
                 return 0
             })
             for(let i=0; i<10; i++) {
-                console.log("dataOrdered[i*14]", dataOrdered[i*14])
                 const newDay = {
                     day: getDay(dataOrdered[i*14].fecha),
                     date: dataOrdered[i*14].fecha,
@@ -82,7 +81,6 @@ function getSupervisorSchedule(req, res) {
                 }
                 
                 for(let j=0; j<14; j++) {
-                    console.log(`dataOrdered[${i}*14+${j}]`, dataOrdered[i*14+j])
                     newDay.hours.push(dataOrdered[i*14 + j].estado)
                 }
                 data.push(newDay)
@@ -98,15 +96,45 @@ function getSupervisorsBySpecialty(req, res) {
     const connection = mysql.createConnection(MYSQL_CREDENTIALS);
 
     const {idSpecialty} = req.params;
-    const obj = {
-        id:1,
-        name: "Javier Palacios",
-        idfacultad:"informatica",
-        isSelected: true,
-        isMySupervisor: false
-    }
 
-    res.send("Aqui debemos conseguir la lista de supervisores de esta especialidad, devolviendo un array de obj")
+    const sqlQuery = `SELECT
+	                    P.nombres, P.apellidos, P.idPersona, E.nombreEsp
+                    FROM
+	                     Persona AS P INNER JOIN PersonalAdministrativo as PA on P.idPersona = PA.idPersonal, Especialidad as E
+                    WHERE
+                        PA.tipoPersonal = 'S'
+                        AND P.fidEspecialidad = ${idSpecialty}
+                        AND P.activo = 1
+                        AND E.idEspecialidad = ${idSpecialty};`;
+
+    connection.connect(err => {
+        if (err) throw err;
+    });
+
+    connection.query(sqlQuery, (err, result) => {
+        if (err) {
+            res.status(505).send({
+                message: "Error inesperado en el servidor"
+            })
+        }
+        else if(result.length === 0) {
+            res.status(404).send({
+                message: "No se han encontrado supervisores para esta especialidad"
+            })
+        } else {
+            const data =  result.map(e => {
+                return {
+                    id:e.idPersona,
+                    name: e.nombres + " " + e.apellidos,
+                    idfacultad:e.nombreEsp,
+                    isSelected: true,
+                    isMySupervisor: false
+                }
+            });
+            
+            res.status(200).send(data)
+        }
+    });
 }
 function getDay(date) {
     const auxArr = date.split('-');
