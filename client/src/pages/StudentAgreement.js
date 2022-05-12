@@ -58,7 +58,7 @@ export default function StudentAgreement () {
     console.log("convenio",convenio)
     const typeDocumentState = (docuemntsState==="Sin entregar")? "fileEmpty": "success";
     let typeApprovalState = "";
-    approvalState = (docState[0].estad=== "p")? "Sin entrega" : "warning"
+    //approvalState = (docState[0].estad=== "p")? "Sin entrega" : "warning"
     switch(approvalState) {
         case "Observado": typeApprovalState = "warning"; break;
         case "Sin entrega": typeApprovalState = "pending"; break;
