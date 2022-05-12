@@ -106,7 +106,44 @@ function getSupervisorsBySpecialty(req, res) {
         isMySupervisor: false
     }
 
-    res.send("Aqui debemos conseguir la lista de supervisores de esta especialidad, devolviendo un array de obj")
+    const sqlQuery = `SELECT
+	                    P.nombres, P.apellidos, P.idPersona, E.nombreEsp
+                    FROM
+	                     Persona AS P INNER JOIN PersonalAdministrativo as PA on P.idPersona = PA.idPersonal, Especialidad as E
+                    WHERE
+                        PA.tipoPersonal = 'S'
+                        AND P.fidEspecialidad = ${idSpecialty}
+                        AND P.activo = 1
+                        AND E.idEspecialidad = ${idSpecialty};`;
+
+    connection.connect(err => {
+        if (err) throw err;
+    });
+
+    connection.query(sqlQuery, sqlObj, (err, result) => {
+        if (err) {
+            res.status(505).send({
+                message: "Error inesperado en el servidor"
+            })
+        }
+        else if(result.length === 0) {
+            res.status(404).send({
+                message: "No se han encontrado supervisores para esta especialidad"
+            })
+        } else {
+            const data =  result.map(e => {
+                return {
+                    id:e.idPersona,
+                    name: e.nombres + e.apellidos,
+                    idfacultad:e.nombreEsp,
+                    isSelected: true,
+                    isMySupervisor: false
+                }
+            });
+            
+            res.status(200).send(data)
+        }
+    });
 }
 function getDay(date) {
     const auxArr = date.split('-');

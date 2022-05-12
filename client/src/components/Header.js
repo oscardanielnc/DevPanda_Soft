@@ -5,10 +5,24 @@ import LogoUsuario from "../asserts/img/png/usuarioImagen.PNG";
 import useAuth from "../hooks/useAuth";
 import './Header.scss';
 
-export default function Header (props) {
+export default function Header () {
     const {user} = useAuth()
-    //console.log("user", user)
-    return (
+    if(!user) {
+        window.location.href = "/sign-in"
+    }
+    let typeUser = "";
+    if(user.tipoPersona === 'e') typeUser="Estudiante"
+    else {
+        switch (user.tipoPersonal) {
+            case 'S': typeUser="Supervisor"; break;
+            case 'E': typeUser="Coordinador Especialidad"; break;
+            case 'F': typeUser="Coordinador de FACI"; break;
+            case 'A': typeUser="Administrador"; break;
+            default: typeUser="Secretaria"; break;
+        }
+    }
+    const fullName = `${user.nombres.split(' ')[0]}  ${user.apellidos.split(' ')[0]}`
+    return ( user &&
         <div className="header">
                 <div className="header__left">
                     <div className="header__lefttitulo">
@@ -20,11 +34,10 @@ export default function Header (props) {
                 <div className="header__right">
                     <div className="header__rightnombreUsuario">
                         <div>
-                            {/* Coordinador:<br/> */}
-                            {user? user.correo: "Coordinador:"}<br/>
+                            {typeUser}: <br/>
                         </div>
                         <div>
-                            {user? user.nombres: "Carlos Alberto:"}<br/>
+                            <strong>{fullName}<br/></strong>
                         </div>
                     </div>
                     <div className="header__rightusuarioImagen">

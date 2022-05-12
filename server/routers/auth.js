@@ -3,6 +3,6 @@ const AuthController = require("../controllers/auth");
 
 const api = express.Router();
 
-api.post("/sign-in", AuthController.singIn);
+api.get("/sign-in/:email", AuthController.singIn);
 
 module.exports = api;
