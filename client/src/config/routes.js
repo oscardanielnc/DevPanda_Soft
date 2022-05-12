@@ -28,7 +28,12 @@ const routes = [
         component: AddSpecialty,
     },
     {
-        path: "/student-registration/*",
+        path: "/student-registration/:idAlumno",
+        exact: true,
+        component: StudentRegistrationForm,
+    },
+    {
+        path: "/student-registration-review/:idAlumno",
         exact: true,
         component: StudentRegistrationForm,
     },
@@ -72,7 +77,6 @@ const routes = [
         exact: true,
         component: Deliverables,
     },
-
     {
         path: "*",
         component: Error404,

@@ -1,10 +1,7 @@
 import {API_VERSION, BASE_PATH, PANDA_KEY} from './config';
 
-export function getAgreement(fidAlumno,fidAsesor){
-
-    const url = `${BASE_PATH}/${API_VERSION}/agreementLearningPlan-selectDocumentsInfoByProcess/${fidAlumno}/${fidAsesor}`;
-    //http://localhost:3977/api/v1/agreementLearningPlan-selectDocumentsInfoByProcess/:fidAlumno/:fidAsesor
-
+export function getDeliverableStudent(idAlumno,idEntregable) {
+    const url = `${BASE_PATH}/${API_VERSION}/deliverableStudent/${idEntregable}/${idAlumno}`;
     const params = {
         method: "GET",
         headers: {
@@ -17,9 +14,9 @@ export function getAgreement(fidAlumno,fidAsesor){
         .then(response => {
             return response.json()
         })
-        .then(agreement => {
+        .then(data => {
             return {
-                agreement,
+                data,
                 success: true
             }
         })
@@ -28,6 +25,5 @@ export function getAgreement(fidAlumno,fidAsesor){
                 errMsg,
                 success: false
             }
-        })
-
+    })
 }
