@@ -23,14 +23,6 @@ export default function CalificationFormStudent ({data, setData, notgrabado}) {
         })
     }
 
-    const changeStateDisapproved = e => {
-        disapproved=!disapproved;
-        setData({
-            ...data,
-            approvalState: "Desaprobado",
-        })
-    }
-
     const changeStateUnrated = e => {
         unrated=!unrated;
         setData({
@@ -71,16 +63,6 @@ export default function CalificationFormStudent ({data, setData, notgrabado}) {
                             id={`inline-radio-1`}
                             checked={pass}
                             onChange={changeStatePassed}
-                        />
-                        <Form.Check
-                            inline
-                            label="Desaprobado"
-                            name="Desaprobado"
-                            type="radio"
-                            id={`inline-radio-2`}
-                            disabled={notgrabado}
-                            checked={disapproved}
-                            onChange={changeStateDisapproved}
                         />
                         <Form.Check
                             inline

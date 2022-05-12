@@ -15,9 +15,8 @@ import DocumentPlusIcon from "../components/DocumentPlusIcon/DocumentPlusIcon";
 import FileManagement from "../components/FileManagement/FileManagement";
 import useAuth from "../hooks/useAuth";
 import { getstudentInscriptionForm,registrationUpdateApiStudent,registrationUpdateApiStudentCamps } from "../api/registrationForm";
-import { getAllDocsApi } from "../api/files";
+import { getAllDocsApi,uploadDocsApi } from "../api/files";
 import ShowFiles from "../components/FileManagement/ShowFiles";
-
 
 import './StudentRegistrationForm.scss';
 
@@ -26,101 +25,100 @@ const documents={
 
 }
 
-const dataDummy = {
-    "idAlumno": 1,
-    "idAlumnoProceso": 1,
-    "idFicha": 9,
-    "documentsState": "Sin entregar",
-    "approvalState": "Desaprobado",
-    "generalData": {
-        "name": "Oscar Daniel",
-        "lastname": "Navarro Cieza",
-        "code": "20186008",
-        "email": "oscar.navarro@pucp.edu.pe",
-        "cellphone": 929178606,
-        "personalEmail": "oscar@prueba.com",
-    },
-    "aboutCompany": {
-        "isNational": true,
-        "ruc": "1234567890",
-        "info": "Este es un texto largo de prueba",
-        "foreignName": "",
-        "foreignCountry":"",
-        "foreingLineBusiness":""
-    },
-    "aboutJob": {
-        "areaName": "TI",
-        "jobTitle": "Analista de información",
-        "activities": "Recopilar información de las base de datos y generar reportes"
-    },
-    "aboutPSP": {
-        "dateStart":"",
-        "dateEnd":"",
-        "dailyHours": 6,
-        "weekHours": 30
-    },
-    "aboutBoss": {
-        "name":"Hugo Carlos",
-        "area":"TI",
-        "email":"hugoCar1548@gmail.com",
-        "cellphone":"9856875564"
-    },
-    "calification": {
-        "comments":"Buen trabajo"
-    },
-    "others": [
-        {
-            "idCampoProceso":28,
-            "idCampoLlenado":7,
-            "nombreCampo":"Pais",
-            "seccion": "Sobre la PSP",
-            "flag": "obligatorio",
-            "valorAlumno": 'AA'
-        },
-        {
-            "idCampoProceso":29,
-            "idCampoLlenado":9,
-            "nombreCampo": "Giro",
-            "seccion": "Sobre el jefe",
-            "flag": "opcional",
-            "valorAlumno": "Electrodomésticos"
-        },
-        {
-            "idCampoProceso":30,
-            "idCampoLlenado":10,
-            "nombreCampo": "nuevodato",
-            "seccion": "Sobre el jefe",
-            "flag": "opcional",
-            "valorAlumno": "xxxxx"
-        }
-    ]
+// const dataDummy = {
+//     "idAlumno": 1,
+//     "idAlumnoProceso": 1,
+//     "idFicha": 9,
+//     "documentsState": "Sin entregar",
+//     "approvalState": "Desaprobado",
+//     "generalData": {
+//         "name": "Oscar Daniel",
+//         "lastname": "Navarro Cieza",
+//         "code": "20186008",
+//         "email": "oscar.navarro@pucp.edu.pe",
+//         "cellphone": 929178606,
+//         "personalEmail": "oscar@prueba.com",
+//     },
+//     "aboutCompany": {
+//         "isNational": true,
+//         "ruc": "1234567890",
+//         "info": "Este es un texto largo de prueba",
+//         "foreignName": "",
+//         "foreignCountry":"",
+//         "foreingLineBusiness":""
+//     },
+//     "aboutJob": {
+//         "areaName": "TI",
+//         "jobTitle": "Analista de información",
+//         "activities": "Recopilar información de las base de datos y generar reportes"
+//     },
+//     "aboutPSP": {
+//         "dateStart":"",
+//         "dateEnd":"",
+//         "dailyHours": 6,
+//         "weekHours": 30
+//     },
+//     "aboutBoss": {
+//         "name":"Hugo Carlos",
+//         "area":"TI",
+//         "email":"hugoCar1548@gmail.com",
+//         "cellphone":"9856875564"
+//     },
+//     "calification": {
+//         "comments":"Buen trabajo"
+//     },
+//     "others": [
+//         {
+//             "idCampoProceso":28,
+//             "idCampoLlenado":7,
+//             "nombreCampo":"Pais",
+//             "seccion": "Sobre la PSP",
+//             "flag": "obligatorio",
+//             "valorAlumno": 'AA'
+//         },
+//         {
+//             "idCampoProceso":29,
+//             "idCampoLlenado":9,
+//             "nombreCampo": "Giro",
+//             "seccion": "Sobre el jefe",
+//             "flag": "opcional",
+//             "valorAlumno": "Electrodomésticos"
+//         },
+//         {
+//             "idCampoProceso":30,
+//             "idCampoLlenado":10,
+//             "nombreCampo": "nuevodato",
+//             "seccion": "Sobre el jefe",
+//             "flag": "opcional",
+//             "valorAlumno": "xxxxx"
+//         }
+//     ]
 
-}
+// }
 const arrayCadena = window.location.pathname.split("/");
 const idAlumno=parseInt(arrayCadena[2]);
+const maxFiles = 4;
 
 export default function StudentRegistrationForm () {
     const {user} = useAuth();
     const [data, setData] = useState({});
+    const [fileList, setFileList] = useState([])
     const [docs, setDocs] = useState([]);
     const [studentDocs, setStudentDocs] = useState([]);
-    console.log("El user tiene: ",user);
-    //console.log("En el StudentRegistrationForm", oscar);
-    console.log("En el StudentRegistrationForm:", data);
-    //let typeUser=user.tipoPersona;
     let typeUser=user.tipoPersona;
     if(typeUser==="p"){
         typeUser=user.tipoPersonal;
     }
-    console.log("El tipo de usuario es: ",typeUser);
+    console.log("El arrayCadena es: ",window.location.pathname);
+    //debugger
+    if(isNaN(idAlumno)) window.location.reload();
+
+    console.log("El idAlumno es: ",idAlumno);
     useEffect(()=> {
-        console.log("En el useeffect principal");
         getstudentInscriptionForm(idAlumno).then(response => {
             const resData = response.infoFicha.infoFicha;
             if(response.success===true) {
-                console.log("En el success");
                 if(typeUser==="e"){
-                    console.log("Estos aqui aies", data)
                     const newData = {
                         idAlumno: resData.idAlumno,
                         idAlumnoProceso: resData.idAlumnoProceso,
@@ -149,27 +147,51 @@ export default function StudentRegistrationForm () {
         })
         
     }, [setData])
+    //sacamos los documentos subidos por el encargado
     useEffect(() => {
-        getAllDocsApi("1-1-CONV", 0).then(response => {
+        getAllDocsApi(`1-${user.fidEspecialidad}-RFOR`, 0).then(response => {
             if(response.success) {
                 setDocs(response.docs)
             }
         })
     },[setDocs])
-
+    //sacamos los documentos subidor por el alumno
     useEffect(() => {
-        getAllDocsApi(`1-1-CONV-${idAlumno}`, 1).then(response => {
+        getAllDocsApi(`1-${user.fidEspecialidad}-RFOR-${idAlumno}`, 1).then(response => {
             if(response.success) {
                 setStudentDocs(response.docs)
             }
         })
     },[setStudentDocs])
     if(!data.generalData) return null
-    
-    console.log(data);
-    console.log("Luego de hacer el new data: ",data);
 
-
+    const deliver = async () => {
+        if(fileList.length <= maxFiles) {
+            const response = await uploadDocsApi(fileList, `1-${user.fidEspecialidad}-RFOR-${idAlumno}`, 1);
+            if(response.success) {
+                toast.success(response.msg, {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
+                window.location.reload();
+           } else {
+               toast.error(response.msg, {
+                   position: "top-right",
+                  autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
+           }
+        }
+    }
     const insert = async e => {
         e.preventDefault();
         const newData = {
@@ -177,7 +199,6 @@ export default function StudentRegistrationForm () {
             documentsState: "Entregado",
             approvalState: "Sin calificar"
         }
-        console.log("antes de enviar: ",data);
         const response = await registrationUpdateApiStudentCamps(newData);
         if(!response.success){
             toast.error(response.msg, {
@@ -189,7 +210,6 @@ export default function StudentRegistrationForm () {
                 draggable: true,
                 progress: undefined,
             });
-            console.log(response.msg);
             setData({
                 ...data,
                 idAlumno: data.idAlumno,
@@ -215,8 +235,8 @@ export default function StudentRegistrationForm () {
                 draggable: true,
                 progress: undefined,
             });
+            deliver();
             setData(newData);
-            console.log(response.msg);
         }
     }
     let isSaved=null;
@@ -224,18 +244,13 @@ export default function StudentRegistrationForm () {
     if(typeUser==="e"){
         isSaved=((data.documentsState==="Sin entregar")||
         (data.documentsState==="Entregado"&&data.approvalState==="Observado"))? false: true;
-        if(isSaved===false){
-            canUpload=true;
-        }else{
-            canUpload=false;
-        }
+        canUpload=isSaved===false?true:false;
     }else{
         isSaved=true;
-        canUpload=false;
+        canUpload=true;
     }
-
+    console.log("La data es: ",data);
     const typeDocumentState = (data.documentsState==="Sin entregar")? "fileEmpty": "success";
-    const imStudent=(typeUser==="E")?true:false;
     let typeApprovalState = "";
     switch(data.approvalState) {
         case "Observado": typeApprovalState = "warning"; break;
@@ -244,8 +259,8 @@ export default function StudentRegistrationForm () {
         case "Aprobado": typeApprovalState = "success"; break;
         default: typeApprovalState = "error"; break;
     }
-
-
+    console.log("El typeDocumentState es: ",typeDocumentState);
+    console.log("El typeApprovalState es: ",typeApprovalState);
     const changeComments = e => {
         setData({
             ...data,
@@ -257,9 +272,6 @@ export default function StudentRegistrationForm () {
     }
 
     const insertCoordinator = async e => {
-        //hacer una diferencia primero si es alumno o cordinador
-        //en el caso del alumno por el estado de approvalState ver si es un Insertar o un Modificar
-        //en el caso del coordinador ver si con el idAlumno hay alguna ficha y depende de eso Insertar o modificar 
         e.preventDefault();
         let response=null;
         
@@ -284,13 +296,14 @@ export default function StudentRegistrationForm () {
                 draggable: true,
                 progress: undefined,
             });
+            deliver();
             isSaved=true;
         } 
     }
 
     const goBack = e => {
         window.history.back();
-     }
+    }
 
     return (
         data.calification && typeUser==="e"? <LayoutBasic>
@@ -348,26 +361,18 @@ export default function StudentRegistrationForm () {
                         </div> 
                     </div>
                 </div>
-                
                 <div className="row rows uploadRegistration" >                            
-                    <FileManagement canUpload={canUpload} docs={studentDocs} maxFiles={2} titleUploadedFiles="Archivos subidos por el alumno"/>
+                    <FileManagement canUpload={canUpload} docs={studentDocs} maxFiles={4} fileList={fileList} setFileList={setFileList} titleUploadedFiles="Archivos subidos por el alumno"/>
                 </div>
                 <div className="row rows BotonAlumno">
                     <Button className="btn btn-primary" style={{width:"40%"}} onClick={insert} disabled={isSaved}>Enviar</Button>
                     <ToastContainer />
                 </div>           
-                <div className="col-sm-4 botons">
-                    <Button variant="primary" onClick={insertCoordinator} style={{"marginBottom":"4px"}}>Guardar</Button>
-                </div>
                 <div className="col-sm-2 subtitles">
                 </div>
-              
-                
                 <div className="row rows">
                     
-                </div>
-
-                
+                </div>  
             </div>
         </LayoutBasic>: <LayoutCoord>
             <div className="container principal" style={{"padding":"1px"}}>
@@ -424,15 +429,12 @@ export default function StudentRegistrationForm () {
                         </div> 
                     </div>
                 </div>
-                
                 <div className="row rows uploadRegistration" >                            
-                    <FileManagement canUpload={canUpload} docs={studentDocs} maxFiles={2} titleUploadedFiles="Archivos subidos por el alumno"/>
+                    <FileManagement canUpload={canUpload} docs={studentDocs} maxFiles={4} setFileList={setFileList} titleUploadedFiles="Archivos subidos por el alumno"/>
                 </div>
-           
                 <div className="row rows">
                     <CalificationFormStudent data={data} setData={setData} notgrabado={false}/>
                 </div> 
-
                 <div className="row rows" >
                 <div className="col-sm-2 subtitles">
                 </div>
@@ -445,12 +447,9 @@ export default function StudentRegistrationForm () {
                 <div className="col-sm-2 subtitles">
                 </div>
                 </div> 
-                
                 <div className="row rows">
                     
                 </div>
-
-                
             </div>
         </LayoutCoord>
     )
