@@ -1,6 +1,6 @@
 import React, {useState}  from "react";
 import { Button, Table,Form,InputGroup,FormControl } from 'react-bootstrap';
-
+import {numberValidation} from "../../utils/formValidation";
 import './DirectBoss.scss';
 
 
@@ -8,13 +8,25 @@ export default function DirectBoss ({data, setData, notgrabado}) {
     const {aboutBoss} = data;
 
     const handleChange = (e) => {
-        setData({
-            ...data,
-            aboutBoss: {
-                ...data.aboutBoss,
-                [e.target.name]: e.target.value
+        if(e.target.name==="cellphone"){
+            if(numberValidation(e.target)){
+                setData({
+                    ...data,
+                    aboutBoss: {
+                        ...data.aboutBoss,
+                        [e.target.name]: e.target.value
+                    }
+                })
             }
-        })
+        }else{
+            setData({
+                ...data,
+                aboutBoss: {
+                    ...data.aboutBoss,
+                    [e.target.name]: e.target.value
+                }
+            })
+        }
     }
 
     const handleChangeOthers = (e) => {
