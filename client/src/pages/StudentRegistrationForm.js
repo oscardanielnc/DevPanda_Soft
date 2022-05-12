@@ -98,6 +98,7 @@ const documents={
 const arrayCadena = window.location.pathname.split("/");
 const idAlumno=parseInt(arrayCadena[2]);
 const maxFiles = 4;
+
 export default function StudentRegistrationForm () {
     const {user} = useAuth();
     const [data, setData] = useState({});
@@ -108,6 +109,11 @@ export default function StudentRegistrationForm () {
     if(typeUser==="p"){
         typeUser=user.tipoPersonal;
     }
+    console.log("El arrayCadena es: ",window.location.pathname);
+    //debugger
+    if(isNaN(idAlumno)) window.location.reload();
+
+    console.log("El idAlumno es: ",idAlumno);
     useEffect(()=> {
         getstudentInscriptionForm(idAlumno).then(response => {
             const resData = response.infoFicha.infoFicha;
@@ -157,7 +163,6 @@ export default function StudentRegistrationForm () {
             }
         })
     },[setStudentDocs])
-    //no sé si por esta línea al inicio no muestra nada :C
     if(!data.generalData) return null
 
     const deliver = async () => {
@@ -173,7 +178,7 @@ export default function StudentRegistrationForm () {
                     draggable: true,
                     progress: undefined,
                 });
-                // window.location.reload();
+                window.location.reload();
            } else {
                toast.error(response.msg, {
                    position: "top-right",
