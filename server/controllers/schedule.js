@@ -96,13 +96,6 @@ function getSupervisorsBySpecialty(req, res) {
     const connection = mysql.createConnection(MYSQL_CREDENTIALS);
 
     const {idSpecialty} = req.params;
-    const obj = {
-        id:1,
-        name: "Javier Palacios",
-        idfacultad:"informatica",
-        isSelected: true,
-        isMySupervisor: false
-    }
 
     const sqlQuery = `SELECT
 	                    P.nombres, P.apellidos, P.idPersona, E.nombreEsp
@@ -118,7 +111,7 @@ function getSupervisorsBySpecialty(req, res) {
         if (err) throw err;
     });
 
-    connection.query(sqlQuery, sqlObj, (err, result) => {
+    connection.query(sqlQuery, (err, result) => {
         if (err) {
             res.status(505).send({
                 message: "Error inesperado en el servidor"
@@ -132,7 +125,7 @@ function getSupervisorsBySpecialty(req, res) {
             const data =  result.map(e => {
                 return {
                     id:e.idPersona,
-                    name: e.nombres + e.apellidos,
+                    name: e.nombres + " " + e.apellidos,
                     idfacultad:e.nombreEsp,
                     isSelected: true,
                     isMySupervisor: false

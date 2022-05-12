@@ -7,39 +7,56 @@ import "./AgreementReview.scss";
 import FileManagement from "../components/FileManagement/FileManagement";
 import ShowFiles from "../components/FileManagement/ShowFiles";
 import { getAllDocsApi } from "../api/files";
+import { getAgreement} from "../api/agreementRev";
 
 //TO DO
 //1) Realizar el select
 //2) Realizar los updates de faci y de especialidad
 
+/*PENDIENTE */
 const idAlumno = 1;
-//const idCoordinador ="";
+const idCoordinador = 10;
 const tipoPersonal = "F"; //F = FACI, E = Especialidad // NO
-//const idEntregaConvenio= 1; // NO
-const dataDummy = {
-    "entregaConvenioyPlan":{        
-        "faciState" : "Aprobado", // consumir API GET (A = "Aprobado", P = "Pendiente" de revisión, O ="Observado")
-        "espState" : "Observado",    // consumir API GET  (A = Aprobado, P = Pendiente de revisión, O = Observado)
-        "observations" : "Bien hecho crack"        
-    }
+
+
+// const dataDummy = {
+//     "entregaConvenioyPlan":{        
+//         "faciState" : "Aprobado", // consumir API GET (A = "Aprobado", P = "Pendiente" de revisión, O ="Observado")
+//         "espState" : "Observado",    // consumir API GET  (A = Aprobado, P = Pendiente de revisión, O = Observado)
+//         "observations" : "Bien hecho crack"        
+//     }
+// }
+
+// let staticFaci = "Pendiente";
+// let staticEsp = "Pendiente";
+
+let convenio = {
+    "faciState" : "",
+    "espState" : "",
+    "observations": "",
 }
 
-let staticFaci = "Pendiente";
-let staticEsp = "Pendiente";
+let staticFaci;
+let staticEsp;
+
 export default function AgreementReview (){    
-    const [data, setData] = useState(dataDummy); 
+
+    const [data, setData] = useState({}); 
+
     const [docs, setDocs] = useState([])
     const [docsStudent, setDocsStudent] = useState([])
     const [docsCoord, setDocsCoord] = useState([])
 
 
-    useEffect(()=> {
-        //aqui haan su llmada al API
-        // xxxxx .... suponenido que dataDummy sea el objeto que les devuelva
-        staticFaci = dataDummy.entregaConvenioyPlan.faciState
-        staticEsp = dataDummy.entregaConvenioyPlan.espState
-        setData(dataDummy)
-    }, [])
+    //Enviar idAlumno, idRevisor
+    useEffect(() => {
+        getAgreement(idAlumno,idCoordinador).then(response => {
+            console.log(response)
+            if(response.success) {  
+                setData(response.agreement);          
+            }
+        })
+    }, [setData])
 
     useEffect(() => {
         getAllDocsApi("1-1-CONV", 0).then(response => {
@@ -65,12 +82,22 @@ export default function AgreementReview (){
         })
     },[setDocsCoord])
 
+        convenio = data;
+
+        staticFaci = convenio.faciState;
+        staticEsp =  convenio.espState;
+
+   
+
+
     let documentState ="";
-    if(data.entregaConvenioyPlan && tipoPersonal === "F")        
-        documentState = data.entregaConvenioyPlan.faciState;
+    if(data.estadoFaci && tipoPersonal === "F") {
+        documentState = data[0].estadoFaci;
+    }       
     else
-        if(data.entregaConvenioyPlan && tipoPersonal === "E")
-            documentState = data.entregaConvenioyPlan.espState;
+        if(data.estadoEspecialidad && tipoPersonal === "E"){
+            documentState = data[0].estadoEspecialidad;
+        }
     
     // useEffect(()=> {
     //     /*
@@ -126,81 +153,63 @@ export default function AgreementReview (){
         }            
     }
 
-    const changeStatePassed = e => {     
-           
+    const changeStatePassed = e => {
         if(tipoPersonal === "F"){
             setData({
-                           
-                entregaConvenioyPlan: {
-                    ...data.entregaConvenioyPlan,
-                    faciState : "Aprobado"
-                }
+                ...data,
+                estadoFaci : "Aprobado"                           
             })            
         }else{
             if(tipoPersonal === "E"){
                 setData({
-                              
-                    entregaConvenioyPlan: {
-                        ...data.entregaConvenioyPlan,
-                        espState : "Aprobado"
-                    }
+                    ...data,
+                    estadoEspecialidad: "Aprobado"          
                 })                
             }
         }
     }
-    const changeStatePending = e => {   
-           
+    const changeStatePending = e => {       
+
         if(tipoPersonal === "F"){
             setData({
-                            
-                entregaConvenioyPlan: {
-                    ...data.entregaConvenioyPlan,
-                    faciState : "Pendiente"
-                }
+                ...data,
+                estadoFaci: "Pendiente"             
             })            
         }else{
             if(tipoPersonal === "E"){
                 setData({
-                               
-                    entregaConvenioyPlan: {
-                        ...data.entregaConvenioyPlan,
-                        espState : "Pendiente"
-                    }
+                    ...data,
+                    estadoEspecialidad: "Pendiente"           
                 })                
             }
         }
     }
     
-    const changeStateObserved = e => {
-        
+    const changeStateObserved = e => {                
         if(tipoPersonal === "F"){
             setData({
-                            
-                entregaConvenioyPlan: {
-                    ...data.entregaConvenioyPlan,
-                    faciState : "Observado"
-                }
+                ...data,
+                estadoFaci: "Observado"            
             })            
         }else{
             if(tipoPersonal === "E"){
                 setData({
-                                
-                    entregaConvenioyPlan: {
-                        ...data.entregaConvenioyPlan,
-                        espState : "Observado"
-                    }
+                    ...data,
+                    estadoEspecialidad: "Observado"            
                 })                
             }
         }
     }
 
     const changeComments = e => {
+        console.log(data);   
         setData({
             ...data,
-            entregaConvenioyPlan: {
-                ...data.entregaConvenioyPlan,
-                [e.target.name]: e.target.value
-            }
+            [e.target.name]: e.target.value
+            // entregaConvenioyPlan: {
+            //     ...data.entregaConvenioyPlan,
+            //     [e.target.name]: e.target.value
+            // }
         })
     }
     
@@ -301,7 +310,8 @@ export default function AgreementReview (){
                             <Form.Control className="observaciones"
                                 placeholder="Escriba las observaciones de la entrega"                                                    
                                 onChange = {changeComments}
-                                defaultValue = {data.entregaConvenioyPlan.observations} 
+                                // defaultValue = {data.entregaConvenioyPlan.observations} 
+                                defaultValue = {data.observaciones}
                                 name="comments"
                                 as="textarea" 
                                 rows={10}                                                             
