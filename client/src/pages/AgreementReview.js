@@ -7,10 +7,12 @@ import "./AgreementReview.scss";
 import FileManagement from "../components/FileManagement/FileManagement";
 import ShowFiles from "../components/FileManagement/ShowFiles";
 import { getAllDocsApi } from "../api/files";
+import { getAgreement} from "../api/agreementRev";
 
 //TO DO
 //1) Realizar el select
 //2) Realizar los updates de faci y de especialidad
+
 
 const idAlumno = 1;
 //const idCoordinador ="";
@@ -28,6 +30,8 @@ let staticFaci = "Pendiente";
 let staticEsp = "Pendiente";
 export default function AgreementReview (){    
     const [data, setData] = useState(dataDummy); 
+    //const [data, setData] = useState({}}); 
+
     const [docs, setDocs] = useState([])
     const [docsStudent, setDocsStudent] = useState([])
     const [docsCoord, setDocsCoord] = useState([])
@@ -40,6 +44,19 @@ export default function AgreementReview (){
         staticEsp = dataDummy.entregaConvenioyPlan.espState
         setData(dataDummy)
     }, [])
+
+    //Enviar idAlumno, idRevisor
+
+    // useEffect(() => {
+    //     getAgreement().then(response => {
+    //         if(response.success) {
+    //             setData(response.specialties);
+    //             //setFilteredData(response.specialties)
+    //         }
+    //         staticFaci = data.faci;
+    //        
+    //     })
+    // }, [setEspecialidades])
 
     useEffect(() => {
         getAllDocsApi("1-1-CONV", 0).then(response => {
