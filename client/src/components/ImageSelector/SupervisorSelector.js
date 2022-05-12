@@ -1,18 +1,14 @@
 import React from "react";
-import { Col, Container, Row } from "react-bootstrap";
-import Image from 'react-bootstrap/Image';
 import './SupervisorSelector.scss';
 
-
-
-export default function SupervisorSelector ({supervisores,setSupervisores, setIdSupSelected}) {
+export default function SupervisorSelector ({supervisores,setSupervisores, getSchedule}) {
     return (
         <div className="supervisors" >
             {
             supervisores.map((element) => (                
-                <Supervisor element={element} 
+                <Supervisor element={element} getSchedule = {getSchedule}
                     key={element.id} setSupervisores={setSupervisores} 
-                    supervisores={supervisores} setIdSupSelected={setIdSupSelected}/>
+                    supervisores={supervisores}/>
             ))
             }
         </div>
@@ -20,7 +16,7 @@ export default function SupervisorSelector ({supervisores,setSupervisores, setId
     )
 }
 
-function Supervisor ({element, setSupervisores, supervisores, setIdSupSelected}) {
+function Supervisor ({element, setSupervisores, supervisores, getSchedule}) {
     const selectSup = () =>{
         const newSupervisors = supervisores.map(e => {
             const isThisObj = e.id === element.id
@@ -32,15 +28,8 @@ function Supervisor ({element, setSupervisores, supervisores, setIdSupSelected})
             }
             return sup
         })
-
+        getSchedule(element.id)
         setSupervisores(newSupervisors);
-        supervisores.map(e=>{
-            if(e.isSelected){
-                setIdSupSelected(e.id)
-                console.log("Id seleccionado",e.id)
-            }
-            
-        })
     }
     return (
         

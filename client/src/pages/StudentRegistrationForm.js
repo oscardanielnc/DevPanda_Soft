@@ -1,5 +1,6 @@
 import React, {useState,useEffect} from "react";
 import LayoutBasic from "../layouts/LayoutBasic";
+import {default as LayoutCoord} from "../layouts/LayoutCoordFACI";
 import {Form,Button,Row,Col,Alert} from 'react-bootstrap';
 import { specialtyInsertApi } from "../api/specialty";
 import GeneralData from "../components/Charts/GeneralData";
@@ -292,7 +293,7 @@ export default function StudentRegistrationForm () {
      }
 
     return (
-        data.calification && <LayoutBasic>
+        data.calification && typeUser==="e"? <LayoutBasic>
             <div className="container principal" style={{"padding":"1px"}}>
                 <div className="row rows" style={{textAlign: "left"}}>
                     <h1>Ficha de Inscripción</h1>
@@ -351,16 +352,88 @@ export default function StudentRegistrationForm () {
                 <div className="row rows uploadRegistration" >                            
                     <FileManagement canUpload={canUpload} docs={studentDocs} maxFiles={2} titleUploadedFiles="Archivos subidos por el alumno"/>
                 </div>
-                {typeUser==="e"? <div className="row rows BotonAlumno">
+                <div className="row rows BotonAlumno">
                     <Button className="btn btn-primary" style={{width:"40%"}} onClick={insert} disabled={isSaved}>Enviar</Button>
                     <ToastContainer />
-                </div>:<div></div>}
-                                
-                {typeUser === "E" ? <div className="row rows">
-                    <CalificationFormStudent data={data} setData={setData} notgrabado={false}/>
-                </div> : <div></div>}
+                </div>           
+                <div className="col-sm-4 botons">
+                    <Button variant="primary" onClick={insertCoordinator} style={{"marginBottom":"4px"}}>Guardar</Button>
+                </div>
+                <div className="col-sm-2 subtitles">
+                </div>
+              
+                
+                <div className="row rows">
+                    
+                </div>
 
-                {typeUser === "E" ? <div className="row rows" >
+                
+            </div>
+        </LayoutBasic>: <LayoutCoord>
+            <div className="container principal" style={{"padding":"1px"}}>
+                <div className="row rows" style={{textAlign: "left"}}>
+                    <h1>Ficha de Inscripción</h1>
+                </div>
+                <div className="row rows" style={{textAlign: "left"}}>
+                    <p>
+                    Aquí deberá de rellenar la información solicitada más abajo para poder continuar con el proceso. Una vez que la complete, esta será revisada para su aprobación.
+                    </p>
+                    <p>
+                    A continuación se presenta la rúbrica para la ficha de inscripción:
+                    </p>
+                    <ShowFiles docs={docs} />
+                </div>
+                <div className="row rows">
+                    <StateViewer states={[
+                            StatesViewType[typeDocumentState]("Documentos", data.documentsState),
+                    StatesViewType[typeApprovalState]("Aprobación", data.approvalState)]}/>
+                </div>
+                <div className="row rows" style={{textAlign: "left",marginBottom:"0px"}}>
+                    <h2 style={{marginBottom:"0px"}}>Datos por rellenar</h2>
+                </div>
+                <div className="row rows">
+                    <GeneralData data={data} setData={setData} imStudent={isSaved} isSaved={isSaved}/>   
+                </div>
+                <div className="row rows">
+                    <AboutCompany data={data} setData={setData} notgrabado={isSaved}/>
+                </div>
+                <div className="row rows">
+                    <AboutJob data={data} setData={setData} notgrabado={isSaved}/>
+                </div>
+                <div className="row rows">
+                    <AboutDurationPSP data={data} setData={setData} notgrabado={isSaved}/>
+                </div>
+                <div className="row rows">
+                    <DirectBoss data={data} setData={setData} notgrabado={isSaved}/>
+                </div>
+                <div className="row rows">
+                    <div className="container Comments">
+                        <nav className="navbar navbar-fixed-top navbar-inverse bg-inverse "style={{ backgroundColor: "#E7E7E7"}}>
+                            <h3 style={{"marginLeft":"15px"}}>Observaciones</h3>
+                        </nav>
+                        <div className="row rows" >
+                            <Form.Control className="observaciones"
+                                    placeholder="Esciba las observaciones de la entrega" 
+                                    onChange={changeComments}
+                                    value={data.calification.comments}
+                                    name="comments"
+                                    disabled={typeUser==="e"? true: false}
+                                    style={{"marginBottom":"10px !important"}}
+                                    as="textarea"
+                                    rows={6}/>
+                        </div> 
+                    </div>
+                </div>
+                
+                <div className="row rows uploadRegistration" >                            
+                    <FileManagement canUpload={canUpload} docs={studentDocs} maxFiles={2} titleUploadedFiles="Archivos subidos por el alumno"/>
+                </div>
+           
+                <div className="row rows">
+                    <CalificationFormStudent data={data} setData={setData} notgrabado={false}/>
+                </div> 
+
+                <div className="row rows" >
                 <div className="col-sm-2 subtitles">
                 </div>
                 <div className="col-sm-4 botons">
@@ -371,7 +444,7 @@ export default function StudentRegistrationForm () {
                 </div>
                 <div className="col-sm-2 subtitles">
                 </div>
-                </div>  : <div></div>}
+                </div> 
                 
                 <div className="row rows">
                     
@@ -379,7 +452,7 @@ export default function StudentRegistrationForm () {
 
                 
             </div>
-        </LayoutBasic>
+        </LayoutCoord>
     )
 
 }
