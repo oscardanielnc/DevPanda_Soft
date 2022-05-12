@@ -32,7 +32,7 @@ export default function TableRegistrationForm ({rows}) {
                         <td>{row.nombreAlumno}</td>
                         <td>{row.estado}</td>
                         <td>
-                        <Link to ={"/student-registration/" + row.idAlumno} className= "btn btn-primary">Visualizar</Link>
+                        <Link to ={"/student-registration-review/" + row.idAlumno} className= "btn btn-primary">Visualizar</Link>
                         </td>
                     </tr>
                 ))
