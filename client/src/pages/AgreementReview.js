@@ -54,7 +54,7 @@ export default function AgreementReview (){
     //             //setFilteredData(response.specialties)
     //         }
     //         staticFaci = data.faci;
-    //        
+    //         staticEsp = data.esp;
     //     })
     // }, [setEspecialidades])
 
