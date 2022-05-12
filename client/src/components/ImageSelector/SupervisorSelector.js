@@ -32,6 +32,7 @@ function Supervisor ({element, setSupervisores, supervisores, setIdSupSelected})
             }
             return sup
         })
+        console.log(element)
         setIdSupSelected(element.id)
         setSupervisores(newSupervisors);
     }

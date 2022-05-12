@@ -10,52 +10,44 @@ import Timetable from "../components/Timetable/Timetable";
 import { Button } from "react-bootstrap";
 import {searchAssessorsBySpecialty} from "../api/administratives"
 
-const idAlumno = 5
-export default function SupervisorSelection () {
-    /*
-    const [supervisores, setSupervisores] = useState( [
-        {
-            id:1,
-            name: "Javier Palacios",
-            idfacultad:"informatica",
-            isSelected: true,
-            isMySupervisor: false
-        },
-        {
-            id:2,
-            name: "Luis Flores",
-            idfacultad:"informatica",
-            isSelected: false,
-            isMySupervisor: false
-        },
-        {
-            id:3,
-            name: "Andres Melgar",
-            idfacultad:"informatica",
-            isSelected: false,
-            isMySupervisor: false
-        },
-        {
-            id:4,
-            name:"Pedro Castillo",
-            idfacultad:"informatica",
-            isSelected: false,
-            isMySupervisor: false
-        }
-    ])
-*/
+const idAlumno = 5;
+const dataDummy = [
+    {
+        id:9,
+        name: "Javier Palacios",
+        idfacultad:"informatica",
+        isSelected: true,
+        isMySupervisor: false
+    },
+    {
+        id:10,
+        name: "Luis Flores",
+        idfacultad:"informatica",
+        isSelected: false,
+        isMySupervisor: false
+    },
+    {
+        id:11,
+        name: "Andres Melgar",
+        idfacultad:"informatica",
+        isSelected: false,
+        isMySupervisor: false
+    }
+]
 
+export default function SupervisorSelection () {
     const [supervisores, setSupervisores] = useState([]);
     const [idSupSelected, setIdSupSelected] = useState(1);
-    // useEffect(() => {
-    //     // searchAssessorsBySpecialty(idAlumno).then(response => {
-    //     //     /*
-    //     //     if(response.success) {
-    //     //         setSupervisores(response.supervisores);
-    //     //     }*/
-    //     //     console.log('Respuesta:',response)
-    //     // })
-    // }, [setSupervisores])
+    console.log(supervisores, idSupSelected)
+    useEffect(() => {
+        // searchAssessorsBySpecialty(idAlumno).then(response => {
+            // if(response.success) {
+                // setSupervisores(response.supervisores);
+                setSupervisores(dataDummy);
+            // }
+            // console.log('Respuesta:',response)
+        // })
+    }, [setSupervisores])
     const insert = async e => {
         /*
         e.preventDefault();
@@ -103,7 +95,7 @@ export default function SupervisorSelection () {
                     <SupervisorSelector supervisores={supervisores} setSupervisores={setSupervisores} setIdSupSelected={setIdSupSelected}/>
                 </div>
                 <div className="row rows">
-                    <Timetable idSupervisor={9}/>
+                    <Timetable idSupervisor={idSupSelected}/>
                 </div>
                 <div className="row rows boton">
                     <Button className="btn btn-primary" style={{width:"40%"}}>Agendar</Button>

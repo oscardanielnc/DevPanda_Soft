@@ -83,6 +83,7 @@ export default function Timetable ({idSupervisor}){
     useEffect(()=> {
         getSupervisorScheduleApi(idSupervisor).then(response => {
             if(response.success) {
+                console.log(response)
                 setInputs(response.schedule)
             }
         })
