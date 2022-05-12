@@ -13,14 +13,15 @@ import {selectDocumentsInfoByProcessOnlyStudent} from "../api/agreementLearnigPl
 
 
 
-const docuemntsState = "Sin entregar";
-const approvalState = "Sin entrega"
+let docuemntsState = "Entregado";
+let approvalState = ""
 const maxFiles = 2;
 const idAlumno=1;
 export default function StudentAgreement () {
     const [fileList, setFileList] = useState([])
     const [docs, setDocs] = useState([])
     const [studentDocs, setStudentDocs] = useState([])
+    const [data, setData] = useState({}); 
     useEffect(() => {
         getAllDocsApi("1-1-CONV", 0).then(response => {
             if(response.success) {
@@ -34,22 +35,37 @@ export default function StudentAgreement () {
             if(response.success) {
                 setStudentDocs(response.docs)
             }
+            else{
+                docuemntsState = "Sin entregar"
+            }
         })
     },[setStudentDocs])
 
 
-    /*
+    
     useEffect(()=>{
-        selectDocumentsInfoByProcessOnlyStudent(1).then(response => {
+        selectDocumentsInfoByProcessOnlyStudent(idAlumno).then(response => {
             if(response.success) {
-                setFileList(response.files)
+                setData(response.files)
+                console.log("consola:",response)
             }
         }
         )
-    },[setFileList])
-*/
+    },[setData])
+
+
     const typeDocumentState = (docuemntsState==="Sin entregar")? "fileEmpty": "success";
     let typeApprovalState = "";
+    if(data[0].estadoFaci === "P"){
+        approvalState = "Sin entrega"
+    }
+    else if(data[0].estadoFaci == "a"){
+        approvalState= "Aprobado"
+    }
+    else{
+        approvalState= "observado"
+    }
+    
     switch(approvalState) {
         case "Observado": typeApprovalState = "warning"; break;
         case "Sin entrega": typeApprovalState = "pending"; break;
@@ -67,39 +83,6 @@ export default function StudentAgreement () {
     }
     */
 
-    let result=true;
-    const insert = async e => {
-        /*
-        e.preventDefault();
-        //tenemos que saber que se han entregado dos documentos, tanto el convenio como el plan de aprendizaje para poder hacer la subida
-        if(numDocumentos === 2){
-            let response=null;
-            response = await agreementAndPlanRegistration(data);
-            
-            if(response.success){
-                toast.success("Se entregó correctamente a revisión tu plan de aprendizaje y convenio", {
-                    position: "top-right",
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                });
-            }else{
-                toast.error('Ups, ha ocurrido un error', {
-                    position: "top-right",
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                });
-            }   
-        }
-        }*/
-    }
     const deliver = () => {
         if(fileList.length === maxFiles) {
             // const response = await uploadDocsApi(files, "1-1-CONV-1", 1);

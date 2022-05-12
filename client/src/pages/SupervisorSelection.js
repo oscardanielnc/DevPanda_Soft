@@ -11,6 +11,7 @@ import { Button } from "react-bootstrap";
 import {changeOneHourSchedule, getSupervisorScheduleApi, searchAssessorsBySpecialty} from "../api/schedule"
 import useAuth from "../hooks/useAuth";
 import {ToastContainer, toast} from "react-toastify";
+import ModalBasic from "../components/Modals/ModalBasic"
 
 const supervisoresDummy = [
     {
@@ -72,22 +73,31 @@ export default function SupervisorSelection () {
         })
         return isSelected
     }
+    const comprobarModal=() => {
+
+        <ModalBasic show ={true}>
+            
+        </ModalBasic>
+    }
 
     const insertHorario = () => {
         if(schedule.length>0) {
             if(isSomeHourSelected()) {
-                changeOneHourSchedule(hourSelecteds[hourSelecteds.length-1]).then(response => {
-                    const resultState = response.success? "success": "error";
-                    toast[resultState](response.msg, {
-                        position: "top-right",
-                        autoClose: 3000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
-                    });
-                })
+                if(comprobarModal() === true){
+                    changeOneHourSchedule(hourSelecteds[hourSelecteds.length-1]).then(response => {
+                        const resultState = response.success? "success": "error";
+                        toast[resultState](response.msg, {
+                            position: "top-right",
+                            autoClose: 3000,
+                            hideProgressBar: false,
+                            closeOnClick: true,
+                            pauseOnHover: true,
+                            draggable: true,
+                            progress: undefined,
+                        });
+                    })
+                }
+
                 toast.success("Se ha registrado su eleccion correctamente!", {
                     position: "top-right",
                     autoClose: 3000,
