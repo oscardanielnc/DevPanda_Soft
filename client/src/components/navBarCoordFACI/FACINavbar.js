@@ -4,7 +4,7 @@ import './FACINavbar.scss';
 
 const dataNavbar = [
     {
-        title: "Convenio",
+        title: "Revisión de Convenio y Plan de Aprendizaje",
         link: "/agreement-review"
     },
     {
@@ -16,7 +16,7 @@ const dataNavbar = [
         link: "/listRegistrationForm"
     },
     {
-        title: "Revisión de Convenios",
+        title: "Añadir especialidad",
         link: "/add-specialty"
     },
     {

@@ -106,9 +106,9 @@ export default function AgreementReview (){
             dataForApi.estadoEspecialidad = data.estadoEspecialidad
             dataForApi.observaciones = data.observaciones
             
-            //const response1 = await uploadDocsApi(fileList, "1-1-CONV-${idAlumno}", 1);
+            const response1 = await uploadDocsApi(fileList, `1-1-CONV-${idAlumno}`, 1);
             const response2 = await agreementReviewUpdateApi(dataForApi)
-            if(response2.success) {                
+            if(response2.success && response1.success) {                
                 toast.success(response2.msg, {
                     position: "top-right",
                     autoClose: 3000,
@@ -129,7 +129,7 @@ export default function AgreementReview (){
                     draggable: true,
                     progress: undefined,
                 });
-            }            
+            }                        
         }
         else {
             toast.warning(`Se requieren 2 archivos para esta entrega.`, {

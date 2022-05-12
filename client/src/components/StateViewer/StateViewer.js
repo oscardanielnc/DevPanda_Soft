@@ -1,7 +1,6 @@
 import React  from "react";
 
 import './StateViewer.scss';
-
 const SuccessImage = "./StateViewerImages/success.png"
 const FileEmptyImage = "./StateViewerImages/fileEmpty.png"
 const PendingImage = "./StateViewerImages/pending.png"
