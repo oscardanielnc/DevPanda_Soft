@@ -9,13 +9,14 @@ import { Link } from "react-router-dom";
 import { getAllDocsApi } from "../api/files";
 import ShowFiles from "../components/FileManagement/ShowFiles";
 import { ToastContainer, toast } from 'react-toastify';
+import {selectDocumentsInfoByProcessOnlyStudent} from "../api/agreementLearnigPlan"
 
 
 
-const docuemntsState = "Entregado";
-const approvalState = "Aprobado"
+const docuemntsState = "Sin entregar";
+const approvalState = "Sin entrega"
 const maxFiles = 2;
-
+const idAlumno=1;
 export default function StudentAgreement () {
     const [fileList, setFileList] = useState([])
     const [docs, setDocs] = useState([])
@@ -27,6 +28,7 @@ export default function StudentAgreement () {
             }
         })
     },[setDocs])
+    
     useEffect(() => {
         getAllDocsApi("1-1-CONV-1", 1).then(response => {
             if(response.success) {
@@ -35,6 +37,17 @@ export default function StudentAgreement () {
         })
     },[setStudentDocs])
 
+
+    /*
+    useEffect(()=>{
+        selectDocumentsInfoByProcessOnlyStudent(1).then(response => {
+            if(response.success) {
+                setFileList(response.files)
+            }
+        }
+        )
+    },[setFileList])
+*/
     const typeDocumentState = (docuemntsState==="Sin entregar")? "fileEmpty": "success";
     let typeApprovalState = "";
     switch(approvalState) {
@@ -42,7 +55,7 @@ export default function StudentAgreement () {
         case "Sin entrega": typeApprovalState = "pending"; break;
         default: typeApprovalState = "success"; break;
     }
-
+/*
     const datadummy = {
         "idAlumno":1,
         "documento":{
@@ -52,7 +65,8 @@ export default function StudentAgreement () {
             "esAlumno":1,
         },
     }
-    const [data, setData] = useState(datadummy)
+    */
+
     let result=true;
     const insert = async e => {
         /*

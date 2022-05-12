@@ -8,7 +8,7 @@ import './Timetablecell.scss';
 // 3: Seleccionado
 // 4: Ocupado
 
-export default function TimetableCell ({state, setInputs, inputs, indexDay, indexHour}){
+export default function TimetableCell ({state, setInputs, inputs, indexDay, indexHour,setflagSeleccion}){
     const selectState = e => {
         const newSchude = inputs.map((day, index) => {
             const newHours = day.hours.map((hour, i) => {
@@ -23,6 +23,7 @@ export default function TimetableCell ({state, setInputs, inputs, indexDay, inde
             }
         })
         setInputs(newSchude)
+        setflagSeleccion(1)
     }
 
     let description
