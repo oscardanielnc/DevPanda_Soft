@@ -74,7 +74,6 @@ function getSupervisorSchedule(req, res) {
                 return 0
             })
             for(let i=0; i<10; i++) {
-                console.log("dataOrdered[i*14]", dataOrdered[i*14])
                 const newDay = {
                     day: getDay(dataOrdered[i*14].fecha),
                     date: dataOrdered[i*14].fecha,
@@ -82,7 +81,6 @@ function getSupervisorSchedule(req, res) {
                 }
                 
                 for(let j=0; j<14; j++) {
-                    console.log(`dataOrdered[${i}*14+${j}]`, dataOrdered[i*14+j])
                     newDay.hours.push(dataOrdered[i*14 + j].estado)
                 }
                 data.push(newDay)

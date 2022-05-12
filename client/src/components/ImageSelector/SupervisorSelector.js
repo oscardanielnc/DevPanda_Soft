@@ -5,12 +5,14 @@ import './SupervisorSelector.scss';
 
 
 
-export default function SupervisorSelector ({supervisores,setSupervisores}) {
+export default function SupervisorSelector ({supervisores,setSupervisores, setIdSupSelected}) {
     return (
         <div className="supervisors" >
             {
             supervisores.map((element) => (                
-            <Supervisor element={element} key={element.id} setSupervisores={setSupervisores} supervisores={supervisores}/>
+                <Supervisor element={element} 
+                    key={element.id} setSupervisores={setSupervisores} 
+                    supervisores={supervisores} setIdSupSelected={setIdSupSelected}/>
             ))
             }
         </div>
@@ -18,7 +20,7 @@ export default function SupervisorSelector ({supervisores,setSupervisores}) {
     )
 }
 
-function Supervisor ({element, setSupervisores, supervisores}) {
+function Supervisor ({element, setSupervisores, supervisores, setIdSupSelected}) {
     const selectSup = () =>{
         const newSupervisors = supervisores.map(e => {
             const isThisObj = e.id === element.id
@@ -30,7 +32,7 @@ function Supervisor ({element, setSupervisores, supervisores}) {
             }
             return sup
         })
-
+        setIdSupSelected(element.id)
         setSupervisores(newSupervisors);
     }
     return (
