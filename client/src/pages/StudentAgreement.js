@@ -10,46 +10,68 @@ import { getAllDocsApi } from "../api/files";
 import ShowFiles from "../components/FileManagement/ShowFiles";
 import { ToastContainer, toast } from 'react-toastify';
 import {selectDocumentsInfoByProcessOnlyStudent} from "../api/agreementLearnigPlan"
+import useAuth from "../hooks/useAuth";
 
 
-
-const docuemntsState = "Sin entregar";
-const approvalState = "Sin entrega"
+let docuemntsState = "Sin entregar";
+let approvalState = ""
 const maxFiles = 2;
 const idAlumno=1;
 export default function StudentAgreement () {
     const [fileList, setFileList] = useState([])
     const [docs, setDocs] = useState([])
     const [studentDocs, setStudentDocs] = useState([])
+    const [data, setData] = useState({}); 
+    const {user} = useAuth();
+    console.log("user",user.idPersona)
+    console.log("esp",user.fidEspecialidad)
     useEffect(() => {
-        getAllDocsApi("1-1-CONV", 0).then(response => {
+        getAllDocsApi(`1-${user.fidEspecialidad}-CONV`, 0).then(response => {
             if(response.success) {
                 setDocs(response.docs)
+                console.log("Primer doc",response)
             }
         })
     },[setDocs])
     
     useEffect(() => {
-        getAllDocsApi("1-1-CONV-1", 1).then(response => {
+        getAllDocsApi(`1-${user.fidEspecialidad}-CONV-${user.idPersona}`, 1).then(response => {
             if(response.success) {
                 setStudentDocs(response.docs)
+                console.log("Segundo doc",response.docs)
+                if(response.length>0){
+                    docuemntsState = "Entregado"
+                }
             }
         })
     },[setStudentDocs])
 
 
-    /*
+    
     useEffect(()=>{
-        selectDocumentsInfoByProcessOnlyStudent(1).then(response => {
+        selectDocumentsInfoByProcessOnlyStudent(user.idPersona).then(response => {
             if(response.success) {
-                setFileList(response.files)
+                setData(response.files)
+                console.log("consola:",response)
             }
         }
         )
-    },[setFileList])
-*/
+    },[setData])
+
+
     const typeDocumentState = (docuemntsState==="Sin entregar")? "fileEmpty": "success";
     let typeApprovalState = "";
+
+    if(data.estadoFaci === "o"){
+        approvalState = "Observado"
+    }
+    else if(data.estadoFaci === "a"){
+        approvalState= "Aprobado"
+    }
+    else{
+        approvalState= "Sin entrega"
+    }
+    
     switch(approvalState) {
         case "Observado": typeApprovalState = "warning"; break;
         case "Sin entrega": typeApprovalState = "pending"; break;
@@ -67,43 +89,11 @@ export default function StudentAgreement () {
     }
     */
 
-    let result=true;
-    const insert = async e => {
-        /*
-        e.preventDefault();
-        //tenemos que saber que se han entregado dos documentos, tanto el convenio como el plan de aprendizaje para poder hacer la subida
-        if(numDocumentos === 2){
-            let response=null;
-            response = await agreementAndPlanRegistration(data);
-            
-            if(response.success){
-                toast.success("Se entregó correctamente a revisión tu plan de aprendizaje y convenio", {
-                    position: "top-right",
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                });
-            }else{
-                toast.error('Ups, ha ocurrido un error', {
-                    position: "top-right",
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                });
-            }   
-        }
-        }*/
-    }
     const deliver = () => {
         if(fileList.length === maxFiles) {
-            // const response = await uploadDocsApi(files, "1-1-CONV-1", 1);
+            // const response = await uploadDocsApi(files, "1-${user.fidEspecialidad}-CONV-${user.idPersona}", 1);
             // if(response.success) {
+            //     docuemntsState = "Entregado"
             //     toast.success(response.msg, {
             //         position: "top-right",
             //         autoClose: 3000,

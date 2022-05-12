@@ -11,6 +11,7 @@ import { Button } from "react-bootstrap";
 import {changeOneHourSchedule, getSupervisorScheduleApi, searchAssessorsBySpecialty} from "../api/schedule"
 import useAuth from "../hooks/useAuth";
 import {ToastContainer, toast} from "react-toastify";
+import ModalBasic from "../components/Modals/ModalBasic"
 
 const supervisoresDummy = [
     {
@@ -96,15 +97,6 @@ export default function SupervisorSelection () {
                         progress: undefined,
                     });
                 })
-                // toast.success("Se ha registrado su eleccion correctamente!", {
-                //     position: "top-right",
-                //     autoClose: 3000,
-                //     hideProgressBar: false,
-                //     closeOnClick: true,
-                //     pauseOnHover: true,
-                //     draggable: true,
-                //     progress: undefined,
-                // });
             } else {
                 toast.warning("No tiene ningun horario seleccionado!", {
                     position: "top-right",
