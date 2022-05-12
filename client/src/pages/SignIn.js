@@ -23,7 +23,7 @@ export default function SignIn (){
             localStorage.setItem("ACCESS_TOKEN", accessToken)
             window.location.href = "/"
         } else {
-            toast.error('Fallo de autenticación!', {
+            toast.error(result.message, {
                 position: "top-right",
                 autoClose: 3000,
                 hideProgressBar: false,
