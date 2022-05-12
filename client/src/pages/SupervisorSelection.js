@@ -77,7 +77,6 @@ export default function SupervisorSelection () {
     const insertHorario = () => {
         if(schedule.length>0) {
             if(isSomeHourSelected()) {
-                console.log(hourSelecteds)
                 const params = {
                     arrHours: [
                         hourSelecteds[hourSelecteds.length-1]

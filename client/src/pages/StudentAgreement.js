@@ -6,7 +6,7 @@ import FileManagement from "../components/FileManagement/FileManagement";
 import { Button } from "react-bootstrap";
 import "./StudentAgreement.scss";
 import { Link } from "react-router-dom";
-import { getAllDocsApi } from "../api/files";
+import { getAllDocsApi, uploadDocsApi } from "../api/files";
 import ShowFiles from "../components/FileManagement/ShowFiles";
 import { ToastContainer, toast } from 'react-toastify';
 import {selectDocumentsInfoByProcessOnlyStudent} from "../api/agreementLearnigPlan"
@@ -89,32 +89,33 @@ export default function StudentAgreement () {
     }
     */
 
-    const deliver = () => {
+    const deliver = async () => {
         if(fileList.length === maxFiles) {
-            // const response = await uploadDocsApi(files, "1-${user.fidEspecialidad}-CONV-${user.idPersona}", 1);
-            // if(response.success) {
-            //     docuemntsState = "Entregado"
-            //     toast.success(response.msg, {
-            //         position: "top-right",
-            //         autoClose: 3000,
-            //         hideProgressBar: false,
-            //         closeOnClick: true,
-            //         pauseOnHover: true,
-            //         draggable: true,
-            //         progress: undefined,
-            //     });
-            //     window.location.reload()
-            // } else {
-            //     toast.error(response.msg, {
-            //         position: "top-right",
-            //         autoClose: 3000,
-            //         hideProgressBar: false,
-            //         closeOnClick: true,
-            //         pauseOnHover: true,
-            //         draggable: true,
-            //         progress: undefined,
-            //     });
-            // }
+            const response = await uploadDocsApi(fileList, `1-${user.fidEspecialidad}-CONV-${user.idPersona}`, 1);
+            if(response.success) {
+                docuemntsState = "Entregado"
+                toast.success(response.msg, {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
+                // llamada al API para actualizar los eatados
+                window.location.reload()
+            } else {
+                toast.error(response.msg, {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
+            }
             toast.error("NO NO NO, equivocadiño. No debes tocar este botón!", {
                 position: "top-right",
                 autoClose: 3000,
