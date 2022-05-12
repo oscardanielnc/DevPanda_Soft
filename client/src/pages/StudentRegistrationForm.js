@@ -249,7 +249,7 @@ export default function StudentRegistrationForm () {
         isSaved=true;
         canUpload=true;
     }
-
+    console.log("La data es: ",data);
     const typeDocumentState = (data.documentsState==="Sin entregar")? "fileEmpty": "success";
     let typeApprovalState = "";
     switch(data.approvalState) {
@@ -259,7 +259,8 @@ export default function StudentRegistrationForm () {
         case "Aprobado": typeApprovalState = "success"; break;
         default: typeApprovalState = "error"; break;
     }
-
+    console.log("El typeDocumentState es: ",typeDocumentState);
+    console.log("El typeApprovalState es: ",typeApprovalState);
     const changeComments = e => {
         setData({
             ...data,
@@ -302,7 +303,7 @@ export default function StudentRegistrationForm () {
 
     const goBack = e => {
         window.history.back();
-     }
+    }
 
     return (
         data.calification && typeUser==="e"? <LayoutBasic>
