@@ -31,6 +31,34 @@ export function emailValidation(inputData) {
         return false
     }
 }
+export function maxLengthValidation(inputData,maxLength){
+    const {value}=inputData;
+    
+    removeClassErrorSuccess(inputData);
+
+    if(value.length <=maxLength){
+        inputData.classList.add("success");
+        return true;
+    }else{
+        inputData.classList.add("error");
+        return false;
+    }
+}
+
+export function numberValidation(inputData){
+    const numberValidation = /^([-]?[\s]?[0-9])+$/i;
+    const {value} = inputData;
+    removeClassErrorSuccess(inputData)
+
+    const resultValidation = numberValidation.test(value) //para esta RegularExp, esta cadena cumple?
+    if(resultValidation) {
+        inputData.classList.add('success')
+        return true
+    } else {
+        inputData.classList.add('error')
+        return false
+    }
+}
 
 function removeClassErrorSuccess(inputData) {
     inputData.classList.remove('success')

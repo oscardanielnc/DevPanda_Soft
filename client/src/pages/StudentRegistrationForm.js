@@ -105,17 +105,13 @@ export default function StudentRegistrationForm () {
     const [data, setData] = useState({});
     const [docs, setDocs] = useState([]);
     const [studentDocs, setStudentDocs] = useState([]);
-    console.log("En el StudentRegistrationForm", oscar);
+    //console.log("En el StudentRegistrationForm", oscar);
     console.log("En el StudentRegistrationForm:", data);
     //let typeUser=user.tipoPersona;
     let typeUser="A";
     useEffect(()=> {
         getstudentInscriptionForm(idAlumno).then(response => {
             if(response.success===true) {
-                console.log("En el success1", oscar);
-                oscar++
-                console.log("En el response, ", response.infoFicha.infoFicha);
-                
                 setData(response.infoFicha.infoFicha);
                 console.log("En el success2", oscar);
             }else{
