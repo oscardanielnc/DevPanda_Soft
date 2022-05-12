@@ -9,22 +9,29 @@ import './Timetablecell.scss';
 // 4: Ocupado
 
 export default function TimetableCell (props){
-    const {state, setInputs, inputs, indexDay, indexHour, setHourSelecteds, hourSelecteds} = props;
+    const {hour, setInputs, inputs, indexDay, indexHour, setHourSelecteds, hourSelecteds} = props;
     const selectState = e => {
         const newSchude = inputs.map((day, index) => {
-            const newHours = day.hours.map((hour, i) => {
-                    if(index===indexDay && i===indexHour && state===2) {
+            const newHours = day.hours.map((h, i) => {
+                    if(index===indexDay && i===indexHour && hour.state===2) {
+                        const newH = {
+                            state: 3,
+                            id: hour.id
+                        }
                         setHourSelecteds([
                             ...hourSelecteds,
                             {
-                                date: day.date,
-                                index: i
+                                state: 4,
+                                id: hour.id
                             }
                         ])
-                        return 3
+                        return newH
                     }
-                    else if (hour===3) return 2
-                    return hour
+                    else if (h.state===3) return {
+                        state: 2,
+                        id: h.id
+                    }
+                    return h
                 })
             return {
                 day: day.day,
@@ -38,7 +45,7 @@ export default function TimetableCell (props){
 
     let description
     let color 
-    switch (state) {
+    switch (hour.state) {
         case 1:  
         description = "."; 
         color = "rgb(222, 226, 230)"

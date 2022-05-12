@@ -1,38 +1,46 @@
 const mysql = require('mysql');
 const {MYSQL_CREDENTIALS} = require("../config");
 
-function changeOneHourSchedule(req, res){
+async function changeHoursSchedule(req, res){
     //cambia de estado un horario seleccionado
     const connection = mysql.createConnection(MYSQL_CREDENTIALS);
+    const {arrHours, idPersona, isStudent} = req.body;
+    const idAlumno = isStudent? idPersona: null;
 
-    const {idHorario, idPersona, isStudent, estado} = req.body;
-
-    const sqlQuery = `UPDATE HorarioDisponibilidad 
-    SET estado = ${estado}, idAlumno=${isStudent? idPersona: null}
-    WHERE idHorario = ${idHorario}`;
-
+    sqlAsync = (sql) =>{
+        return new Promise((resolve, reject)=>{
+            connection.query(sql, async (err, result) => {
+                if (err) {
+                    return reject(err);
+                }else{
+                    return resolve(result)
+                }
+            })
+        })
+    }
     connection.connect(err => {
         if (err) throw err;
     });
 
-    
-    connection.query(sqlQuery, (err, result) => {
-        if(err){
+    for(const i in arrHours) {
+        // console.log(arrHours[i])
+        const element = arrHours[i]
+        try {
+            const sqlQuery = `UPDATE HorarioDisponibilidad 
+                SET estado = ${element.state}, idAlumno=${idAlumno}
+                WHERE idHorario = ${element.id}`;
+            const result = await sqlAsync(sqlQuery);
+            console.log(i, result)
+        } catch (err) {
+            console.log(err)
             res.status(505).send({
                 message: "Error inesperado del servidor: " + err.message
             })
-        }else{
-            if(!result.affectedRows){
-                res.status(404).send({
-                    message: "No se actualizó ninguna fila"
-                })
-            }else{
-                res.status(200).send({
-                    message: "Registro correcto!"
-                })
-            }
-        }   
-    });
+        }
+    };
+    res.status(200).send({
+        message: "Registro de horas correcta!"
+    })
     connection.end();
 }
 
@@ -81,7 +89,11 @@ function getSupervisorSchedule(req, res) {
                 }
                 
                 for(let j=0; j<14; j++) {
-                    newDay.hours.push(dataOrdered[i*14 + j].estado)
+                    const dat = {
+                        state: dataOrdered[i*14 + j].estado,
+                        id: dataOrdered[i*14 + j].idHorario
+                    }
+                    newDay.hours.push(dat)
                 }
                 data.push(newDay)
             }
@@ -154,7 +166,7 @@ function getDay(date) {
 
 
 module.exports = {
-    changeOneHourSchedule,
+    changeHoursSchedule,
     getSupervisorSchedule,
     getSupervisorsBySpecialty
 }

@@ -21,7 +21,7 @@ export default function FileManagement ({canUpload=true, docs, maxFiles=2, fileL
     //     //         draggable: true,
     //     //         progress: undefined,
     //     //     });
-    // //         window.location.reload()
+    // //         window.location.()
     //     // } else {
     //     //     toast.error(response.msg, {
     //     //         position: "top-right",
