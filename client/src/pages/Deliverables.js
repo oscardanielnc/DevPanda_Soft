@@ -4,7 +4,7 @@ import { Button, Form} from "react-bootstrap";
 import StateViewer,{StatesViewType} from "../components/StateViewer/StateViewer";
 import "./AgreementReview.scss";
 import FileManagement from "../components/FileManagement/FileManagement";
-import { getDeliverableStudent } from "../api/deliverables";
+import { getDeliverableStudent, setDeliverableStudent } from "../api/deliverables";
 import useAuth from "../hooks/useAuth";
 import { getAllDocsApi, uploadDocsApi } from "../api/files";
 
@@ -31,13 +31,14 @@ import { getAllDocsApi, uploadDocsApi } from "../api/files";
 //     }
 // }
 
-const idEntregable=2;
+const idEntregable=1;
 const maxFiles = 1;
 
 let estadoDoc= "";
 let estadoEva = "";
 let comentarioCalificado="";
 let comentarioDoc="";
+let idDelivResponse=0;
 
 
 export default function Deliverables(){
@@ -58,8 +59,6 @@ export default function Deliverables(){
         })
     }, [setData])
 
-    
-
     useEffect(() => {
         getAllDocsApi(`1-${user.fidEspecialidad}-DELIV`, 0).then(response => {
             if(response.success) {
@@ -77,9 +76,29 @@ export default function Deliverables(){
     },[setStudentDocs])
 
     const deliver = async() => {
+        
         if(fileList.length === maxFiles) {
             const response = await uploadDocsApi(fileList, `1-${user.fidEspecialidad}-DELIV-${user.idPersona}`, 1);
-            // if(response.success) {
+            const newData = {
+                ...data,
+                deliverableResponse:{
+                    idRespuestaEntregable: data.deliverableResponse.idRespuestaEntregable,
+                    docState: "E",
+                    evaState: "P",
+                    observation: "",
+                    grade: 0,
+                    uploadDate: "",
+                }                
+            }
+            if(response.success) {
+                setDeliverableStudent(newdata).then(response => {
+                    if(response.success) {
+                        console.log(response.msg)
+                    }
+                })
+
+                window.location.reload()
+            }
         }
     }
 
