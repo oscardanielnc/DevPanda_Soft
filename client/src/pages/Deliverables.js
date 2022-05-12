@@ -6,6 +6,8 @@ import "./AgreementReview.scss";
 import FileManagement from "../components/FileManagement/FileManagement";
 import { getDeliverableStudent } from "../api/deliverables";
 import useAuth from "../hooks/useAuth";
+import { getAllDocsApi } from "../api/files";
+
 
 // const dataDummy={
 //     "idAlumno": 1,
@@ -30,27 +32,50 @@ import useAuth from "../hooks/useAuth";
 //     }
 // }
 
-const idEntregable=1;
+const idEntregable=2;
+const maxFiles = 1;
 
 let estadoDoc= "";
 let estadoEva = "";
 let comentarioCalificado="";
 let comentarioDoc="";
 
+
 export default function Deliverables(){
     //let estadoDoc= "E";//"N" no entregado, "E" entregado
     //let estadoEva = "P";//"A" es aprobado, "O" es observado, , "P" pendiente de aprobación
+    const [fileList, setFileList] = useState([])
+    const [docs, setDocs] = useState([])
+    const [studentDocs, setStudentDocs] = useState([])
     const {user} = useAuth();
     const [data, setData] = useState({})
-
+    console.log("user",user);
     useEffect(()=> {
-        getDeliverableStudent(idEntregable,user.idAlumno).then(response => {
+        getDeliverableStudent(user.idPersona,idEntregable).then(response => {
             if(response.success) {
-                console.log(response);
+                console.log("response",response);
                 setData(response.data.valor);
             }
         })
     }, [setData])
+
+    
+
+    useEffect(() => {
+        getAllDocsApi(`1-${user.fidEspecialidad}-DELIV`, 0).then(response => {
+            if(response.success) {
+                setDocs(response.docs)
+            }
+        })
+    },[setDocs])
+    
+    useEffect(() => {
+        getAllDocsApi(`1-${user.fidEspecialidad}-DELIV-${user.idPersona}`, 1).then(response => {
+            if(response.success) {
+                setStudentDocs(response.docs)
+            }
+        })
+    },[setStudentDocs])
 
     console.log("data", data)
     if(data.deliverableResponse) {
@@ -99,7 +124,7 @@ export default function Deliverables(){
                     StatesViewType[estadoEva]("Aprobación", comentarioCalificado)]}/>
                 </div>
                 <div className="row rows uploadAgreement" >                
-                    <FileManagement/>
+                    <FileManagement canUpload={true} docs={studentDocs} maxFiles={maxFiles} fileList={fileList} setFileList={setFileList}/>
                 </div>
                 <div className="row row1" style={{textAlign: "left",marginTop:"25px"}}>
                     <h2>Observaciones</h2>  
