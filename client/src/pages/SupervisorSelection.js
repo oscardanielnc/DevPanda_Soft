@@ -67,7 +67,7 @@ export default function SupervisorSelection () {
         let isSelected = false
         schedule.forEach(day => {
             day.hours.forEach(hour => {
-                if(hour===3) isSelected = true
+                if(hour.state===3) isSelected = true
             })
         })
         return isSelected
@@ -76,7 +76,15 @@ export default function SupervisorSelection () {
     const insertHorario = () => {
         if(schedule.length>0) {
             if(isSomeHourSelected()) {
-                changeOneHourSchedule(hourSelecteds[hourSelecteds.length-1]).then(response => {
+                console.log(hourSelecteds)
+                const params = {
+                    arrHours: [
+                        hourSelecteds[hourSelecteds.length-1]
+                    ],
+                    idPersona: user.idPersona,
+                    isStudent: true
+                }
+                changeOneHourSchedule(params).then(response => {
                     const resultState = response.success? "success": "error";
                     toast[resultState](response.msg, {
                         position: "top-right",
@@ -88,15 +96,15 @@ export default function SupervisorSelection () {
                         progress: undefined,
                     });
                 })
-                toast.success("Se ha registrado su eleccion correctamente!", {
-                    position: "top-right",
-                    autoClose: 3000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                });
+                // toast.success("Se ha registrado su eleccion correctamente!", {
+                //     position: "top-right",
+                //     autoClose: 3000,
+                //     hideProgressBar: false,
+                //     closeOnClick: true,
+                //     pauseOnHover: true,
+                //     draggable: true,
+                //     progress: undefined,
+                // });
             } else {
                 toast.warning("No tiene ningun horario seleccionado!", {
                     position: "top-right",

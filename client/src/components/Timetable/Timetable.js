@@ -120,8 +120,8 @@ export default function Timetable ({inputs, setInputs, setHourSelecteds, hourSel
                             <div className="col" key={indexDay}>
                                 <div className="headerTime">{`${day.day}  ${day.date}`}</div>
                                 {
-                                day.hours.map((state, indexHour) => (
-                                    <TimetableCell state={state} setInputs={setInputs} hourSelecteds={hourSelecteds}
+                                day.hours.map((hour, indexHour) => (
+                                    <TimetableCell hour={hour} setInputs={setInputs} hourSelecteds={hourSelecteds}
                                         inputs={inputs} indexDay={indexDay} key={indexHour} 
                                         indexHour={indexHour} setHourSelecteds={setHourSelecteds}/>
                                 ))
