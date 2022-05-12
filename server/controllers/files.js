@@ -11,7 +11,8 @@ function uploadDocs(req, res) {
     for (const doc in files) {
         const objDoc = files[doc];
         if(!checkCorrectDocument(objDoc, ['pdf', 'docx', 'doc', 'xlsx', 'txt'])) {
-            res.status(400).send({
+            res.status(505).send({
+                success: false,
                 message: "La extencion alguna imagen no es valida. Solo se aceptan: pdf, docx, doc, txt, xlsx."
             })
         }
@@ -28,6 +29,7 @@ function uploadDocs(req, res) {
             if (err) {
                 console.log(err)
                 res.status(505).send({
+                    success: false,
                     message: "Error al tratar de comprobar documentos en DB."
                 })
             }
@@ -50,6 +52,7 @@ function uploadDocs(req, res) {
             connection.query(sqlQuery, sqlObj, (err, result) => {
                 if (err) {
                     res.status(505).send({
+                        success: false,
                         message: "Error al tratar de insertar un docuemnto."
                     })
                 }
@@ -57,11 +60,13 @@ function uploadDocs(req, res) {
         }
 
         res.status(200).send({
+            success: true,
             message: "Archivos insertados correctamente!"
         })
 
     } else {
         res.status(505).send({
+            success: false,
             message: "No se han enviado archivos!"
         })
     }

@@ -104,7 +104,7 @@ export default function StudentAgreement () {
                     progress: undefined,
                 });
                 // llamada al API para actualizar los eatados
-                window.location.reload()
+                window.location.reload();
             } else {
                 toast.error(response.msg, {
                     position: "top-right",
@@ -116,15 +116,15 @@ export default function StudentAgreement () {
                     progress: undefined,
                 });
             }
-            toast.error("NO NO NO, equivocadiño. No debes tocar este botón!", {
-                position: "top-right",
-                autoClose: 3000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-            });
+            // toast.error("NO NO NO, equivocadiño. No debes tocar este botón!", {
+            //     position: "top-right",
+            //     autoClose: 3000,
+            //     hideProgressBar: false,
+            //     closeOnClick: true,
+            //     pauseOnHover: true,
+            //     draggable: true,
+            //     progress: undefined,
+            // });
         }
         else {
             toast.warning(`Se requieren ${maxFiles} archivos para esta entrega.`, {

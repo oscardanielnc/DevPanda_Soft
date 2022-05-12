@@ -52,7 +52,7 @@ export function uploadDocsApi(files, code, isStudent) {
         .then(result => {
             return {
                 msg: result.message,
-                success: true
+                success: result.success
             }
         })
         .catch(err => {
