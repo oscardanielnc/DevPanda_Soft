@@ -95,38 +95,59 @@ const dataDummy = {
     ]
 
 }
-let oscar = 0
 const arrayCadena = window.location.pathname.split("/");
 const idAlumno=parseInt(arrayCadena[2]);
 
 export default function StudentRegistrationForm () {
     const {user} = useAuth();
-    const [aux,setAux]=useState([]);
     const [data, setData] = useState({});
     const [docs, setDocs] = useState([]);
     const [studentDocs, setStudentDocs] = useState([]);
+    console.log("El user tiene: ",user);
     //console.log("En el StudentRegistrationForm", oscar);
     console.log("En el StudentRegistrationForm:", data);
     //let typeUser=user.tipoPersona;
-    let typeUser="A";
+    let typeUser=user.tipoPersona;
+    if(typeUser==="p"){
+        typeUser=user.tipoPersonal;
+    }
+    console.log("El tipo de usuario es: ",typeUser);
     useEffect(()=> {
+        console.log("En el useeffect principal");
         getstudentInscriptionForm(idAlumno).then(response => {
+            const resData = response.infoFicha.infoFicha;
             if(response.success===true) {
-                setData(response.infoFicha.infoFicha);
-                console.log("En el success2", oscar);
-            }else{
-                console.log("En el else");
+                console.log("En el success");
+                if(typeUser==="e"){
+                    console.log("Estos aqui aies", data)
+                    const newData = {
+                        idAlumno: resData.idAlumno,
+                        idAlumnoProceso: resData.idAlumnoProceso,
+                        idFicha: resData.idFicha,
+                        documentsState: resData.documentsState,
+                        approvalState: resData.approvalState,
+                        generalData: {
+                            name: user.nombres,
+                            lastname:user.apellidos,
+                            code:user.codigo,
+                            email:user.correo,
+                            cellphone: resData.generalData.cellphone,
+                            personalEmail: resData.generalData.personalEmail
+                        },
+                        aboutCompany: resData.aboutCompany,
+                        aboutJob:resData.aboutJob,
+                        aboutPSP: resData.aboutPSP,
+                        aboutBoss:resData.aboutBoss,
+                        calification:resData.calification,
+                        others: resData.others,
+                    }
+                    setData(newData)
+                } else
+                    setData(resData);
             }
         })
-        if(typeUser==="A"){
-            /*
-            data.generalData.name=user.name;
-            data.generalData.lastname=user.lastname;
-            data.generalData.code=user.code;
-            data.generalData.email=user.email;*/
-        }
+        
     }, [setData])
-    console.log(data);
     useEffect(() => {
         getAllDocsApi("1-1-CONV", 0).then(response => {
             if(response.success) {
@@ -142,25 +163,19 @@ export default function StudentRegistrationForm () {
             }
         })
     },[setStudentDocs])
+    if(!data.generalData) return null
+    
+    console.log(data);
+    console.log("Luego de hacer el new data: ",data);
+
 
     const insert = async e => {
-        //hacer una diferencia primero si es alumno o cordinador
-        //en el caso del alumno por el estado de approvalState ver si es un Insertar o un Modificar
-        //en el caso del coordinador ver si con el idAlumno hay alguna ficha y depende de eso Insertar o modificar 
         e.preventDefault();
-        // let response=null;
         const newData = {
             ...data,
             documentsState: "Entregado",
             approvalState: "Sin calificar"
         }
-        // setData({
-        //     ...data,
-        //     documentsState: "Entregado",
-        //     approvalState: "Sin calificar"
-        // })
-        // data.documentsState="Entregado";
-        // data.approvalState="Sin calificar";
         console.log("antes de enviar: ",data);
         const response = await registrationUpdateApiStudentCamps(newData);
         if(!response.success){
@@ -205,7 +220,7 @@ export default function StudentRegistrationForm () {
     }
     let isSaved=null;
     let canUpload=null;
-    if(typeUser==="A"){
+    if(typeUser==="e"){
         isSaved=((data.documentsState==="Sin entregar")||
         (data.documentsState==="Entregado"&&data.approvalState==="Observado"))? false: true;
         if(isSaved===false){
@@ -219,7 +234,7 @@ export default function StudentRegistrationForm () {
     }
 
     const typeDocumentState = (data.documentsState==="Sin entregar")? "fileEmpty": "success";
-    const imStudent=(typeUser==="C")?true:false;
+    const imStudent=(typeUser==="E")?true:false;
     let typeApprovalState = "";
     switch(data.approvalState) {
         case "Observado": typeApprovalState = "warning"; break;
@@ -325,7 +340,7 @@ export default function StudentRegistrationForm () {
                                     onChange={changeComments}
                                     value={data.calification.comments}
                                     name="comments"
-                                    disabled={typeUser==="A"? true: false}
+                                    disabled={typeUser==="e"? true: false}
                                     style={{"marginBottom":"10px !important"}}
                                     as="textarea"
                                     rows={6}/>
@@ -336,16 +351,16 @@ export default function StudentRegistrationForm () {
                 <div className="row rows uploadRegistration" >                            
                     <FileManagement canUpload={canUpload} docs={studentDocs} maxFiles={2} titleUploadedFiles="Archivos subidos por el alumno"/>
                 </div>
-                {typeUser==="A"? <div className="row rows BotonAlumno">
+                {typeUser==="e"? <div className="row rows BotonAlumno">
                     <Button className="btn btn-primary" style={{width:"40%"}} onClick={insert} disabled={isSaved}>Enviar</Button>
                     <ToastContainer />
                 </div>:<div></div>}
                                 
-                {typeUser === "C" ? <div className="row rows">
+                {typeUser === "E" ? <div className="row rows">
                     <CalificationFormStudent data={data} setData={setData} notgrabado={false}/>
                 </div> : <div></div>}
 
-                {typeUser === "C" ? <div className="row rows" >
+                {typeUser === "E" ? <div className="row rows" >
                 <div className="col-sm-2 subtitles">
                 </div>
                 <div className="col-sm-4 botons">

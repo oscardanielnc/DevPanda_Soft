@@ -1,6 +1,6 @@
 import React, {useState}  from "react";
 import { Button, Table,Form,InputGroup,FormControl } from 'react-bootstrap';
-
+import {numberValidation} from "../../utils/formValidation";
 import './AboutCompany.scss';
 
 
@@ -8,13 +8,25 @@ export default function AboutCompany ({data, setData, notgrabado}) {
     const {aboutCompany} = data;
 
     const handleChangeText = (e) => {
-        setData({
-            ...data,
-            aboutCompany: {
-                ...data.aboutCompany,
-                [e.target.name]: e.target.value
+        if(e.target.name==="ruc"){
+            if(numberValidation(e.target)){
+                setData({
+                    ...data,
+                    aboutCompany: {
+                        ...data.aboutCompany,
+                        [e.target.name]: e.target.value
+                    }
+                })
             }
-        })
+        }else{
+            setData({
+                ...data,
+                aboutCompany: {
+                    ...data.aboutCompany,
+                    [e.target.name]: e.target.value
+                }
+            })
+        }
     }
     const handleChangeCheck = (e) => {
         if(data.aboutCompany.isNational===true){

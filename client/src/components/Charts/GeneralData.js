@@ -10,6 +10,25 @@ export default function GeneralData ({data, setData, imStudent=true,isSaved}) {
     const handleChange = (e) => {
         if(e.target.name==="personalEmail"){
             if(emailValidation(e.target)){
+                e.target.classList.add("success");
+            }else{
+                e.target.classList.add("error");
+            }
+            setData({
+                ...data,
+                generalData: {
+                    ...data.generalData,
+                    [e.target.name]: e.target.value
+                }
+            })
+            
+        }else{
+            if(e.target.name==="cellphone"){
+                if(numberValidation(e.target) && e.target.value.length===9){
+                    e.target.classList.add("success");
+                } else {
+                    e.target.classList.add("error");
+                }
                 setData({
                     ...data,
                     generalData: {
@@ -17,18 +36,6 @@ export default function GeneralData ({data, setData, imStudent=true,isSaved}) {
                         [e.target.name]: e.target.value
                     }
                 })
-            }
-        }else{
-            if(e.target.name==="cellphone"){
-                if(numberValidation(e.target) && maxLengthValidation(e.target,9)){
-                    setData({
-                        ...data,
-                        generalData: {
-                            ...data.generalData,
-                            [e.target.name]: e.target.value
-                        }
-                    })
-                }
             }else{
                 setData({
                     ...data,

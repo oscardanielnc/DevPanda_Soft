@@ -22,7 +22,8 @@ export function emailValidation(inputData) {
 
     removeClassErrorSuccess(inputData)
 
-    const resultValidation = emailValid.test(value) //para esta RegularExp, esta cadena cumple?
+    const resultValidation = emailValid.test(value); //para esta RegularExp, esta cadena cumple?´
+    console.log(resultValidation)
     if(resultValidation) {
         inputData.classList.add('success')
         return true
