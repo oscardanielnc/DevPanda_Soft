@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { specialtySelectAllApi } from "../api/specialty";
 import TableRegistrationForm from "../components/Tables/TableRegistrationForm";
 import LayoutBasic from "../layouts/LayoutCoordFACI";
@@ -87,6 +87,7 @@ let textSelect = "-1"
 
 
 export default function ListRegistrationForm () {
+    const {idSup} =useParams()
     
     const [alumnos, setAlumnos] = useState([]);
     const [filteredData, setFilteredData] = useState(dataDummy);

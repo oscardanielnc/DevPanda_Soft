@@ -5,43 +5,14 @@ import SignIn from "../pages/SignIn";
 import SignUp from "../pages/SignUp";
 import Error404 from "../pages/Error404";
 import SupervisorSelection from "../pages/SupervisorSelection";
-import FACINavbar from "../components/navBarCoordFACI/FACINavbar";
-import StudentNavbar from "../components/navBar/StudentNavbar";
-import Agreement from "../pages/Agreement";
+import RedirectPage from "../pages/RedirectPage";
 import AgreementReview from "../pages/AgreementReview";
 import StudentAgreement from "../pages/StudentAgreement";
 import Deliverables from "../pages/Deliverables";
 import FinalReport from "../pages/FinalReport"
 import ListRegistrationForm from "../pages/ListRegistrationForm";
-const routes = [
-    {
-        path: "/",
-        exact: true,
-        component: SpecialtyManagement,
-    },
-    {  path: "/listRegistrationForm",
-        exact: true,
-        component: ListRegistrationForm},
-    {
-        path: "/add-specialty",
-        exact: true,
-        component: AddSpecialty,
-    },
-    {
-        path: "/student-registration/:idAlumno",
-        exact: true,
-        component: StudentRegistrationForm,
-    },
-    {
-        path: "/student-registration-review/:idAlumno",
-        exact: true,
-        component: StudentRegistrationForm,
-    },
-    {
-        path: "/student-agreement",
-        exact: true,
-        component: StudentAgreement,
-    },
+const routes = [ 
+    // General
     {
         path: "/sign-in",
         exact: true,
@@ -53,27 +24,59 @@ const routes = [
         component: SignUp,
     },
     {
-        path: "/agreement",
+        path: "/redirect",
         exact: true,
-        component: Agreement,
+        component: RedirectPage,
+    },
+    // Admin
+    {
+        path: "/",
+        exact: true,
+        component: SpecialtyManagement,
     },
     {
-        path: "/supervisor-selection",
+        path: "/add-specialty",
+        exact: true,
+        component: AddSpecialty,
+    },
+    // Supervisor
+    {  path: "/list-inscriptions-form/idSup=:idSup&idProcess=:idProcess",
+        exact: true,
+        component: ListRegistrationForm
+    },
+    {
+        path: "/agreement-review/idStudent=:idStudent&idProcess=:idProcess",
+        exact: true,
+        component: AgreementReview,
+    },
+    // Alumno
+    {
+        path: "/agreement/idStudent=:idStudent&idProcess=:idProcess",
+        exact: true,
+        component: StudentAgreement,
+    },
+    {
+        path: "registration/idStudent=:idStudent&idProcess=:idProcess",
+        exact: true,
+        component: Error404,
+    },
+    {
+        path: "inscription/idStudent=:idStudent&idProcess=:idProcess",
+        exact: true,
+        component: StudentRegistrationForm,
+    },
+    {
+        path: "/supervisor-selection/idStudent=:idStudent&idProcess=:idProcess",
         exact: true,
         component: SupervisorSelection,
     },
     {
-        path: "/agreement-review",
-        exact: true,
-        component: AgreementReview,
-    },
-    {
-        path: "/final-report",
+        path: "/final-report/idStudent=:idStudent&idProcess=:idProcess",
         exact: true,
         component: FinalReport,
     },
     {
-        path: "/deliverables",
+        path: "/deliverables/idStudent=:idStudent&idProcess=:idProcess",
         exact: true,
         component: Deliverables,
     },

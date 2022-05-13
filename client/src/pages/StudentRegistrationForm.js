@@ -19,6 +19,7 @@ import { getAllDocsApi,uploadDocsApi } from "../api/files";
 import ShowFiles from "../components/FileManagement/ShowFiles";
 
 import './StudentRegistrationForm.scss';
+import { useParams } from "react-router-dom";
 
 //consultar a Oscar
 const documents={
@@ -95,12 +96,13 @@ const documents={
 //     ]
 
 // }
-const arrayCadena = window.location.pathname.split("/");
-const idAlumno=parseInt(arrayCadena[2]);
+// const arrayCadena = window.location.pathname.split("/");
+// const idAlumno=parseInt(arrayCadena[2]);
 const maxFiles = 4;
 
 export default function StudentRegistrationForm () {
     const {user} = useAuth();
+    const idAlumno= useParams().idStudent
     const [data, setData] = useState({});
     const [fileList, setFileList] = useState([])
     const [docs, setDocs] = useState([]);

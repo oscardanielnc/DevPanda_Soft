@@ -10,18 +10,18 @@ import PicLogoPucp from "../asserts/img/svg/PicLogoPucpJunto.svg";
 
 import './SignIn.scss';
 import { signInApi } from "../api/auth";
+import useAuth from "../hooks/useAuth";
 
 
 export default function SignIn (){
     
     const responseGoogle = async (response) => {
-        console.log(response)
         const result = await signInApi(response.profileObj.email)
 
         if(result.success) {
             const {accessToken} = result;
             localStorage.setItem("ACCESS_TOKEN", accessToken)
-            window.location.href = "/"
+            window.location.href = "/redirect"
         } else {
             toast.error(result.message, {
                 position: "top-right",
