@@ -37,7 +37,7 @@ function uploadDocs(req, res) {
 
         for (const doc in files) {
             const objDoc = files[doc];
-            const docPathName = objDoc.path.split("\\")[2];
+            const docPathName = objDoc.path.split("/")[2];
             const docOriginalName = objDoc.originalFilename;
 
             const sqlObj = {
@@ -109,7 +109,7 @@ function getDoc(req, res) {
 
 function checkCorrectDocument(objDoc, exts) {
     let filePath = objDoc.path;
-    let fileSplit = filePath.split("\\");
+    let fileSplit = filePath.split("/");
     let fileName = fileSplit[2];
 
     let extSplit = fileName.split(".");
