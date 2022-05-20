@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { NavItem,Button, ProgressBar } from 'react-bootstrap';
-import { Link,NavLink } from 'react-router-dom';
+import React from 'react';
+import { Button, ProgressBar } from 'react-bootstrap';
+import { NavLink } from 'react-router-dom';
 import './StudentNavbar.scss';
 import useAuth from "../../hooks/useAuth"
 
@@ -12,7 +12,6 @@ const offsets =[-380,-160,-70,-30,0,20,32]
 
 function StudentNavbar (props){
     const {user} = useAuth()
-    // console.log(user)
     const dataNavbar = [
         {
             title: "Convenio y Plan de Aprendizaje",
@@ -38,13 +37,11 @@ function StudentNavbar (props){
     
     const transformText = "rotate(90deg) scaleY(.4) scaleX(" + (0.25 + 0.2*(dataNavbar.length-2)) + ") translateX(" + offsets[dataNavbar.length-2] + "px)" 
     const linkProgreso = "/student-registration/" + user.idPersona
-    // if(!user) return ""
-    const [progreso, setProgreso] = useState(user.estadoProceso)
     return(
         
     <div className="studentNavBar">
         {<ProgressBar className= "studentNavBar__progressbar" 
-            now={(100*progreso/(dataNavbar.length-1))} 
+            now={(100*user.estadoProceso/(dataNavbar.length-1))} 
             variant="success"
             style={{transform: transformText}}
         />}
@@ -64,7 +61,7 @@ function StudentNavbar (props){
                 return (
                     <NavLink key = {key}
                         to = {val.link}
-                        className = {`dataRow ${(progreso>key)? "active": ((window.location.pathname=== val.link) )? "current": ((window.location.pathname=== linkProgreso) )? "current" : '' }`}
+                        className = {`dataRow ${(user.estadoProceso>key)? "active": ((window.location.pathname=== val.link) )? "current": ((window.location.pathname=== linkProgreso) )? "current" : '' }`}
                         >
                         <span className='icono'>
                             <i className="bi bi-check"></i>

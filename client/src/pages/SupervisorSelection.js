@@ -1,17 +1,13 @@
 import React, {useState,useEffect} from "react";
 import LayoutBasic from "../layouts/LayoutBasic";
-import {Form} from 'react-bootstrap';
-import { Link } from "react-router-dom";
-import ToastPanda from "../components/Toast/ToastPanda";
 import SupervisorSelector from "../components/ImageSelector/SupervisorSelector"
-import { Image } from "react-bootstrap";
 import './SupervisorSelection.scss';
 import Timetable from "../components/Timetable/Timetable";
 import { Button } from "react-bootstrap";
 import {changeOneHourSchedule, getSupervisorScheduleApi, searchAssessorsBySpecialty} from "../api/schedule"
 import useAuth from "../hooks/useAuth";
 import {ToastContainer, toast} from "react-toastify";
-import ModalBasic from "../components/Modals/ModalBasic"
+import { isNotEmptyObj } from "../utils/objects";
 
 // const supervisoresDummy = [
 //     {
@@ -45,16 +41,19 @@ import ModalBasic from "../components/Modals/ModalBasic"
 // ]
 
 export default function SupervisorSelection () {
-    const {user} = useAuth()
+    const {user} = useAuth();
     const [supervisores, setSupervisores] = useState([]);
-    const [schedule, setSchedule] = useState([])
-    const [hourSelecteds, setHourSelecteds] = useState([])
+    const [schedule, setSchedule] = useState([]);
+    const [hourSelecteds, setHourSelecteds] = useState([]);
+
     useEffect(() => {
-          searchAssessorsBySpecialty(user.fidEspecialidad).then(response => {
-              if(response.success) {
-                  setSupervisores(response.supervisors);
-              }
-          })
+        const fetchRequest = async () => {
+            const result = await searchAssessorsBySpecialty(user.fidEspecialidad);
+            if(result.success) {
+                setSupervisores(result.supervisors);
+            }
+        }
+        fetchRequest()
      }, [setSupervisores])
 
     const getSchedule = (idSup) => {
@@ -71,7 +70,7 @@ export default function SupervisorSelection () {
             const newHours = day.hours.map((h, i) => {
                     if(index===indexDay && i===indexHour && hour.state===2) {
                         const newH = {
-                            state: 3, // idAlumno
+                            state: 3,
                             idAlumno: hour.idAlumno,
                             id: hour.id
                         }
@@ -79,7 +78,7 @@ export default function SupervisorSelection () {
                         return newH
                     }
                     else if (h.state===3) return {
-                        state: 2, //
+                        state: 2,
                         idAlumno: hour.idAlumno,
                         id: h.id
                     }
@@ -98,27 +97,29 @@ export default function SupervisorSelection () {
         
         setSchedule(newSchude)
     }
-    const isSomeHourSelected = () => {
-        let isSelected = false
-        schedule.forEach(day => {
-            day.hours.forEach(hour => {
-                if(hour.state===3) isSelected = true
-            })
-        })
-        return isSelected
-    }
+    // const isSomeHourSelected = () => {
+    //     let isSelected = false
+    //     schedule.forEach(day => {
+    //         day.hours.forEach(hour => {
+    //             if(hour.state===3) isSelected = true
+    //         })
+    //     })
+    //     return isSelected
+    // }
 
     const insertHorario = () => {
         if(schedule.length>0) {
-            if(isSomeHourSelected()) {
-                const params = {
-                    arrHours: [
-                        hourSelecteds[hourSelecteds.length-1]
-                    ],
-                    idPersona: user.idPersona,
-                    isStudent: true
-                }
-                changeOneHourSchedule(params).then(response => {
+            const hourInArr = hourSelecteds[0];
+            if(hourSelecteds.length>0 && isNotEmptyObj(hourInArr)) { //si exsite el estado, no es un objeto vacio
+                const arrHours = [
+                    {
+                        state: 4,
+                        id: hourInArr.id,
+                        idAlumno: user.idPersona
+                    }
+                ]
+
+                changeOneHourSchedule(arrHours).then(response => {
                     const resultState = response.success? "success": "error";
                     toast[resultState](response.msg, {
                         position: "top-right",
