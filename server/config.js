@@ -1,6 +1,7 @@
 const API_VERSION = "v1";
-const IP_SERVER = "52.54.42.131";
-const PORT_SERVER = process.env.PORT || 8080;
+// const IP_SERVER = "52.54.42.131"; //old
+const IP_SERVER = "107.21.228.237";
+const PORT_SERVER = process.env.PORT || 8080; 
 // const PORT_SERVER = process.env.PORT || 3977;
 const PANDA_KEY = "pandita69";
 
