@@ -1,32 +1,30 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
+import useAuth from '../../hooks/useAuth';
 import './FACINavbar.scss';
 
-const dataNavbar = [
-    {
-        title: "Revisión de Convenio y Plan de Aprendizaje",
-        link: "/agreement-review"
-    },
-    {
-        title: "Gestión de Especialidades",
-        link: "/"
-    },
-    {
-        title: "Revisión Ficha de Inscripción",
-        link: "/listRegistrationForm"
-    },
-    {
-        title: "Añadir especialidad",
-        link: "/add-specialty"
-    },
-    {
-        title: "Entregables - Alumno",
-        link: "/deliverables"
-    }
 
-]
 
 export default function(){
+    const {user} = useAuth()
+    const dataNavbar = [
+        {
+            title: "Revisión de Convenio y Plan de Aprendizaje",
+            link: `/agreement-review/idStudent=${5}&idProcess=${user.fidProceso}`
+        },
+        {
+            title: "Revisión Ficha de Inscripción",
+            link: `/list-inscriptions-form/idSup=${user.idPersona}&idProcess=${user.fidProceso}`
+        },
+        {
+            title: "Gestión de Especialidades (Admin)",
+            link: "/"
+        },
+        {
+            title: "Añadir especialidad (Admin)",
+            link: "/add-specialty"
+        }
+    ]
     return(
         <div className="FACINavBar">
             <nav>

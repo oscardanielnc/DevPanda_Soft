@@ -1,60 +1,59 @@
 import React, {useState,useEffect} from "react";
 import LayoutBasic from "../layouts/LayoutBasic";
-import {Form} from 'react-bootstrap';
-import { Link } from "react-router-dom";
-import ToastPanda from "../components/Toast/ToastPanda";
 import SupervisorSelector from "../components/ImageSelector/SupervisorSelector"
-import { Image } from "react-bootstrap";
 import './SupervisorSelection.scss';
 import Timetable from "../components/Timetable/Timetable";
 import { Button } from "react-bootstrap";
 import {changeOneHourSchedule, getSupervisorScheduleApi, searchAssessorsBySpecialty} from "../api/schedule"
 import useAuth from "../hooks/useAuth";
 import {ToastContainer, toast} from "react-toastify";
-import ModalBasic from "../components/Modals/ModalBasic"
+import { isNotEmptyObj } from "../utils/objects";
 
-const supervisoresDummy = [
-    {
-        id:1,
-        name: "Javier Palacios",
-        idfacultad:"informatica",
-        isSelected: true,
-        isMySupervisor: false
-    },
-    {
-        id:2,
-        name: "Luis Flores",
-        idfacultad:"informatica",
-        isSelected: false,
-        isMySupervisor: false
-    },
-    {
-        id:3,
-        name: "Andres Melgar",
-        idfacultad:"informatica",
-        isSelected: false,
-        isMySupervisor: false
-    },
-    {
-        id:4,
-        name:"Pedro Castillo",
-        idfacultad:"informatica",
-        isSelected: false,
-        isMySupervisor: false
-    }
-]
+// const supervisoresDummy = [
+//     {
+//         id:1,
+//         name: "Javier Palacios",
+//         idfacultad:"informatica",
+//         isSelected: true,
+//         isMySupervisor: false
+//     },
+//     {
+//         id:2,
+//         name: "Luis Flores",
+//         idfacultad:"informatica",
+//         isSelected: false,
+//         isMySupervisor: false
+//     },
+//     {
+//         id:3,
+//         name: "Andres Melgar",
+//         idfacultad:"informatica",
+//         isSelected: false,
+//         isMySupervisor: false
+//     },
+//     {
+//         id:4,
+//         name:"Pedro Castillo",
+//         idfacultad:"informatica",
+//         isSelected: false,
+//         isMySupervisor: false
+//     }
+// ]
 
 export default function SupervisorSelection () {
-    const {user} = useAuth()
+    const {user} = useAuth();
     const [supervisores, setSupervisores] = useState([]);
-    const [schedule, setSchedule] = useState([])
-    const [hourSelecteds, setHourSelecteds] = useState([])
+    const [schedule, setSchedule] = useState([]);
+    const [hourSelecteds, setHourSelecteds] = useState([]);
+
     useEffect(() => {
-          searchAssessorsBySpecialty(user.fidEspecialidad).then(response => {
-              if(response.success) {
-                  setSupervisores(response.supervisors);
-              }
-          })
+        const fetchRequest = async () => {
+            const result = await searchAssessorsBySpecialty(user.fidEspecialidad);
+            if(result.success) {
+                setSupervisores(result.supervisors);
+            }
+        }
+        fetchRequest()
      }, [setSupervisores])
 
     const getSchedule = (idSup) => {
@@ -64,27 +63,63 @@ export default function SupervisorSelection () {
             }
         })
     }
-    const isSomeHourSelected = () => {
-        let isSelected = false
-        schedule.forEach(day => {
-            day.hours.forEach(hour => {
-                if(hour.state===3) isSelected = true
-            })
+    console.log(hourSelecteds)
+    const handleClickCell = (hour, indexDay, indexHour) => {
+        let newHourClicked = {}
+        const newSchude = schedule.map((day, index) => {
+            const newHours = day.hours.map((h, i) => {
+                    if(index===indexDay && i===indexHour && hour.state===2) {
+                        const newH = {
+                            state: 3,
+                            idAlumno: hour.idAlumno,
+                            id: hour.id
+                        }
+                        newHourClicked = newH
+                        return newH
+                    }
+                    else if (h.state===3) return {
+                        state: 2,
+                        idAlumno: hour.idAlumno,
+                        id: h.id
+                    }
+                    return h
+                })
+            return {
+                day: day.day,
+                date: day.date,
+                hours: newHours
+            }
         })
-        return isSelected
+        setHourSelecteds([
+            // ...hourSelecteds,
+            newHourClicked
+        ])
+        
+        setSchedule(newSchude)
     }
+    // const isSomeHourSelected = () => {
+    //     let isSelected = false
+    //     schedule.forEach(day => {
+    //         day.hours.forEach(hour => {
+    //             if(hour.state===3) isSelected = true
+    //         })
+    //     })
+    //     return isSelected
+    // }
 
     const insertHorario = () => {
         if(schedule.length>0) {
-            if(isSomeHourSelected()) {
-                const params = {
-                    arrHours: [
-                        hourSelecteds[hourSelecteds.length-1]
-                    ],
-                    idPersona: user.idPersona,
-                    isStudent: true
-                }
-                changeOneHourSchedule(params).then(response => {
+            const hourInArr = hourSelecteds[0];
+            if(hourSelecteds.length>0 && isNotEmptyObj(hourInArr)) { //si exsite el estado, no es un objeto vacio
+                const arrHours = [
+                    {
+                        state: 4,
+                        id: hourInArr.id,
+                        idAlumno: user.idPersona
+                    }
+                ]
+
+                changeOneHourSchedule(arrHours).then(response => {
                     const resultState = response.success? "success": "error";
                     toast[resultState](response.msg, {
                         position: "top-right",
@@ -136,7 +171,10 @@ export default function SupervisorSelection () {
                     <SupervisorSelector supervisores={supervisores} setSupervisores={setSupervisores} getSchedule={getSchedule}/>
                 </div>
                 <div className="row rows">
-                    <Timetable inputs={schedule} setInputs={setSchedule} setHourSelecteds={setHourSelecteds} hourSelecteds={hourSelecteds}/>
+                    <Timetable inputs={schedule} setInputs={setSchedule} 
+                        setHourSelecteds={setHourSelecteds} 
+                        hourSelecteds={hourSelecteds} handleClickCell={handleClickCell}
+                        />
                 </div>
                 <div className="row rows boton">
                     <Button className="btn btn-primary" style={{width:"40%"}} onClick={insertHorario}>Agendar</Button>
