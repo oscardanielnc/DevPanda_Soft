@@ -12,7 +12,7 @@ const offsets =[-380,-160,-70,-30,0,20,32]
 
 function StudentNavbar (props){
     const {user} = useAuth()
-    console.log(user)
+    // console.log(user)
     const dataNavbar = [
         {
             title: "Convenio y Plan de Aprendizaje",

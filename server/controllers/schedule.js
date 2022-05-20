@@ -91,6 +91,7 @@ function getSupervisorSchedule(req, res) {
                 for(let j=0; j<14; j++) {
                     const dat = {
                         state: dataOrdered[i*14 + j].estado,
+                        idAlumno: dataOrdered[i*14 + j].idAlumno,
                         id: dataOrdered[i*14 + j].idHorario
                     }
                     newDay.hours.push(dat)

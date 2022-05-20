@@ -13,36 +13,36 @@ import useAuth from "../hooks/useAuth";
 import {ToastContainer, toast} from "react-toastify";
 import ModalBasic from "../components/Modals/ModalBasic"
 
-const supervisoresDummy = [
-    {
-        id:1,
-        name: "Javier Palacios",
-        idfacultad:"informatica",
-        isSelected: true,
-        isMySupervisor: false
-    },
-    {
-        id:2,
-        name: "Luis Flores",
-        idfacultad:"informatica",
-        isSelected: false,
-        isMySupervisor: false
-    },
-    {
-        id:3,
-        name: "Andres Melgar",
-        idfacultad:"informatica",
-        isSelected: false,
-        isMySupervisor: false
-    },
-    {
-        id:4,
-        name:"Pedro Castillo",
-        idfacultad:"informatica",
-        isSelected: false,
-        isMySupervisor: false
-    }
-]
+// const supervisoresDummy = [
+//     {
+//         id:1,
+//         name: "Javier Palacios",
+//         idfacultad:"informatica",
+//         isSelected: true,
+//         isMySupervisor: false
+//     },
+//     {
+//         id:2,
+//         name: "Luis Flores",
+//         idfacultad:"informatica",
+//         isSelected: false,
+//         isMySupervisor: false
+//     },
+//     {
+//         id:3,
+//         name: "Andres Melgar",
+//         idfacultad:"informatica",
+//         isSelected: false,
+//         isMySupervisor: false
+//     },
+//     {
+//         id:4,
+//         name:"Pedro Castillo",
+//         idfacultad:"informatica",
+//         isSelected: false,
+//         isMySupervisor: false
+//     }
+// ]
 
 export default function SupervisorSelection () {
     const {user} = useAuth()
@@ -63,6 +63,40 @@ export default function SupervisorSelection () {
                 setSchedule(response.schedule)
             }
         })
+    }
+    console.log(hourSelecteds)
+    const handleClickCell = (hour, indexDay, indexHour) => {
+        let newHourClicked = {}
+        const newSchude = schedule.map((day, index) => {
+            const newHours = day.hours.map((h, i) => {
+                    if(index===indexDay && i===indexHour && hour.state===2) {
+                        const newH = {
+                            state: 3, // idAlumno
+                            idAlumno: hour.idAlumno,
+                            id: hour.id
+                        }
+                        newHourClicked = newH
+                        return newH
+                    }
+                    else if (h.state===3) return {
+                        state: 2, //
+                        idAlumno: hour.idAlumno,
+                        id: h.id
+                    }
+                    return h
+                })
+            return {
+                day: day.day,
+                date: day.date,
+                hours: newHours
+            }
+        })
+        setHourSelecteds([
+            // ...hourSelecteds,
+            newHourClicked
+        ])
+        
+        setSchedule(newSchude)
     }
     const isSomeHourSelected = () => {
         let isSelected = false
@@ -136,7 +170,10 @@ export default function SupervisorSelection () {
                     <SupervisorSelector supervisores={supervisores} setSupervisores={setSupervisores} getSchedule={getSchedule}/>
                 </div>
                 <div className="row rows">
-                    <Timetable inputs={schedule} setInputs={setSchedule} setHourSelecteds={setHourSelecteds} hourSelecteds={hourSelecteds}/>
+                    <Timetable inputs={schedule} setInputs={setSchedule} 
+                        setHourSelecteds={setHourSelecteds} 
+                        hourSelecteds={hourSelecteds} handleClickCell={handleClickCell}
+                        />
                 </div>
                 <div className="row rows boton">
                     <Button className="btn btn-primary" style={{width:"40%"}} onClick={insertHorario}>Agendar</Button>
