@@ -26,88 +26,87 @@ const documents={
 
 }
 
-// const dataDummy = {
-//     "idAlumno": 1,
-//     "idAlumnoProceso": 1,
-//     "idFicha": 9,
-//     "documentsState": "Sin entregar",
-//     "approvalState": "Desaprobado",
-//     "generalData": {
-//         "name": "Oscar Daniel",
-//         "lastname": "Navarro Cieza",
-//         "code": "20186008",
-//         "email": "oscar.navarro@pucp.edu.pe",
-//         "cellphone": 929178606,
-//         "personalEmail": "oscar@prueba.com",
-//     },
-//     "aboutCompany": {
-//         "isNational": true,
-//         "ruc": "1234567890",
-//         "info": "Este es un texto largo de prueba",
-//         "foreignName": "",
-//         "foreignCountry":"",
-//         "foreingLineBusiness":""
-//     },
-//     "aboutJob": {
-//         "areaName": "TI",
-//         "jobTitle": "Analista de información",
-//         "activities": "Recopilar información de las base de datos y generar reportes"
-//     },
-//     "aboutPSP": {
-//         "dateStart":"",
-//         "dateEnd":"",
-//         "dailyHours": 6,
-//         "weekHours": 30
-//     },
-//     "aboutBoss": {
-//         "name":"Hugo Carlos",
-//         "area":"TI",
-//         "email":"hugoCar1548@gmail.com",
-//         "cellphone":"9856875564"
-//     },
-//     "calification": {
-//         "comments":"Buen trabajo"
-//     },
-//     "others": [
-//         {
-//             "idCampoProceso":28,
-//             "idCampoLlenado":7,
-//             "nombreCampo":"Pais",
-//             "seccion": "Sobre la PSP",
-//             "flag": "obligatorio",
-//             "valorAlumno": 'AA'
-//         },
-//         {
-//             "idCampoProceso":29,
-//             "idCampoLlenado":9,
-//             "nombreCampo": "Giro",
-//             "seccion": "Sobre el jefe",
-//             "flag": "opcional",
-//             "valorAlumno": "Electrodomésticos"
-//         },
-//         {
-//             "idCampoProceso":30,
-//             "idCampoLlenado":10,
-//             "nombreCampo": "nuevodato",
-//             "seccion": "Sobre el jefe",
-//             "flag": "opcional",
-//             "valorAlumno": "xxxxx"
-//         }
-//     ]
+ const dataDummy = {
+     "idAlumno": 1,
+     "idAlumnoProceso": 1,
+     "idFicha": 9,
+     "documentsState": "Sin entregar",
+     "approvalState": "Desaprobado",
+     "generalData": {
+         "name": "Oscar Daniel",
+         "lastname": "Navarro Cieza",
+         "code": "20186008",
+         "email": "oscar.navarro@pucp.edu.pe",
+         "cellphone": 929178606,
+         "personalEmail": "oscar@prueba.com",
+     },
+     "aboutCompany": {
+         "isNational": true,
+         "ruc": "1234567890",
+         "companyName": "Empresa SAC",
+         "foreignCountry":2,
+         "foreingLineBusiness":"",
+          "companyAddress":""
+     },
+     "aboutJob": {
+         "areaName": "TI",
+         "jobTitle": "Analista de información",
+         "activities": "Recopilar información de las base de datos y generar reportes"
+     },
+     "aboutPSP": {
+         "dateStart":"",
+         "dateEnd":"",
+         "dailyHours": 6,
+         "weekHours": 30
+     },
+     "aboutBoss": {//         "name":"Hugo Carlos",
+         "area":"TI",
+         "email":"hugoCar1548@gmail.com",
+         "cellphone":"9856875564"
+     },
+     "calification": {
+         "comments":"Buen trabajo"
+     },
+     "others": [
+         {
+             "idCampoProceso":28,
+             "idCampoLlenado":7,
+             "nombreCampo":"Pais",
+             "seccion": "Sobre la PSP",
+             "flag": "obligatorio",
+             "valorAlumno": 'AA'
+         },
+         {
+             "idCampoProceso":29,
+             "idCampoLlenado":9,
+             "nombreCampo": "Giro",
+             "seccion": "Sobre el jefe",
+             "flag": "opcional",
+             "valorAlumno": "Electrodomésticos"
+         },
+         {
+             "idCampoProceso":30,
+             "idCampoLlenado":10,
+             "nombreCampo": "nuevodato",
+             "seccion": "Sobre el jefe",
+             "flag": "opcional",
+             "valorAlumno": "xxxxx"
+         }
+     ]
 
-// }
+}
 
 const paisesDummy=[
     {
-        "idPais":1,
+        "idCountry":1,
         "name":"Perú"
     },
     {
-        "idPais":2,
+        "idCountry":2,
         "name":"Argentina"
     },
     {
-        "idPais":3,
+        "idCountry":3,
         "name":"Bolivia"
     }
 
@@ -136,9 +135,12 @@ const maxFiles = 4;
 export default function StudentRegistrationForm () {
     const {user} = useAuth();
     const idAlumno= useParams().idStudent
-    const [data, setData] = useState({});
-    const [countries,setCountries]=useState({});
-    const [lineBusiness,setLineBusiness]=useState({});
+    //const [data, setData] = useState({});
+    const [data, setData] = useState(dataDummy);
+    //const [countries,setCountries]=useState({});
+    const [countries,setCountries]=useState(paisesDummy);
+    //const [lineBusiness,setLineBusiness]=useState({});
+    const [lineBusiness,setLineBusiness]=useState(lineBussinessDummy);
     const [fileList, setFileList] = useState([])
     const [docs, setDocs] = useState([]);
     const [studentDocs, setStudentDocs] = useState([]);
@@ -151,6 +153,7 @@ export default function StudentRegistrationForm () {
     if(isNaN(idAlumno)) window.location.reload();
 
     console.log("El idAlumno es: ",idAlumno);
+    /*
     useEffect(()=> {
         getstudentInscriptionForm(idAlumno).then(response => {
             const resData = response.infoFicha.infoFicha;
@@ -195,7 +198,7 @@ export default function StudentRegistrationForm () {
         //    }
         //})
         
-    }, [setData])
+    }, [setData])*/
     //sacamos los documentos subidos por el encargado
     useEffect(() => {
         getAllDocsApi(`1-${user.fidEspecialidad}-RFOR`, 0).then(response => {

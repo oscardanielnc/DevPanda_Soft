@@ -42,8 +42,7 @@ export default function AboutCompany ({data, setData, notgrabado,countries,lineB
             const newData = {
                 ...data,
                 aboutCompany: {
-                    isNational: !data.aboutCompany.isNational,
-                    companyCountry:"Perú"
+                    isNational: !data.aboutCompany.isNational
                 }
             }
             setData(newData);
@@ -69,7 +68,51 @@ export default function AboutCompany ({data, setData, notgrabado,countries,lineB
             others: newOthers
         })
     }
-
+    
+    const handleChangeCountry = (e) => {
+        console.log("Change en country: ",e);
+        /*const newOthers = data.others.map(elem => {
+            if(elem.nombreCampo === e.target.name)
+                return {
+                    idCampoProceso:elem.idCampoProceso,
+                    idCampoLlenado:elem.idCampoLlenado,
+                    nombreCampo: e.target.name,
+                    seccion: "Sobre la empresa",
+                    flag: elem.flag,
+                    valorAlumno: e.target.value   
+                }
+            return elem;
+        })
+        setData({
+            ...data,
+            others: newOthers
+        })*/
+    }
+    
+    const handleChangeLine = (e) => {
+        console.log("Change en lineBussinnes: ",e);
+        /*const newOthers = data.others.map(elem => {
+            if(elem.nombreCampo === e.target.name)
+                return {
+                    idCampoProceso:elem.idCampoProceso,
+                    idCampoLlenado:elem.idCampoLlenado,
+                    nombreCampo: e.target.name,
+                    seccion: "Sobre la empresa",
+                    flag: elem.flag,
+                    valorAlumno: e.target.value   
+                }
+            return elem;
+        })
+        setData({
+            ...data,
+            others: newOthers
+        })*/
+    }
+    console.log("El data es: ",data );
+    let indexCountry=(data.aboutCompany.foreignCountry!==null || data.aboutCompany.foreignCountry!=="")?data.aboutCompany.foreignCountry:-1;
+    let indexLine=(data.aboutCompany.foreingLineBusiness!==null || data.aboutCompany.foreingLineBusiness!=="")?data.aboutCompany.foreingLineBusiness:-1;
+    console.log("El indexCountry es: ",indexCountry);
+    console.log("El indexLine es: ",indexLine);
     return (
         aboutCompany &&
             <div className="container chartSobreEmpresa">
@@ -110,7 +153,7 @@ export default function AboutCompany ({data, setData, notgrabado,countries,lineB
                 </div>
             </div>
             <div className="row rows" >
-                <div style={{"marginTop":"5px",fontWeight: "700"}}>Empresa Nacional</div>
+                <div style={{"marginTop":"5px"}}>Empresa Nacional</div>
             </div>
             <div className="row rows" >
                 <div className="col-sm-1 subtitles">
@@ -126,7 +169,7 @@ export default function AboutCompany ({data, setData, notgrabado,countries,lineB
                 </div>
             </div>
             <div className="row rows" >
-                <div style={{fontWeight: "700"}}>Nombre de Empresa</div>
+                <div >Nombre de Empresa</div>
             </div>
             <div className="row rows" >
                 <Form.Control placeholder="Escriba el nombre de la empresa" 
@@ -137,31 +180,32 @@ export default function AboutCompany ({data, setData, notgrabado,countries,lineB
                         style={{"marginBottom":"10px !important"}}/>
             </div>
             <div className="row rows">
-                <div className="col-sm-6 subtitles">
+                <div className="col-sm-5 subtitles">
                     <div>País</div>
-                    <DropdownButton id="dropdown-basic-button" title="Dropdown button">
+                    <Form.Select className="select" name="foreignCountry" disabled={notgrabado} onChange={handleChangeCountry} defaultValue={indexCountry}>
+                        <option select value={indexCountry}>Seleccionar</option>
                         {
-                            countries.map((e,index) => {
-                                return (
-                                    <Dropdown.Item key={e.target.idCountry}>e.target.name</Dropdown.Item>
-                                    
-                                )
-                            })
+                            countries.map((element, index) => (
+                                <option value={element.idCountry} 
+                                    key={element.idCountry}>{element.name}
+                                </option>
+                            ))
                         }
-                    </DropdownButton>
+                    </Form.Select>
                 </div>
-                <div className="col-sm-6 subtitles">
+                <div className="col-sm-2 subtitles"></div>
+                <div className="col-sm-5 subtitles">
                     <div>Giro de la empresa</div>
-                    <DropdownButton id="dropdown-basic-button" title="Dropdown button">
+                    <Form.Select className="select"  name="foreingLineBusiness" disabled={notgrabado} onChange={handleChangeLine}>
+                        <option value={indexLine}>Seleccionar</option>
                         {
-                            lineBusiness.map((e,index) => {
-                                return (
-                                    <Dropdown.Item key={e.target.idLineBussiness}>e.target.name</Dropdown.Item>
-                                    
-                                )
-                            })
+                            lineBusiness.map((element, index) => (
+                                <option value={element.name} 
+                                    key={element.idLineBussiness}>{element.name}
+                                </option>
+                            ))
                         }
-                    </DropdownButton>
+                    </Form.Select>
                 </div>
                 {/*<div className="col-sm-6 subtitles">
                     <div>País</div>
@@ -179,6 +223,9 @@ export default function AboutCompany ({data, setData, notgrabado,countries,lineB
                         value={aboutCompany.companyLineBusiness}
                         name="companyLineBusiness"/>
                 </div>*/}
+            </div>
+            <div className="row rows" >
+                <div>Dirección de la empresa</div>
             </div>
             <div className="row rows" >
                 <Form.Control placeholder="Escriba la dirección de la empresa" 
