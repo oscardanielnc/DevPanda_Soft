@@ -1,15 +1,15 @@
 import React, {useState}  from "react";
-import { Button, Table,Form,InputGroup,FormControl } from 'react-bootstrap';
-import {numberValidation} from "../../utils/formValidation";
+import { Button, Table,Form,InputGroup,FormControl,DropdownButton,Dropdown } from 'react-bootstrap';
+import {numberValidation,maxLengthValidation} from "../../utils/formValidation";
 import './AboutCompany.scss';
 
 
-export default function AboutCompany ({data, setData, notgrabado}) {
+export default function AboutCompany ({data, setData, notgrabado,countries,lineBusiness}) {
     const {aboutCompany} = data;
 
     const handleChangeText = (e) => {
         if(e.target.name==="ruc"){
-            if(numberValidation(e.target)){
+            if(numberValidation(e.target) && maxLengthValidation(e.target,11)){
                 setData({
                     ...data,
                     aboutCompany: {
@@ -34,8 +34,7 @@ export default function AboutCompany ({data, setData, notgrabado}) {
                 ...data,
                 aboutCompany: {
                     isNational: !data.aboutCompany.isNational,
-                    ruc:"",
-                    info:""
+                    ruc:""
                 }
             }
             setData(newData);
@@ -44,9 +43,7 @@ export default function AboutCompany ({data, setData, notgrabado}) {
                 ...data,
                 aboutCompany: {
                     isNational: !data.aboutCompany.isNational,
-                    foreignName:"",
-                    foreignCountry:"",
-                    foreignLineBusiness:""
+                    companyCountry:"Perú"
                 }
             }
             setData(newData);
@@ -127,47 +124,69 @@ export default function AboutCompany ({data, setData, notgrabado}) {
                         name="ruc"
                         style={{"marginBottom":"8px !important"}}/>
                 </div>
-                <div className="col-sm-4 subtitles">
-                    <Button variant="primary" style={{"marginBottom":"4px"}} disabled={!aboutCompany.isNational}>Buscar</Button>
-                </div>
-                <Form.Control className="Cuadro" style={{"marginLeft": "0px"}}
-                    placeholder="" 
-                    onChange={handleChangeText}
-                    disabled = {!aboutCompany.isNational || notgrabado}
-                    value={aboutCompany.info}
-                    name="info"
-                    as="textarea"
-                    rows={6}
-                    />
             </div>
             <div className="row rows" >
-                <div style={{fontWeight: "700"}}>Nombre de Empresa Extranjera</div>
+                <div style={{fontWeight: "700"}}>Nombre de Empresa</div>
             </div>
             <div className="row rows" >
                 <Form.Control placeholder="Escriba el nombre de la empresa" 
                         onChange={handleChangeText}
-                        disabled = {aboutCompany.isNational || notgrabado}
-                        value={aboutCompany.foreignName}
-                        name="foreignName"
+                        disabled = {notgrabado}
+                        value={aboutCompany.companyName}
+                        name="companyName"
                         style={{"marginBottom":"10px !important"}}/>
             </div>
             <div className="row rows">
                 <div className="col-sm-6 subtitles">
                     <div>País</div>
-                    <Form.Control placeholder="Escriba el país de la empresa extranjera" 
-                        onChange={handleChangeText}
-                        disabled={aboutCompany.isNational || notgrabado}
-                        value={aboutCompany.foreignCountry}
-                        name="foreignCountry"/>
+                    <DropdownButton id="dropdown-basic-button" title="Dropdown button">
+                        {
+                            countries.map((e,index) => {
+                                return (
+                                    <Dropdown.Item key={e.target.idCountry}>e.target.name</Dropdown.Item>
+                                    
+                                )
+                            })
+                        }
+                    </DropdownButton>
                 </div>
                 <div className="col-sm-6 subtitles">
                     <div>Giro de la empresa</div>
-                    <Form.Control placeholder="Escriba el giro de la empresa extranjera" 
-                        onChange={handleChangeText}
-                        disabled={aboutCompany.isNational || notgrabado}
-                        value={aboutCompany.foreignLineBusiness}
-                        name="foreignLineBusiness"/>
+                    <DropdownButton id="dropdown-basic-button" title="Dropdown button">
+                        {
+                            lineBusiness.map((e,index) => {
+                                return (
+                                    <Dropdown.Item key={e.target.idLineBussiness}>e.target.name</Dropdown.Item>
+                                    
+                                )
+                            })
+                        }
+                    </DropdownButton>
                 </div>
+                {/*<div className="col-sm-6 subtitles">
+                    <div>País</div>
+                    <Form.Control placeholder="Escriba el país de la empresa" 
+                        onChange={handleChangeText}
+                        disabled={notgrabado}
+                        value={aboutCompany.companyCountry}
+                        name="companyCountry"/>
+                </div>
+                <div className="col-sm-6 subtitles">
+                    <div>Giro de la empresa</div>
+                    <Form.Control placeholder="Escriba el giro de la empresa" 
+                        onChange={handleChangeText}
+                        disabled={notgrabado}
+                        value={aboutCompany.companyLineBusiness}
+                        name="companyLineBusiness"/>
+                </div>*/}
+            </div>
+            <div className="row rows" >
+                <Form.Control placeholder="Escriba la dirección de la empresa" 
+                        onChange={handleChangeText}
+                        disabled = {notgrabado}
+                        value={aboutCompany.companyAddress}
+                        name="companyAddress"
+                        style={{"marginBottom":"10px !important"}}/>
             </div>
             {
                 data.others && data.others.map((e,index) => {

@@ -95,6 +95,39 @@ const documents={
 //     ]
 
 // }
+
+const paisesDummy=[
+    {
+        "idPais":1,
+        "name":"Perú"
+    },
+    {
+        "idPais":2,
+        "name":"Argentina"
+    },
+    {
+        "idPais":3,
+        "name":"Bolivia"
+    }
+
+]
+
+const lineBussinessDummy=[
+    {
+        "idLineBussiness":1,
+        "name":"TI"
+    },
+    {
+        "idLineBussiness":2,
+        "name":"Software"
+    },
+    {
+        "idLineBussiness":3,
+        "name":"Administracion"
+    }
+
+]
+
 const arrayCadena = window.location.pathname.split("/");
 const idAlumno=parseInt(arrayCadena[2]);
 const maxFiles = 4;
@@ -102,6 +135,8 @@ const maxFiles = 4;
 export default function StudentRegistrationForm () {
     const {user} = useAuth();
     const [data, setData] = useState({});
+    const [countries,setCountries]=useState({});
+    const [lineBusiness,setLineBusiness]=useState({});
     const [fileList, setFileList] = useState([])
     const [docs, setDocs] = useState([]);
     const [studentDocs, setStudentDocs] = useState([]);
@@ -145,6 +180,18 @@ export default function StudentRegistrationForm () {
                     setData(resData);
             }
         })
+        //getCountries().then(response=>{
+        //    const countriesData = response.paises.paises;
+        //    if(response.success===true) {
+        //    setCountries(countriesData);
+        //    }
+        //})
+        //getLineBussiness().then(response=>{
+        //    const lineData = response.lineBusiness.lineBusiness;
+        //    if(response.success===true) {
+        //    setLineBusiness(lineData);
+        //    }
+        //})
         
     }, [setData])
     //sacamos los documentos subidos por el encargado
@@ -197,7 +244,8 @@ export default function StudentRegistrationForm () {
         const newData = {
             ...data,
             documentsState: "Entregado",
-            approvalState: "Sin calificar"
+            approvalState: "Sin calificar",
+            // dateModified:new Date()
         }
         const response = await registrationUpdateApiStudentCamps(newData);
         if(!response.success){
@@ -217,6 +265,7 @@ export default function StudentRegistrationForm () {
                 idFicha: data.idFicha,
                 documentsState: "Sin entregar",
                 approvalState: "Sin entregar",
+               // dateModified:data.dateModified,
                 generalData: data.generalData,
                 aboutCompany: data.aboutCompany,
                 aboutJob:data.aboutJob,
@@ -274,8 +323,11 @@ export default function StudentRegistrationForm () {
     const insertCoordinator = async e => {
         e.preventDefault();
         let response=null;
-        
-        response = await registrationUpdateApiStudent(data);
+        const newData = {
+            ...data,
+            // dateModified:new Date()
+        }
+        response = await registrationUpdateApiStudent(newData);
         if(!response.success){
             toast.error(response.msg, {
                 position: "top-right",
@@ -297,6 +349,7 @@ export default function StudentRegistrationForm () {
                 progress: undefined,
             });
             deliver();
+            setData(newData);
             isSaved=true;
         } 
     }
@@ -332,7 +385,7 @@ export default function StudentRegistrationForm () {
                     <GeneralData data={data} setData={setData} imStudent={isSaved} isSaved={isSaved}/>   
                 </div>
                 <div className="row rows">
-                    <AboutCompany data={data} setData={setData} notgrabado={isSaved}/>
+                    <AboutCompany data={data} setData={setData} notgrabado={isSaved} countries={countries} lineBusiness={lineBusiness}/>
                 </div>
                 <div className="row rows">
                     <AboutJob data={data} setData={setData} notgrabado={isSaved}/>
@@ -350,7 +403,7 @@ export default function StudentRegistrationForm () {
                         </nav>
                         <div className="row rows" >
                             <Form.Control className="observaciones"
-                                    placeholder="Esciba las observaciones de la entrega" 
+                                    placeholder="" 
                                     onChange={changeComments}
                                     value={data.calification.comments}
                                     name="comments"
@@ -411,6 +464,12 @@ export default function StudentRegistrationForm () {
                 <div className="row rows">
                     <DirectBoss data={data} setData={setData} notgrabado={isSaved}/>
                 </div>
+                <div className="row rows uploadRegistration" >                            
+                    <FileManagement canUpload={canUpload} docs={studentDocs} maxFiles={4} setFileList={setFileList} titleUploadedFiles="Archivos subidos por el alumno"/>
+                </div>
+                <div className="row rows">
+                    <CalificationFormStudent data={data} setData={setData} notgrabado={false}/>
+                </div> 
                 <div className="row rows">
                     <div className="container Comments">
                         <nav className="navbar navbar-fixed-top navbar-inverse bg-inverse "style={{ backgroundColor: "#E7E7E7"}}>
@@ -429,12 +488,6 @@ export default function StudentRegistrationForm () {
                         </div> 
                     </div>
                 </div>
-                <div className="row rows uploadRegistration" >                            
-                    <FileManagement canUpload={canUpload} docs={studentDocs} maxFiles={4} setFileList={setFileList} titleUploadedFiles="Archivos subidos por el alumno"/>
-                </div>
-                <div className="row rows">
-                    <CalificationFormStudent data={data} setData={setData} notgrabado={false}/>
-                </div> 
                 <div className="row rows" >
                 <div className="col-sm-2 subtitles">
                 </div>

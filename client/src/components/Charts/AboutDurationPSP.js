@@ -27,14 +27,17 @@ export default function AboutDurationPSP ({data, setData, notgrabado}) {
         const month = (e.getMonth()<10)? `0${e.getMonth()}`: `${e.getMonth()}`;
         const year = (e.getFullYear());
         const date = `${day}-${month}-${year}`;
-
-        setData({
-            ...data,
-            aboutPSP: {
-                ...data.aboutPSP,
-                [name]: date
+        if(name==="dateEnd"){
+            if(Date.parse(data.aboutPSP.dateStart) < Date.parse(date)){
+                setData({
+                    ...data,
+                    aboutPSP: {
+                        ...data.aboutPSP,
+                        [name]: date
+                    }
+                })
             }
-        })
+        }
     }
 
     const handleChangeOthers = (e) => {
