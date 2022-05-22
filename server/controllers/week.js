@@ -21,10 +21,14 @@ function getMonthlyWeeks(req, res) {
     connection.query(sqlQuery, (err, result) => {
         if (err) {
             res.status(505).send({
+                success: false,
                 message: "Error inesperado en el servidor"
             })
         }
-        res.status(200).send(result)
+        res.status(200).send({
+            success: true,
+            result
+        })
     });
 
     connection.end();

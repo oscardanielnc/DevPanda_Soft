@@ -8,7 +8,7 @@ async function sqlAsync (sql, connection) {
             }
         })
     })
-}
+} 
 
 module.exports = {
     sqlAsync
