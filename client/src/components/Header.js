@@ -1,5 +1,5 @@
 import React from "react";
-import {Link} from 'react-router-dom';
+import { logout } from "../api/auth";
 import Logo from "../asserts/img/png/logoPUCP.PNG";
 import LogoUsuario from "../asserts/img/png/usuarioImagen.PNG";
 import useAuth from "../hooks/useAuth";
@@ -21,6 +21,10 @@ export default function Header () {
             default: typeUser="Secretaria"; break;
         }
     }
+    const handleLogOut = () => {
+        logout();
+        window.location.reload();
+    }
     const fullName = `${user.nombres.split(' ')[0]}  ${user.apellidos.split(' ')[0]}`
     return ( user &&
         <div className="header">
@@ -40,8 +44,21 @@ export default function Header () {
                             <strong>{fullName}<br/></strong>
                         </div>
                     </div>
-                    <div className="header__rightusuarioImagen">
+                    <div className="header__rightusuarioImagen"
+                        onClick={()=> document.getElementById("logout").classList.toggle('hidden')}>
                         <img src={LogoUsuario} alt="Jeison Romero"/>
+                    </div>
+                    <div className="header__logout hidden" id="logout">
+                        <div className="header__logout-info">
+                            <span>{user.correo}</span>
+                            <strong>{user.codigo}</strong>
+                        </div>
+                        <div className="header__logout-btn">
+                            <button className="btn btn-light btn-custm" 
+                                onClick={handleLogOut}>
+                                Cerrar sesión
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>

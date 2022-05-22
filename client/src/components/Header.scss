@@ -27,4 +27,38 @@
         }
     }
 
+    &__logout {
+        position: absolute;
+        top: 91px;
+        width: 286px;
+        border: $primary-color 2px solid;
+        padding: 10px;
+        right: 0;
+        border-radius: 0px 0px 8px 8px;
+        color: $primary-color;
+
+        &-info {
+            display: grid;
+            justify-items: center;
+            margin: 1em 0;
+            & span {
+                display: block;
+                font-weight: 500;
+            }
+            & strong {
+                font-size: 1.25em;
+                display: block;
+            }
+        }
+        &-btn {
+            justify-content: center;
+            display: flex;
+
+            & .btn-custm {
+                border: $primary-color 2px solid !important;
+                width: 80% !important;
+                font-weight: 600 !important;
+            }
+        }
+    }
 }

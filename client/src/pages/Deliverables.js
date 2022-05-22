@@ -42,12 +42,15 @@ let idDelivResponse=0;
 
 
 export default function Deliverables(){
+    const {user} = useAuth();
+    if(!user) {
+        window.location.href = "/sign-in"
+    }
     //let estadoDoc= "E";//"N" no entregado, "E" entregado
     //let estadoEva = "P";//"A" es aprobado, "O" es observado, , "P" pendiente de aprobación
     const [fileList, setFileList] = useState([])
     const [docs, setDocs] = useState([])
     const [studentDocs, setStudentDocs] = useState([])
-    const {user} = useAuth();
     const [data, setData] = useState({})
     console.log("user",user);
     useEffect(()=> {
@@ -129,6 +132,7 @@ export default function Deliverables(){
         console.log("estoy dentro del else")
         return null
     }
+
     
     return(
         data.deliverable &&
