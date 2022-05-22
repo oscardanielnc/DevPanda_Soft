@@ -1,6 +1,6 @@
 import React, {useState}  from "react";
 import { Button, Table,Form,InputGroup,FormControl } from 'react-bootstrap';
-import {numberValidation} from "../../utils/formValidation";
+import {numberValidation,maxLengthValidation} from "../../utils/formValidation";
 import './DirectBoss.scss';
 
 
@@ -9,7 +9,8 @@ export default function DirectBoss ({data, setData, notgrabado}) {
 
     const handleChange = (e) => {
         if(e.target.name==="cellphone"){
-            if(numberValidation(e.target)){
+            if(numberValidation(e.target)&& maxLengthValidation(e.target,9)){
+                e.target.classList.add("success");
                 setData({
                     ...data,
                     aboutBoss: {
@@ -17,6 +18,13 @@ export default function DirectBoss ({data, setData, notgrabado}) {
                         [e.target.name]: e.target.value
                     }
                 })
+            }else {
+                e.target.value=data.aboutBoss.cellphone;
+                if(numberValidation(e.target) && maxLengthValidation(e.target,9)){
+                    e.target.classList.add("success");
+                }else{
+                    e.target.classList.add("error");
+                }
             }
         }else{
             setData({

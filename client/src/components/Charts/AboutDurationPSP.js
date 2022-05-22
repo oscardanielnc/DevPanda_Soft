@@ -13,13 +13,55 @@ export default function AboutDurationPSP ({data, setData, notgrabado}) {
     const {aboutPSP} = data;
 
     const handleChangeText = (e) => {
-        setData({
-            ...data,
-            aboutPSP: {
-                ...data.aboutPSP,
-                [e.target.name]: e.target.value
+        if(e.target.name==="dailyHours"){
+            if(e.target.valueAsNumber>=0){
+                e.target.classList.add("success");
+                setData({
+                    ...data,
+                    aboutPSP: {
+                        ...data.aboutPSP,
+                        [e.target.name]: e.target.valueAsNumber
+                    }
+                })
+            }else{
+                e.target.value=data.aboutPSP.dailyHours;
+                e.target.valueAsNumber=Number(data.aboutPSP.dailyHours);
+                if(e.target.valueAsNumber>=0){
+                    e.target.classList.add("success");
+                }else{
+                    e.target.classList.add("error");
+                }
             }
-        })
+        }else{
+            if(e.target.name==="weekHours"){
+                if(e.target.valueAsNumber>=0){
+                    e.target.classList.add("success");
+                    setData({
+                        ...data,
+                        aboutPSP: {
+                            ...data.aboutPSP,
+                            [e.target.name]: e.target.valueAsNumber
+                        }
+                    })
+                }else{
+                    e.target.value=data.aboutPSP.weekHours;
+                    e.target.valueAsNumber=Number(data.aboutPSP.weekHours);
+                    if(e.target.valueAsNumber>=0){
+                        e.target.classList.add("success");
+                    }else{
+                        e.target.classList.add("error");
+                    }
+                }
+            }else{
+                setData({
+                    ...data,
+                    aboutPSP: {
+                        ...data.aboutPSP,
+                        [e.target.name]: e.target.value
+                    }
+                })
+            }
+        }
     }
 
     const handleChangeDate = (e, name) => {
@@ -28,7 +70,17 @@ export default function AboutDurationPSP ({data, setData, notgrabado}) {
         const year = (e.getFullYear());
         const date = `${day}-${month}-${year}`;
         if(name==="dateEnd"){
-            if(Date.parse(data.aboutPSP.dateStart) < Date.parse(date)){
+            const fechasIni = data.aboutPSP.dateStart.split('-');
+            const fechasFin = date.split('-');
+            const dayIni=Number(fechasIni[0]);
+            const monthIni=Number(fechasIni[1]);
+            const yearIni=Number(fechasIni[2]);
+            const dayFin=Number(fechasFin[0]);
+            const monthFin=Number(fechasFin[1]);
+            const yearFin=Number(fechasFin[2]);
+            const fechaFinNumber=yearFin*10000+monthFin*100+dayFin;
+            const fechaIniNumber=yearIni*10000+monthIni*100+dayIni;
+            if(fechaIniNumber < fechaFinNumber){
                 setData({
                     ...data,
                     aboutPSP: {
@@ -37,6 +89,14 @@ export default function AboutDurationPSP ({data, setData, notgrabado}) {
                     }
                 })
             }
+        }else{
+            setData({
+                ...data,
+                aboutPSP: {
+                    ...data.aboutPSP,
+                    [name]: date
+                }
+            })
         }
     }
 
@@ -112,11 +172,11 @@ export default function AboutDurationPSP ({data, setData, notgrabado}) {
                          <div className="col-sm-8 subtitles">
                          <div  className="horas">Horas Semanales Promedio</div>
                             <Form.Control placeholder="Ingrese número de horas semanales" 
-                                type="number"
                                 onChange={handleChangeText}
                                 value={aboutPSP.weekHours}
                                 disabled={notgrabado}
-                                name="weekHours"/>
+                                name="weekHours"
+                                type="number"/>
                          </div>
                          <div className="col-sm-1 subtitles">
                             

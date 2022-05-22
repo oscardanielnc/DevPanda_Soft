@@ -45,7 +45,7 @@ const documents={
          "ruc": "1234567890",
          "companyName": "Empresa SAC",
          "foreignCountry":2,
-         "foreingLineBusiness":"",
+         "foreingLineBusiness":4,
           "companyAddress":""
      },
      "aboutJob": {
@@ -420,7 +420,7 @@ export default function StudentRegistrationForm () {
                     </div>
                 </div>
                 <div className="row rows uploadRegistration" >                            
-                    <FileManagement canUpload={canUpload} docs={studentDocs} maxFiles={4} fileList={fileList} setFileList={setFileList} titleUploadedFiles="Archivos subidos por el alumno"/>
+                    <FileManagement canUpload={canUpload} docs={studentDocs} maxFiles={4} fileList={fileList} titleUpload="Subir archivos de Ficha de Inscripcion" setFileList={setFileList} titleUploadedFiles="Archivos subidos por el alumno"/>
                 </div>
                 <div className="row rows BotonAlumno">
                     <Button className="btn btn-primary" style={{width:"40%"}} onClick={insert} disabled={isSaved}>Enviar</Button>

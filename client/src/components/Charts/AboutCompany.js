@@ -10,6 +10,7 @@ export default function AboutCompany ({data, setData, notgrabado,countries,lineB
     const handleChangeText = (e) => {
         if(e.target.name==="ruc"){
             if(numberValidation(e.target) && maxLengthValidation(e.target,11)){
+                e.target.classList.add("success");
                 setData({
                     ...data,
                     aboutCompany: {
@@ -17,6 +18,13 @@ export default function AboutCompany ({data, setData, notgrabado,countries,lineB
                         [e.target.name]: e.target.value
                     }
                 })
+            }else {
+                e.target.value=data.aboutCompany.ruc;
+                if(numberValidation(e.target) && maxLengthValidation(e.target,11)){
+                    e.target.classList.add("success");
+                }else{
+                    e.target.classList.add("error");
+                }
             }
         }else{
             setData({
@@ -70,43 +78,25 @@ export default function AboutCompany ({data, setData, notgrabado,countries,lineB
     }
     
     const handleChangeCountry = (e) => {
-        console.log("Change en country: ",e);
-        /*const newOthers = data.others.map(elem => {
-            if(elem.nombreCampo === e.target.name)
-                return {
-                    idCampoProceso:elem.idCampoProceso,
-                    idCampoLlenado:elem.idCampoLlenado,
-                    nombreCampo: e.target.name,
-                    seccion: "Sobre la empresa",
-                    flag: elem.flag,
-                    valorAlumno: e.target.value   
-                }
-            return elem;
-        })
+        //console.log("Change en country: ",e);
         setData({
             ...data,
-            others: newOthers
-        })*/
+            aboutCompany: {
+                ...data.aboutCompany,
+                [e.target.name]: e.target.value
+            }
+        })
     }
     
     const handleChangeLine = (e) => {
-        console.log("Change en lineBussinnes: ",e);
-        /*const newOthers = data.others.map(elem => {
-            if(elem.nombreCampo === e.target.name)
-                return {
-                    idCampoProceso:elem.idCampoProceso,
-                    idCampoLlenado:elem.idCampoLlenado,
-                    nombreCampo: e.target.name,
-                    seccion: "Sobre la empresa",
-                    flag: elem.flag,
-                    valorAlumno: e.target.value   
-                }
-            return elem;
-        })
+        //console.log("Change en lineBussinnes: ",e);
         setData({
             ...data,
-            others: newOthers
-        })*/
+            aboutCompany: {
+                ...data.aboutCompany,
+                [e.target.name]: e.target.value
+            }
+        })
     }
     console.log("El data es: ",data );
     let indexCountry=(data.aboutCompany.foreignCountry!==null || data.aboutCompany.foreignCountry!=="")?data.aboutCompany.foreignCountry:-1;
@@ -182,8 +172,8 @@ export default function AboutCompany ({data, setData, notgrabado,countries,lineB
             <div className="row rows">
                 <div className="col-sm-5 subtitles">
                     <div>País</div>
-                    <Form.Select className="select" name="foreignCountry" disabled={notgrabado} onChange={handleChangeCountry} defaultValue={indexCountry}>
-                        <option select value={indexCountry}>Seleccionar</option>
+                    <Form.Select className="select" defaultValue={indexCountry} name="foreignCountry" disabled={notgrabado} onChange={handleChangeCountry} >
+                        <option value={indexCountry}>Seleccionar</option>
                         {
                             countries.map((element, index) => (
                                 <option value={element.idCountry} 
@@ -200,29 +190,13 @@ export default function AboutCompany ({data, setData, notgrabado,countries,lineB
                         <option value={indexLine}>Seleccionar</option>
                         {
                             lineBusiness.map((element, index) => (
-                                <option value={element.name} 
+                                <option value={element.idLineBussiness} 
                                     key={element.idLineBussiness}>{element.name}
                                 </option>
                             ))
                         }
                     </Form.Select>
                 </div>
-                {/*<div className="col-sm-6 subtitles">
-                    <div>País</div>
-                    <Form.Control placeholder="Escriba el país de la empresa" 
-                        onChange={handleChangeText}
-                        disabled={notgrabado}
-                        value={aboutCompany.companyCountry}
-                        name="companyCountry"/>
-                </div>
-                <div className="col-sm-6 subtitles">
-                    <div>Giro de la empresa</div>
-                    <Form.Control placeholder="Escriba el giro de la empresa" 
-                        onChange={handleChangeText}
-                        disabled={notgrabado}
-                        value={aboutCompany.companyLineBusiness}
-                        name="companyLineBusiness"/>
-                </div>*/}
             </div>
             <div className="row rows" >
                 <div>Dirección de la empresa</div>
