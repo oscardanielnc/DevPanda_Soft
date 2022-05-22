@@ -20,8 +20,8 @@ export default function SignIn (){
 
         if(result.success) {
             const {accessToken} = result;
-            localStorage.setItem("ACCESS_TOKEN", accessToken)
-            window.location.href = "/redirect"
+            localStorage.setItem("ACCESS_TOKEN", accessToken);
+            window.location.href = "/redirect";
         } else {
             toast.error(result.message, {
                 position: "top-right",

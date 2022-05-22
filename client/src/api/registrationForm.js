@@ -15,9 +15,15 @@ export function getstudentInscriptionForm(idAlumno) {
             return response.json()
         })
         .then(infoFicha => {
+            if(infoFicha.success) {
+                return {
+                    infoFicha,
+                    success: true
+                }
+            }
             return {
-                infoFicha,
-                success: true
+                errMsg: infoFicha.message,
+                success: false
             }
         })
         .catch(errMsg => {
@@ -44,7 +50,7 @@ export function getstudentInscriptionForm(idAlumno) {
          .then(result => {
              return {
                  msg: result.message,
-                 success: true
+                 success: result.success
              }
          })
          .catch(err => {
@@ -72,7 +78,7 @@ export function getstudentInscriptionForm(idAlumno) {
         .then(result => {
             return {
                 msg: result.message,
-                success: true
+                success: result.success
             }
         })
         .catch(err => {
@@ -98,9 +104,15 @@ export function getListStudentsInscriptionForm(idEspecialidad){
             return response.json()
         })
         .then(data => {
+            if(data.success) {
+                return {
+                    data: data.result,
+                    success: true
+                }
+            }
             return {
-                data,
-                success: true
+                errMsg: data.message,
+                success: false
             }
         })
         .catch(errMsg => {

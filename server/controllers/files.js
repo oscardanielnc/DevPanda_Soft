@@ -11,7 +11,7 @@ function uploadDocs(req, res) {
     for (const doc in files) {
         const objDoc = files[doc];
         if(!checkCorrectDocument(objDoc, ['pdf', 'docx', 'doc', 'xlsx', 'txt'])) {
-            res.status(505).send({
+            res.status(505).send({ 
                 success: false,
                 message: "La extencion alguna imagen no es valida. Solo se aceptan: pdf, docx, doc, txt, xlsx."
             })
@@ -85,11 +85,15 @@ function getAllDocs(req, res) {
         if (err) {
             console.log(err)
             res.status(505).send({
+                success: false,
                 message: "Error al tratar de acceder a la BD."
             })
         }
         
-        res.status(200).send(result)
+        res.status(200).send({
+            success: true,
+            result
+        })
     });
 
     connection.end();

@@ -16,8 +16,8 @@ export function getAllDocsApi(code, isStudent) {
         })
         .then(docs => {
             return {
-                docs,
-                success: true
+                docs: docs.result,
+                success: docs.success
             }
         })
         .catch(errMsg => {

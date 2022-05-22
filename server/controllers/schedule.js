@@ -31,11 +31,13 @@ async function changeHoursSchedule(req, res){
             await sqlAsync(sqlQuery, connection);
         } catch (err) {
             res.status(505).send({
+                success: false,
                 message: "Error inesperado del servidor: " + err.message
             })
         }
     };
     res.status(200).send({
+        success: true,
         message: "Registro de horas correcta!"
     })
     connection.end();
@@ -56,11 +58,13 @@ function getSupervisorSchedule(req, res) {
     connection.query(sqlQuery, (err, result) => {
         if (err) {
             res.status(505).send({
+                success: false,
                 message: "Error inesperado en el servidor"
             })
         }
         else if(result.length === 0) {
             res.status(404).send({
+                success: false,
                 message: "No se han encontrado horarios para este Supervisor"
             })
         } else {
@@ -96,13 +100,16 @@ function getSupervisorSchedule(req, res) {
                 data.push(newDay)
             }
             
-            res.status(200).send(data)
+            res.status(200).send({
+                success: true,
+                data
+            })
         }
     });
 
     connection.end();
 }
-function getSupervisorsBySpecialty(req, res) {
+function getSupervisorsBySpecialty(req, res) { 
     const connection = mysql.createConnection(MYSQL_CREDENTIALS);
 
     const {idSpecialty} = req.params;
@@ -124,11 +131,13 @@ function getSupervisorsBySpecialty(req, res) {
     connection.query(sqlQuery, (err, result) => {
         if (err) {
             res.status(505).send({
+                success: false,
                 message: "Error inesperado en el servidor"
             })
         }
         else if(result.length === 0) {
             res.status(404).send({
+                success: false,
                 message: "No se han encontrado supervisores para esta especialidad"
             })
         } else {
@@ -142,7 +151,10 @@ function getSupervisorsBySpecialty(req, res) {
                 }
             });
             
-            res.status(200).send(data)
+            res.status(200).send({
+                success: true,
+                data
+            })
         }
     });
 }

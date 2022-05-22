@@ -16,8 +16,8 @@ export function selectDocumentsInfoByProcessOnlyStudent(fidAlumno) {
         })
         .then(files => {
             return {
-                files,
-                success: true
+                files: files.result,
+                success: files.success
             }
         })
         .catch(errMsg => {

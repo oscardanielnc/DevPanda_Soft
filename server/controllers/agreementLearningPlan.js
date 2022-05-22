@@ -14,10 +14,14 @@ function select(req, res) {
     connection.query(sqlQuery, (err, result) => {
         if (err) {
             res.status(505).send({
+                success: false,
                 message: "Error inesperado en el servidor"
             })
         }
-        res.status(200).send(result)
+        res.status(200).send({
+            success: true,
+            result
+        })
     });
 
     connection.end();
@@ -37,16 +41,21 @@ function selectInfoByStudent(req, res){
         if (err) {
             if(!idAlumnoProceso){
                 res.status(505).send({
+                    success: false,
                     message: "No se ha enviado un identificador de alumno válido"
                 })
             }else{
                 res.status(505).send({
+                    success: false,
                     message: err.message
                 })
             }
             
         }
-        res.status(200).send(result)
+        res.status(200).send({
+            success: true,
+            result
+        })
     });
 
     connection.end();
@@ -69,16 +78,21 @@ function selectDocumentsByAgreement(req, res){
         if (err) {
             if(!idEntregaConvenioYPlan){
                 res.status(505).send({
+                    success: false,
                     message: "No se ha enviado un idEntregaConvenioYPlan"
                 })
             }else{
                 res.status(505).send({
+                    success: false,
                     message: "Error inesperado en el servidor"
                 })
             }
             
         } else{
-            res.status(200).send(result)
+            res.status(200).send({
+                success: true,
+                result
+            })
         }
     });
 
@@ -107,15 +121,18 @@ function insertInfoByStudent(req, res) {
     connection.query(sqlQuery, sqlObj, (err, result) => {
         if(!fidConvenioYPlan || !fidAlumnoProceso){
             res.status(505).send({
+                success: false,
                 message: "No se ha enviado el fidConvenioYPlan o fidAlumnoProceso"
             })
         } else {
             if(err){
                 res.status(505).send({
+                    success: false,
                     message: "Error inesperado en el servidor"
                 })
             }else{
                 res.status(200).send({
+                    success: true,
                     message: "Valores insertados correctamente"
                 })
             }   
@@ -149,23 +166,27 @@ function insertDocumentByAgreement(req, res) {
 
         if(!fidEntregaConvenioYPlan){
             res.status(505).send({
+                success: false,
                 message: "No se ha enviado el fidEntregaConvenioYPlan"
             })
         } else {
             if(err){
                 if(err.code==="ER_NO_REFERENCED_ROW_2"){
                     res.status(505).send({
+                        success: false,
                         message: "No existe una entrega de convenio y plan donde guardar el documento. "
                     })
 
                 }else{
                     res.status(505).send({
+                        success: false,
                         message: "Error inesperado del servidor: <br>" + err.message
                     })
                 }
                 
             }else{
                 res.status(200).send({
+                    success: true,
                     message: "Documento insertado correctamente"
                 })
             }   
@@ -198,15 +219,18 @@ function updateInfoByStudent(req, res){
     connection.query(sqlQuery, (err, result) => {
         if(err){
             res.status(505).send({
+                success: false,
                 message: "Error inesperado del servidor: <br>" + err.message
             })
         }else{
             if(!result.affectedRows){
-                res.status(200).send({
+                res.status(505).send({
+                    success: false,
                     message: "No se actualizó ninguna fila"
                 })
             }else{
                 res.status(200).send({
+                    success: true,
                     message: "Valores actualizados correctamente"
                 })
             }
@@ -240,15 +264,18 @@ function updateDocumentByAgreement(req, res){
     connection.query(sqlQuery, (err, result) => {
         if(err){
             res.status(505).send({
+                success: false,
                 message: "Error inesperado del servidor: <br>" + err.message
             })
         }else{
             if(!result.affectedRows){
-                res.status(200).send({
+                res.status(505).send({
+                    success: false,
                     message: "No se actualizó ninguna fila"
                 })
             }else{
                 res.status(200).send({
+                    success: true,
                     message: "Valores actualizados correctamente"
                 })
             }
@@ -283,16 +310,21 @@ function selectDocumentsInfoByProcess(req, res){
         if (err) {
             if(!idEntregaConvenio){
                 res.status(505).send({
+                    success: false,
                     message: "No se ha enviado un idEntregaConvenio"
                 })
             }else{
                 res.status(505).send({
+                    success: false,
                     message: "Error inesperado en el servidor"
                 })
             }
             
         } else{
-            res.status(200).send(result)
+            res.status(200).send({
+                success: true,
+                result
+            })
         }
     });
 
@@ -336,16 +368,21 @@ function selectDocumentsInfoByProcessOnlyStudent(req, res){
         if (err) {
             if(!idEntregaConvenio){
                 res.status(505).send({
+                    success: false,
                     message: "No se ha enviado un idEntregaConvenio"
                 })
             }else{
                 res.status(505).send({
+                    success: false,
                     message: "Error inesperado en el servidor"
                 })
             }
             
         } else{
-            res.status(200).send(result)
+            res.status(200).send({
+                success: true,
+                result
+            })
         }
     });
 

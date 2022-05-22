@@ -22,10 +22,14 @@ function deliverablesProcess(req, res){
     connection.query(sqlQuery, (err, result) => {
         if (err) {
             res.status(505).send({
+                success: false,
                 message: "Error inesperado en el servidor" + err.message
             })
         }else{
-            res.status(200).send(result);
+            res.status(200).send({
+                success: true,
+                result
+            });
         }
     });
 
@@ -95,11 +99,17 @@ async function deliverableStudent(req, res){
     try{
         resultElement  = await functionSelect();
         if(!resultElement.length){
-            res.status(404).send({ message: "No se encontro a un alumno con ese identificador"})
+            res.status(404).send({ 
+                success: false,
+                message: "No se encontro a un alumno con ese identificador"
+            })
             return 
         } 
     }catch(e){
-        res.status(505).send({ message: "Error en el servidor " + e.message})
+        res.status(505).send({ 
+            success: false,
+            message: "Error en el servidor " + e.message
+        })
         return 
     }  
 
@@ -119,11 +129,17 @@ async function deliverableStudent(req, res){
     try{
         resultElement  = await functionSelect();
         if(!resultElement.length){
-            res.status(404).send({ message: "No se encontro un entregable con ese identificador"})
+            res.status(404).send({ 
+                success: false,
+                message: "No se encontro un entregable con ese identificador"
+            })
             return 
         } 
     }catch(e){
-        res.status(505).send({ message: "Error en el servidor " + e.message})
+        res.status(505).send({ 
+            success: false,
+            message: "Error en el servidor " + e.message
+        })
         return 
     }  
 
@@ -145,7 +161,10 @@ async function deliverableStudent(req, res){
     try{
         resultElement  = await functionSelect();
     }catch(e){
-        res.status(505).send({ message: "Error en el servidor " + e.message})
+        res.status(505).send({ 
+            success: false,
+            message: "Error en el servidor " + e.message
+        })
         return 
     }  
 
@@ -172,11 +191,17 @@ async function deliverableStudent(req, res){
         try{
             resultElement  = await functionInsert();
             if(!resultElement){
-                res.status(404).send({ message: "No se pudo insertar una Entrega RespuestaEntregable para el Alumno"})
+                res.status(404).send({ 
+                    success: false,
+                    message: "No se pudo insertar una Entrega RespuestaEntregable para el Alumno"
+                })
                 return 
             }
         }catch(e){
-            res.status(505).send({ message: "Error en el servidor " + e.message})
+            res.status(505).send({ 
+                success: false,
+                message: "Error en el servidor " + e.message
+            })
             return 
         }  
 
@@ -187,9 +212,12 @@ async function deliverableStudent(req, res){
         dataEntregable.deliverableResponse.grade = null
         dataEntregable.deliverableResponse.uploadDate = null
     }
-
-    res.status(200).send({valor: dataEntregable})
     connection.end();
+
+    res.status(200).send({
+        success: true,
+        valor: dataEntregable
+    })
 }
 
 //Actualizar la RespuestaEntregable de un alumno
@@ -220,15 +248,18 @@ function updateDeliverableStudent(req, res){
     connection.query(sqlQuery, (err, result) => {
         if(err){
             res.status(505).send({
+                success: false,
                 message: "Error inesperado del servidor: " + err.message
             })
         }else{
             if(!result.affectedRows){
                 res.status(404).send({
+                    success: false,
                     message: "No se actualizó ninguna fila"
                 })
             }else{
                 res.status(200).send({
+                    success: true,
                     message: "Valores actualizados correctamente"
                 })
             }
