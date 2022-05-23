@@ -4,9 +4,9 @@ import GoogleLogin from 'react-google-login';
 import LayoutSignIn from "../layouts/LayoutSignIn";
 import { Form, Button, Row, Col } from "react-bootstrap";
 import { ToastContainer, toast } from 'react-toastify';
-import LogoPucp from "../asserts/img/svg/LogoPUCP.svg";
-import PicPucp from "../asserts/img/svg/PicLogoPucpColorInvertido.svg";
-import PicLogoPucp from "../asserts/img/svg/PicLogoPucpJunto.svg";
+import LogoPucp from "../assets/svg/LogoPUCP.svg";
+import PicPucp from "../assets/svg/PicLogoPucpColorInvertido.svg";
+import PicLogoPucp from "../assets/svg/PicLogoPucpJunto.svg";
 
 import './SignIn.scss';
 import { signInApi } from "../api/auth";

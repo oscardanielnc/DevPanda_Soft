@@ -1,7 +1,7 @@
 import React from "react";
 import { logout } from "../api/auth";
-import Logo from "../asserts/img/png/logoPUCP.PNG";
-import LogoUsuario from "../asserts/img/png/usuarioImagen.PNG";
+import Logo from "../assets/png/logoPUCP.PNG";
+import LogoUsuario from "../assets/png/usuarioImagen.PNG";
 import useAuth from "../hooks/useAuth";
 import { signInApi } from "../api/auth";
 import GoogleLogin from 'react-google-login';

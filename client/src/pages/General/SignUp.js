@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 
 import { Form, Button, Row, Col,DropdownButton,Dropdown } from "react-bootstrap";
 
-import PicLogoPucp from "../../asserts/img/svg/PicLogoPucpJunto.svg";
+import PicLogoPucp from "../../assets/svg/PicLogoPucpJunto.svg";
 
 import './scss/SignUp.scss';
 
