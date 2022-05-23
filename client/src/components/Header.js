@@ -1,7 +1,6 @@
 import React from "react";
 import { logout } from "../api/auth";
 import Logo from "../assets/png/logoPUCP.PNG";
-import LogoUsuario from "../assets/png/usuarioImagen.PNG";
 import useAuth from "../hooks/useAuth";
 import { signInApi } from "../api/auth";
 import GoogleLogin from 'react-google-login';
@@ -16,9 +15,11 @@ export default function Header () {
         <div className="header">
             <div className="header__left">
                 <div className="header__lefttitulo">
+                <Link to="/">
                     <img src={Logo} alt="Jeison Romero"
                     style={{marginTop: "10px"}}
                     />
+                </Link>
                 </div>
             </div>
             {user? <HeaderLogged user={user}/>: <HeaderNotLogged />}
@@ -55,7 +56,7 @@ function HeaderLogged ({user}) {
             </div>
             <div className="header__rightusuarioImagen"
                 onClick={()=> document.getElementById("logout").classList.toggle('hidden')}>
-                <img src={LogoUsuario} alt="Jeison Romero"/>
+                <i class="bi bi-person header__rightusuarioImagen-user"></i>
             </div>
             <div className="header__logout hidden" id="logout">
                 <div className="header__logout-info">

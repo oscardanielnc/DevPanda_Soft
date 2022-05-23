@@ -1,15 +1,121 @@
 import React, { useState, useEffect } from "react";
-
-import { Form, Button, Row, Col,DropdownButton,Dropdown } from "react-bootstrap";
-
+import { Form, Row, Col } from "react-bootstrap";
+import { specialtySelectAllApi } from "../../api/specialty";
 import PicLogoPucp from "../../assets/svg/PicLogoPucpJunto.svg";
-
+import { ToastContainer, toast } from 'react-toastify';
+import GoogleLogin from 'react-google-login';
 import './scss/SignUp.scss';
 
+const dataDummy = {
+    firstName: "Campo autocompletado",
+    lastName: "Campo autocompletado",
+    email: "Campo autocompletado",
+    specialty: -1,
+    code: "",
+}
+
 export default function SignUp (){
+    const [data, setData] = useState(dataDummy);
+    const [specialties, setSpecialties] = useState([]);
+    useEffect(()=> {
+        const fetchData = async () => {
+            const result = await specialtySelectAllApi();
+            if(result.success) {
+                setSpecialties(result.specialties)
+            }
+        }
+        fetchData()
+    }, [setSpecialties])
+    console.log(data)
+
+    const handleCode = e => {
+        setData({
+            ...data,
+            code: e.target.value
+        })
+    }
+    const handleSelect = e => {
+        setData({
+            ...data,
+            specialty: Number(e.target.value)
+        })
+    }
+    const responseGoogle = async (response) => {
+        const basicData = response.profileObj.email;
+
+        console.log(basicData)
+    }
+
     return(       
-        <div className="container">
-            <Row className="row align-items-center mx-auto mt-3">                
+        <div className="signUp">
+            <div className="container signUp-container">
+                <Col className="col-sm-6">
+                    <Row>
+                        <img src={PicLogoPucp} alt="Logo PUCP" className="signUp__logo"/>
+                    </Row>
+                    <div className="signUp__title">
+                        <Row><h1>Registrar</h1></Row>
+                        <Row><h6>Inicia el registro con tu correo PUCP</h6></Row>
+                    </div>
+                    <GoogleLogin
+                        clientId="217315516782-dimqetb06qceps0d7su07rtlmr4s1bli.apps.googleusercontent.com"
+                        buttonText="Iniciar sesión"
+                        onSuccess={responseGoogle}
+                        onFailure={responseGoogle}
+                        cookiePolicy={'single_host_origin'}
+                    />
+                    <ToastContainer /> 
+                    <Form>
+                        <InputLabel name="Nombres" value={data.firstName} />
+                        <InputLabel name="Apellidos" value={data.lastName} />
+                        <InputLabel name="Correo" value={data.email} />
+
+                        <Form.Group className="signUp__formGroup" controlId="formBasicName">
+                            <Form.Label className="signUp__formGroup-label">
+                                Código PUCP
+                                <strong>  *</strong>
+                            </Form.Label>
+                            <Form.Control type="text" value={data.code} 
+                                onChange={handleCode} placeholder="Ingrese su código PUCP"/>
+                        </Form.Group>
+
+                        <Form.Group className="signUp__formGroup" controlId="formBasicName">
+                            <Form.Label className="signUp__formGroup-label">
+                                Especialidad
+                                <strong>  *</strong>
+                            </Form.Label>
+                            <Form.Select className="select" defaultValue={data.specialty} onChange={handleSelect} style={{margin: 0}}>
+                                <option value={-1}>Seleccionar especialidad</option>
+                                {
+                                    specialties.map(element => (
+                                        <option value={element.idEspecialidad} 
+                                            key={element.idEspecialidad}>{element.nombreEsp}
+                                        </option>
+                                    ))
+                                }
+                            </Form.Select>
+                        </Form.Group>
+                    </Form>
+                </Col>
+            </div>
+        </div>
+    );
+}
+
+function InputLabel({name, value}) {
+    return (
+        <Form.Group className="signUp__formGroup" controlId="formBasicName">
+            <Form.Label className="signUp__formGroup-label">
+                {name}
+                <strong>  *</strong>
+            </Form.Label>
+            <Form.Control type="text" value={value} disabled/>
+        </Form.Group> 
+    )
+}
+
+
+            {/* <Row className="row align-items-center mx-auto mt-3">                
                 <img src={PicLogoPucp} alt= "Logo" width="110" height="55"/>
             </Row>
             
@@ -96,7 +202,4 @@ export default function SignUp (){
                         </div>                        
                     </Row>
                 </Form>
-            </Row>
-        </div>
-    );
-}
+            </Row> */}

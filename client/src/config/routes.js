@@ -1,7 +1,6 @@
 import SpecialtyManagement from "../pages/SpecialtyManagement";
 import AddSpecialty from "../pages/AddSpecialty";
 import StudentRegistrationForm from "../pages/StudentRegistrationForm";
-import SignIn from "../pages/SignIn";
 import SignUp from "../pages/General/SignUp";
 import Error404 from "../pages/General/Error404";
 import SupervisorSelection from "../pages/SupervisorSelection";

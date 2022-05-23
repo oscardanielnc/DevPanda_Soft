@@ -5,6 +5,7 @@
     background: $primary-color;
     display: flex;
     justify-content: space-between;
+   
     &__left{
         &titulo{
             color: white;
@@ -12,24 +13,44 @@
             font-size: .5em;
         }
     }
-    
+
     &__right{
         display: flex;
+
         &nombreUsuario{
             background: $primary-color;
             color:#f8f9fa;
             margin: auto;
             margin-right: 30px;
         }
+
         &usuarioImagen{
             background: #042354;
         	color: #f8f9fa;
+            display: flex;
+
+            &-user {
+                background-color: #fff;
+                color: $primary-color;
+                font-size: 48px;
+                display: flex;
+                border-radius: 50px;
+                padding: 10px;
+                margin: auto 10px;
+                cursor: pointer;
+                
+                &:hover {
+                    box-shadow: #fff 0px 0px 3px 0px;
+                    transform: scale(1.02);
+                }
+            }
         }
     }
 
     &__logout {
         position: absolute;
-        top: 91px;
+        background: #fff;
+        top: 80px;
         width: 286px;
         border: $primary-color 2px solid;
         padding: 10px;
@@ -61,6 +82,11 @@
         width: 80% !important;
         font-weight: 600 !important;
         color: $primary-color !important;
+
+        &:hover {
+            box-shadow:  $primary-color 0px 0px 8px 0px;
+            transform: scale(1.02);
+        }
     }
 
     &__right-notlogged {
