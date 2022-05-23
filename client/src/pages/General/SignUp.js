@@ -1,13 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import Footer from "../components/Footer";
-import LayoutSignIn from "../layouts/LayoutSignIn";
 
 import { Form, Button, Row, Col,DropdownButton,Dropdown } from "react-bootstrap";
 
-import PicLogoPucp from "../asserts/img/svg/PicLogoPucpJunto.svg";
+import PicLogoPucp from "../../asserts/img/svg/PicLogoPucpJunto.svg";
 
-import './SignUp.scss';
+import './scss/SignUp.scss';
 
 export default function SignUp (){
     return(       

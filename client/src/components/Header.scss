@@ -53,12 +53,28 @@
         &-btn {
             justify-content: center;
             display: flex;
-
-            & .btn-custm {
-                border: $primary-color 2px solid !important;
-                width: 80% !important;
-                font-weight: 600 !important;
-            }
         }
     }
+
+    .btn-custm {
+        border: $primary-color 2px solid !important;
+        width: 80% !important;
+        font-weight: 600 !important;
+        color: $primary-color !important;
+    }
+
+    &__right-notlogged {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        width: 400px;
+        justify-items: center;
+        align-items: center;
+        align-self: center;
+
+        &-btn {
+            height: fit-content !important;
+            width: 80%;
+        }
+    }
+
 }

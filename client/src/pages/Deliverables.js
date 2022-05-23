@@ -44,7 +44,7 @@ let idDelivResponse=0;
 export default function Deliverables(){
     const {user} = useAuth();
     if(!user) {
-        window.location.href = "/sign-in"
+        window.location.href = "/";
     }
     //let estadoDoc= "E";//"N" no entregado, "E" entregado
     //let estadoEva = "P";//"A" es aprobado, "O" es observado, , "P" pendiente de aprobación
