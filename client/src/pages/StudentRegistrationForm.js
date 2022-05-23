@@ -147,17 +147,20 @@ export default function StudentRegistrationForm () {
     let typeUser=user.tipoPersona;
     if(typeUser==="p"){
         typeUser=user.tipoPersonal;
+    }else{
+
     }
     console.log("El arrayCadena es: ",window.location.pathname);
     //debugger
     if(isNaN(idAlumno)) window.location.reload();
 
     console.log("El idAlumno es: ",idAlumno);
-    /*
+    
     useEffect(()=> {
-        getstudentInscriptionForm(idAlumno).then(response => {
-            const resData = response.infoFicha.infoFicha;
-            if(response.success===true) {
+        const fetchData = async () => {
+            const result = await getstudentInscriptionForm(idAlumno);
+            const resData = result.infoFicha.infoFicha;
+            if(result.success) {
                 if(typeUser==="e"){
                     const newData = {
                         idAlumno: resData.idAlumno,
@@ -184,37 +187,44 @@ export default function StudentRegistrationForm () {
                 } else
                     setData(resData);
             }
-        })
-        //getCountries().then(response=>{
-        //    const countriesData = response.paises.paises;
-        //    if(response.success===true) {
-        //    setCountries(countriesData);
-        //    }
-        //})
-        //getLineBussiness().then(response=>{
-        //    const lineData = response.lineBusiness.lineBusiness;
-        //    if(response.success===true) {
-        //    setLineBusiness(lineData);
-        //    }
-        //})
-        
-    }, [setData])*/
+            /*
+            const resultado=await getCountries();
+            const countriesData = resultado.paises.paises;
+            if(resultado.success){
+                setCountries(countriesData);
+            }
+
+            const resultado2=await getLineBussiness();
+            const lineData = resultado2.lineBusiness.lineBusiness;
+            if(resultado2.success){
+                setLineBusiness(lineData);
+            }*/
+        }
+        fetchData()
+ 
+    }, [setData])
+
     //sacamos los documentos subidos por el encargado
     useEffect(() => {
-        getAllDocsApi(`1-${user.fidEspecialidad}-RFOR`, 0).then(response => {
-            if(response.success) {
-                setDocs(response.docs)
+        const fetchData = async () => {
+            const result = await getAllDocsApi(`1-${user.fidEspecialidad}-RFOR`, 0);
+            if(result.success) {
+                setDocs(result.docs)
             }
-        })
+        }
+        fetchData()
     },[setDocs])
     //sacamos los documentos subidor por el alumno
     useEffect(() => {
-        getAllDocsApi(`1-${user.fidEspecialidad}-RFOR-${idAlumno}`, 1).then(response => {
-            if(response.success) {
-                setStudentDocs(response.docs)
+        const fetchData = async () => {
+            const result = await getAllDocsApi(`1-${user.fidEspecialidad}-RFOR-${idAlumno}`, 1);
+            if(result.success) {
+                setStudentDocs(result.docs)
             }
-        })
+        }
+        fetchData()
     },[setStudentDocs])
+
     if(!data.generalData) return null
 
     const deliver = async () => {
@@ -364,7 +374,7 @@ export default function StudentRegistrationForm () {
     }
 
     return (
-        data.calification && typeUser==="e"? <LayoutBasic>
+        typeUser==="e"? <LayoutBasic>
             <div className="container principal" style={{"padding":"1px"}}>
                 <div className="row rows" style={{textAlign: "left"}}>
                     <h1>Ficha de Inscripción</h1>

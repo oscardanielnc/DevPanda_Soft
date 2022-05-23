@@ -74,7 +74,6 @@ export default function GeneralData ({data, setData, imStudent=true,isSaved}) {
     }
 
     return (
-        generalData &&
             <div className="container chartGeneralData">
              <nav className="navbar navbar-fixed-top navbar-inverse bg-inverse "style={{ backgroundColor: "#E7E7E7"}}>
                 <h3 style={{"marginLeft":"15px"}}>Datos Generales</h3>

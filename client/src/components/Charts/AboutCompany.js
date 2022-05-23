@@ -104,7 +104,6 @@ export default function AboutCompany ({data, setData, notgrabado,countries,lineB
     console.log("El indexCountry es: ",indexCountry);
     console.log("El indexLine es: ",indexLine);
     return (
-        aboutCompany &&
             <div className="container chartSobreEmpresa">
              <nav className="navbar navbar-fixed-top navbar-inverse bg-inverse "style={{ backgroundColor: "#E7E7E7"}}>
                 <h3 style={{"marginLeft":"15px"}}>Sobre la empresa</h3>

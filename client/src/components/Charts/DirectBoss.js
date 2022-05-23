@@ -1,6 +1,6 @@
 import React, {useState}  from "react";
 import { Button, Table,Form,InputGroup,FormControl } from 'react-bootstrap';
-import {numberValidation,maxLengthValidation} from "../../utils/formValidation";
+import {emailValidation,numberValidation,maxLengthValidation} from "../../utils/formValidation";
 import './DirectBoss.scss';
 
 
@@ -26,14 +26,31 @@ export default function DirectBoss ({data, setData, notgrabado}) {
                     e.target.classList.add("error");
                 }
             }
-        }else{
-            setData({
-                ...data,
-                aboutBoss: {
-                    ...data.aboutBoss,
-                    [e.target.name]: e.target.value
+        }
+        else{
+            if(e.target.name==="email"){
+                if(emailValidation(e.target)){
+                    e.target.classList.add("success");
+                }else{
+                    e.target.classList.add("error");
                 }
-            })
+                setData({
+                    ...data,
+                    aboutBoss: {
+                        ...data.aboutBoss,
+                        [e.target.name]: e.target.value
+                    }
+                })
+                
+            }else{
+                setData({
+                    ...data,
+                    aboutBoss: {
+                        ...data.aboutBoss,
+                        [e.target.name]: e.target.value
+                    }
+                })
+            }
         }
     }
 
@@ -57,7 +74,7 @@ export default function DirectBoss ({data, setData, notgrabado}) {
     }
 
     return (
-        aboutBoss && <div className="container chartaboutBoss">
+        <div className="container chartaboutBoss">
              <nav className="navbar navbar-fixed-top navbar-inverse bg-inverse "style={{ backgroundColor: "#E7E7E7"}}>
                 <h3 style={{"marginLeft":"15px"}}>Sobre el Jefe Directo</h3>
              </nav>
