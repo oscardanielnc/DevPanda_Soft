@@ -155,7 +155,7 @@ export default function SupervisorSelection () {
         }
     }
 
-    return( supervisores.length>0 &&
+    return(
         <LayoutBasic>
             <ToastContainer />
             <div className='container principal'>

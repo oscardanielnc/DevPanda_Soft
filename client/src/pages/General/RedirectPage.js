@@ -1,14 +1,13 @@
-import React, {useState} from "react";
-import useAuth from "../hooks/useAuth";
+import useAuth from "../../hooks/useAuth";
 
 export default function AddSpecialty () {
     const {user} = useAuth()
     if(!user) {
-        window.location.href = `/sign-in`
+        window.location.href = `/`
     } else {
         if(user.tipoPersona==="e")
             window.location.href = `/agreement/idStudent=${user.idPersona}&idProcess=${user.fidProceso}`
-        else window.location.href = "/"
+        else window.location.href = `/list-inscriptions-form/idSup=${user.idPersona}&idProcess=${user.fidProceso}`
     }
     return null
 }

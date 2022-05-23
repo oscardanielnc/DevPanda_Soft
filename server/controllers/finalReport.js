@@ -18,10 +18,14 @@ function insertFinalReport(req, res) {
     connection.query(sqlQuery, (err, result) => {
         if (err) {
             res.status(505).send({
+                success: false,
                 message: "Error inesperado en el servidor"
             })
         }else{
-            res.status(200).send(result[0]);
+            res.status(200).send({
+                success: false,
+                result: result[0]
+            });
         }
     });
 

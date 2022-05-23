@@ -15,9 +15,15 @@ export function getDeliverableStudent(idAlumno,idEntregable) {
             return response.json()
         })
         .then(data => {
+            if(data.success) {
+                return {
+                    data,
+                    success: true
+                }
+            }
             return {
-                data,
-                success: true
+                errMsg: data.message,
+                success: false
             }
         })
         .catch(errMsg => {
@@ -46,7 +52,7 @@ export function setDeliverableStudent(data) {
         .then(result => {
             return {
                 msg: result.message,
-                success: true
+                success: result.success
             }
         })
         .catch(errMsg => {

@@ -17,8 +17,8 @@ export function searchAssessorsBySpecialty(alumno) {
         })
         .then(supervisors => {
             return {
-                supervisors,
-                success: true
+                supervisors: supervisors.result,
+                success: supervisors.success
             }
         })
         .catch(errMsg => {
