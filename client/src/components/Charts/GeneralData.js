@@ -8,6 +8,7 @@ import './GeneralData.scss';
 export default function GeneralData ({data, setData, imStudent=true,isSaved}) {
     const {generalData} = data;
     const handleChange = (e) => {
+        console.log("En el handleChange el es es: ",e);
         if(e.target.name==="personalEmail"){
             if(emailValidation(e.target)){
                 e.target.classList.add("success");
@@ -24,18 +25,23 @@ export default function GeneralData ({data, setData, imStudent=true,isSaved}) {
             
         }else{
             if(e.target.name==="cellphone"){
-                if(numberValidation(e.target) && e.target.value.length===9){
+                if(numberValidation(e.target) && maxLengthValidation(e.target,9)){
                     e.target.classList.add("success");
+                    setData({
+                        ...data,
+                        generalData: {
+                            ...data.generalData,
+                            [e.target.name]: e.target.value
+                        }
+                    })
                 } else {
-                    e.target.classList.add("error");
-                }
-                setData({
-                    ...data,
-                    generalData: {
-                        ...data.generalData,
-                        [e.target.name]: e.target.value
+                    e.target.value=data.generalData.cellphone;
+                    if(numberValidation(e.target) && maxLengthValidation(e.target,9)){
+                        e.target.classList.add("success");
+                    }else{
+                        e.target.classList.add("error");
                     }
-                })
+                }
             }else{
                 setData({
                     ...data,
@@ -68,7 +74,6 @@ export default function GeneralData ({data, setData, imStudent=true,isSaved}) {
     }
 
     return (
-        generalData &&
             <div className="container chartGeneralData">
              <nav className="navbar navbar-fixed-top navbar-inverse bg-inverse "style={{ backgroundColor: "#E7E7E7"}}>
                 <h3 style={{"marginLeft":"15px"}}>Datos Generales</h3>

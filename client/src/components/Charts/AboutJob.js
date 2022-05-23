@@ -38,7 +38,7 @@ export default function AboutJob ({data, setData, notgrabado}) {
     }
 
     return (
-        aboutJob && <div className="container chartAboutJob">
+        <div className="container chartAboutJob">
              <nav className="navbar navbar-fixed-top navbar-inverse bg-inverse "style={{ backgroundColor: "#E7E7E7"}}>
                 <h3 style={{"marginLeft":"15px"}}>Sobre el puesto</h3>
              </nav>

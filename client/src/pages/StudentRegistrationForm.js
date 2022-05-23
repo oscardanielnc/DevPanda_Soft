@@ -26,100 +26,141 @@ const documents={
 
 }
 
-// const dataDummy = {
-//     "idAlumno": 1,
-//     "idAlumnoProceso": 1,
-//     "idFicha": 9,
-//     "documentsState": "Sin entregar",
-//     "approvalState": "Desaprobado",
-//     "generalData": {
-//         "name": "Oscar Daniel",
-//         "lastname": "Navarro Cieza",
-//         "code": "20186008",
-//         "email": "oscar.navarro@pucp.edu.pe",
-//         "cellphone": 929178606,
-//         "personalEmail": "oscar@prueba.com",
-//     },
-//     "aboutCompany": {
-//         "isNational": true,
-//         "ruc": "1234567890",
-//         "info": "Este es un texto largo de prueba",
-//         "foreignName": "",
-//         "foreignCountry":"",
-//         "foreingLineBusiness":""
-//     },
-//     "aboutJob": {
-//         "areaName": "TI",
-//         "jobTitle": "Analista de información",
-//         "activities": "Recopilar información de las base de datos y generar reportes"
-//     },
-//     "aboutPSP": {
-//         "dateStart":"",
-//         "dateEnd":"",
-//         "dailyHours": 6,
-//         "weekHours": 30
-//     },
-//     "aboutBoss": {
-//         "name":"Hugo Carlos",
-//         "area":"TI",
-//         "email":"hugoCar1548@gmail.com",
-//         "cellphone":"9856875564"
-//     },
-//     "calification": {
-//         "comments":"Buen trabajo"
-//     },
-//     "others": [
-//         {
-//             "idCampoProceso":28,
-//             "idCampoLlenado":7,
-//             "nombreCampo":"Pais",
-//             "seccion": "Sobre la PSP",
-//             "flag": "obligatorio",
-//             "valorAlumno": 'AA'
-//         },
-//         {
-//             "idCampoProceso":29,
-//             "idCampoLlenado":9,
-//             "nombreCampo": "Giro",
-//             "seccion": "Sobre el jefe",
-//             "flag": "opcional",
-//             "valorAlumno": "Electrodomésticos"
-//         },
-//         {
-//             "idCampoProceso":30,
-//             "idCampoLlenado":10,
-//             "nombreCampo": "nuevodato",
-//             "seccion": "Sobre el jefe",
-//             "flag": "opcional",
-//             "valorAlumno": "xxxxx"
-//         }
-//     ]
+ const dataDummy = {
+     "idAlumno": 1,
+     "idAlumnoProceso": 1,
+     "idFicha": 9,
+     "documentsState": "Sin entregar",
+     "approvalState": "Desaprobado",
+     "generalData": {
+         "name": "Oscar Daniel",
+         "lastname": "Navarro Cieza",
+         "code": "20186008",
+         "email": "oscar.navarro@pucp.edu.pe",
+         "cellphone": 929178606,
+         "personalEmail": "oscar@prueba.com",
+     },
+     "aboutCompany": {
+         "isNational": true,
+         "ruc": "1234567890",
+         "companyName": "Empresa SAC",
+         "foreignCountry":2,
+         "foreingLineBusiness":4,
+          "companyAddress":""
+     },
+     "aboutJob": {
+         "areaName": "TI",
+         "jobTitle": "Analista de información",
+         "activities": "Recopilar información de las base de datos y generar reportes"
+     },
+     "aboutPSP": {
+         "dateStart":"",
+         "dateEnd":"",
+         "dailyHours": 6,
+         "weekHours": 30
+     },
+     "aboutBoss": {//         "name":"Hugo Carlos",
+         "area":"TI",
+         "email":"hugoCar1548@gmail.com",
+         "cellphone":"9856875564"
+     },
+     "calification": {
+         "comments":"Buen trabajo"
+     },
+     "others": [
+         {
+             "idCampoProceso":28,
+             "idCampoLlenado":7,
+             "nombreCampo":"Pais",
+             "seccion": "Sobre la PSP",
+             "flag": "obligatorio",
+             "valorAlumno": 'AA'
+         },
+         {
+             "idCampoProceso":29,
+             "idCampoLlenado":9,
+             "nombreCampo": "Giro",
+             "seccion": "Sobre el jefe",
+             "flag": "opcional",
+             "valorAlumno": "Electrodomésticos"
+         },
+         {
+             "idCampoProceso":30,
+             "idCampoLlenado":10,
+             "nombreCampo": "nuevodato",
+             "seccion": "Sobre el jefe",
+             "flag": "opcional",
+             "valorAlumno": "xxxxx"
+         }
+     ]
 
-// }
-// const arrayCadena = window.location.pathname.split("/");
-// const idAlumno=parseInt(arrayCadena[2]);
+}
+
+const paisesDummy=[
+    {
+        "idCountry":1,
+        "name":"Perú"
+    },
+    {
+        "idCountry":2,
+        "name":"Argentina"
+    },
+    {
+        "idCountry":3,
+        "name":"Bolivia"
+    }
+
+]
+
+const lineBussinessDummy=[
+    {
+        "idLineBussiness":1,
+        "name":"TI"
+    },
+    {
+        "idLineBussiness":2,
+        "name":"Software"
+    },
+    {
+        "idLineBussiness":3,
+        "name":"Administracion"
+    }
+
+]
+
+const arrayCadena = window.location.pathname.split("/");
+const idAlumno=parseInt(arrayCadena[2]);
 const maxFiles = 4;
 
 export default function StudentRegistrationForm () {
     const {user} = useAuth();
     const idAlumno= useParams().idStudent
-    const [data, setData] = useState({});
+    //const [data, setData] = useState({});
+    const [data, setData] = useState(dataDummy);
+    //const [countries,setCountries]=useState({});
+    const [countries,setCountries]=useState(paisesDummy);
+    //const [lineBusiness,setLineBusiness]=useState({});
+    const [lineBusiness,setLineBusiness]=useState(lineBussinessDummy);
     const [fileList, setFileList] = useState([])
     const [docs, setDocs] = useState([]);
     const [studentDocs, setStudentDocs] = useState([]);
     let typeUser=user.tipoPersona;
     if(typeUser==="p"){
         typeUser=user.tipoPersonal;
+    }else{
+
     }
     console.log("El arrayCadena es: ",window.location.pathname);
     //debugger
     if(isNaN(idAlumno)) window.location.reload();
 
     console.log("El idAlumno es: ",idAlumno);
+    
     useEffect(()=> {
-        getstudentInscriptionForm(idAlumno).then(response => {
-            const resData = response.infoFicha.infoFicha;
-            if(response.success===true) {
+        const fetchData = async () => {
+            const result = await getstudentInscriptionForm(idAlumno);
+            const resData = result.infoFicha.infoFicha;
+            if(result.success) {
                 if(typeUser==="e"){
                     const newData = {
                         idAlumno: resData.idAlumno,
@@ -146,25 +187,44 @@ export default function StudentRegistrationForm () {
                 } else
                     setData(resData);
             }
-        })
-        
+            /*
+            const resultado=await getCountries();
+            const countriesData = resultado.paises.paises;
+            if(resultado.success){
+                setCountries(countriesData);
+            }
+
+            const resultado2=await getLineBussiness();
+            const lineData = resultado2.lineBusiness.lineBusiness;
+            if(resultado2.success){
+                setLineBusiness(lineData);
+            }*/
+        }
+        fetchData()
+ 
     }, [setData])
+
     //sacamos los documentos subidos por el encargado
     useEffect(() => {
-        getAllDocsApi(`1-${user.fidEspecialidad}-RFOR`, 0).then(response => {
-            if(response.success) {
-                setDocs(response.docs)
+        const fetchData = async () => {
+            const result = await getAllDocsApi(`1-${user.fidEspecialidad}-RFOR`, 0);
+            if(result.success) {
+                setDocs(result.docs)
             }
-        })
+        }
+        fetchData()
     },[setDocs])
     //sacamos los documentos subidor por el alumno
     useEffect(() => {
-        getAllDocsApi(`1-${user.fidEspecialidad}-RFOR-${idAlumno}`, 1).then(response => {
-            if(response.success) {
-                setStudentDocs(response.docs)
+        const fetchData = async () => {
+            const result = await getAllDocsApi(`1-${user.fidEspecialidad}-RFOR-${idAlumno}`, 1);
+            if(result.success) {
+                setStudentDocs(result.docs)
             }
-        })
+        }
+        fetchData()
     },[setStudentDocs])
+
     if(!data.generalData) return null
 
     const deliver = async () => {
@@ -199,7 +259,8 @@ export default function StudentRegistrationForm () {
         const newData = {
             ...data,
             documentsState: "Entregado",
-            approvalState: "Sin calificar"
+            approvalState: "Sin calificar",
+            // dateModified:new Date()
         }
         const response = await registrationUpdateApiStudentCamps(newData);
         if(!response.success){
@@ -219,6 +280,7 @@ export default function StudentRegistrationForm () {
                 idFicha: data.idFicha,
                 documentsState: "Sin entregar",
                 approvalState: "Sin entregar",
+               // dateModified:data.dateModified,
                 generalData: data.generalData,
                 aboutCompany: data.aboutCompany,
                 aboutJob:data.aboutJob,
@@ -276,8 +338,11 @@ export default function StudentRegistrationForm () {
     const insertCoordinator = async e => {
         e.preventDefault();
         let response=null;
-        
-        response = await registrationUpdateApiStudent(data);
+        const newData = {
+            ...data,
+            // dateModified:new Date()
+        }
+        response = await registrationUpdateApiStudent(newData);
         if(!response.success){
             toast.error(response.msg, {
                 position: "top-right",
@@ -299,6 +364,7 @@ export default function StudentRegistrationForm () {
                 progress: undefined,
             });
             deliver();
+            setData(newData);
             isSaved=true;
         } 
     }
@@ -308,7 +374,7 @@ export default function StudentRegistrationForm () {
     }
 
     return (
-        data.calification && typeUser==="e"? <LayoutBasic>
+        typeUser==="e"? <LayoutBasic>
             <div className="container principal" style={{"padding":"1px"}}>
                 <div className="row rows" style={{textAlign: "left"}}>
                     <h1>Ficha de Inscripción</h1>
@@ -334,7 +400,7 @@ export default function StudentRegistrationForm () {
                     <GeneralData data={data} setData={setData} imStudent={isSaved} isSaved={isSaved}/>   
                 </div>
                 <div className="row rows">
-                    <AboutCompany data={data} setData={setData} notgrabado={isSaved}/>
+                    <AboutCompany data={data} setData={setData} notgrabado={isSaved} countries={countries} lineBusiness={lineBusiness}/>
                 </div>
                 <div className="row rows">
                     <AboutJob data={data} setData={setData} notgrabado={isSaved}/>
@@ -352,7 +418,7 @@ export default function StudentRegistrationForm () {
                         </nav>
                         <div className="row rows" >
                             <Form.Control className="observaciones"
-                                    placeholder="Esciba las observaciones de la entrega" 
+                                    placeholder="" 
                                     onChange={changeComments}
                                     value={data.calification.comments}
                                     name="comments"
@@ -364,7 +430,7 @@ export default function StudentRegistrationForm () {
                     </div>
                 </div>
                 <div className="row rows uploadRegistration" >                            
-                    <FileManagement canUpload={canUpload} docs={studentDocs} maxFiles={4} fileList={fileList} setFileList={setFileList} titleUploadedFiles="Archivos subidos por el alumno"/>
+                    <FileManagement canUpload={canUpload} docs={studentDocs} maxFiles={4} fileList={fileList} titleUpload="Subir archivos de Ficha de Inscripcion" setFileList={setFileList} titleUploadedFiles="Archivos subidos por el alumno"/>
                 </div>
                 <div className="row rows BotonAlumno">
                     <Button className="btn btn-primary" style={{width:"40%"}} onClick={insert} disabled={isSaved}>Enviar</Button>
@@ -413,6 +479,12 @@ export default function StudentRegistrationForm () {
                 <div className="row rows">
                     <DirectBoss data={data} setData={setData} notgrabado={isSaved}/>
                 </div>
+                <div className="row rows uploadRegistration" >                            
+                    <FileManagement canUpload={canUpload} docs={studentDocs} maxFiles={4} setFileList={setFileList} titleUploadedFiles="Archivos subidos por el alumno"/>
+                </div>
+                <div className="row rows">
+                    <CalificationFormStudent data={data} setData={setData} notgrabado={false}/>
+                </div> 
                 <div className="row rows">
                     <div className="container Comments">
                         <nav className="navbar navbar-fixed-top navbar-inverse bg-inverse "style={{ backgroundColor: "#E7E7E7"}}>
@@ -431,12 +503,6 @@ export default function StudentRegistrationForm () {
                         </div> 
                     </div>
                 </div>
-                <div className="row rows uploadRegistration" >                            
-                    <FileManagement canUpload={canUpload} docs={studentDocs} maxFiles={4} setFileList={setFileList} titleUploadedFiles="Archivos subidos por el alumno"/>
-                </div>
-                <div className="row rows">
-                    <CalificationFormStudent data={data} setData={setData} notgrabado={false}/>
-                </div> 
                 <div className="row rows" >
                 <div className="col-sm-2 subtitles">
                 </div>
