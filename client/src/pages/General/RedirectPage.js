@@ -7,7 +7,7 @@ export default function AddSpecialty () {
     } else {
         if(user.tipoPersona==="e")
             window.location.href = `/agreement/idStudent=${user.idPersona}&idProcess=${user.fidProceso}`
-        else window.location.href = `/list-inscriptions-form/idSup=${user.idPersona}&idProcess=${user.fidProceso}`
+        else window.location.href = `/students-management`
     }
     return null
 }

@@ -11,6 +11,8 @@ import Deliverables from "../pages/Deliverables";
 import FinalReport from "../pages/FinalReport"
 import ListRegistrationForm from "../pages/ListRegistrationForm";
 import landingPage from "../pages/General/LandingPage";
+import EnrollmentStudent from "../pages/Student/EnrollmentStudent";
+import StudentsManagement from "../pages/CoorSpecialty/StudentsManagement"
 
 const routes = [ 
     // General
@@ -29,6 +31,12 @@ const routes = [
         exact: true,
         component: RedirectPage,
     },
+    // Coordinador especialidad
+    {
+        path: "/students-management",
+        exact: true,
+        component: StudentsManagement,
+    },
     // Admin
     {
         path: "/specialty-management",
@@ -41,7 +49,7 @@ const routes = [
         component: AddSpecialty,
     },
     // Supervisor
-    {  path: "/list-inscriptions-form/idSup=:idSup&idProcess=:idProcess",
+    {  path: "/list-inscriptions-form",
         exact: true,
         component: ListRegistrationForm
     },
@@ -57,9 +65,9 @@ const routes = [
         component: StudentAgreement,
     },
     {
-        path: "registration/idStudent=:idStudent&idProcess=:idProcess",
+        path: "enrollment/idStudent=:idStudent&idProcess=:idProcess",
         exact: true,
-        component: Error404,
+        component: EnrollmentStudent,
     },
     {
         path: "inscription/idStudent=:idStudent&idProcess=:idProcess",

@@ -1,0 +1,15 @@
+.studentsManagement {
+    &__title {
+        display: flex !important;
+        justify-content: space-between !important;
+
+        &-h1 {
+            width: fit-content !important;
+        }
+        &-excel {
+            width: fit-content !important;
+            height: fit-content;
+            align-self: center;
+        }
+    }
+}

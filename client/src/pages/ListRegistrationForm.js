@@ -87,7 +87,6 @@ let textSelect = "-1"
 
 
 export default function ListRegistrationForm () {
-    const {idSup} =useParams()
     
     const [alumnos, setAlumnos] = useState([]);
     const [filteredData, setFilteredData] = useState(dataDummy);
