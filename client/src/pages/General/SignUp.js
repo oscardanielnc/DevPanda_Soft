@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Form, Row, Col } from "react-bootstrap";
+import { Form, Row, Col, Button } from "react-bootstrap";
 import { specialtySelectAllApi } from "../../api/specialty";
 import PicLogoPucp from "../../assets/svg/PicLogoPucpJunto.svg";
 import { ToastContainer, toast } from 'react-toastify';
 import GoogleLogin from 'react-google-login';
 import './scss/SignUp.scss';
+import { Link } from "react-router-dom";
+import { isNumber } from "../../utils/objects";
 
 const dataDummy = {
     firstName: "Campo autocompletado",
@@ -41,9 +43,59 @@ export default function SignUp (){
         })
     }
     const responseGoogle = async (response) => {
-        const basicData = response.profileObj.email;
+        const basicData = response.profileObj;
 
-        console.log(basicData)
+        const emailDomain = basicData.email.split("@")[1];
+
+        if(emailDomain === "pucp.edu.pe") {
+            setData({
+                ...data,
+                email: basicData.email,
+                firstName: basicData.givenName,
+                lastName: basicData.familyName
+            })
+        } else {
+            toast.warning("Tiene que registarse con un correo PUCP", {
+                position: "top-right",
+                autoClose: 3000,
+            });
+        }
+    }
+
+    const register = () => {
+        const strNoLogged = "Campo autocompletado";
+        if(data.email===strNoLogged || data.firstName===strNoLogged || data.lastName===strNoLogged) {
+            toast.warning("Es necesario hacer un pre-registro para combrobar su correo PUCP", {
+                position: "top-right",
+                autoClose: 3000,
+            });
+        } else {
+            if(data.code!=="" && data.code.length===8 && isNumber(data.code)) {
+                if(data.specialty === -1) {
+                    toast.warning("Debe seleccionar su especialidad", {
+                        position: "top-right",
+                        autoClose: 3000,
+                    });
+                } else {
+                    const result = {success: false, message: "Registro exitoso!"} // TODO: API
+                    if(result.success) {
+                        const {accessToken} = result;
+                        localStorage.setItem("ACCESS_TOKEN", accessToken);
+                        window.location.href = "/redirect";
+                    } else {
+                        toast.error(result.message, {
+                            position: "top-right",
+                            autoClose: 3000,
+                        });
+                    }
+                }
+            } else {
+                toast.warning("Debe ingresar un código PUCP válido", {
+                    position: "top-right",
+                    autoClose: 3000,
+                });
+            }
+        }
     }
 
     return(       
@@ -57,13 +109,16 @@ export default function SignUp (){
                         <Row><h1>Registrar</h1></Row>
                         <Row><h6>Inicia el registro con tu correo PUCP</h6></Row>
                     </div>
-                    <GoogleLogin
-                        clientId="217315516782-dimqetb06qceps0d7su07rtlmr4s1bli.apps.googleusercontent.com"
-                        buttonText="Iniciar sesión"
-                        onSuccess={responseGoogle}
-                        onFailure={responseGoogle}
-                        cookiePolicy={'single_host_origin'}
-                    />
+                    <Row>
+                        <GoogleLogin
+                            className="signUp__google"
+                            clientId="217315516782-dimqetb06qceps0d7su07rtlmr4s1bli.apps.googleusercontent.com"
+                            buttonText="Iniciar registro"
+                            onSuccess={responseGoogle}
+                            onFailure={responseGoogle}
+                            cookiePolicy={'single_host_origin'}
+                        />
+                    </Row>
                     <ToastContainer /> 
                     <Form>
                         <InputLabel name="Nombres" value={data.firstName} />
@@ -94,6 +149,16 @@ export default function SignUp (){
                                     ))
                                 }
                             </Form.Select>
+                            <div className="signUp__return">
+                                <span>¿Ya tienes una cuenta? Regresa al Landing Page para iniciar sesión.</span>
+                                <Link to="/">Regresar</Link>
+                            </div>                                                                            
+                            
+                            <div className="row col-sm-6 offset-3 mb-5">                            
+                                <Button variant="primary" onClick={register}>
+                                    Registar
+                                </Button>                                                             
+                            </div> 
                         </Form.Group>
                     </Form>
                 </Col>
@@ -113,93 +178,3 @@ function InputLabel({name, value}) {
         </Form.Group> 
     )
 }
-
-
-            {/* <Row className="row align-items-center mx-auto mt-3">                
-                <img src={PicLogoPucp} alt= "Logo" width="110" height="55"/>
-            </Row>
-            
-            <div className="row mt-3">
-                <div>
-                    <h1 className="text-center">Registrar</h1>
-                </div>
-            </div>
-
-            <div className="row">
-                <div>
-                    <p className="text-center">Ingresa tus datos para crear una cuenta</p>
-                </div>
-            </div>
-
-            <Row className="row mt-3">                
-                <Form>
-                    <Row className="col-sm-8 offset-2 ">
-                        
-                        <Col className="col-sm-6 offset-3">
-                            <Form.Group className="mb-3" controlId="formBasicName">
-                                <Form.Label>Nombres</Form.Label>
-                                <Form.Control type="text" placeholder="Juan Roberto" />
-                                <Form.Text className="text-muted">
-                                Ingresa tus nombres completos
-                                </Form.Text>
-                            </Form.Group>                        
-                        </Col>
-                        
-                        <div className="col-sm-6 offset-3">
-                            <Form.Group className="mb-3" controlId="formBasicLastNameF">
-                                <Form.Label>Apellido Paterno</Form.Label>
-                                <Form.Control type="text" placeholder="García" />
-                            </Form.Group>                            
-                        </div>    
-                        <div className="col-sm-6 offset-3">
-                            <Form.Group className="mb-3" controlId="formBasicLastNameM">
-                                <Form.Label>Apellido Materno</Form.Label>
-                                <Form.Control type="text" placeholder="Pérez" />
-                            </Form.Group>
-                        </div>
-
-                        <div className="col-sm-6 offset-3">
-                            <Form.Group className="mb-3" controlId="formBasicCodePucp">
-                                <Form.Label>Código PUCP</Form.Label>
-                                <Form.Control type="text" placeholder="20174562" />
-                            </Form.Group>
-                        </div>
-                        <div className="col-sm-6 offset-3 d-grid">
-                            <Form.Group className="mb-3" controlId="formDropDownEsp" >
-                                <Form.Label>Especialidad</Form.Label>
-                                <DropdownButton id="dropdown-basic-button" title="Seleccionar Especialidad">
-                                    <Dropdown.Item href="#/action-1">Seleccionar Especialidad</Dropdown.Item>
-                                    <Dropdown.Item href="#/action-2">Ing. Informática</Dropdown.Item>
-                                    <Dropdown.Item href="#/action-3">Ing. Industrial</Dropdown.Item>
-                                    <Dropdown.Item href="#/action-4">Ing. de Telecomunicaciones</Dropdown.Item>
-                                </DropdownButton>
-                            </Form.Group>
-                        </div>
-                        <div className="col-sm-6 offset-3">
-                            <Form.Group className="mb-3" controlId="formBasicEmail">
-                                <Form.Label>Correo</Form.Label>
-                                <Form.Control type="email" placeholder="Ingresa tu correo" />
-                                <Form.Text className="text-muted">
-                                Ingresar usando tu correo PUCP
-                                </Form.Text>
-                            </Form.Group>
-                        </div>
-                        <div className="col-sm-6 offset-3">
-                            <Form.Group className="mb-3" controlId="formBasicPassword">
-                                <Form.Label>Contraseña</Form.Label>
-                                <Form.Control type="password" placeholder="Ingresa tu contraseña" />
-                            </Form.Group>
-                        </div>
-                        
-                        <Row className="col-sm-6 offset-4">
-                            <Form.Label className="mb-3" >¿Ya tienes una cuenta? <a href="/signin" className="registrate">Inicia Sesión</a></Form.Label>
-                        </Row>                                                                            
-                        
-                        <div className="row col-sm-6 offset-3 mb-5">                            
-                            <Button href="/" variant="primary" type="submit">
-                                Empieza ya
-                            </Button>                                                             
-                        </div>                        
-                    </Row>
-                </Form>
-            </Row> */}
