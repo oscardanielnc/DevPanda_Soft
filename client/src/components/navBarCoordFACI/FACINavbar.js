@@ -9,12 +9,16 @@ export default function(){
     const {user} = useAuth()
     const dataNavbar = [
         {
+            title: "Gestión de alumnos (Coor Esp)",
+            link: `/students-management`
+        },
+        {
             title: "Revisión de Convenio y Plan de Aprendizaje",
             link: `/agreement-review/idStudent=${5}&idProcess=${user.fidProceso}`
         },
         {
             title: "Revisión Ficha de Inscripción",
-            link: `/list-inscriptions-form/idSup=${user.idPersona}&idProcess=${user.fidProceso}`
+            link: `/list-inscriptions-form`
         },
         {
             title: "Gestión de Especialidades (Admin)",
