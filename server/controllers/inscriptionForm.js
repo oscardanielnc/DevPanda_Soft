@@ -65,11 +65,17 @@ async function updateFieldsInscriptionForm(req, res){
     try{
         resultElement = await functionUpdate();
         if(!resultElement){
-            res.status(404).send({ message: "No se actualizó ninguna fila"})
+            res.status(404).send({ 
+                success: false,
+                message: "No se actualizó ninguna fila"
+            })
             return 
         } 
     }catch(e){
-        res.status(505).send({ message: "Error en el servidor " + e.message})
+        res.status(505).send({ 
+            success: false,
+            message: "Error en el servidor " + e.message
+        })
         return 
     }  
 
@@ -84,15 +90,22 @@ async function updateFieldsInscriptionForm(req, res){
         try{
             resultElement = await functionUpdate();
             if(!resultElement){
-                res.status(404).send({ message: "No se pudo actualizar el campo: " + element.nombreCampo})
+                res.status(404).send({
+                    success: false, 
+                    message: "No se pudo actualizar el campo: " + element.nombreCampo
+                })
                 return 
             } 
         }catch(e){
-            res.status(505).send({ message: "Error en el servidor " + e.message})
+            res.status(505).send({ 
+                success: false,
+                message: "Error en el servidor " + e.message
+            })
             return 
         }  
     }
     res.status(200).send({
+        success: true,
         message: "Campos actualizados correctamente"
     })
     connection.end();
@@ -123,15 +136,18 @@ async function updateInscriptionForm(req, res){
     connection.query(sqlQuery, (err, result) => {
         if(err){
             res.status(505).send({
+                success: false,
                 message: "Error inesperado del servidor: " + err.message
             })
         }else{
             if(!result.affectedRows){
                 res.status(404).send({
+                    success: false,
                     message: "No se actualizó ninguna fila"
                 })
             }else{
                 res.status(200).send({
+                    success: true,
                     message: "Valores actualizados correctamente"
                 })
             }
@@ -228,11 +244,17 @@ async function getstudentInscriptionForm(req, res){
     try{
         resultElement  = await functionSelect();
         if(!resultElement.length){
-            res.status(404).send({ message: "No se encontro a un alumno con ese identificador"})
+            res.status(404).send({ 
+                success: false,
+                message: "No se encontro a un alumno con ese identificador"
+            })
             return 
         } 
     }catch(e){
-        res.status(505).send({ message: "Error en el servidor " + e.message})
+        res.status(505).send({ 
+            success: false,
+            message: "Error en el servidor " + e.message
+        })
         return 
     }  
 
@@ -260,7 +282,10 @@ async function getstudentInscriptionForm(req, res){
     try{
         resultElement = await functionSelect();
     }catch(e){
-        res.status(505).send({ message: "Error inesperado en el servidor " + e.message})
+        res.status(505).send({ 
+            success: false,
+            message: "Error inesperado en el servidor " + e.message
+        })
         return 
     }   
     
@@ -281,11 +306,17 @@ async function getstudentInscriptionForm(req, res){
         try{
             resultElement  = await functionInsert();
             if(!resultElement){
-                res.status(404).send({ message: "No se pudo insertar una Entrega Ficha Inscripcion para el Alumno"})
+                res.status(404).send({ 
+                    success: false,
+                    message: "No se pudo insertar una Entrega Ficha Inscripcion para el Alumno"
+                })
                 return 
             } 
         }catch(e){
-            res.status(505).send({ message: "Error en el servidor " + e.message})
+            res.status(505).send({ 
+                success: false,
+                message: "Error en el servidor " + e.message
+            })
             return 
         }  
         
@@ -306,7 +337,10 @@ async function getstudentInscriptionForm(req, res){
         try{
             resultElement  = await functionSelect();
         }catch(e){
-            res.status(505).send({ message: "Error inesperado en el servidor " + e.message})
+            res.status(505).send({ 
+                success: false,
+                message: "Error inesperado en el servidor " + e.message
+            })
             return 
         }   
         console.log(resultElement);
@@ -326,11 +360,17 @@ async function getstudentInscriptionForm(req, res){
             try{
                 resultElement  = await functionInsert();
                 if(!resultElement){
-                    res.status(404).send({ message: "No se pudo insertar un campo de la sección 'Otros' al alumno"})
+                    res.status(404).send({ 
+                        success: false,
+                        message: "No se pudo insertar un campo de la sección 'Otros' al alumno"
+                    })
                     return 
                 } 
             }catch(e){
-                res.status(505).send({ message: "Error en el servidor " + e.message})
+                res.status(505).send({ 
+                    success: false,
+                    message: "Error en el servidor " + e.message
+                })
                 return 
             }  
             element.idCampoLlenado = resultElement;
@@ -388,14 +428,20 @@ async function getstudentInscriptionForm(req, res){
         try{
             resultElement  = await functionSelect();
         }catch(e){
-            res.status(505).send({ message: "Error inesperado en el servidor " + e.message})
+            res.status(505).send({ 
+                success: false,
+                message: "Error inesperado en el servidor " + e.message
+            })
             return 
         }   
         
         data.others = resultElement;
     }
 
-    res.status(200).send({infoFicha: data})
+    res.status(200).send({
+        success: true,
+        infoFicha: data
+    })
     connection.end();
 }
 
@@ -422,10 +468,14 @@ function getListStudentsInscriptionForm(req, res){
     connection.query(sqlQuery, (err, result) => {
         if (err) {
             res.status(505).send({
+                success: false,
                 message: "Error inesperado en el servidor " + err.message
             })
         }else{
-            res.status(200).send(result);
+            res.status(200).send({
+                success: true,
+                result
+            });
         }
     });
 

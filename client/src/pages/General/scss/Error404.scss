@@ -1,0 +1,25 @@
+@import "../../../App.scss";
+
+.error404 {
+    background-color: #2962ff;
+    display: grid;
+    justify-items: center;
+    min-height: 100vh;
+
+    &__title {
+        color: white;
+        margin: .65em 0;
+        font-size: 3.5em;
+    }
+    &__img {
+        width: 50%;
+    }
+    &__btn {
+        color: $primary-color !important;
+        border: 2px solid !important;
+        font-weight: 600 !important;
+        padding: 0.5em 3em !important;
+        font-size: 1.1em !important;
+        height: fit-content !important;
+    }
+}

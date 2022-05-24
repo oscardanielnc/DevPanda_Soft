@@ -1,15 +1,16 @@
 import React, {useState}  from "react";
-import { Button, Table,Form,InputGroup,FormControl } from 'react-bootstrap';
-import {numberValidation} from "../../utils/formValidation";
+import { Button, Table,Form,InputGroup,FormControl,DropdownButton,Dropdown } from 'react-bootstrap';
+import {numberValidation,maxLengthValidation} from "../../utils/formValidation";
 import './AboutCompany.scss';
 
 
-export default function AboutCompany ({data, setData, notgrabado}) {
+export default function AboutCompany ({data, setData, notgrabado,countries,lineBusiness}) {
     const {aboutCompany} = data;
 
     const handleChangeText = (e) => {
         if(e.target.name==="ruc"){
-            if(numberValidation(e.target)){
+            if(numberValidation(e.target) && maxLengthValidation(e.target,11)){
+                e.target.classList.add("success");
                 setData({
                     ...data,
                     aboutCompany: {
@@ -17,6 +18,13 @@ export default function AboutCompany ({data, setData, notgrabado}) {
                         [e.target.name]: e.target.value
                     }
                 })
+            }else {
+                e.target.value=data.aboutCompany.ruc;
+                if(numberValidation(e.target) && maxLengthValidation(e.target,11)){
+                    e.target.classList.add("success");
+                }else{
+                    e.target.classList.add("error");
+                }
             }
         }else{
             setData({
@@ -34,8 +42,7 @@ export default function AboutCompany ({data, setData, notgrabado}) {
                 ...data,
                 aboutCompany: {
                     isNational: !data.aboutCompany.isNational,
-                    ruc:"",
-                    info:""
+                    ruc:""
                 }
             }
             setData(newData);
@@ -43,10 +50,7 @@ export default function AboutCompany ({data, setData, notgrabado}) {
             const newData = {
                 ...data,
                 aboutCompany: {
-                    isNational: !data.aboutCompany.isNational,
-                    foreignName:"",
-                    foreignCountry:"",
-                    foreignLineBusiness:""
+                    isNational: !data.aboutCompany.isNational
                 }
             }
             setData(newData);
@@ -72,9 +76,34 @@ export default function AboutCompany ({data, setData, notgrabado}) {
             others: newOthers
         })
     }
-
+    
+    const handleChangeCountry = (e) => {
+        //console.log("Change en country: ",e);
+        setData({
+            ...data,
+            aboutCompany: {
+                ...data.aboutCompany,
+                [e.target.name]: e.target.value
+            }
+        })
+    }
+    
+    const handleChangeLine = (e) => {
+        //console.log("Change en lineBussinnes: ",e);
+        setData({
+            ...data,
+            aboutCompany: {
+                ...data.aboutCompany,
+                [e.target.name]: e.target.value
+            }
+        })
+    }
+    console.log("El data es: ",data );
+    let indexCountry=(data.aboutCompany.foreignCountry!==null || data.aboutCompany.foreignCountry!=="")?data.aboutCompany.foreignCountry:-1;
+    let indexLine=(data.aboutCompany.foreingLineBusiness!==null || data.aboutCompany.foreingLineBusiness!=="")?data.aboutCompany.foreingLineBusiness:-1;
+    console.log("El indexCountry es: ",indexCountry);
+    console.log("El indexLine es: ",indexLine);
     return (
-        aboutCompany &&
             <div className="container chartSobreEmpresa">
              <nav className="navbar navbar-fixed-top navbar-inverse bg-inverse "style={{ backgroundColor: "#E7E7E7"}}>
                 <h3 style={{"marginLeft":"15px"}}>Sobre la empresa</h3>
@@ -113,7 +142,7 @@ export default function AboutCompany ({data, setData, notgrabado}) {
                 </div>
             </div>
             <div className="row rows" >
-                <div style={{"marginTop":"5px",fontWeight: "700"}}>Empresa Nacional</div>
+                <div style={{"marginTop":"5px"}}>Empresa Nacional</div>
             </div>
             <div className="row rows" >
                 <div className="col-sm-1 subtitles">
@@ -127,47 +156,57 @@ export default function AboutCompany ({data, setData, notgrabado}) {
                         name="ruc"
                         style={{"marginBottom":"8px !important"}}/>
                 </div>
-                <div className="col-sm-4 subtitles">
-                    <Button variant="primary" style={{"marginBottom":"4px"}} disabled={!aboutCompany.isNational}>Buscar</Button>
-                </div>
-                <Form.Control className="Cuadro" style={{"marginLeft": "0px"}}
-                    placeholder="" 
-                    onChange={handleChangeText}
-                    disabled = {!aboutCompany.isNational || notgrabado}
-                    value={aboutCompany.info}
-                    name="info"
-                    as="textarea"
-                    rows={6}
-                    />
             </div>
             <div className="row rows" >
-                <div style={{fontWeight: "700"}}>Nombre de Empresa Extranjera</div>
+                <div >Nombre de Empresa</div>
             </div>
             <div className="row rows" >
                 <Form.Control placeholder="Escriba el nombre de la empresa" 
                         onChange={handleChangeText}
-                        disabled = {aboutCompany.isNational || notgrabado}
-                        value={aboutCompany.foreignName}
-                        name="foreignName"
+                        disabled = {notgrabado}
+                        value={aboutCompany.companyName}
+                        name="companyName"
                         style={{"marginBottom":"10px !important"}}/>
             </div>
             <div className="row rows">
-                <div className="col-sm-6 subtitles">
+                <div className="col-sm-5 subtitles">
                     <div>País</div>
-                    <Form.Control placeholder="Escriba el país de la empresa extranjera" 
-                        onChange={handleChangeText}
-                        disabled={aboutCompany.isNational || notgrabado}
-                        value={aboutCompany.foreignCountry}
-                        name="foreignCountry"/>
+                    <Form.Select className="select" defaultValue={indexCountry} name="foreignCountry" disabled={notgrabado} onChange={handleChangeCountry} >
+                        <option value={indexCountry}>Seleccionar</option>
+                        {
+                            countries.map((element, index) => (
+                                <option value={element.idCountry} 
+                                    key={element.idCountry}>{element.name}
+                                </option>
+                            ))
+                        }
+                    </Form.Select>
                 </div>
-                <div className="col-sm-6 subtitles">
+                <div className="col-sm-2 subtitles"></div>
+                <div className="col-sm-5 subtitles">
                     <div>Giro de la empresa</div>
-                    <Form.Control placeholder="Escriba el giro de la empresa extranjera" 
-                        onChange={handleChangeText}
-                        disabled={aboutCompany.isNational || notgrabado}
-                        value={aboutCompany.foreignLineBusiness}
-                        name="foreignLineBusiness"/>
+                    <Form.Select className="select"  name="foreingLineBusiness" disabled={notgrabado} onChange={handleChangeLine}>
+                        <option value={indexLine}>Seleccionar</option>
+                        {
+                            lineBusiness.map((element, index) => (
+                                <option value={element.idLineBussiness} 
+                                    key={element.idLineBussiness}>{element.name}
+                                </option>
+                            ))
+                        }
+                    </Form.Select>
                 </div>
+            </div>
+            <div className="row rows" >
+                <div>Dirección de la empresa</div>
+            </div>
+            <div className="row rows" >
+                <Form.Control placeholder="Escriba la dirección de la empresa" 
+                        onChange={handleChangeText}
+                        disabled = {notgrabado}
+                        value={aboutCompany.companyAddress}
+                        name="companyAddress"
+                        style={{"marginBottom":"10px !important"}}/>
             </div>
             {
                 data.others && data.others.map((e,index) => {

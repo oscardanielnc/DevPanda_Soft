@@ -1,5 +1,5 @@
 const mysql = require('mysql');
-const {MYSQL_CREDENTIALS} = require("../config")
+const {MYSQL_CREDENTIALS} = require("../config");
 
 function searchAssessorsBySpecialty(req, res) {
     //Busca una lista de asesores según la especialidad de un alumno 
@@ -27,10 +27,14 @@ function searchAssessorsBySpecialty(req, res) {
     connection.query(sqlQuery, (err, result) => {
         if (err) {
             res.status(505).send({
+                success: false,
                 message: "Error inesperado en el servidor"
             })
         }
-        res.status(200).send(result)
+        res.status(200).send({
+            success: false,
+            result
+        })
     });
 
     connection.end();

@@ -50,7 +50,7 @@ export function numberValidation(inputData){
     const numberValidation = /^([-]?[\s]?[0-9])+$/i;
     const {value} = inputData;
     removeClassErrorSuccess(inputData)
-
+    console.log("En el numberValidation el value es: ",value);
     const resultValidation = numberValidation.test(value) //para esta RegularExp, esta cadena cumple?
     if(resultValidation) {
         inputData.classList.add('success')

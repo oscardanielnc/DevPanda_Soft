@@ -19,8 +19,8 @@ export function getAgreement(fidAlumno,fidAsesor){
         })
         .then(agreement => {
             return {
-                agreement,
-                success: true
+                agreement: agreement.result,
+                success: agreement.success
             }
         })
         .catch(errMsg => {
