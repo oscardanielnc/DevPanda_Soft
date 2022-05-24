@@ -15,16 +15,15 @@ const api = express.Router();
 
 
 
-
 api.get("/studentInscriptionForm/:idAlumno",inscriptionFormController.getstudentInscriptionForm);
 
 api.get("/studentListInscriptionForm/:idEspecialidad",inscriptionFormController.getListStudentsInscriptionForm);
 
+api.get("/countryList",inscriptionFormController.getListOfCountry);
+api.get("/lineBusinessList",inscriptionFormController.getListOfLineBusiness);
+
 api.put("/studentDataInscriptionForm",inscriptionFormController.updateInscriptionForm);
 api.put("/studentFieldsInscriptionForm",inscriptionFormController.updateFieldsInscriptionForm);
-
-
-
 
 
 

@@ -1,22 +1,23 @@
 import SpecialtyManagement from "../pages/SpecialtyManagement";
 import AddSpecialty from "../pages/AddSpecialty";
 import StudentRegistrationForm from "../pages/StudentRegistrationForm";
-import SignIn from "../pages/SignIn";
-import SignUp from "../pages/SignUp";
-import Error404 from "../pages/Error404";
+import SignUp from "../pages/General/SignUp";
+import Error404 from "../pages/General/Error404";
 import SupervisorSelection from "../pages/SupervisorSelection";
-import RedirectPage from "../pages/RedirectPage";
+import RedirectPage from "../pages/General/RedirectPage";
 import AgreementReview from "../pages/AgreementReview";
 import StudentAgreement from "../pages/StudentAgreement";
 import Deliverables from "../pages/Deliverables";
 import FinalReport from "../pages/FinalReport"
 import ListRegistrationForm from "../pages/ListRegistrationForm";
+import landingPage from "../pages/General/LandingPage";
+
 const routes = [ 
     // General
     {
-        path: "/sign-in",
+        path: "/",
         exact: true,
-        component: SignIn,
+        component: landingPage,
     },
     {
         path: "/sign-up",
@@ -30,12 +31,12 @@ const routes = [
     },
     // Admin
     {
-        path: "/",
+        path: "/specialty-management",
         exact: true,
         component: SpecialtyManagement,
     },
     {
-        path: "/add-specialty",
+        path: "/specialty-add",
         exact: true,
         component: AddSpecialty,
     },

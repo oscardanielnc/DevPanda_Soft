@@ -1,13 +1,12 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
 
 import './Upload.scss'; 
 
-import fileDefault from '../../asserts/img/svg/file-earmark-arrow-up.svg';
-import fileDoc from '../../asserts/img/svg/file-earmark-word.svg';
-import filePdf from '../../asserts/img/svg/filetype-pdf.svg';
-import fileDocx from '../../asserts/img/svg/filetype-docx.svg';
-import { Button } from 'react-bootstrap';
+import fileDefault from '../../assets/svg/file-earmark-arrow-up.svg';
+import fileDoc from '../../assets/svg/file-earmark-word.svg';
+import filePdf from '../../assets/svg/filetype-pdf.svg';
+import fileDocx from '../../assets/svg/filetype-docx.svg';
 
 const listImgConfig = {
     default: fileDefault,
@@ -17,7 +16,7 @@ const listImgConfig = {
 }
 
 
-export default function Upload ({maxFiles, onFileChange, fileList, setFileList}) {
+export default function Upload ({maxFiles, fileList, setFileList}) {
 
     const wrapperRef = useRef(null);
 

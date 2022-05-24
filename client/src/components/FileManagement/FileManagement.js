@@ -4,8 +4,7 @@ import "./FileManagement.scss";
 import "../../scss/_variables.scss";
 import "../../scss/index.scss";
 import ShowFiles from "./ShowFiles";
-import { uploadDocsApi } from "../../api/files";
-import {ToastContainer, toast} from "react-toastify";
+import {ToastContainer} from "react-toastify";
 
 export default function FileManagement ({canUpload=true, docs, maxFiles=2, fileList=[], setFileList, titleUpload="Subir archivos",titleUploadedFiles="Archivos subidos"}){
 
