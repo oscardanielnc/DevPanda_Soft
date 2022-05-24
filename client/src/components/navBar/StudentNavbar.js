@@ -19,7 +19,7 @@ function StudentNavbar (props){
         },
         {
             title: "Matrícula",
-            link: `/registration/idStudent=${user.idPersona}&idProcess=${user.fidProceso}`
+            link: `/enrollment/idStudent=${user.idPersona}&idProcess=${user.fidProceso}`
         } ,
         {
             title: "Ficha de inscripción",

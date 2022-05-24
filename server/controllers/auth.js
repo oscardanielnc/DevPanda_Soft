@@ -30,7 +30,7 @@ async function singIn(req, res) {
                 correo: dbUser.correo,
                 tipoPersona: dbUser.tipoPersona,
                 activo: 1,
-                expire: moment().add(3, "days").unix(),
+                expire: moment().add(8, 'hours').unix(),
             }
             // aqui extrahemos los datos segun su tipo
             if(preUser.tipoPersona === 'e') {
@@ -115,7 +115,7 @@ async function signUp(req, res) {
                 correo: email,
                 tipoPersona: 'e',
                 activo: 1,
-                expire: moment().add(3, "days").unix(),
+                expire: moment().add(8, 'hours').unix(),
                 estadoMatriculado: 0,
                 estadoProceso: 1,
                 codigo: code,
