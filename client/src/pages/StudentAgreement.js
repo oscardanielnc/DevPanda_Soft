@@ -3,7 +3,7 @@ import LayoutBasic from "../layouts/LayoutBasic";
 import DocumentPlusIcon from "../components/DocumentPlusIcon/DocumentPlusIcon";
 import StateViewer,{StatesViewType} from "../components/StateViewer/StateViewer";
 import FileManagement from "../components/FileManagement/FileManagement";
-import { Button } from "react-bootstrap";
+import { Button ,Form} from "react-bootstrap";
 import "./StudentAgreement.scss";
 import { Link } from "react-router-dom";
 import { getAllDocsApi, uploadDocsApi } from "../api/files";
@@ -178,6 +178,14 @@ export default function StudentAgreement () {
                 </div>
                 <div className="row rows uploadAgreement" >                
                     <FileManagement canUpload={true} docs={studentDocs} maxFiles={maxFiles} fileList={fileList} setFileList={setFileList}/>
+                </div>
+                <div className="row row1" style={{textAlign: "left",marginTop:"25px"}}>
+                    <h2>Observaciones</h2>  
+                    <Form>                        
+                        <Form.Group className="mb-3" controlId="ControlTextarea1">                            
+                            <Form.Control as="textarea" rows={8} />
+                        </Form.Group>
+                    </Form>                           
                 </div>
                 <div className="row rows boton">
                     <Button className="btn btn-primary" style={{width:"40%"}} onClick={deliver}>Entregar</Button>
