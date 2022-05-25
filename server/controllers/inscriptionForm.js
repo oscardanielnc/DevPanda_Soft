@@ -39,7 +39,7 @@ async function updateFieldsInscriptionForm(req, res){
                     nombreEmpresa = "${req.body.aboutCompany.companyName}",
                     fidPaisEmpresa = ${req.body.aboutCompany.country},
                     fidLineaNegocio = ${req.body.aboutCompany.lineBusiness},
-                    direccionEmpresa = "${req.body.aboutCompany.companyAdress}",
+                    direccionEmpresa = "${req.body.aboutCompany.companyAddress}",
 
                     nombreArea = "${req.body.aboutJob.areaName}",
                     puesto = "${req.body.aboutJob.jobTitle}",
@@ -398,7 +398,7 @@ async function getstudentInscriptionForm(req, res){
         data.aboutCompany.companyName = resultElement[0].nombreEmpresa;
         data.aboutCompany.country = resultElement[0].fidPaisEmpresa;
         data.aboutCompany.lineBusiness = resultElement[0].fidLineaNegocio;
-        data.aboutCompany.companyAdress = resultElement[0].direccionEmpresa;
+        data.aboutCompany.companyAddress = resultElement[0].direccionEmpresa;
         
         data.aboutJob.areaName = resultElement[0].nombreArea;
         data.aboutJob.jobTitle = resultElement[0].puesto;
