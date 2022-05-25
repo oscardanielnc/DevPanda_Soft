@@ -14,6 +14,7 @@ import landingPage from "../pages/General/LandingPage";
 import EnrollmentStudent from "../pages/Student/EnrollmentStudent";
 import StudentsManagement from "../pages/CoorSpecialty/StudentsManagement";
 import ListAgreementsRequests from "../pages/ListAgreementsRequests";
+import WelcomeProcess from "../pages/WelcomeProcess";
 
 const routes = [ 
     // General
@@ -100,6 +101,11 @@ const routes = [
         component: ListRegistrationForm,//cambiar acá
     },
     // Alumno
+    {
+        path: "/welcome-process",
+        exact: true,
+        component:WelcomeProcess,
+    },
     {
         path: "/agreement/idStudent=:idStudent&idProcess=:idProcess",
         exact: true,
