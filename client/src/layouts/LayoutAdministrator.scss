@@ -1,0 +1,20 @@
+.main {
+    background: white;
+    .layout-basic {
+
+
+
+            &__superContainer {
+                width: 100%;
+                min-height: 100vh;
+
+                &-navbav {
+                    width: 340px;
+                }
+                &-content {
+                    width: calc(100% - 340px);
+                }
+        }
+    }
+
+}
