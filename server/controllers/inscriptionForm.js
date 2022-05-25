@@ -37,9 +37,9 @@ async function updateFieldsInscriptionForm(req, res){
                     esNacional = ${req.body.aboutCompany.isNational},
                     ruc = "${req.body.aboutCompany.ruc}",
                     nombreEmpresa = "${req.body.aboutCompany.companyName}",
-                    fidPaisEmpresa = "${req.body.aboutCompany.country}",
-                    fidLineaNegocio = "${req.body.aboutCompany.lineBusiness}",
-                    direccionEmpresa = "${req.body.aboutCompany.companyAdress}",
+                    fidPaisEmpresa = ${req.body.aboutCompany.country},
+                    fidLineaNegocio = ${req.body.aboutCompany.lineBusiness},
+                    direccionEmpresa = "${req.body.aboutCompany.companyAddress}",
 
                     nombreArea = "${req.body.aboutJob.areaName}",
                     puesto = "${req.body.aboutJob.jobTitle}",
@@ -181,7 +181,7 @@ async function getstudentInscriptionForm(req, res){
             "companyName": "",
             "country": "",
             "lineBusiness":"",
-            "companyAdress": ""
+            "companyAddress": ""
         },
         "aboutJob": {
             "areaName": "",
@@ -398,7 +398,7 @@ async function getstudentInscriptionForm(req, res){
         data.aboutCompany.companyName = resultElement[0].nombreEmpresa;
         data.aboutCompany.country = resultElement[0].fidPaisEmpresa;
         data.aboutCompany.lineBusiness = resultElement[0].fidLineaNegocio;
-        data.aboutCompany.companyAdress = resultElement[0].direccionEmpresa;
+        data.aboutCompany.companyAddress = resultElement[0].direccionEmpresa;
         
         data.aboutJob.areaName = resultElement[0].nombreArea;
         data.aboutJob.jobTitle = resultElement[0].puesto;
@@ -495,10 +495,14 @@ function getListOfCountry(req, res){
     connection.query(sqlQuery, (err, result) => {
         if (err) {
             res.status(505).send({
+                success : false,
                 message: "Error inesperado en el servidor " + err.message
             })
         }else{
-            res.status(200).send(result);
+            res.status(200).send({
+                success : true,
+                result
+            });
         }
     });
 
@@ -518,10 +522,14 @@ function getListOfLineBusiness(req, res){
     connection.query(sqlQuery, (err, result) => {
         if (err) {
             res.status(505).send({
+                success : false,
                 message: "Error inesperado en el servidor " + err.message
             })
         }else{
-            res.status(200).send(result);
+            res.status(200).send({
+                success: true,
+                result
+            });
         }
     });
 
