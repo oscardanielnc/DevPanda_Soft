@@ -6,7 +6,8 @@ import './AboutCompany.scss';
 
 export default function AboutCompany ({data, setData, notgrabado,countries,lineBusiness}) {
     const {aboutCompany} = data;
-
+    console.log("Countries es: ",countries);
+    console.log("Lineas de negocio son: ",lineBusiness);
     const handleChangeText = (e) => {
         if(e.target.name==="ruc"){
             if(numberValidation(e.target) && maxLengthValidation(e.target,11)){
@@ -171,7 +172,7 @@ export default function AboutCompany ({data, setData, notgrabado,countries,lineB
             <div className="row rows">
                 <div className="col-sm-5 subtitles">
                     <div>País</div>
-                    <Form.Select className="select" defaultValue={indexCountry} name="foreignCountry" disabled={notgrabado} onChange={handleChangeCountry} >
+                    <Form.Select className="select" defaultValue={indexCountry} name="country" disabled={notgrabado} onChange={handleChangeCountry} >
                         <option value={indexCountry}>Seleccionar</option>
                         {
                             countries.map((element, index) => (
@@ -185,7 +186,7 @@ export default function AboutCompany ({data, setData, notgrabado,countries,lineB
                 <div className="col-sm-2 subtitles"></div>
                 <div className="col-sm-5 subtitles">
                     <div>Giro de la empresa</div>
-                    <Form.Select className="select"  name="foreingLineBusiness" disabled={notgrabado} onChange={handleChangeLine}>
+                    <Form.Select className="select"  name="lineBusiness" disabled={notgrabado} onChange={handleChangeLine}>
                         <option value={indexLine}>Seleccionar</option>
                         {
                             lineBusiness.map((element, index) => (

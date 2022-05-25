@@ -14,7 +14,7 @@ import StateViewer,{StatesViewType} from "../components/StateViewer/StateViewer"
 import DocumentPlusIcon from "../components/DocumentPlusIcon/DocumentPlusIcon";
 import FileManagement from "../components/FileManagement/FileManagement";
 import useAuth from "../hooks/useAuth";
-import { getstudentInscriptionForm,registrationUpdateApiStudent,registrationUpdateApiStudentCamps } from "../api/registrationForm";
+import { getstudentInscriptionForm,registrationUpdateApiStudent,registrationUpdateApiStudentCamps,getListOfCountry,getLineBusinessList } from "../api/registrationForm";
 import { getAllDocsApi,uploadDocsApi } from "../api/files";
 import ShowFiles from "../components/FileManagement/ShowFiles";
 
@@ -44,8 +44,8 @@ const documents={
          "isNational": true,
          "ruc": "1234567890",
          "companyName": "Empresa SAC",
-         "foreignCountry":2,
-         "foreingLineBusiness":4,
+         "country":2,
+         "lineBusiness":4,
           "companyAddress":""
      },
      "aboutJob": {
@@ -129,18 +129,18 @@ const lineBussinessDummy=[
 ]
 
 const arrayCadena = window.location.pathname.split("/");
-const idAlumno=parseInt(arrayCadena[2]);
+//const idAlumno=parseInt(arrayCadena[2]);
 const maxFiles = 4;
 
 export default function StudentRegistrationForm () {
     const {user} = useAuth();
     const idAlumno= useParams().idStudent
-    //const [data, setData] = useState({});
-    const [data, setData] = useState(dataDummy);
-    //const [countries,setCountries]=useState({});
-    const [countries,setCountries]=useState(paisesDummy);
-    //const [lineBusiness,setLineBusiness]=useState({});
-    const [lineBusiness,setLineBusiness]=useState(lineBussinessDummy);
+    const [data, setData] = useState({});
+    //const [data, setData] = useState(dataDummy);
+    const [countries,setCountries]=useState({});
+    //const [countries,setCountries]=useState(paisesDummy);
+    const [lineBusiness,setLineBusiness]=useState({});
+    //const [lineBusiness,setLineBusiness]=useState(lineBussinessDummy);
     const [fileList, setFileList] = useState([])
     const [docs, setDocs] = useState([]);
     const [studentDocs, setStudentDocs] = useState([]);
@@ -158,9 +158,15 @@ export default function StudentRegistrationForm () {
     
     useEffect(()=> {
         const fetchData = async () => {
-            const result = await getstudentInscriptionForm(idAlumno);
-            const resData = result.infoFicha.infoFicha;
+            //const result = await getstudentInscriptionForm(idAlumno);
+            const resultado=await getListOfCountry();
+            //const resultado2=await getLineBusinessList();
+           // console.log("El result en la principal es: ",result);
+            console.log("El resultado en la principal es: ",resultado);
+           // console.log("El resultado2 en la principal es: ",resultado2);
+           /*
             if(result.success) {
+                const resData = result.infoFicha.infoFicha;
                 if(typeUser==="e"){
                     const newData = {
                         idAlumno: resData.idAlumno,
@@ -187,21 +193,18 @@ export default function StudentRegistrationForm () {
                 } else
                     setData(resData);
             }
-            /*
-            const resultado=await getCountries();
-            const countriesData = resultado.paises.paises;
+            */
             if(resultado.success){
+                const countriesData = resultado.paises.paises;
                 setCountries(countriesData);
             }
-
-            const resultado2=await getLineBussiness();
-            const lineData = resultado2.lineBusiness.lineBusiness;
+            /*
             if(resultado2.success){
+                const lineData = resultado2.lineBusiness.lineBusiness;
                 setLineBusiness(lineData);
             }*/
         }
         fetchData()
- 
     }, [setData])
 
     //sacamos los documentos subidos por el encargado
