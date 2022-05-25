@@ -37,7 +37,44 @@ export function signInApi (email) {
         .then(response => {
             console.log("response", response)
             return response.json()
+        })
+        .then(result => {
+            console.log("result", result)
+            if(result.accessToken) {
+                return {
+                    success: true,
+                    accessToken: result.accessToken
+                }
+            } else {
+                return {
+                    success: false,
+                    message: result.message
+                }
+            }
+        })
+        .catch(err => {
+            console.log("err", err)
+            return {
+                success: false,
+                message: err.message
+            }
+        })
+}
+export function signUpApi (data) {
+    const url = `${BASE_PATH}/${API_VERSION}/sign-up`
 
+    const params = {
+        method: "POST",
+        headers: {
+            'Content-type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    }
+
+    return fetch(url, params)
+        .then(response => {
+            console.log("response", response)
+            return response.json()
         })
         .then(result => {
             console.log("result", result)

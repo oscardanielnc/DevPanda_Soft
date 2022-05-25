@@ -11,7 +11,7 @@ export default function LandingPage () {
     return (
         <div className="landingPage">
             <Header/>
-            <h1 className="landingPage__title">Dis is da landin peich prro</h1>
+            {/* <h1 className="landingPage__title">Dis is da landin peich prro</h1> */}
             <div className="landingPage__redirect">
                 <h3>Usted ya ha iniciado su proceso de covalidadción de la PSP?</h3>
             {

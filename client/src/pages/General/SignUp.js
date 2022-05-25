@@ -7,6 +7,7 @@ import GoogleLogin from 'react-google-login';
 import './scss/SignUp.scss';
 import { Link } from "react-router-dom";
 import { isNumber } from "../../utils/objects";
+import { signUpApi } from "../../api/auth";
 
 const dataDummy = {
     firstName: "Campo autocompletado",
@@ -62,7 +63,7 @@ export default function SignUp (){
         }
     }
 
-    const register = () => {
+    const register = async () => {
         const strNoLogged = "Campo autocompletado";
         if(data.email===strNoLogged || data.firstName===strNoLogged || data.lastName===strNoLogged) {
             toast.warning("Es necesario hacer un pre-registro para combrobar su correo PUCP", {
@@ -77,7 +78,7 @@ export default function SignUp (){
                         autoClose: 3000,
                     });
                 } else {
-                    const result = {success: false, message: "Registro exitoso!"} // TODO: API
+                    const result = await signUpApi(data);
                     if(result.success) {
                         const {accessToken} = result;
                         localStorage.setItem("ACCESS_TOKEN", accessToken);
