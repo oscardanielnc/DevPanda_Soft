@@ -37,8 +37,8 @@ async function updateFieldsInscriptionForm(req, res){
                     esNacional = ${req.body.aboutCompany.isNational},
                     ruc = "${req.body.aboutCompany.ruc}",
                     nombreEmpresa = "${req.body.aboutCompany.companyName}",
-                    fidPaisEmpresa = "${req.body.aboutCompany.country}",
-                    fidLineaNegocio = "${req.body.aboutCompany.lineBusiness}",
+                    fidPaisEmpresa = ${req.body.aboutCompany.country},
+                    fidLineaNegocio = ${req.body.aboutCompany.lineBusiness},
                     direccionEmpresa = "${req.body.aboutCompany.companyAdress}",
 
                     nombreArea = "${req.body.aboutJob.areaName}",
@@ -495,10 +495,14 @@ function getListOfCountry(req, res){
     connection.query(sqlQuery, (err, result) => {
         if (err) {
             res.status(505).send({
+                success : false,
                 message: "Error inesperado en el servidor " + err.message
             })
         }else{
-            res.status(200).send(result);
+            res.status(200).send({
+                success : true,
+                result
+            });
         }
     });
 
@@ -518,10 +522,14 @@ function getListOfLineBusiness(req, res){
     connection.query(sqlQuery, (err, result) => {
         if (err) {
             res.status(505).send({
+                success : false,
                 message: "Error inesperado en el servidor " + err.message
             })
         }else{
-            res.status(200).send(result);
+            res.status(200).send({
+                success: true,
+                result
+            });
         }
     });
 
