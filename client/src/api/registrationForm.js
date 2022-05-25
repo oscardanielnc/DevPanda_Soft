@@ -136,6 +136,7 @@ export function getListOfCountry(){
     console.log("En la funcion getListOfCountry");
     return fetch(url, params)
         .then(response => {
+            console.log("El response es: ",response);
             return response.json()
         })
         .then(data => {
@@ -153,6 +154,7 @@ export function getListOfCountry(){
             }
         })
         .catch(errMsg => {
+            console.log("En el catch la funcion");
             return {
                 errMsg,
                 success: false

@@ -98,32 +98,32 @@ const documents={
 
 const paisesDummy=[
     {
-        "idCountry":1,
-        "name":"Perú"
+        "idPais":1,
+        "nombrePais":"Perú"
     },
     {
-        "idCountry":2,
-        "name":"Argentina"
+        "idPais":2,
+        "nombrePais":"Argentina"
     },
     {
-        "idCountry":3,
-        "name":"Bolivia"
+        "idPais":3,
+        "nombrePais":"Bolivia"
     }
 
 ]
 
 const lineBussinessDummy=[
     {
-        "idLineBussiness":1,
-        "name":"TI"
+        "idLineaNegocio":1,
+        "nombreLineaNegocio":"TI"
     },
     {
-        "idLineBussiness":2,
-        "name":"Software"
+        "idLineaNegocio":2,
+        "nombreLineaNegocio":"Software"
     },
     {
-        "idLineBussiness":3,
-        "name":"Administracion"
+        "idLineaNegocio":3,
+        "nombreLineaNegocio":"Administracion"
     }
 
 ]
@@ -158,13 +158,13 @@ export default function StudentRegistrationForm () {
     
     useEffect(()=> {
         const fetchData = async () => {
-            //const result = await getstudentInscriptionForm(idAlumno);
+            const result = await getstudentInscriptionForm(idAlumno);
             const resultado=await getListOfCountry();
-            //const resultado2=await getLineBusinessList();
+            const resultado2=await getLineBusinessList();
            // console.log("El result en la principal es: ",result);
             console.log("El resultado en la principal es: ",resultado);
            // console.log("El resultado2 en la principal es: ",resultado2);
-           /*
+           
             if(result.success) {
                 const resData = result.infoFicha.infoFicha;
                 if(typeUser==="e"){
@@ -193,16 +193,17 @@ export default function StudentRegistrationForm () {
                 } else
                     setData(resData);
             }
-            */
+            
             if(resultado.success){
-                const countriesData = resultado.paises.paises;
+                //console.log("En el principal el resultado es: ",resultado);
+                const countriesData = resultado.data;
                 setCountries(countriesData);
             }
-            /*
+            
             if(resultado2.success){
-                const lineData = resultado2.lineBusiness.lineBusiness;
+                const lineData = resultado2.data;
                 setLineBusiness(lineData);
-            }*/
+            }
         }
         fetchData()
     }, [setData])

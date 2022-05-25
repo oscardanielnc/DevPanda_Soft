@@ -84,7 +84,7 @@ export default function AboutCompany ({data, setData, notgrabado,countries,lineB
             ...data,
             aboutCompany: {
                 ...data.aboutCompany,
-                [e.target.name]: e.target.value
+                [e.target.name]: parseInt(e.target.value)
             }
         })
     }
@@ -95,13 +95,13 @@ export default function AboutCompany ({data, setData, notgrabado,countries,lineB
             ...data,
             aboutCompany: {
                 ...data.aboutCompany,
-                [e.target.name]: e.target.value
+                [e.target.name]: parseInt(e.target.value)
             }
         })
     }
     console.log("El data es: ",data );
-    let indexCountry=(data.aboutCompany.foreignCountry!==null || data.aboutCompany.foreignCountry!=="")?data.aboutCompany.foreignCountry:-1;
-    let indexLine=(data.aboutCompany.foreingLineBusiness!==null || data.aboutCompany.foreingLineBusiness!=="")?data.aboutCompany.foreingLineBusiness:-1;
+    let indexCountry=(data.aboutCompany.country!==null || data.aboutCompany.country!=="")?data.aboutCompany.country:-1;
+    let indexLine=(data.aboutCompany.lineBusiness!==null || data.aboutCompany.lineBusiness!=="")?data.aboutCompany.lineBusiness:-1;
     console.log("El indexCountry es: ",indexCountry);
     console.log("El indexLine es: ",indexLine);
     return (
@@ -173,11 +173,11 @@ export default function AboutCompany ({data, setData, notgrabado,countries,lineB
                 <div className="col-sm-5 subtitles">
                     <div>País</div>
                     <Form.Select className="select" defaultValue={indexCountry} name="country" disabled={notgrabado} onChange={handleChangeCountry} >
-                        <option value={indexCountry}>Seleccionar</option>
+                        <option value={-1}>Seleccionar</option>
                         {
                             countries.map((element, index) => (
-                                <option value={element.idCountry} 
-                                    key={element.idCountry}>{element.name}
+                                <option value={element.idPais} 
+                                    key={element.idPais}>{element.nombrePais}
                                 </option>
                             ))
                         }
@@ -186,12 +186,12 @@ export default function AboutCompany ({data, setData, notgrabado,countries,lineB
                 <div className="col-sm-2 subtitles"></div>
                 <div className="col-sm-5 subtitles">
                     <div>Giro de la empresa</div>
-                    <Form.Select className="select"  name="lineBusiness" disabled={notgrabado} onChange={handleChangeLine}>
-                        <option value={indexLine}>Seleccionar</option>
+                    <Form.Select className="select" defaultValue={indexLine} name="lineBusiness" disabled={notgrabado} onChange={handleChangeLine}>
+                        <option value={-1}>Seleccionar</option>
                         {
                             lineBusiness.map((element, index) => (
-                                <option value={element.idLineBussiness} 
-                                    key={element.idLineBussiness}>{element.name}
+                                <option value={element.idLineaNegocio} 
+                                    key={element.idLineaNegocio}>{element.nombreLineaNegocio}
                                 </option>
                             ))
                         }

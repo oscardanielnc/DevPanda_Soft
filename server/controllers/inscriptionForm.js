@@ -181,7 +181,7 @@ async function getstudentInscriptionForm(req, res){
             "companyName": "",
             "country": "",
             "lineBusiness":"",
-            "companyAdress": ""
+            "companyAddress": ""
         },
         "aboutJob": {
             "areaName": "",
