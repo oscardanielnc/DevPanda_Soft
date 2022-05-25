@@ -96,39 +96,69 @@ async function singIn(req, res) {
 async function signUp(req, res) {
     const connection = mysql.createConnection(MYSQL_CREDENTIALS);
     const {firstName, lastName, email, specialty, code} = req.body;
-    console.log(req.body)
 
     connection.connect(err => {
         if (err) throw err;
     });
     try{
-        const sqlQueryPersona = `SELECT * FROM Persona WHERE correo='${email}'`;
-        const resultPersona  = await sqlAsync(sqlQueryPersona, connection);
+        const sqlQueryPersonas = `SELECT * FROM Persona WHERE correo='${email}'`;
+        const resultPersona  = await sqlAsync(sqlQueryPersonas, connection);
 
         if(resultPersona.length === 0) {
             // TODO: regsitro en la BD
-            const student = {
-                idPersona: dbUser.idPersona, //obtener
-                fidEspecialidad: specialty,
-                nombres: firstName,
-                apellidos: lastName,
-                correo: email,
-                tipoPersona: 'e',
-                activo: 1,
-                expire: moment().add(8, 'hours').unix(),
-                estadoMatriculado: 0,
-                estadoProceso: 1,
-                codigo: code,
-                idAlumnoProceso: dbAlumno.idAlumnoProceso, //obtener
-                fidProceso: 1,
-                fidAsesor: null,
-                nota: null,
-                grupoAsignado: null,
-                estado: 'C'
+            const sqlQueryPersona = `INSERT INTO Persona(fidEspecialidad, nombres, apellidos, correo, contrasena, tipoPersona, activo) 
+                                            values(${specialty},'${firstName}','${lastName}','${email}',null,'e',1);`
+            const resultPersona  = await sqlAsync(sqlQueryPersona, connection);
+
+            const idPersona = resultPersona.insertId;
+            if(idPersona && idPersona >= 0) {
+                const sqlQueryAlumno = `INSERT INTO Alumno(idAlumno, codigo)
+                                                values(${idPersona},${code});`
+                const resultAlumno  = await sqlAsync(sqlQueryAlumno, connection);
+
+                if(resultAlumno.affectedRows) {
+                    const sqlQueryAlumnoProceso = `INSERT INTO AlumnoProceso(fidProceso, fidAlumno, fidAsesor, nota, grupoAsignado, estado, estadoMatriculado, estadoProceso)
+                                                    values(1, ${idPersona}, null, null, null, 'C', 0, 1);`
+                    const resultAlumnoProceso  = await sqlAsync(sqlQueryAlumnoProceso, connection);
+
+                    if(resultAlumnoProceso.affectedRows) {
+                        const student = {
+                            idPersona: idPersona,
+                            fidEspecialidad: specialty,
+                            nombres: firstName,
+                            apellidos: lastName,
+                            correo: email,
+                            tipoPersona: 'e',
+                            activo: 1,
+                            expire: moment().add(8, 'hours').unix(),
+                            estadoMatriculado: 0,
+                            estadoProceso: 1,
+                            codigo: code,
+                            idAlumnoProceso: resultAlumnoProceso.insertId,
+                            fidProceso: 1,
+                            fidAsesor: null,
+                            nota: null,
+                            grupoAsignado: null,
+                            estado: 'C'
+                        }
+                        const accessToken = jwt.encode(student, PANDA_KEY);
+                        res.status(200).send({accessToken});
+                        // res.status(200).send({user});
+                    } else {
+                        res.status(505).send({
+                            message: "Error al tratar de registrar en la tabla AlumnoProceso"
+                        })
+                    }
+                } else {
+                    res.status(505).send({
+                        message: "Error al tratar de registrar en la tabla Alumno"
+                    })
+                }
+            } else {
+                res.status(505).send({
+                    message: "Error al tratar de registrar en la tabla Persona"
+                })
             }
-            const accessToken = jwt.encode(student, PANDA_KEY);
-            res.status(200).send({accessToken});
-            // res.status(200).send({user});
         } else {
             res.status(505).send({
                 message: "Este usuario ya se encuentra registrado en la base de datos"
