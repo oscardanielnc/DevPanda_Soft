@@ -128,16 +128,15 @@ div.content{
 .footer{
     display: flex !important;
 }
-.btn-secondary{
-    background-color:  red !important;
-    justify-content: center !important;
-    justify-self: center !important;
-    margin: 0 auto !important;
-    display: flex !important;
-    @media screen and (max-width: 575.2px){
-        display: none !important;
-    }
-}
+// .btn-secondary{
+//     justify-content: center !important;
+//     justify-self: center !important;
+//     margin: 0 auto !important;
+//     display: flex !important;
+//     @media screen and (max-width: 575.2px){
+//         display: none !important;
+//     }
+// }
 
 
 

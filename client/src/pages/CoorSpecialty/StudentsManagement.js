@@ -5,6 +5,7 @@ import useAuth from "../../hooks/useAuth";
 import TableEnrollment from "../../components/Tables/TableEnrollment";
 import "./scss/StudentsManagement.scss";
 import { selectStudentsByProcessSpecialtyApi } from "../../api/enrollment";
+import ModalStudentManagement from "../../components/Modals/ModalStudentManagement";
 
 const states = [
     {
@@ -16,74 +17,85 @@ const states = [
         value: 0
     }
 ]
-const dataDummy = [
-    {
-        idPersona: 1,
-        nombres: "Oscar",
-        apellidos: "Navarro",
-        correo: "algo@pucp.edu.pe",
-        estadoMatriculado: 0,
-        codigo: "20186008",
-        grupoAsignado: null,
-        estado: 'C'
-    },
-    {
-        idPersona: 2,
-        nombres: "Gianfranco",
-        apellidos: "Montoya",
-        correo: "algo@pucp.edu.pe",
-        estadoMatriculado: 1,
-        codigo: "20183899",
-        grupoAsignado: null,
-        estado: 'C'
-    },
-    {
-        idPersona: 3, ///
-        nombres: "Carlos",
-        apellidos: "Lescano",
-        correo: "algo@pucp.edu.pe",
-        estadoMatriculado: 0, ///
-        codigo: "98292002", ///
-        grupoAsignado: null, //
-        estado: 'C' //
-    },
-    {
-        idPersona: 4,
-        nombres: "Christian",
-        apellidos: "Ramirez",
-        correo: "algo@pucp.edu.pe",
-        estadoMatriculado: 1,
-        codigo: "28272929",
-        grupoAsignado: 2,
-        estado: 'C'
-    },
-    {
-        idPersona: 5,
-        nombres: "Jeison",
-        apellidos: "Romero",
-        correo: "algo@pucp.edu.pe",
-        estadoMatriculado: 0,
-        codigo: "92929291",
-        grupoAsignado: 1,
-        estado: 'C'
-    },
-    {
-        idPersona: 6,
-        nombres: "Marcelo",
-        apellidos: "Hurtado",
-        correo: "algo@pucp.edu.pe",
-        estadoMatriculado: 0,
-        codigo: "81929920",
-        grupoAsignado: 1,
-        estado: 'C'
-    }
-]
+// const dataDummy = [
+//     {
+//         idPersona: 1,
+//         nombres: "Oscar",
+//         apellidos: "Navarro",
+//         correo: "algo@pucp.edu.pe",
+//         estadoMatriculado: 0,
+//         codigo: "20186008",
+//         grupoAsignado: null,
+//         estado: 'C'
+//     },
+//     {
+//         idPersona: 2,
+//         nombres: "Gianfranco",
+//         apellidos: "Montoya",
+//         correo: "algo@pucp.edu.pe",
+//         estadoMatriculado: 1,
+//         codigo: "20183899",
+//         grupoAsignado: null,
+//         estado: 'C'
+//     },
+//     {
+//         idPersona: 3, ///
+//         nombres: "Carlos",
+//         apellidos: "Lescano",
+//         correo: "algo@pucp.edu.pe",
+//         estadoMatriculado: 0, ///
+//         codigo: "98292002", ///
+//         grupoAsignado: null, //
+//         estado: 'C' //
+//     },
+//     {
+//         idPersona: 4,
+//         nombres: "Christian",
+//         apellidos: "Ramirez",
+//         correo: "algo@pucp.edu.pe",
+//         estadoMatriculado: 1,
+//         codigo: "28272929",
+//         grupoAsignado: 2,
+//         estado: 'C'
+//     },
+//     {
+//         idPersona: 5,
+//         nombres: "Jeison",
+//         apellidos: "Romero",
+//         correo: "algo@pucp.edu.pe",
+//         estadoMatriculado: 0,
+//         codigo: "92929291",
+//         grupoAsignado: 1,
+//         estado: 'C'
+//     },
+//     {
+//         idPersona: 6,
+//         nombres: "Marcelo",
+//         apellidos: "Hurtado",
+//         correo: "algo@pucp.edu.pe",
+//         estadoMatriculado: 0,
+//         codigo: "81929920",
+//         grupoAsignado: 1,
+//         estado: 'C'
+//     }
+// ]
 let textFilter = ""
 let textSelect = "-1"
 
 export default function StudentsManagement () {
     const {user} = useAuth();
+    const [show, setShow] = useState(false);
     const [alumnos, setAlumnos] = useState([]);
+    const [newDataStudent, setNewDataStudent] = useState({
+        idPersona: 0,
+        nombres: "",
+        apellidos: "",
+        correo: "",
+        estadoMatriculado: 0,
+        codigo: "",
+        grupoAsignado: null,
+        estado: 'C'
+    });
     const [filteredData, setFilteredData] = useState([]);
 
     useEffect(()=> {
@@ -111,7 +123,10 @@ export default function StudentsManagement () {
             }
             return `${obj.estadoMatriculado}` === textSelect && nombreAlumno.toUpperCase().includes(textFilter)
        }))
+    }
 
+    const updateStudent = () => {
+        setShow(false);
     }
 
     return (
@@ -145,8 +160,11 @@ export default function StudentsManagement () {
                 </div>
 
                 <Row className="rows">
-                    <TableEnrollment rows={filteredData}/>
+                    <TableEnrollment rows={filteredData} setShow={setShow} setNewDataStudent={setNewDataStudent}/>
                 </Row>
+                
+                <ModalStudentManagement student={alumnos[0]} show={show} setShow={setShow} updateStudent={updateStudent}
+                    newDataStudent={newDataStudent} setNewDataStudent={setNewDataStudent}/>
             </div>
         </LayoutCoor>
     )
