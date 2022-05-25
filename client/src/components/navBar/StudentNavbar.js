@@ -32,6 +32,10 @@ function StudentNavbar (props){
         {
             title: "Entregables",
             link: `/deliverables/idStudent=${user.idPersona}&idProcess=${user.fidProceso}`
+        },
+        {
+            title: "Informe Final",
+            link: `/final-report/idStudent=${user.idPersona}&idProcess=${user.fidProceso}`
         }
     ]
     
