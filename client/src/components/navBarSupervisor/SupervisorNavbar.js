@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import useAuth from '../../hooks/useAuth';
-import './FACINavbar.scss';
+import './SupervisorNavbar.scss';
 
 
 
@@ -9,30 +9,27 @@ export default function(){
     const {user} = useAuth()
     const dataNavbar = [
         {
-            title: "Gestión de alumnos (Coor Esp)",
-            link: `/students-management`
+            title: "Agregar disponibilidad",
+            link: `/add-disponibility/idSupervisor=${user.idPersona}`//esto no existe
         },
         {
-            title: "Revisión de Convenio y Plan de Aprendizaje",
-            link: `/list-students-requests`
+            title: "Gestión de Reuniones",
+            link: `/meetings-management/idSupervisor=${user.idPersona}`//esto no existe
         },
         {
-            title: "Revisión Ficha de Inscripción",
-            link: `/list-inscriptions-form`
+            title:"Revision de entregable Informe Parcial",
+            link: `/list-deliverables-partial`//esto no existe
         },
+        
         {
-            title: "Gestión de Especialidades (Admin)",
-            link: "/"
-        },
-        {
-            title: "Añadir especialidad (Admin)",
-            link: "/add-specialty"
+            title: "Revision de entregable Informe Final",
+            link: "/list-deliverables-final"//esto no existe
         }
     ]
     return(
-        <div className="FACINavBar">
+        <div className="SupervisorNavbar">
             <nav>
-                <ul className="FACINavBar__sidebarList" id='sidebarList'>
+                <ul className="SupervisorNavbar__sidebarList" id='sidebarList'>
                     {dataNavbar.map((val,key)=>{
                         return (
                             <NavLink key = {key}

@@ -56,7 +56,7 @@ function HeaderLogged ({user}) {
             </div>
             <div className="header__rightusuarioImagen"
                 onClick={()=> document.getElementById("logout").classList.toggle('hidden')}>
-                <i class="bi bi-person header__rightusuarioImagen-user"></i>
+                <i className="bi bi-person header__rightusuarioImagen-user"></i>
             </div>
             <div className="header__logout hidden" id="logout">
                 <div className="header__logout-info">

@@ -174,7 +174,7 @@ async function deliverableStudent(req, res){
         dataEntregable.deliverableResponse.docState = resultElement[0].estadoDocumento;
         dataEntregable.deliverableResponse.evaState = resultElement[0].aprobado
         dataEntregable.deliverableResponse.observation = resultElement[0].observacion
-        dataEntregable.deliverableResponse.grade = resultElement[0].nota
+        dataEntregable.deliverableResponse.grade = resultElement[0].notaEntregable
         dataEntregable.deliverableResponse.uploadDate = resultElement[0].fechaSubida
     }else{
 
@@ -236,7 +236,7 @@ function updateDeliverableStudent(req, res){
                         estadoDocumento="${estadoDocumento}", 
                         observacion="${observaciones}",
                         aprobado="${aprobado}",
-                        nota = ${nota}
+                        notaEntregable = ${nota}
                         WHERE idRespuestaEntregable = ${idRespuestaEntregable}`;
 
 
