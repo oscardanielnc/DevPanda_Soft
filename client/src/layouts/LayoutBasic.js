@@ -1,7 +1,7 @@
 import React from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import StudentNavBar from "../components/navBar/StudentNavbar"
+import StudentNavBar from "../components/Navbars/StudentNavbar"
 
 
 import './LayoutBasic.scss';

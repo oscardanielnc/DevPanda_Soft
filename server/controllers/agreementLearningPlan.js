@@ -332,7 +332,7 @@ function selectDocumentsInfoByProcess(req, res){
     connection.end();
 }
 
-function selectDocumentsInfoByProcessOnlyStudent(req, res){
+async function selectDocumentsInfoByProcessOnlyStudent(req, res){
     const connection = mysql.createConnection(MYSQL_CREDENTIALS);
     //Se pedirá el idAlumno e idAsesor para poder obtener la info documentos asociados.
     const fidAlumno = req.params.fidAlumno;

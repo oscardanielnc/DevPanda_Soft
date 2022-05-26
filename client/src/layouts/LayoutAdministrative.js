@@ -3,9 +3,9 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import AdministrativeNavbar from "../components/Navbars/AdministrativeNavbar";
 
-import './LayoutAdministrator.scss';
+import './LayoutBasic.scss';
 
-export default function LayoutAdministrator (props) {
+export default function LayoutAdministrative (props) {
     const {children} = props;
 
     return (

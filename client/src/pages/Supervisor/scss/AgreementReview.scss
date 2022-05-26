@@ -1,0 +1,40 @@
+@import '../../../scss/index.scss';
+
+
+.principalFinalReview{
+    .titulo{
+        color:$primary-color;
+    }   
+    .row1{
+        color:$primary-color;
+        margin-left: 10px;
+        margin-right: 5px;        
+        .checkboxes{
+            color:black;
+        }        
+    }
+    .normalrow{
+        margin-left: 10px;
+        margin-right: 5px;
+    }    
+    .botones{
+        margin-top: 25px;
+        margin-bottom:25px;
+        justify-content: center;
+        .btn-sec{
+            background-color: $secondary-color;
+            border-color: $secondary-color;
+        }
+    }
+    .shadowbox{
+        box-shadow: rgba(149,157,165,0.2) 0px 8px 24px;
+        border-radius: 20px;
+        padding-bottom: 8px;        
+    }
+    .row2{
+        color:$primary-color;
+        margin-left: 10px;
+        margin-bottom: 10px;
+            
+    }    
+}

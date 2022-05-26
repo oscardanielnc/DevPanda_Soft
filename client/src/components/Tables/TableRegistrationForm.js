@@ -6,7 +6,7 @@ import './TableRegistrationForm.scss';
 
 
 
-export default function TableRegistrationForm ({rows}) {
+export default function TableRegistrationForm ({rows, idProcess=1, phase="FINS"}) {
     if(rows.length === 0) {
         return (
             <p>No se han registrado entregas todavía.</p>
@@ -33,7 +33,8 @@ export default function TableRegistrationForm ({rows}) {
                         <td>{row.nombreAlumno}</td>
                         <td>{row.estado}</td>
                         <td>
-                        <Link to ={"/student-registration-review/idStudent=" + row.idAlumno} className= "btn btn-primary">Visualizar</Link>
+                        <Link to ={`/inscription/idStudent=${row.idAlumno}&idProcess=${idProcess}&phase=${phase}`} 
+                            className= "btn btn-primary">Visualizar</Link>
                         </td>
                     </tr>
                 ))

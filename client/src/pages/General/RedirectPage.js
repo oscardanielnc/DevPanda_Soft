@@ -6,7 +6,7 @@ export default function AddSpecialty () {
         window.location.href = `/`
     } else {
         if(user.tipoPersona==="e")
-            window.location.href = `/welcome-process`
+            window.location.href = `/welcome-process/idStudent=${user.idPersona}&idProcess=${user.fidProceso}&phase=WPRO`;
         else window.location.href = `/students-management`
     }
     return null
