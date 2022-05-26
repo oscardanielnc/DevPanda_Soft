@@ -12,7 +12,7 @@ export default function WelcomeProcess () {
     console.log(user);
     return(
         <LayoutBasic>
-            <div classname="container" style={{"padding":"1px"}}>
+            <div className="container" style={{"padding":"1px"}}>
                 <div className="row rows" style={{textAlign: "left"}}>
                     <h1>
                         Proceso de Convalidación de Prácticas Pre Profesionales
