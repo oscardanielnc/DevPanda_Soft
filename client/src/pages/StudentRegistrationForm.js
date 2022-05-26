@@ -134,7 +134,7 @@ const maxFiles = 4;
 
 export default function StudentRegistrationForm () {
     const {user} = useAuth();
-    const idAlumno= useParams().idStudent
+    const idAlumno= useParams().idStudent;
     const [data, setData] = useState({});
     //const [data, setData] = useState(dataDummy);
     const [countries,setCountries]=useState({});
@@ -472,7 +472,7 @@ export default function StudentRegistrationForm () {
                     <GeneralData data={data} setData={setData} imStudent={isSaved} isSaved={isSaved}/>   
                 </div>
                 <div className="row rows">
-                    <AboutCompany data={data} setData={setData} notgrabado={isSaved}/>
+                    <AboutCompany data={data} setData={setData} notgrabado={isSaved} countries={countries} lineBusiness={lineBusiness}/>
                 </div>
                 <div className="row rows">
                     <AboutJob data={data} setData={setData} notgrabado={isSaved}/>

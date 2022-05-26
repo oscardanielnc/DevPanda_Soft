@@ -1,6 +1,7 @@
+const { query } = require('express');
 const mysql = require('mysql');
 const {MYSQL_CREDENTIALS} = require("../config");
-
+const { sqlAsync } = require('../utils/async');
 
 function select(req, res) {
     const connection = mysql.createConnection(MYSQL_CREDENTIALS);
@@ -364,26 +365,124 @@ function selectDocumentsInfoByProcessOnlyStudent(req, res){
         if (err) throw err;
     });
 
-    connection.query(sqlQuery, (err, result) => {
-        if (err) {
-            if(!idEntregaConvenio){
-                res.status(505).send({
+    try{
+        let resultado = await sqlAsync(connection, sqlQuery)
+        if(!resultado.lenght){
+            //Insert en tabla
+                //obtener fidAlumnoProceso
+            sqlQuery = `SELECT
+                            idAlumnoProceso
+                        FROM
+                            AlumnoProceso
+                        WHERE
+                            fidAlumno = ${fidAlumno}
+                            AND fidProceso = (  SELECT
+                                                    idProceso
+                                                FROM
+                                                    Proceso
+                                                WHERE
+                                                    fidEspecialidad =(  SELECT
+                                                                            fidEspecialidad
+                                                                        FROM
+                                                                            Persona
+                                                                        WHERE
+                                                                            idPersona = ${fidAlumno})
+                                                    AND activo = 1)
+                            AND estado = 'C'`
+            let idAlumnoProceso;
+            try {
+                const res = await sqlAsync(connection, sqlQuery)
+                if(!resultElement.length){
+                    res.status(404).send({ 
+                        success: false,
+                        message: "No se encontro a un alumno con ese identificador"
+                    })
+                    return 
+                }else{
+                    idAlumnoProceso = res[0].idAlumnoProceso
+                }
+            } catch (e) {
+                res.status(505).send({ 
                     success: false,
-                    message: "No se ha enviado un idEntregaConvenio"
+                    message: "Error en el servidor " + e.message
                 })
-            }else{
-                res.status(505).send({
-                    success: false,
-                    message: "Error inesperado en el servidor"
-                })
+                return 
             }
-            
-        } else{
+            //insert a la tabla
+            sqlQuery = `INSERT INTO EntregaConvenioYPlan (fidConvenioYPlan, fidAlumnoProceso, estadoFaci, estadoEspecialidad, observaciones)
+                        values(1,${idAlumnoProceso},'P','P',"") `
+            try {
+                
+                let resultElement  = await sqlAsync(connection,sqlQuery)
+                if(!resultElement){
+                    res.status(404).send({ 
+                        success: false,
+                        message: "No se pudo insertar una Entrega ConvenioYPlan para el Alumno"
+                    })
+                    return 
+                }
+            } catch (e) {
+                res.status(505).send({ 
+                    success: false,
+                    message: "Error en el servidor " + e.message
+                })
+                return 
+            }
+            //Mandar cascarón
+            const respuestaCascaron = {
+                estadoFaci: 'P',
+                estadoEspecialidad: 'P',
+                observaciones: ""
+            }
+
             res.status(200).send({
                 success: true,
-                result
+                respuestaCascaron
+            })
+
+        }else{
+            res.status(200).send({
+                success: true,
+                resultado
             })
         }
+    }catch(e){
+        res.status(505).send({ 
+            success: false,
+            message: "Error en el servidor " + e.message
+        })
+        return 
+    }
+
+    connection.end();
+}
+
+function selectAgreementByStudent(req, res){
+    const connection = mysql.createConnection(MYSQL_CREDENTIALS);
+    const fidEspecialidad = req.body.fidEspecialidad;
+    const sqlQuery =   `SELECT
+                            P.idPersona, P.nombres, P.apellidos, ECP.idEntregaConvenio, ECP.estadoFaci, ECP.estadoEspecialidad
+                        FROM
+                            EntregaConvenioYPlan AS ECP inner join AlumnoProceso AS AP on ECP.fidAlumnoProceso = AP.idAlumnoProceso
+                            inner join Persona AS P on P.idPersona = AP.fidAlumno
+                        WHERE
+                            P.fidEspecialidad = ${fidEspecialidad};`;
+
+    connection.connect(err => {
+        if (err) throw err;
+    });
+
+    connection.query(sqlQuery, (err, result) => {
+        if (err) {
+            res.status(505).send({
+                success: false,
+                message: "Error inesperado en el servidor"
+            })
+        }
+        res.status(200).send({
+            success: true,
+            result
+        })
     });
 
     connection.end();
@@ -397,5 +496,6 @@ module.exports = {
     updateInfoByStudent,
     updateDocumentByAgreement,
     selectDocumentsInfoByProcess,
-    selectDocumentsInfoByProcessOnlyStudent
+    selectDocumentsInfoByProcessOnlyStudent,
+    selectAgreementByStudent
 }
