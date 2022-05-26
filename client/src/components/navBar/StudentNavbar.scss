@@ -38,9 +38,9 @@
 
     &__progressbar {
         position: absolute;
-        transform: rotate(90deg) scaleY(0.3) translateY(290px);
+        transform: rotate(90deg) scale(1, 0.3) translate(0px, 307px);
         top: 289px;
-        width: 250px;
+        width: 260px;
     }
 
     &__sideBarList {

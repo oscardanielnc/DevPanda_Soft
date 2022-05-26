@@ -12,6 +12,15 @@ function StudentNavbar () {
 
     useEffect(()=> {
         const dataNavbar = [];
+        const link = `/welcome-process/idStudent=${user.idPersona}&idProcess=${user.fidProceso}&phase=WPRO`;
+        const wpro = {
+            code: "WPRO",
+            title: "Inicio del proceso",
+            order: 0,
+            link: link
+        }
+        dataNavbar.push(wpro);
+        
         user.navbar.forEach(item => {
             const newItem = {
                 ...item,
@@ -42,14 +51,14 @@ function StudentNavbar () {
     }
     
     // const transformText = "rotate(90deg) scaleY(.4) scaleX(" + (0.25 + 0.2*(navbar.length-2)) + ") translateX(" + offsets[navbar.length-2] + "px)"
-    // const transformText = "rotate(90deg) scaleY(0.3) translateY(172px)";
+    const transformText = `rotate(90deg) scale(${navbar.length/6},0.3) translate(${(navbar.length-6)*20}px, 307px)`;
    
     return(
     <div className="studentNavBar">
         <ProgressBar className= "studentNavBar__progressbar" 
             now={(100*(user.estadoProceso-1)/(navbar.length-1))} 
             variant="success"
-            // style={{transform: transformText}}
+            style={{transform: transformText}}
         />
         <nav className='studentNavBar__Nav'>
             <div>

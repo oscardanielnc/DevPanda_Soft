@@ -102,7 +102,7 @@ const routes = [
     },
     // Alumno
     {
-        path: "/welcome-process",
+        path: "/welcome-process/idStudent=:idStudent&idProcess=:idProcess&phase=WPRO",
         exact: true,
         component:WelcomeProcess,
     },
@@ -136,6 +136,7 @@ const routes = [
         exact: true,
         component: Deliverables,
     },
+    //Error 404
     {
         path: "*",
         component: Error404,
