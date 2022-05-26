@@ -423,6 +423,7 @@ async function getstudentInscriptionForm(req, res){
                     AND CF.flag = "activo"
                     AND CL.fidFicha = E.idFicha
                     AND E.fidAlumnoProceso = ${fidAlumnoProceso}
+                    AND E.fidAlumnoProceso = A.idAlumnoProceso
                     AND CP.idCampoProceso = CL.fidCampoProceso`;
 
         try{
