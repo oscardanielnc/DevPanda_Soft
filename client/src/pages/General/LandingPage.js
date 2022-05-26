@@ -13,7 +13,7 @@ export default function LandingPage () {
             <Header/>
             {/* <h1 className="landingPage__title">Dis is da landin peich prro</h1> */}
             <div className="landingPage__redirect">
-                <h3>Usted ya ha iniciado su proceso de covalidadción de la PSP?</h3>
+                <h3>Usted ya ha iniciado su proceso de convalidación de la PSP?</h3>
             {
                 user? 
                 <Link to="/redirect"><Button variant="primary">Continuar proceso</Button></Link>: 
