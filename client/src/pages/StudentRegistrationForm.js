@@ -134,7 +134,7 @@ const maxFiles = 4;
 
 export default function StudentRegistrationForm () {
     const {user} = useAuth();
-    const idAlumno= useParams().idStudent
+    const idAlumno= useParams().idStudent;
     const [data, setData] = useState({});
     //const [data, setData] = useState(dataDummy);
     const [countries,setCountries]=useState({});
