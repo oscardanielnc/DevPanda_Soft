@@ -20,7 +20,6 @@ export default function TableAgreementsRequests ({rows}) {
                 <tr>
                     <th>#</th>
                     <th>Nombre</th>
-                    <th>Especialidad</th>
                     <th>Estado</th>
                 </tr>
             </thead>
@@ -30,9 +29,8 @@ export default function TableAgreementsRequests ({rows}) {
                     <tr key={index}>
                         <td>{index+1}</td>
                         <td>{row.nombreAlumno}</td>
-                        <td>{row.especialidad}</td>
                         <td>{row.estado}</td>
-                        <td>
+                        <td className="buttonRequest">
                         <Link to ={"/student-registration-review/" + row.idAlumno} className= "btn btn-primary">Visualizar</Link>
                         </td>
                     </tr>

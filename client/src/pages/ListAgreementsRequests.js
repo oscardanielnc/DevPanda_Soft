@@ -8,7 +8,7 @@ import useAuth from "../hooks/useAuth";
 import FilterData from "../components/Filters/FilterData";
 import {Form, FormControl} from 'react-bootstrap';
 import useWindowDimensions from "../hooks/useWindowResize";
-import {getListStudentsInscriptionForm} from  "../api/registrationForm";
+import {getListStudentsRequests} from  "../api/request";
 
 
 const dataDummy = [
@@ -87,18 +87,18 @@ let textSelect = "-1"
 
 export default function ListAgreementsRequests () {
     //link: `/agreement-review/idStudent=${5}&idProcess=${user.fidProceso}`
-
+    const {user} = useAuth();
     const [alumnos, setAlumnos] = useState([]);
-    const [filteredData, setFilteredData] = useState(dataDummy);
+    const [filteredData, setFilteredData] = useState([]);
     // const [textFilter, setTextFilter] = useState("");
     // const [textSelect, setTextSelect] = useState("-1");
 
     let idEspecialidad = 1
 
-
+    console.log("El user tiene: ",user);
     useEffect(()=> {
         //acá llamar a la función corresponidente
-        getListStudentsInscriptionForm(1).then(response => {
+        getListStudentsRequests(1).then(response => {
             if(response.success===true) {
                 console.log("En el success el response es: ",response);
                 setAlumnos(response.data);

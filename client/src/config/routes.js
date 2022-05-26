@@ -56,6 +56,12 @@ const routes = [
         exact: true,
         component: Deliverables,//CAMBIAR ACÁ
     },
+    {
+        path: "/student-registration-review/idStudent=:idStudent",
+        exact: true,
+        component: StudentRegistrationForm,//CAMBIAR ACÁ
+
+    },
     // Admin
     {
         path: "/specialty-management",
