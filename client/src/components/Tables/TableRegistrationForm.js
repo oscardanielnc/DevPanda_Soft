@@ -12,7 +12,7 @@ export default function TableRegistrationForm ({rows}) {
             <p>No se han registrado entregas todavía.</p>
         )
     }
-
+    
 
     return (
         <Table striped bordered hover className="TableRegistrationForm">
@@ -27,12 +27,13 @@ export default function TableRegistrationForm ({rows}) {
             <tbody>
             {
                 rows.map((row, index) => (
+                    console.log("ID alumno:",row.idAlumno),
                     <tr key={index}>
                         <td>{index+1}</td>
                         <td>{row.nombreAlumno}</td>
                         <td>{row.estado}</td>
                         <td>
-                        <Link to ={"/student-registration-review/" + row.idAlumno} className= "btn btn-primary">Visualizar</Link>
+                        <Link to ={"/student-registration-review/idStudent=" + row.idAlumno} className= "btn btn-primary">Visualizar</Link>
                         </td>
                     </tr>
                 ))

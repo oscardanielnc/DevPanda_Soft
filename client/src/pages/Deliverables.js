@@ -96,7 +96,7 @@ export default function Deliverables(){
             if(response.success) {
                 setDeliverableStudent(newData).then(response => {
                     if(response.success) {
-                        console.log(response.msg)
+                        console.log("setear",response)
                     }
                 })
 

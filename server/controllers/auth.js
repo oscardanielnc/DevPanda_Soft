@@ -39,6 +39,20 @@ async function singIn(req, res) {
                 const resultAlumno  = await sqlAsync(sqlQueryAlumno, connection);
                 if(resultAlumno.length>0) {
                     const dbAlumno = resultAlumno[0];
+                    const sqlQueryNavbar = `SELECT * FROM EtapaProceso WHERE fidProceso=${dbAlumno.fidProceso} order by orden;`
+                    const resultNavbar  = await sqlAsync(sqlQueryNavbar, connection);
+                    const navbar = [];
+                    if(resultNavbar.length>0) {
+                        resultNavbar.forEach(e => {
+                            const item = {
+                                code: e.codigo,
+                                title: e.nombre,
+                                order: e.orden
+                            }
+                            navbar.push(item);
+                        })
+                    }
+
                     const user = {
                         ...preUser,
                         estadoMatriculado: dbAlumno.estadoMatriculado,
@@ -49,7 +63,8 @@ async function singIn(req, res) {
                         fidAsesor: dbAlumno.fidAsesor,
                         nota: dbAlumno.nota,
                         grupoAsignado: dbAlumno.grupoAsignado,
-                        estado: 'C'
+                        estado: 'C',
+                        navbar: navbar
                     }
                     const accessToken = jwt.encode(user, PANDA_KEY);
                     res.status(200).send({accessToken});
@@ -118,8 +133,22 @@ async function signUp(req, res) {
 
                 if(resultAlumno.affectedRows) {
                     const sqlQueryAlumnoProceso = `INSERT INTO AlumnoProceso(fidProceso, fidAlumno, fidAsesor, nota, grupoAsignado, estado, estadoMatriculado, estadoProceso)
-                                                    values(1, ${idPersona}, null, null, null, 'C', 0, 1);`
+                                                    values(${specialty}, ${idPersona}, null, null, null, 'C', 0, 1);`
                     const resultAlumnoProceso  = await sqlAsync(sqlQueryAlumnoProceso, connection);
+
+                    const sqlQueryNavbar = `SELECT * FROM EtapaProceso WHERE fidProceso=${specialty} order by orden;`
+                    const resultNavbar  = await sqlAsync(sqlQueryNavbar, connection);
+                    const navbar = [];
+                    if(resultNavbar.length>0) {
+                        resultNavbar.forEach(e => {
+                            const item = {
+                                code: e.codigo,
+                                title: e.nombre,
+                                order: e.orden
+                            }
+                            navbar.push(item);
+                        })
+                    }
 
                     if(resultAlumnoProceso.affectedRows) {
                         const student = {
@@ -135,11 +164,12 @@ async function signUp(req, res) {
                             estadoProceso: 1,
                             codigo: code,
                             idAlumnoProceso: resultAlumnoProceso.insertId,
-                            fidProceso: 1,
+                            fidProceso: specialty,
                             fidAsesor: null,
                             nota: null,
                             grupoAsignado: null,
-                            estado: 'C'
+                            estado: 'C',
+                            navbar: navbar
                         }
                         const accessToken = jwt.encode(student, PANDA_KEY);
                         res.status(200).send({accessToken});
