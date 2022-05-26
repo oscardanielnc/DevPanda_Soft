@@ -9,27 +9,55 @@ export function getListStudentsRequests(idEspecialidad){
             //Authorization: PANDA_KEY
         }
     }
+    return fetch(url, params)
+    .then(response => {
+        return response.json()
+    })
+    .then(data => {
+        if(data.success) {
+            return {
+                data: data.result,
+                success: true
+            }
+        }
+        return {
+            errMsg: data.message,
+            success: false
+        }
+    })
+    .catch(errMsg => {
+        return {
+            errMsg,
+            success: false
+        }
+    })
+}
 
+export function registerRequestApi (data) {
+    const url = `${BASE_PATH}/${API_VERSION}/request`
+
+    const params = {
+        method: "POST",
+        headers: {
+            'Content-type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    }
     return fetch(url, params)
         .then(response => {
             return response.json()
         })
-        .then(data => {
-            if(data.success) {
-                return {
-                    data: data.result,
-                    success: true
-                }
-            }
+        .then(result => {
             return {
-                errMsg: data.message,
+                msg: result.message,
+                success: result.success
+            }
+        })
+        .catch(err => {
+            return {
+                msg: err.message,
                 success: false
             }
         })
-        .catch(errMsg => {
-            return {
-                errMsg,
-                success: false
-            }
-        })
+        
 }
