@@ -19,11 +19,21 @@ export default function DirectBoss ({data, setData, notgrabado}) {
                     }
                 })
             }else {
-                e.target.value=data.aboutBoss.cellphone;
-                if(numberValidation(e.target) && maxLengthValidation(e.target,9)){
-                    e.target.classList.add("success");
+                if(e.target.value!==""){
+                    e.target.value=data.aboutBoss.cellphone;
+                    if(numberValidation(e.target) && maxLengthValidation(e.target,9)){
+                        e.target.classList.add("success");
+                    }else{
+                        e.target.classList.add("error");
+                    }
                 }else{
-                    e.target.classList.add("error");
+                    setData({
+                        ...data,
+                        aboutBoss: {
+                            ...data.aboutBoss,
+                            [e.target.name]: e.target.value
+                        }
+                    })
                 }
             }
         }

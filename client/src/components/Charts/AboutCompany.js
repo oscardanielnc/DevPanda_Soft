@@ -20,11 +20,21 @@ export default function AboutCompany ({data, setData, notgrabado,countries,lineB
                     }
                 })
             }else {
-                e.target.value=data.aboutCompany.ruc;
-                if(numberValidation(e.target) && maxLengthValidation(e.target,11)){
-                    e.target.classList.add("success");
+                if(e.target.value!==""){
+                    e.target.value=data.aboutCompany.ruc;
+                    if(numberValidation(e.target) && maxLengthValidation(e.target,11)){
+                        e.target.classList.add("success");
+                    }else{
+                        e.target.classList.add("error");
+                    }
                 }else{
-                    e.target.classList.add("error");
+                    setData({
+                    ...data,
+                    aboutCompany: {
+                        ...data.aboutCompany,
+                        [e.target.name]: e.target.value
+                    }
+                })
                 }
             }
         }else{
