@@ -327,7 +327,7 @@ export default function AgreementReview(){
                         <h2 className="subtitulo">Comentarios de la entrega</h2>
                         <Form>                        
                             <Form.Group className="mb-3" controlId="ControlTextarea1">                            
-                                <Form.Control as="textarea" defaultValue={dataDummy.observaciones} rows={5} plaintext readOnly/>
+                                <Form.Control as="textarea" defaultValue={data.deliverableResponse.observation} rows={5} plaintext readOnly/>
                             </Form.Group>
                         </Form>                       
                     </div>                    
