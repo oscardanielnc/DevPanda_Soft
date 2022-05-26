@@ -34,7 +34,7 @@ export default function ModalNoAgreement (props) {
             if(fileList.length === maxFiles) {
                 const response = await uploadDocsApi(fileList, `1-${user.fidEspecialidad}-NOCONV-${user.idPersona}`, 1);
                 if(response.success) {
-                    const responseReg = await registerRequestApi();
+                    const responseReg = await registerRequestApi(user);
                     if(responseReg.success){
                         //cambio de modals
                         setShowSm(true);
