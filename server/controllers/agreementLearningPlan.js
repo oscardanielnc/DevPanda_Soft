@@ -496,5 +496,6 @@ module.exports = {
     updateInfoByStudent,
     updateDocumentByAgreement,
     selectDocumentsInfoByProcess,
-    selectDocumentsInfoByProcessOnlyStudent
+    selectDocumentsInfoByProcessOnlyStudent,
+    selectAgreementByStudent
 }
