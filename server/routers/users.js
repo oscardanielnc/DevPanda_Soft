@@ -3,6 +3,6 @@ const UsersController = require("../controllers/users");
 
 const api = express.Router();
 
-api.get("/test", UsersController.test);
+api.get("/nabvarStudent/:idSpecialty", UsersController.nabvarStudent);
 
 module.exports = api;
