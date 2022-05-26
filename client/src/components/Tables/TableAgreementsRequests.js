@@ -6,7 +6,7 @@ import './TableAgreementsRequests.scss';
 
 
 
-export default function TableAgreementsRequests ({rows}) {
+export default function TableAgreementsRequests ({rows, idProcess=1, phase="CONV"}) {
     if(rows.length === 0) {
         return (
             <p>No se han registrado entregas todavía.</p>
@@ -31,7 +31,9 @@ export default function TableAgreementsRequests ({rows}) {
                         <td>{row.nombreAlumno}</td>
                         <td>{row.estado}</td>
                         <td className="buttonRequest">
-                        <Link to ={"/student-registration-review/" + row.idAlumno} className= "btn btn-primary">Visualizar</Link>
+                        
+                        <Link to ={`/inscription/idStudent=${row.idAlumno}&idProcess=${idProcess}&phase=${phase}`} 
+                            className= "btn btn-primary">Visualizar</Link>
                         </td>
                     </tr>
                 ))

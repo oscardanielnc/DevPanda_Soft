@@ -1,0 +1,55 @@
+@import '../../../scss/index.scss';
+
+.principalFinalReport{
+    .titulo{
+        color:$primary-color;
+    }
+    .shadowbox{
+        box-shadow: rgba(149,157,165,0.2) 0px 8px 24px;
+        border-radius: 20px;
+        padding-bottom: 8px;        
+    }
+    .normalrow{
+        margin-left: 10px;
+        margin-right: 5px;
+    }    
+    .botonCancelar{
+        justify-content: center;
+        .btn-sec{
+            background-color: $secondary-color;
+            border-color: $secondary-color;
+        }
+    }
+    .row1{
+        color:$primary-color;
+        margin-left: 10px;
+        margin-right: 5px; 
+        .subSubtitulo{
+            color:$link-color;
+            margin-top: 18px;
+        } 
+        .wordAndTextBox{
+            color: black;
+            margin-top: 12px;
+            justify-content: space-between;
+            display: flex !important;                                
+        }  
+        .wordAndTextBoxFirst{
+            color: black;            
+            justify-content: space-between;
+            display: flex !important;                                
+        }          
+    }
+    .checkboxes{ 
+        margin-right: 80px !important;
+    }   
+    .nota{
+        color:$link-color ;
+        margin-left: 5px;
+    }
+    .botones{
+        margin-top: 25px;
+        margin-bottom:25px;
+        justify-content: center;        
+    }
+}

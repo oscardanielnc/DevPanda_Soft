@@ -1,12 +1,11 @@
 import React from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import StudentNavBar from "../components/Navbars/StudentNavbar"
-
+import AdministrativeNavbar from "../components/Navbars/AdministrativeNavbar";
 
 import './LayoutBasic.scss';
 
-export default function LayoutBasic (props) {
+export default function LayoutAdministrative (props) {
     const {children} = props;
 
     return (
@@ -15,7 +14,7 @@ export default function LayoutBasic (props) {
                 <Header />
                 <div className = "row layout-basic__superContainer" >
                     <div className="layout-basic__superContainer-navbav">
-                        <StudentNavBar/>
+                        <AdministrativeNavbar />
                     </div>
                     <div className="layout-basic__superContainer-content">
                         {children}

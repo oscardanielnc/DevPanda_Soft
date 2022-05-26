@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import LayoutCoor from "../../layouts/LayoutCoordFACI";
+import LayoutAdministrative from "../../layouts/LayoutAdministrative";
 import { Row, FormControl, Form, Button } from "react-bootstrap";
 import useAuth from "../../hooks/useAuth";
 import TableEnrollment from "../../components/Tables/TableEnrollment";
@@ -130,7 +130,7 @@ export default function StudentsManagement () {
     }
 
     return (
-        <LayoutCoor>
+        <LayoutAdministrative>
             <div className="container">
                 <Row className="rows studentsManagement__title">
                     <h1 className="studentsManagement__title-h1">Gestión de alumnos</h1>
@@ -166,6 +166,6 @@ export default function StudentsManagement () {
                 <ModalStudentManagement student={alumnos[0]} show={show} setShow={setShow} updateStudent={updateStudent}
                     newDataStudent={newDataStudent} setNewDataStudent={setNewDataStudent}/>
             </div>
-        </LayoutCoor>
+        </LayoutAdministrative>
     )
 }

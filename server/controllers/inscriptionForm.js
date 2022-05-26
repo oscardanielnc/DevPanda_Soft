@@ -343,7 +343,7 @@ async function getstudentInscriptionForm(req, res){
             })
             return 
         }   
-        console.log(resultElement);
+        
         data.others = resultElement;
         var valorAlumno = null;
         var fidFicha = data.idFicha;
@@ -362,7 +362,7 @@ async function getstudentInscriptionForm(req, res){
                 if(!resultElement){
                     res.status(404).send({ 
                         success: false,
-                        message: "No se pudo insertar un campo de la sección 'Otros' al alumno"
+                        message: "No se pudo insertar un campo extra al alumno"
                     })
                     return 
                 } 
