@@ -45,7 +45,7 @@ const routes = [
     {
         path: "/list-students-agreement/idProcess=:idProcess",
         exact: true,
-        component: ListAgreementsRequests,
+        component: ListStudentsRequests,
     },
     {
         path: "/list-inscriptions-form/idProcess=:idProcess",
@@ -77,7 +77,7 @@ const routes = [
     {
         path: "/list-students-requests/idProcess=:idProcess",
         exact: true,
-        component: ListStudentsRequests,
+        component: ListAgreementsRequests,
     },
     // Admin
     {
