@@ -95,7 +95,9 @@ async function insertRequest(req, res){
             message: "Error en el servidor " + e.message
         })
         return 
-    }
+    } 
+    
+    connection.end();
 
     res.status(200).send({
         success: true

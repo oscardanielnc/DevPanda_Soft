@@ -1,5 +1,6 @@
 const mysql = require('mysql');
 const {MYSQL_CREDENTIALS} = require("../config");
+const { sqlAsync } = require('../utils/async');
 
 //Traer los entregables de cierto proceso
 //function 
@@ -268,8 +269,132 @@ function updateDeliverableStudent(req, res){
     connection.end();
 }
 
+//Trae los campos de un entregable con los valores del alumno
+async function fieldsDeliverables(req, res){
+    const connection = mysql.createConnection(MYSQL_CREDENTIALS);
+    const idEntregable = req.params.idEntregable;
+    const idRespuestaEntregable = req.params.idRespuestaEntregable;
+
+    let data;
+    let resultElement;
+    let sqlQuery = `SELECT CP.idCampoEntregableProceso, CL.idCampoLlenadoEntregable, CE.nombreCampoEntregable, CP.flagEntregable, coalesce(CL.valorAlumno, "") as valorAlumno
+                    FROM CampoEntregable CE, CampoEntregableProceso CP, CampoLlenadoEntregable CL, Entregable E, RespuestaEntregable R
+                    WHERE E.idEntregable = ${idEntregable}
+                    and CP.fidCampoEntregable = CE.idCampoEntregable
+                    and CE.flagEntregable = "activo"
+                    and CL.fidCampoEntregableProceso = CP.idCampoEntregableProceso
+                    and CL.fidRespuestaEntregable = R.idRespuestaEntregable
+                    and R.idRespuestaEntregable = ${idRespuestaEntregable}`
+
+    connection.connect(err => {
+        if (err) throw err;
+    });
+
+    try{
+        resultElement  = await sqlAsync(sqlQuery, connection);
+    }catch(e){
+        res.status(505).send({ 
+            message: "Error en el servidor " + e.message
+        })
+    } 
+    data = resultElement; 
+    //Si no hay valores, me traigo todos los campos e inserto nuevos.
+    if(!resultElement.length){  
+        sqlQuery=` SELECT CP.idCampoEntregableProceso, null as idCampoLlenadoEntregable, CE.nombreCampoEntregable, CP.flagEntregable, "" as valorAlumno
+                    FROM CampoEntregable CE, CampoEntregableProceso CP, Entregable E
+                    WHERE E.idEntregable = ${idEntregable}
+                    AND CP.fidCampoEntregable = CE.idCampoEntregable
+                    AND CE.flagEntregable = "activo"`
+
+        try{
+            resultElement  = await sqlAsync(sqlQuery, connection);
+        }catch(e){
+            res.status(505).send({ 
+                message: "Error en el servidor " + e.message
+            })
+        } 
+        data = resultElement;
+
+        for(element of data){
+            sqlQuery = `INSERT INTO 
+                        CampoLlenadoEntregable(fidCampoEntregableProceso, fidRespuestaEntregable, valorAlumno) 
+                        values (${element.idCampoEntregableProceso}, ${idRespuestaEntregable}, "")`;
+            
+
+            try{
+                resultElement  = await sqlAsync(sqlQuery, connection);
+                if(!resultElement){
+                    res.status(404).send({ 
+                        success: false,
+                        message: "No se pudo insertar un campo al alumno"
+                    })
+                    return 
+                } 
+            }catch(e){
+                res.status(505).send({ 
+                    success: false,
+                    message: "Error en el servidor " + e.message
+                })
+                return 
+            }  
+            element.idCampoLlenadoEntregable = resultElement.insertId;
+        }
+    }
+    connection.end();
+    res.status(200).send({
+        success: true,
+        data
+    })
+   
+}
+
+//Actualizar los campos de un entregable
+async function updatefieldsDeliverables(req,res){
+    const connection = mysql.createConnection(MYSQL_CREDENTIALS);
+    let campos = req.body.campos;
+    let idRespuestaEntregable = req.body.idRespuestaEntregable;
+    //console.log(campos)
+    connection.connect(err => {
+        if (err) throw err;
+    });
+
+    for(element of campos){
+        
+        sqlQuery = `UPDATE CampoLlenadoEntregable
+                    SET valorAlumno = "${element.valorAlumno}"
+                    WHERE idCampoLlenadoEntregable = ${element.idCampoLlenadoEntregable}
+                    AND fidCampoEntregableProceso = ${element.idCampoEntregableProceso}
+                    AND fidRespuestaEntregable = ${idRespuestaEntregable}`;
+
+        try{
+            resultElement = await sqlAsync(sqlQuery, connection);
+            if(!resultElement){
+                res.status(404).send({
+                    success: false, 
+                    message: "No se pudo actualizar el campo: " + element.nombreCampo
+                })
+                return 
+            } 
+        }catch(e){
+            res.status(505).send({ 
+                success: false,
+                message: "Error en el servidor " + e.message
+            })
+            return 
+        }  
+    }
+
+    res.status(200).send({
+        success: true,
+        message: "Campos actualizados correctamente"
+    })
+    connection.end();
+}
+
 module.exports = {
     deliverableStudent,
     updateDeliverableStudent,
-    deliverablesProcess
+    deliverablesProcess,
+    fieldsDeliverables,
+    updatefieldsDeliverables
 }
