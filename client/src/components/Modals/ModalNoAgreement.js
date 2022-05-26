@@ -3,10 +3,14 @@ import {Modal, Button,Form} from 'react-bootstrap';
 import { useState,useEffect } from "react";
 import { specialtySelectAllApi } from "../../api/specialty";
 import FileManagement from "../../components/FileManagement/FileManagement";
+import ModalNoAgreementMail from "./ModalNoAgreementMail"
+import { ToastContainer, toast } from 'react-toastify';
+import {uploadDocsApi } from "../../api/files";
+import {registerRequestApi} from "../../api/request";
 
 const maxFiles = 1;
 export default function ModalNoAgreement (props) {
-    const {show, setShow,user} = props;
+    const {show, setShow,user,showSm,setShowSm} = props;
     const [specialties, setSpecialties] = useState([]);
     const [data, setData] = useState(user.fidespecialidad);
     const [fileList, setFileList] = useState([]);
@@ -25,7 +29,57 @@ export default function ModalNoAgreement (props) {
             specialty: Number(e.target.value)
         })
     }
+    const handleEnviar = async () =>{
+       
+            if(fileList.length === maxFiles) {
+                const response = await uploadDocsApi(fileList, `1-${user.fidEspecialidad}-NOCONV-${user.idPersona}`, 1);
+                if(response.success) {
+                    const responseReg = await registerRequestApi(user);
+                    if(responseReg.success){
+                        //cambio de modals
+                        setShowSm(true);
+                        setShow(false);
+                    }
+                    else{
+                        toast.error(responseReg.msg, {
+                            position: "top-right",
+                            autoClose: 3000,
+                            hideProgressBar: false,
+                            closeOnClick: true,
+                            pauseOnHover: true,
+                            draggable: true,
+                            progress: undefined,
+                        });
+                    }
+                } else {
+                    toast.error(response.msg, {
+                        position: "top-right",
+                        autoClose: 3000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                    });
+                }
+            }
+            else {
+                toast.warning(`Se requieren ${maxFiles} archivos para esta entrega.`, {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
+            
+        }
+
+       
+    }
     return (
+      
         <Modal
             size="lg"
             show={show}
@@ -33,7 +87,8 @@ export default function ModalNoAgreement (props) {
             backdrop="static"
             keyboard={false}
         >
-            <Modal.Header closeButton>
+            <ToastContainer/>
+            <Modal.Header closeButton className="modalBasic__header">
                 <Modal.Title style={{textAlign: "center"}}>Comenzar proceso sin Convenio ni Plan de Aprendizaje</Modal.Title>
             </Modal.Header>
             <Modal.Body>
@@ -65,9 +120,10 @@ export default function ModalNoAgreement (props) {
             <Button variant="secondary" onClick={()=>setShow(false)}>
                 Cancelar
             </Button>
-            <Button variant="primary" disabled>
+            <Button variant="primary" onClick={handleEnviar}>
                 Enviar Solicitud
             </Button>
+            <ModalNoAgreementMail show={showSm} setShow={setShowSm}></ModalNoAgreementMail>
             </Modal.Footer>
         </Modal>
     )
