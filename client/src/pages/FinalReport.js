@@ -9,26 +9,20 @@ import useAuth from "../hooks/useAuth";
 import FileManagement from "../components/FileManagement/FileManagement";
 import { getDeliverableStudent, setDeliverableStudent } from "../api/deliverables";
 
-const dataDummy = {
-    "documentState" : "Entregado",
-    "espState" : "P",
+const dataDummy = { 
     "ecoSector" : "Financiero",
-    "product" : "Prestamos",
+    "productService" : "Prestamos",
     "influArea" : "Nacional",
     "infBranch" : "Ingeniería de Software",
-    "learnLevel"  :  5,
-    "observaciones" : "gaaaa",
-    "nota" : 20
+    "learnLevel"  :  5  
 }
 
-/* let dataForApi = {
-    
-} */
+
 let staticDocument;
 let staticEsp;
 let disable;
 let flag=1;
-let idEntregable=3;
+let idEntregable=3; //como obtener esto?
 export default function AgreementReview(){  
     
     const {user} = useAuth();
@@ -55,16 +49,8 @@ export default function AgreementReview(){
                 setDocs(response.docs)
             }
         })
-    },[setDocs])
+    },[setDocs])    
     
-    useEffect(() => {                           //se debe cambiar por INFI
-        if(dataDummy.documentState==="Sin entregar"){
-            disable=false;
-        }
-        else{
-            disable=true;
-        }       
-    },[])
 //    useEffect(() => {                                            //PUEDO COLOCAR OTRA COSA QUE NO SEA CONV?
 //         getAllDocsApi(`${user.fidProceso}-${user.fidEspecialidad}-INFI-${user.idPersona}`, 1).then(response => {
 //             if(response.success) {
@@ -85,19 +71,19 @@ export default function AgreementReview(){
     //             setDocsSup(response.docs)
     //         }
     //     })
-    // },[setDocsSup]) 
+    // },[setDocsSup])      
 
-    if(flag && data.estadoEspecialidad){         
-        //staticDocument = data.estadoDocument;
-        //staticEsp =  data.estadoEspecialidad;        
-        flag=0;                
-    }    
-
-    //BORRAR. Es solo para probar
-    if(flag){
-        staticDocument = dataDummy.documentState;
-        staticEsp =  dataDummy.espState
-        flag=0;
+    
+    if(flag && data.deliverableResponse){
+        staticDocument = data.deliverableResponse.docState;
+        staticEsp =  data.deliverableResponse.evaState;
+        flag=0;                               
+        if(data.deliverableResponse.docState==="S"){
+            disable=false;
+        }
+        else{
+            disable=true;
+        }       
     }
     
 
@@ -158,28 +144,62 @@ export default function AgreementReview(){
                 comentarioEsp = "Pendiente de revisión";
         }            
     }
+    let comentarioDoc="";
+    if(staticDocument === "S")
+        comentarioDoc="Sin entregar";
+    else{
+        comentarioDoc = "Entregado";
+    }
 
-    const typeDocumentState = (staticDocument==="Sin entregar")? "fileEmpty": "success";
+    const typeDocumentState = (staticDocument==="S")? "fileEmpty": "success";
     let typeApprovalStateEsp = "";
     switch(staticEsp) {
         case "O": typeApprovalStateEsp = "warning"; break;
         case "A": typeApprovalStateEsp = "success"; break;
         case "P": typeApprovalStateEsp = "pending"; break;        
         default: typeApprovalStateEsp = "error"; break;
-    }
+    }    
+    
+    // const changeEcoSector = e => { 
+    //     setData({
+    //         ...data,
+    //         ecoSector: e.target.value                
+    //     })        
+    // }
+
+    // const changeProdSer = e => { 
+    //     setData({
+    //         ...data,
+    //         productService: e.target.value                
+    //     })        
+    // }
+
+    // const changeInfluArea = e => { 
+    //     setData({
+    //         ...data,
+    //         influArea: e.target.value                
+    //     })        
+    // }
+    
+    // const changeInfBranch = e => { 
+    //     setData({
+    //         ...data,
+    //         infBranch: e.target.value                
+    //     })        
+    // }
 
     function changeLearnLevel(e) {        
         dataDummy.learnLevel = e.target.id;        
        /*  setData({
             ...data,
             estadoFaci: "P",             
-        })      */
-        console.log(data.deliverableResponse)
+        })      */        
+        console.log(dataDummy)
     }
-    
-    const nota=20; 
+
+
     return (
-        data.idAlumno && <LayoutBasic>
+        data.idAlumno && <LayoutBasic>            
             <div className="container principalFinalReport" style={{"padding":"1px"}}>
                 <div className="row titulo" style={{textAlign: "left",marginTop:"25px",}}>
                         <h1>Entrega de Informe</h1>
@@ -202,7 +222,7 @@ export default function AgreementReview(){
                         <h2 className="subtitulo">Estado de la entrega</h2>
                     </div>
                     <div className="row normalrow" style={{marginTop:"10px"}}>
-                        <StateViewer states={[StatesViewType[typeDocumentState]("Estado de documentos",staticDocument),
+                        <StateViewer states={[StatesViewType[typeDocumentState]("Estado de documentos",comentarioDoc),
                         StatesViewType[typeApprovalStateEsp]("Aprobación Especialidad", comentarioEsp)]}/>
                     </div>
                 </div>
@@ -217,10 +237,15 @@ export default function AgreementReview(){
                         <h4 className="subSubtitulo">Sobre la empresa</h4>
                         <div className="wordAndTextBoxFirst">  
                             <div className="col-sm-5 subtitles">
-                                <h6 style={{marginTop:"9px"}}>Sector económico:</h6> 
+                                <h6 style={{marginTop:"9px"}} >Sector económico:</h6> 
                             </div>
                             <div className="col-sm-7 subtitles">
-                                <Form.Control  style={{width: "100%"}} type="text" placeholder="Ingrese el sector económico de la empresa." disabled={disable}/>
+                                <Form.Control  
+                                    style={{width: "100%"}} 
+                                    type="text" 
+                                    placeholder="Ingrese el sector económico de la empresa."  
+                                    //onChange = {changeEcoSector}
+                                    disabled={disable}/>
                             </div>                   
                         </div> 
                         <div className="wordAndTextBox">  
@@ -228,7 +253,12 @@ export default function AgreementReview(){
                                 <h6 style={{marginTop:"9px"}}>Principal producto o servicio ofrecido:</h6> 
                             </div>
                             <div className="col-sm-7 subtitles">
-                                <Form.Control  style={{width: "100%"}} type="text" placeholder="Ingrese el principal producto o servicio ofrecido por la empresa." disabled={disable}/>
+                                <Form.Control  
+                                    style={{width: "100%"}} 
+                                    type="text" 
+                                    placeholder="Ingrese el principal producto o servicio ofrecido por la empresa."
+                                    //onChange = {changeProdSer} 
+                                    disabled={disable}/>
                             </div>                   
                         </div>  
                         <div className="wordAndTextBox">  
@@ -236,7 +266,12 @@ export default function AgreementReview(){
                                 <h6 style={{marginTop:"9px"}}>Área de influencia:</h6> 
                             </div>
                             <div className="col-sm-7 subtitles">
-                                <Form.Control  style={{width: "100%"}} type="text" placeholder="Ingrese el area de influencia de la empresa." disabled={disable}/>
+                                <Form.Control  
+                                    style={{width: "100%"}} 
+                                    type="text" 
+                                    placeholder="Ingrese el area de influencia de la empresa." 
+                                    //onChange = {changeInfluArea}
+                                    disabled={disable}/>
                             </div>                   
                         </div>  
                         <h4 className="subSubtitulo">Sobre la práctica</h4>    
@@ -245,7 +280,10 @@ export default function AgreementReview(){
                                 <h6 style={{marginTop:"9px",textAlign:"justify"}}>Rama de la Ingeniería Informática en la que se desempeñó:</h6> 
                             </div>  
                             <div className="col-sm-7 subtitles">
-                            <Form.Select aria-label="Default select example" disabled={disable}>
+                            <Form.Select 
+                                aria-label="Default select example"
+                                //onChange = {changeInfBranch} 
+                                disabled={disable}>
                                 <option>Seleccione su rama</option>
                                 <option value="1">Ingeniería de Software</option>
                                 <option value="2">Tecnologías de Información</option>
