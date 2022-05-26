@@ -150,7 +150,7 @@ export default function StudentRegistrationForm () {
     }else{
 
     }
-    console.log("El arrayCadena es: ",window.location.pathname);
+    //console.log("El arrayCadena es: ",window.location.pathname);
     //debugger
     if(isNaN(idAlumno)) window.location.reload();
 
@@ -162,7 +162,7 @@ export default function StudentRegistrationForm () {
             const resultado=await getListOfCountry();
             const resultado2=await getLineBusinessList();
            // console.log("El result en la principal es: ",result);
-            console.log("El resultado en la principal es: ",resultado);
+            //console.log("El resultado en la principal es: ",resultado);
            // console.log("El resultado2 en la principal es: ",resultado2);
            
             if(result.success) {

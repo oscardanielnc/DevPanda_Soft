@@ -6,8 +6,8 @@ import './AboutCompany.scss';
 
 export default function AboutCompany ({data, setData, notgrabado,countries,lineBusiness}) {
     const {aboutCompany} = data;
-    console.log("Countries es: ",countries);
-    console.log("Lineas de negocio son: ",lineBusiness);
+    //console.log("Countries es: ",countries);
+    //console.log("Lineas de negocio son: ",lineBusiness);
     const handleChangeText = (e) => {
         if(e.target.name==="ruc"){
             if(numberValidation(e.target) && maxLengthValidation(e.target,11)){
@@ -99,11 +99,11 @@ export default function AboutCompany ({data, setData, notgrabado,countries,lineB
             }
         })
     }
-    console.log("El data es: ",data );
+    //console.log("El data es: ",data );
     let indexCountry=(data.aboutCompany.country!==null || data.aboutCompany.country!=="")?data.aboutCompany.country:-1;
     let indexLine=(data.aboutCompany.lineBusiness!==null || data.aboutCompany.lineBusiness!=="")?data.aboutCompany.lineBusiness:-1;
-    console.log("El indexCountry es: ",indexCountry);
-    console.log("El indexLine es: ",indexLine);
+    //console.log("El indexCountry es: ",indexCountry);
+    //console.log("El indexLine es: ",indexLine);
     return (
             <div className="container chartSobreEmpresa">
              <nav className="navbar navbar-fixed-top navbar-inverse bg-inverse "style={{ backgroundColor: "#E7E7E7"}}>

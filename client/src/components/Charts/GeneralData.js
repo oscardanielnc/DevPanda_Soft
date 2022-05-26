@@ -35,11 +35,21 @@ export default function GeneralData ({data, setData, imStudent=true,isSaved}) {
                         }
                     })
                 } else {
-                    e.target.value=data.generalData.cellphone;
-                    if(numberValidation(e.target) && maxLengthValidation(e.target,9)){
-                        e.target.classList.add("success");
+                    if(e.target.value!==""){
+                        e.target.value=data.generalData.cellphone;
+                        if(numberValidation(e.target) && maxLengthValidation(e.target,9)){
+                            e.target.classList.add("success");
+                        }else{
+                            e.target.classList.add("error");
+                        }
                     }else{
-                        e.target.classList.add("error");
+                        setData({
+                            ...data,
+                            generalData: {
+                                ...data.generalData,
+                                [e.target.name]: e.target.value
+                            }
+                        })
                     }
                 }
             }else{

@@ -133,28 +133,28 @@ export function getListOfCountry(){
             //Authorization: PANDA_KEY
         }
     }
-    console.log("En la funcion getListOfCountry");
+    //console.log("En la funcion getListOfCountry");
     return fetch(url, params)
         .then(response => {
-            console.log("El response es: ",response);
+            //console.log("El response es: ",response);
             return response.json()
         })
         .then(data => {
             if(data.success) {
-                console.log("En el success de la funcion");
+                //console.log("En el success de la funcion");
                 return {
                     data: data.result,
                     success: true
                 }
             }
-            console.log("En el failed de la funcion");
+            //console.log("En el failed de la funcion");
             return {
                 errMsg: data.message,
                 success: false
             }
         })
         .catch(errMsg => {
-            console.log("En el catch la funcion");
+            //console.log("En el catch la funcion");
             return {
                 errMsg,
                 success: false
