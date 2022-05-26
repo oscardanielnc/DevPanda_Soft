@@ -107,32 +107,32 @@ const routes = [
         component:WelcomeProcess,
     },
     {
-        path: "/agreement/idStudent=:idStudent&idProcess=:idProcess",
+        path: "/agreement/idStudent=:idStudent&idProcess=:idProcess&phase=:phase",
         exact: true,
         component: StudentAgreement,
     },
     {
-        path: "enrollment/idStudent=:idStudent&idProcess=:idProcess",
+        path: "enrollment/idStudent=:idStudent&idProcess=:idProcess&phase=:phase",
         exact: true,
         component: EnrollmentStudent,
     },
     {
-        path: "inscription/idStudent=:idStudent&idProcess=:idProcess",
+        path: "inscription/idStudent=:idStudent&idProcess=:idProcess&phase=:phase",
         exact: true,
         component: StudentRegistrationForm,
     },
     {
-        path: "/supervisor-selection/idStudent=:idStudent&idProcess=:idProcess",
+        path: "/supervisor-selection/idStudent=:idStudent&idProcess=:idProcess&phase=:phase",
         exact: true,
         component: SupervisorSelection,
     },
     {
-        path: "/final-report/idStudent=:idStudent&idProcess=:idProcess",
+        path: "/final-report/idStudent=:idStudent&idProcess=:idProcess&phase=:phase",
         exact: true,
         component: FinalReport,
     },
     {
-        path: "/deliverables/idStudent=:idStudent&idProcess=:idProcess",
+        path: "/deliverables/idStudent=:idStudent&idProcess=:idProcess&phase=:phase",
         exact: true,
         component: Deliverables,
     },
