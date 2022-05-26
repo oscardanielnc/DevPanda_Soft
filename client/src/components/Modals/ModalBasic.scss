@@ -1,0 +1,29 @@
+@import "../../App.scss";
+
+.modalBasic {
+    &__header {
+        display: grid;
+        width: 100%;
+        justify-content: center !important;
+        color: $primary-color;
+        letter-spacing: 0.5px;
+    }
+    & .btn-close {
+        position: absolute;
+        right: 20px;
+        top: 20px;
+    }
+
+    @media (min-width: 576px) {
+        .modal-dialog {
+            max-width: 740px;
+            margin: 1.75rem auto;
+        }
+    }
+    .modal-content  {
+        padding: 1em;
+        border-radius: 30px;
+    }
+}
+
+

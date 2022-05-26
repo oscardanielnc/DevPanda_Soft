@@ -6,11 +6,15 @@ import './TableRegistrationForm.scss';
 
 
 
-export default function TableEnrollment ({rows}) {
+export default function TableEnrollment ({rows, setShow, setNewDataStudent}) {
     if(rows.length === 0) {
         return (
             <p>Ningun Alumno coincide con la busqueda o no existen alumnos registrados todavía.</p>
         )
+    }
+    const handleClick = student => {
+        setNewDataStudent(student);
+        setShow(true);
     }
 
     return (
@@ -35,7 +39,7 @@ export default function TableEnrollment ({rows}) {
                         <td>{nombreAlumno}</td>
                         <td>{(row.grupoAsignado)? `Grupo ${row.grupoAsignado}`: "Sin grupo"}</td>
                         <td>
-                            <Button variant="primary" disabled>Editar</Button>
+                            <Button variant="primary" onClick={() => handleClick(row)}>Editar</Button>
                         </td>
                     </tr>
                 )})

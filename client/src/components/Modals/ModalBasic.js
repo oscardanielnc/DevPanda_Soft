@@ -5,16 +5,16 @@ import './ModalBasic.scss';
 
 
 export default function ModalBasic (props) {
-    const {show, setShow, children, primaryAction, secundaryAction} = props;
+    const {show, setShow, children, title, primaryAction, secundaryAction, handlePrimaryAction} = props;
     return (
-        <Modal
+        <Modal className="modalBasic"
             show={show}
             onHide={()=>setShow(false)}
             backdrop="static"
             keyboard={false}
         >
-            <Modal.Header closeButton>
-                <Modal.Title>Modal title</Modal.Title>
+            <Modal.Header closeButton className="modalBasic__header">
+                <Modal.Title>{title}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 {children}
@@ -23,10 +23,40 @@ export default function ModalBasic (props) {
             <Button variant="secondary" onClick={()=>setShow(false)}>
                 {secundaryAction}
             </Button>
-            <Button variant="primary" disabled>
+            <Button variant="primary" onClick={handlePrimaryAction}>
                 {primaryAction}
             </Button>
             </Modal.Footer>
         </Modal>
     )
 }
+
+
+
+const dataNavbar = [
+    {
+        title: "Convenio y Plan de Aprendizaje",
+        code: "CONV",
+        completed: true,
+    },
+    {
+        title: "Matrícula",
+        code: "MATR",
+        completed: true,
+    } ,
+    {
+        title: "Ficha de inscripción",
+        code: "FINS",
+        completed: true,
+    },
+    {
+        title: "Elección del supervisor",
+        code: "ESUP",
+        completed: false,
+    },
+    {
+        title: "Entregables",
+        code: "ENTS",
+        completed: false,
+    }
+]

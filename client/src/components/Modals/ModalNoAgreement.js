@@ -3,10 +3,11 @@ import {Modal, Button,Form} from 'react-bootstrap';
 import { useState,useEffect } from "react";
 import { specialtySelectAllApi } from "../../api/specialty";
 import FileManagement from "../../components/FileManagement/FileManagement";
+import ModalNoAgreementMail from "./ModalNoAgreementMail"
 
 const maxFiles = 1;
 export default function ModalNoAgreement (props) {
-    const {show, setShow,user} = props;
+    const {show, setShow,user,showSm,setShowSm} = props;
     const [specialties, setSpecialties] = useState([]);
     const [data, setData] = useState(user.fidespecialidad);
     const [fileList, setFileList] = useState([]);
@@ -25,6 +26,11 @@ export default function ModalNoAgreement (props) {
             specialty: Number(e.target.value)
         })
     }
+    const handleEnviar = () =>{
+        setShowSm(true);
+        setShow(false);
+       
+    }
     return (
         <Modal
             size="lg"
@@ -33,7 +39,7 @@ export default function ModalNoAgreement (props) {
             backdrop="static"
             keyboard={false}
         >
-            <Modal.Header closeButton>
+            <Modal.Header closeButton className="modalBasic__header">
                 <Modal.Title style={{textAlign: "center"}}>Comenzar proceso sin Convenio ni Plan de Aprendizaje</Modal.Title>
             </Modal.Header>
             <Modal.Body>
@@ -65,9 +71,10 @@ export default function ModalNoAgreement (props) {
             <Button variant="secondary" onClick={()=>setShow(false)}>
                 Cancelar
             </Button>
-            <Button variant="primary" disabled>
+            <Button variant="primary" onClick={handleEnviar}>
                 Enviar Solicitud
             </Button>
+            <ModalNoAgreementMail show={showSm} setShow={setShowSm}></ModalNoAgreementMail>
             </Modal.Footer>
         </Modal>
     )

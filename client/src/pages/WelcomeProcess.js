@@ -3,11 +3,12 @@ import { Button} from "react-bootstrap";
 import ModalNoAgreement from "../components/Modals/ModalNoAgreement";
 import { useState } from "react";
 import useAuth from "../hooks/useAuth";
-
+import ModalNoAgreementMail from "../components/Modals/ModalNoAgreementMail";
 
 export default function WelcomeProcess () {
     const [show,setShow]=useState(false);
     const {user} = useAuth();
+    const [showSm,setShowSm]=useState(false);
     console.log(user);
     return(
         <LayoutBasic>
@@ -49,7 +50,8 @@ export default function WelcomeProcess () {
                 </div>
                 <div className="row rows boton">
                     <Button className="btn btn-primary" style={{width:"20%",marginRight:"50px"}} onClick={()=>setShow(true)}>No cuento con los documentos</Button>
-                    <ModalNoAgreement show={show} setShow={setShow} primaryAction={"Hola"} user={user}></ModalNoAgreement>
+                    <ModalNoAgreement show={show} setShow={setShow} user={user}showSm={showSm}setShowSm={setShowSm}></ModalNoAgreement>
+                    <ModalNoAgreementMail show={showSm} setShow={setShowSm}></ModalNoAgreementMail>
                     <Button className="btn btn-primary" style={{width:"20%"}}>Si cuento con los documentos</Button>
                 </div>
             </div>
