@@ -472,7 +472,7 @@ export default function StudentRegistrationForm () {
                     <GeneralData data={data} setData={setData} imStudent={isSaved} isSaved={isSaved}/>   
                 </div>
                 <div className="row rows">
-                    <AboutCompany data={data} setData={setData} notgrabado={isSaved}/>
+                    <AboutCompany data={data} setData={setData} notgrabado={isSaved} countries={countries} lineBusiness={lineBusiness}/>
                 </div>
                 <div className="row rows">
                     <AboutJob data={data} setData={setData} notgrabado={isSaved}/>

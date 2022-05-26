@@ -418,13 +418,14 @@ async function getstudentInscriptionForm(req, res){
 
         //Traemos los campos extras
         sqlQuery = `SELECT CP.idCampoProceso, CL.idCampoLlenado, CF.nombreCampo, CF.seccion, CP.flag, coalesce(CL.valorAlumno, "") as valorAlumno
-                    FROM CampoFichaInscripcion CF, CampoFichaInscripcionProceso CP, CampoLlenadoFichaInscripcion CL, EntregaFichaInscripcion E
+                    FROM CampoFichaInscripcion CF, CampoFichaInscripcionProceso CP, CampoLlenadoFichaInscripcion CL, EntregaFichaInscripcion E, AlumnoProceso A, Proceso P
                     WHERE CF.idCampo = CP.fidCampoFicha
+                    AND CP.idCampoProceso = CL.fidCampoProceso
                     AND CF.flag = "activo"
                     AND CL.fidFicha = E.idFicha
                     AND E.fidAlumnoProceso = ${fidAlumnoProceso}
                     AND E.fidAlumnoProceso = A.idAlumnoProceso
-                    AND CP.idCampoProceso = CL.fidCampoProceso`;
+                    AND A.fidProceso = P.idProceso`;
 
         try{
             resultElement  = await functionSelect();
