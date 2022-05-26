@@ -82,7 +82,7 @@ async function deliverableStudent(req, res){
             "docState":"",
             "evaState": "",
             "observation": "",
-            "grade": null,
+            "grade": "",
             "uploadDate": ""
         }
     }

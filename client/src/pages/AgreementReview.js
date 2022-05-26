@@ -22,13 +22,6 @@ let dataForApi = {
     estadoEspecialidad: "",
     observaciones: ""
 }
-// const dataDummy = {
-//     "entregaConvenioyPlan":{        
-//         "faciState" : "Aprobado", // consumir API GET (A = "Aprobado", P = "Pendiente" de revisión, O ="Observado")
-//         "espState" : "Observado",    // consumir API GET  (A = Aprobado, P = Pendiente de revisión, O = Observado)
-//         "observations" : "Bien hecho crack"        
-//     }
-// }
 
 let staticFaci;
 let staticEsp;
@@ -143,7 +136,6 @@ export default function AgreementReview (){
             });
         }
     }
-
     
     let pass=(documentState==="A")?true:false;
     let pending=(documentState==="P")?true:false;
@@ -173,8 +165,7 @@ export default function AgreementReview (){
         }            
     }
 
-    const changeStatePassed = e => {     
-        console.log(data)         
+    const changeStatePassed = e => {            
         pass=!pass;       
         if(user.tipoPersonal === "F"){            
             setData({                                
@@ -278,8 +269,7 @@ export default function AgreementReview (){
                     <div className="row row1" style={{textAlign: "left",marginTop:"25px"}}>
                         <h2 className="subtitulo">Documentos enviados por el alumno</h2>                    
                     </div>  
-                    <ShowFiles docs={docsStudent} />
-                    {/* <FileManagement canUpload={false} docs={docsStudent} maxFiles={2} titulo="Documentos a enviar al alumno"/>                  */}
+                    <ShowFiles docs={docsStudent} />                   
                                        
                 </div>
                 <div className="shadowbox">
