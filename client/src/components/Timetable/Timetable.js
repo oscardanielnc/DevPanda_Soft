@@ -19,60 +19,60 @@ const hourRange = [
     "21:00"
 ]
 
-const dataDummy = [
-    {
-        day: "Lunes",
-        date: "04-05-2022",
-        hours: [1,1,1,3,2,2,4,4,4,2,2,2,1,1]
-    },
-    {
-        day: "Martes",
-        date: "05-05-2022",
-        hours: [1,1,1,2,2,2,4,4,4,2,2,2,1,1]
-    },
-    {
-        day: "Miércoles",
-        date: "06-05-2022",
-        hours: [1,1,1,2,2,2,4,4,4,2,2,2,1,1]
-    },
-    {
-        day: "Jueves",
-        date: "07-05-2022",
-        hours: [1,1,1,2,2,2,4,4,4,2,2,2,1,1]
-    },
-    {
-        day: "Viernes",
-        date: "08-05-2022",
-        hours: [1,1,1,2,2,2,4,4,4,2,2,2,1,1]
-    },
-    {
-        day: "Lunes",
-        date: "09-05-2022",
-        hours: [1,1,1,2,2,2,4,4,4,2,2,2,1,1]
-    },
-    {
-        day: "Martes",
-        date: "05-05-2022",
-        hours: [1,1,1,2,2,2,4,4,4,2,2,2,1,1]
-    },
-    {
-        day: "Miércoles",
-        date: "06-05-2022",
-        hours: [1,1,1,2,2,2,4,4,4,2,2,2,1,1]
-    },
-    {
-        day: "Jueves",
-        date: "07-05-2022",
-        hours: [1,1,1,2,2,2,4,4,4,2,2,2,1,1]
-    },
-    {
-        day: "Viernes",
-        date: "08-05-2022",
-        hours: [1,1,1,2,2,2,4,4,4,2,2,2,1,1]
-    }
-]
+// const dataDummy = [
+//     {
+//         day: "Lunes",
+//         date: "04-05-2022",
+//         hours: [1,1,1,3,2,2,4,4,4,2,2,2,1,1]
+//     },
+//     {
+//         day: "Martes",
+//         date: "05-05-2022",
+//         hours: [1,1,1,2,2,2,4,4,4,2,2,2,1,1]
+//     },
+//     {
+//         day: "Miércoles",
+//         date: "06-05-2022",
+//         hours: [1,1,1,2,2,2,4,4,4,2,2,2,1,1]
+//     },
+//     {
+//         day: "Jueves",
+//         date: "07-05-2022",
+//         hours: [1,1,1,2,2,2,4,4,4,2,2,2,1,1]
+//     },
+//     {
+//         day: "Viernes",
+//         date: "08-05-2022",
+//         hours: [1,1,1,2,2,2,4,4,4,2,2,2,1,1]
+//     },
+//     {
+//         day: "Lunes",
+//         date: "09-05-2022",
+//         hours: [1,1,1,2,2,2,4,4,4,2,2,2,1,1]
+//     },
+//     {
+//         day: "Martes",
+//         date: "05-05-2022",
+//         hours: [1,1,1,2,2,2,4,4,4,2,2,2,1,1]
+//     },
+//     {
+//         day: "Miércoles",
+//         date: "06-05-2022",
+//         hours: [1,1,1,2,2,2,4,4,4,2,2,2,1,1]
+//     },
+//     {
+//         day: "Jueves",
+//         date: "07-05-2022",
+//         hours: [1,1,1,2,2,2,4,4,4,2,2,2,1,1]
+//     },
+//     {
+//         day: "Viernes",
+//         date: "08-05-2022",
+//         hours: [1,1,1,2,2,2,4,4,4,2,2,2,1,1]
+//     }
+// ]
 
-export default function Timetable ({inputs, setInputs, setHourSelecteds, hourSelecteds}){
+export default function Timetable ({inputs, setInputs, setHourSelecteds, hourSelecteds, handleClickCell}){
     const [indexs, setIndex] = useState({
         actual:0, // page actual
         separator: 5
@@ -121,15 +121,14 @@ export default function Timetable ({inputs, setInputs, setHourSelecteds, hourSel
                                 <div className="headerTime">{`${day.day}  ${day.date}`}</div>
                                 {
                                 day.hours.map((hour, indexHour) => (
-                                    <TimetableCell hour={hour} setInputs={setInputs} hourSelecteds={hourSelecteds}
-                                        inputs={inputs} indexDay={indexDay} key={indexHour} 
-                                        indexHour={indexHour} setHourSelecteds={setHourSelecteds}/>
+                                    <TimetableCell hour={hour} indexDay={indexDay} key={indexHour} 
+                                        handleClickCell={handleClickCell} indexHour={indexHour}/>
                                 ))
                                 }
                             </div>
                         )
                     })
-                }
+                } 
                 
             </div>
         </div>);

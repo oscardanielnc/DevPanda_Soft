@@ -2,32 +2,18 @@ const mysql = require('mysql');
 const {MYSQL_CREDENTIALS, PANDA_KEY} = require("../config");
 const moment = require("moment");
 const jwt = require("jwt-simple");
-const e = require('cors');
+const { sqlAsync } = require('../utils/async');
 
 async function singIn(req, res) {
     const connection = mysql.createConnection(MYSQL_CREDENTIALS);
     const email = req.params.email;
-    
-    // const sqlQuery = `SELECT * FROM Persona WHERE correo='${email}'`;
-
-    sqlAsync = (sql) =>{
-        return new Promise((resolve, reject)=>{
-            connection.query(sql, async (err, result) => {
-                if (err) {
-                    return reject(err);
-                }else{
-                    return resolve(result)
-                }
-            })
-        })
-    }
 
     connection.connect(err => {
         if (err) throw err;
     });
     try{
         const sqlQueryPersona = `SELECT * FROM Persona WHERE correo='${email}'`;
-        const resultPersona  = await sqlAsync(sqlQueryPersona);
+        const resultPersona  = await sqlAsync(sqlQueryPersona, connection);
         if(resultPersona.length > 0) {
             const dbUser = resultPersona[0];
 
@@ -44,15 +30,29 @@ async function singIn(req, res) {
                 correo: dbUser.correo,
                 tipoPersona: dbUser.tipoPersona,
                 activo: 1,
-                expire: moment().add(3, "days").unix(),
+                expire: moment().add(8, 'hours').unix(),
             }
             // aqui extrahemos los datos segun su tipo
             if(preUser.tipoPersona === 'e') {
                 const sqlQueryAlumno = `SELECT * FROM Alumno A INNER JOIN AlumnoProceso AP 
                                      ON A.idAlumno = AP.fidAlumno WHERE idAlumno = ${preUser.idPersona} AND estado='C';`
-                const resultAlumno  = await sqlAsync(sqlQueryAlumno);
+                const resultAlumno  = await sqlAsync(sqlQueryAlumno, connection);
                 if(resultAlumno.length>0) {
                     const dbAlumno = resultAlumno[0];
+                    const sqlQueryNavbar = `SELECT * FROM EtapaProceso WHERE fidProceso=${dbAlumno.fidProceso} order by orden;`
+                    const resultNavbar  = await sqlAsync(sqlQueryNavbar, connection);
+                    const navbar = [];
+                    if(resultNavbar.length>0) {
+                        resultNavbar.forEach(e => {
+                            const item = {
+                                code: e.codigo,
+                                title: e.nombre,
+                                order: e.orden
+                            }
+                            navbar.push(item);
+                        })
+                    }
+
                     const user = {
                         ...preUser,
                         estadoMatriculado: dbAlumno.estadoMatriculado,
@@ -63,7 +63,8 @@ async function singIn(req, res) {
                         fidAsesor: dbAlumno.fidAsesor,
                         nota: dbAlumno.nota,
                         grupoAsignado: dbAlumno.grupoAsignado,
-                        estado: 'C'
+                        estado: 'C',
+                        navbar: navbar
                     }
                     const accessToken = jwt.encode(user, PANDA_KEY);
                     res.status(200).send({accessToken});
@@ -76,7 +77,7 @@ async function singIn(req, res) {
                 }
             } else {
                 const sqlQueryPersonal = `SELECT * FROM PersonalAdministrativo WHERE idPersonal=${preUser.idPersona};`
-                const resultPersonal  = await sqlAsync(sqlQueryPersonal);
+                const resultPersonal  = await sqlAsync(sqlQueryPersonal, connection);
                 if(resultPersonal.length>0) {
                     const dbPersonal = resultPersonal[0];
                     const user = {
@@ -107,6 +108,101 @@ async function singIn(req, res) {
     connection.end();
 }
 
+async function signUp(req, res) {
+    const connection = mysql.createConnection(MYSQL_CREDENTIALS);
+    const {firstName, lastName, email, specialty, code} = req.body;
+
+    connection.connect(err => {
+        if (err) throw err;
+    });
+    try{
+        const sqlQueryPersonas = `SELECT * FROM Persona WHERE correo='${email}'`;
+        const resultPersona  = await sqlAsync(sqlQueryPersonas, connection);
+
+        if(resultPersona.length === 0) {
+            // TODO: regsitro en la BD
+            const sqlQueryPersona = `INSERT INTO Persona(fidEspecialidad, nombres, apellidos, correo, contrasena, tipoPersona, activo) 
+                                            values(${specialty},'${firstName}','${lastName}','${email}',null,'e',1);`
+            const resultPersona  = await sqlAsync(sqlQueryPersona, connection);
+
+            const idPersona = resultPersona.insertId;
+            if(idPersona && idPersona >= 0) {
+                const sqlQueryAlumno = `INSERT INTO Alumno(idAlumno, codigo)
+                                                values(${idPersona},${code});`
+                const resultAlumno  = await sqlAsync(sqlQueryAlumno, connection);
+
+                if(resultAlumno.affectedRows) {
+                    const sqlQueryAlumnoProceso = `INSERT INTO AlumnoProceso(fidProceso, fidAlumno, fidAsesor, nota, grupoAsignado, estado, estadoMatriculado, estadoProceso)
+                                                    values(${specialty}, ${idPersona}, null, null, null, 'C', 0, 1);`
+                    const resultAlumnoProceso  = await sqlAsync(sqlQueryAlumnoProceso, connection);
+
+                    const sqlQueryNavbar = `SELECT * FROM EtapaProceso WHERE fidProceso=${specialty} order by orden;`
+                    const resultNavbar  = await sqlAsync(sqlQueryNavbar, connection);
+                    const navbar = [];
+                    if(resultNavbar.length>0) {
+                        resultNavbar.forEach(e => {
+                            const item = {
+                                code: e.codigo,
+                                title: e.nombre,
+                                order: e.orden
+                            }
+                            navbar.push(item);
+                        })
+                    }
+
+                    if(resultAlumnoProceso.affectedRows) {
+                        const student = {
+                            idPersona: idPersona,
+                            fidEspecialidad: specialty,
+                            nombres: firstName,
+                            apellidos: lastName,
+                            correo: email,
+                            tipoPersona: 'e',
+                            activo: 1,
+                            expire: moment().add(8, 'hours').unix(),
+                            estadoMatriculado: 0,
+                            estadoProceso: 1,
+                            codigo: code,
+                            idAlumnoProceso: resultAlumnoProceso.insertId,
+                            fidProceso: specialty,
+                            fidAsesor: null,
+                            nota: null,
+                            grupoAsignado: null,
+                            estado: 'C',
+                            navbar: navbar
+                        }
+                        const accessToken = jwt.encode(student, PANDA_KEY);
+                        res.status(200).send({accessToken});
+                        // res.status(200).send({user});
+                    } else {
+                        res.status(505).send({
+                            message: "Error al tratar de registrar en la tabla AlumnoProceso"
+                        })
+                    }
+                } else {
+                    res.status(505).send({
+                        message: "Error al tratar de registrar en la tabla Alumno"
+                    })
+                }
+            } else {
+                res.status(505).send({
+                    message: "Error al tratar de registrar en la tabla Persona"
+                })
+            }
+        } else {
+            res.status(505).send({
+                message: "Este usuario ya se encuentra registrado en la base de datos"
+            })
+        }
+    }catch(e){
+        res.status(505).send({ 
+            message: "Error en el servidor " + e.message
+        })
+    }
+    connection.end();
+}
+
 module.exports = {
-    singIn
+    singIn,
+    signUp
 }

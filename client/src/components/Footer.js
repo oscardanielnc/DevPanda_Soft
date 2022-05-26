@@ -1,13 +1,9 @@
 import React from "react";
-import LogoTelefono from "../asserts/img/png/telefono.PNG";
-import LogoSobre from "../asserts/img/png/sobreEmail.PNG";
-import LogoDerechos from "../asserts/img/png/derechosReservados.PNG";
-import LogoMapa from "../asserts/img/png/googleMaps.png";
-import LogoInstagram from "../asserts/img/svg/Boton IG.svg";
-import LogoTikTok from "../asserts/img/svg/Boton Tiktok.svg";
-import LogoFacebook from "../asserts/img/svg/Boton Facebook.svg";
-import LogoLinkedin from "../asserts/img/svg/Logo LinkedIn.svg";
-import LogoTwitter from "../asserts/img/svg/Boton Twitter.svg";
+import LogoInstagram from "../assets/svg/Boton IG.svg";
+import LogoTikTok from "../assets/svg/Boton Tiktok.svg";
+import LogoFacebook from "../assets/svg/Boton Facebook.svg";
+import LogoLinkedin from "../assets/svg/Logo LinkedIn.svg";
+import LogoTwitter from "../assets/svg/Boton Twitter.svg";
 import './Footer.scss';
 
 export default function Footer (props) {

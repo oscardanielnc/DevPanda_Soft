@@ -1,51 +1,27 @@
 import SpecialtyManagement from "../pages/SpecialtyManagement";
 import AddSpecialty from "../pages/AddSpecialty";
 import StudentRegistrationForm from "../pages/StudentRegistrationForm";
-import SignIn from "../pages/SignIn";
-import SignUp from "../pages/SignUp";
-import Error404 from "../pages/Error404";
+import SignUp from "../pages/General/SignUp";
+import Error404 from "../pages/General/Error404";
 import SupervisorSelection from "../pages/SupervisorSelection";
-import FACINavbar from "../components/navBarCoordFACI/FACINavbar";
-import StudentNavbar from "../components/navBar/StudentNavbar";
-import Agreement from "../pages/Agreement";
+import RedirectPage from "../pages/General/RedirectPage";
 import AgreementReview from "../pages/AgreementReview";
 import StudentAgreement from "../pages/StudentAgreement";
 import Deliverables from "../pages/Deliverables";
 import FinalReport from "../pages/FinalReport"
 import ListRegistrationForm from "../pages/ListRegistrationForm";
-const routes = [
+import landingPage from "../pages/General/LandingPage";
+import EnrollmentStudent from "../pages/Student/EnrollmentStudent";
+import StudentsManagement from "../pages/CoorSpecialty/StudentsManagement";
+import ListAgreementsRequests from "../pages/ListAgreementsRequests";
+import WelcomeProcess from "../pages/WelcomeProcess";
+
+const routes = [ 
+    // General
     {
         path: "/",
         exact: true,
-        component: SpecialtyManagement,
-    },
-    {  path: "/listRegistrationForm",
-        exact: true,
-        component: ListRegistrationForm},
-    {
-        path: "/add-specialty",
-        exact: true,
-        component: AddSpecialty,
-    },
-    {
-        path: "/student-registration/:idAlumno",
-        exact: true,
-        component: StudentRegistrationForm,
-    },
-    {
-        path: "/student-registration-review/:idAlumno",
-        exact: true,
-        component: StudentRegistrationForm,
-    },
-    {
-        path: "/student-agreement",
-        exact: true,
-        component: StudentAgreement,
-    },
-    {
-        path: "/sign-in",
-        exact: true,
-        component: SignIn,
+        component: landingPage,
     },
     {
         path: "/sign-up",
@@ -53,27 +29,110 @@ const routes = [
         component: SignUp,
     },
     {
-        path: "/agreement",
+        path: "/redirect",
         exact: true,
-        component: Agreement,
+        component: RedirectPage,
+    },
+    //Coordinador FACI
+    
+    // Coordinador especialidad
+    {
+        path: "/students-management",
+        exact: true,
+        component: StudentsManagement,
     },
     {
-        path: "/supervisor-selection",
+        path: "/list-students-requests",
         exact: true,
-        component: SupervisorSelection,
+        component: ListAgreementsRequests,
     },
     {
-        path: "/agreement-review",
+        path: "/list-students-agreement",
+        exact: true,
+        component: ListAgreementsRequests,//CAMBIA ACÁ
+    },
+    {
+        path: "/list-supervisors",
+        exact: true,
+        component: Deliverables,//CAMBIAR ACÁ
+    },
+    // Admin
+    {
+        path: "/specialty-management",
+        exact: true,
+        component: SpecialtyManagement,
+    },
+    {
+        path: "/specialty-add",
+        exact: true,
+        component: AddSpecialty,
+    },
+    {
+        path: "/coordinators-management",
+        exact: true,
+        component: SpecialtyManagement,//CAMBIA ACÁ
+    },
+    // Supervisor
+    {  path: "/list-inscriptions-form",
+        exact: true,
+        component: ListRegistrationForm
+    },
+    {
+        path: "/agreement-review/idStudent=:idStudent&idProcess=:idProcess",
         exact: true,
         component: AgreementReview,
     },
     {
-        path: "/final-report",
+        path: "/add-disponibility/idSupervisor=:idSupervisor",
+        exact: true,
+        component: SupervisorSelection,//cambiar acá
+    },
+    {
+        path: "/meetings-management/idSupervisor=:idSupervisor",
+        exact: true,
+        component: SupervisorSelection,//cambiar acá
+    },
+    {  path: "/list-deliverables-partial",
+        exact: true,
+        component: ListRegistrationForm,//cambiar acá
+    },
+    {  path: "/list-deliverables-final",
+        exact: true,
+        component: ListRegistrationForm,//cambiar acá
+    },
+    // Alumno
+    {
+        path: "/welcome-process",
+        exact: true,
+        component:WelcomeProcess,
+    },
+    {
+        path: "/agreement/idStudent=:idStudent&idProcess=:idProcess&phase=:phase",
+        exact: true,
+        component: StudentAgreement,
+    },
+    {
+        path: "enrollment/idStudent=:idStudent&idProcess=:idProcess&phase=:phase",
+        exact: true,
+        component: EnrollmentStudent,
+    },
+    {
+        path: "inscription/idStudent=:idStudent&idProcess=:idProcess&phase=:phase",
+        exact: true,
+        component: StudentRegistrationForm,
+    },
+    {
+        path: "/supervisor-selection/idStudent=:idStudent&idProcess=:idProcess&phase=:phase",
+        exact: true,
+        component: SupervisorSelection,
+    },
+    {
+        path: "/final-report/idStudent=:idStudent&idProcess=:idProcess&phase=:phase",
         exact: true,
         component: FinalReport,
     },
     {
-        path: "/deliverables",
+        path: "/deliverables/idStudent=:idStudent&idProcess=:idProcess&phase=:phase",
         exact: true,
         component: Deliverables,
     },

@@ -3,7 +3,7 @@ import LayoutBasic from "../layouts/LayoutBasic";
 import DocumentPlusIcon from "../components/DocumentPlusIcon/DocumentPlusIcon";
 import StateViewer,{StatesViewType} from "../components/StateViewer/StateViewer";
 import FileManagement from "../components/FileManagement/FileManagement";
-import { Button } from "react-bootstrap";
+import { Button ,Form} from "react-bootstrap";
 import "./StudentAgreement.scss";
 import { Link } from "react-router-dom";
 import { getAllDocsApi, uploadDocsApi } from "../api/files";
@@ -13,7 +13,7 @@ import {selectDocumentsInfoByProcessOnlyStudent} from "../api/agreementLearnigPl
 import useAuth from "../hooks/useAuth";
 
 
-let docuemntsState = "Sin entregar";
+let docuemntsState ="";
 let approvalState = ""
 const maxFiles = 2;
 const idAlumno=1;
@@ -21,15 +21,19 @@ export default function StudentAgreement () {
     const [fileList, setFileList] = useState([])
     const [docs, setDocs] = useState([])
     const [studentDocs, setStudentDocs] = useState([])
-    const [data, setData] = useState({}); 
+    const [data, setData] = useState([{
+            files:[{
+                    estadoEspecialidad:0,
+                    estadoFaci:0,
+                    observaciones:null,
+            }]
+    }
+    ]); 
     const {user} = useAuth();
-    console.log("user",user.idPersona)
-    console.log("esp",user.fidEspecialidad)
     useEffect(() => {
         getAllDocsApi(`1-${user.fidEspecialidad}-CONV`, 0).then(response => {
             if(response.success) {
                 setDocs(response.docs)
-                console.log("Primer doc",response)
             }
         })
     },[setDocs])
@@ -38,35 +42,41 @@ export default function StudentAgreement () {
         getAllDocsApi(`1-${user.fidEspecialidad}-CONV-${user.idPersona}`, 1).then(response => {
             if(response.success) {
                 setStudentDocs(response.docs)
-                console.log("Segundo doc",response.docs)
-                if(response.length>0){
-                    docuemntsState = "Entregado"
+                if(response.docs.length>0){
+                    docuemntsState="Entregado"
+                }
+                else{
+                    docuemntsState="Sin entregar"
                 }
             }
+   
         })
     },[setStudentDocs])
 
-
-    
     useEffect(()=>{
         selectDocumentsInfoByProcessOnlyStudent(user.idPersona).then(response => {
             if(response.success) {
                 setData(response.files)
                 console.log("consola:",response)
+                
             }
         }
         )
     },[setData])
 
-
+    console.log("ga",data[0].estadoEspecialidad);
     const typeDocumentState = (docuemntsState==="Sin entregar")? "fileEmpty": "success";
     let typeApprovalState = "";
 
-    if(data.estadoFaci === "o" || data.estadoEspecialidad === "o"){
+    if(data[0].estadoFaci === "o" || data[0].estadoEspecialidad === "o"){
         approvalState = "Observado"
     }
-    else if(data.estadoFaci === "a" || data.estadoEspecialidad ==="a"  ){
+    else if(data[0].estadoFaci === "a" || data[0].estadoEspecialidad ==="a"  ){
         approvalState= "Aprobado"
+    }
+    else if(data[0].estadoFaci === "P" || data[0].estadoEspecialidad ==="P"){
+        approvalState= "Pendiente"
+        console.log("holi");
     }
     else{
         approvalState= "Sin entrega"
@@ -74,7 +84,8 @@ export default function StudentAgreement () {
     
     switch(approvalState) {
         case "Observado": typeApprovalState = "warning"; break;
-        case "Sin entrega": typeApprovalState = "pending"; break;
+        case "Sin entrega": typeApprovalState = "fileEmpty"; break;
+        case "Pendiente": typeApprovalState="pending";break;
         default: typeApprovalState = "success"; break;
     }
 /*
@@ -93,7 +104,6 @@ export default function StudentAgreement () {
         if(fileList.length === maxFiles) {
             const response = await uploadDocsApi(fileList, `1-${user.fidEspecialidad}-CONV-${user.idPersona}`, 1);
             if(response.success) {
-                docuemntsState = "Entregado"
                 toast.success(response.msg, {
                     position: "top-right",
                     autoClose: 3000,
@@ -168,6 +178,14 @@ export default function StudentAgreement () {
                 </div>
                 <div className="row rows uploadAgreement" >                
                     <FileManagement canUpload={true} docs={studentDocs} maxFiles={maxFiles} fileList={fileList} setFileList={setFileList}/>
+                </div>
+                <div className="row row1" style={{textAlign: "left",marginTop:"25px"}}>
+                    <h2>Observaciones</h2>  
+                    <Form>                        
+                        <Form.Group className="mb-3" controlId="ControlTextarea1">                            
+                            <Form.Control as="textarea" rows={8} />
+                        </Form.Group>
+                    </Form>                           
                 </div>
                 <div className="row rows boton">
                     <Button className="btn btn-primary" style={{width:"40%"}} onClick={deliver}>Entregar</Button>

@@ -15,9 +15,15 @@ export function getSupervisorScheduleApi(idSupervisor) {
             return response.json()
         })
         .then(schedule => {
+            if(schedule.success) {
+                return {
+                    schedule: schedule.data,
+                    success: true
+                }
+            }
             return {
-                schedule,
-                success: true
+                errMsg: schedule.message,
+                success: false
             }
         })
         .catch(errMsg => {
@@ -42,9 +48,16 @@ export function searchAssessorsBySpecialty(idEspecialidad) {
             return response.json()
         })
         .then(supervisors => {
+            console.log(supervisors)
+            if(supervisors.success) {
+                return {
+                    supervisors: supervisors.data,
+                    success: true
+                }
+            }
             return {
-                supervisors,
-                success: true
+                errMsg: supervisors.message,
+                success: false
             }
         })
         .catch(errMsg => {
@@ -53,8 +66,8 @@ export function searchAssessorsBySpecialty(idEspecialidad) {
                 success: false
             }
         })
-    }
-export function changeOneHourSchedule(data) {
+}
+export function changeOneHourSchedule(arrHours) {
             const url = `${BASE_PATH}/${API_VERSION}/schedule-changeHours`;
             const params = {
                 method: "PUT",
@@ -62,7 +75,7 @@ export function changeOneHourSchedule(data) {
                     "Content-Type": "application/json",
                     //Authorization: PANDA_KEY
                 },
-                body:JSON.stringify(data)
+                body:JSON.stringify(arrHours)
             }
         
             return fetch(url, params)
@@ -72,7 +85,7 @@ export function changeOneHourSchedule(data) {
             .then(result => {
                 return {
                     msg: result.message,
-                    success: true
+                    success: result.success
                 }
             })
             .catch(err => {

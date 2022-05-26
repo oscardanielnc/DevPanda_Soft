@@ -12,8 +12,8 @@ import useAuth from "../hooks/useAuth";
 import { ToastContainer, toast } from 'react-toastify';
 
 /*PENDIENTE */
-const idAlumno = 1;
-const fidAlumnoProceso = 1;
+const idAlumno = 5;
+const fidAlumnoProceso = 4;
 
 let dataForApi = {
     idEntregaConvenio: "",
@@ -22,13 +22,6 @@ let dataForApi = {
     estadoEspecialidad: "",
     observaciones: ""
 }
-// const dataDummy = {
-//     "entregaConvenioyPlan":{        
-//         "faciState" : "Aprobado", // consumir API GET (A = "Aprobado", P = "Pendiente" de revisión, O ="Observado")
-//         "espState" : "Observado",    // consumir API GET  (A = Aprobado, P = Pendiente de revisión, O = Observado)
-//         "observations" : "Bien hecho crack"        
-//     }
-// }
 
 let staticFaci;
 let staticEsp;
@@ -41,8 +34,7 @@ export default function AgreementReview (){
     const [data, setData] = useState({});
     const [docs, setDocs] = useState([])
     const [docsStudent, setDocsStudent] = useState([])
-    const [docsCoord, setDocsCoord] = useState([])
-    console.log(user)    
+    const [docsCoord, setDocsCoord] = useState([])    
     //Enviar idAlumno, idRevisor
     
         
@@ -106,9 +98,10 @@ export default function AgreementReview (){
             dataForApi.estadoEspecialidad = data.estadoEspecialidad
             dataForApi.observaciones = data.observaciones
             
-            //const response1 = await uploadDocsApi(fileList, "1-1-CONV-${idAlumno}", 1);
+            const response1 = await uploadDocsApi(fileList, `1-${user.fidEspecialidad}-CONV-${idAlumno}`, 0);
+
             const response2 = await agreementReviewUpdateApi(dataForApi)
-            if(response2.success) {                
+            if(response2.success && response1.success) {                
                 toast.success(response2.msg, {
                     position: "top-right",
                     autoClose: 3000,
@@ -129,7 +122,7 @@ export default function AgreementReview (){
                     draggable: true,
                     progress: undefined,
                 });
-            }            
+            }                        
         }
         else {
             toast.warning(`Se requieren 2 archivos para esta entrega.`, {
@@ -143,7 +136,6 @@ export default function AgreementReview (){
             });
         }
     }
-
     
     let pass=(documentState==="A")?true:false;
     let pending=(documentState==="P")?true:false;
@@ -173,7 +165,7 @@ export default function AgreementReview (){
         }            
     }
 
-    const changeStatePassed = e => {         
+    const changeStatePassed = e => {            
         pass=!pass;       
         if(user.tipoPersonal === "F"){            
             setData({                                
@@ -277,8 +269,7 @@ export default function AgreementReview (){
                     <div className="row row1" style={{textAlign: "left",marginTop:"25px"}}>
                         <h2 className="subtitulo">Documentos enviados por el alumno</h2>                    
                     </div>  
-                    <ShowFiles docs={docsStudent} />
-                    {/* <FileManagement canUpload={false} docs={docsStudent} maxFiles={2} titulo="Documentos a enviar al alumno"/>                  */}
+                    <ShowFiles docs={docsStudent} />                   
                                        
                 </div>
                 <div className="shadowbox">

@@ -5,6 +5,7 @@
     background: $primary-color;
     display: flex;
     justify-content: space-between;
+   
     &__left{
         &titulo{
             color: white;
@@ -12,18 +13,93 @@
             font-size: .5em;
         }
     }
-    
+
     &__right{
         display: flex;
+
         &nombreUsuario{
             background: $primary-color;
             color:#f8f9fa;
             margin: auto;
             margin-right: 30px;
         }
+
         &usuarioImagen{
             background: #042354;
         	color: #f8f9fa;
+            display: flex;
+
+            &-user {
+                background-color: #fff;
+                color: $primary-color;
+                font-size: 48px;
+                display: flex;
+                border-radius: 50px;
+                padding: 10px;
+                margin: auto 10px;
+                cursor: pointer;
+                
+                &:hover {
+                    box-shadow: #fff 0px 0px 3px 0px;
+                    transform: scale(1.02);
+                }
+            }
+        }
+    }
+
+    &__logout {
+        position: absolute;
+        background: #fff;
+        top: 80px;
+        width: 286px;
+        border: $primary-color 2px solid;
+        padding: 10px;
+        right: 0;
+        border-radius: 0px 0px 8px 8px;
+        color: $primary-color;
+
+        &-info {
+            display: grid;
+            justify-items: center;
+            margin: 1em 0;
+            & span {
+                display: block;
+                font-weight: 500;
+            }
+            & strong {
+                font-size: 1.25em;
+                display: block;
+            }
+        }
+        &-btn {
+            justify-content: center;
+            display: flex;
+        }
+    }
+
+    .btn-custm {
+        border: $primary-color 2px solid !important;
+        width: 80% !important;
+        font-weight: 600 !important;
+        color: $primary-color !important;
+
+        &:hover {
+            box-shadow:  $primary-color 0px 0px 8px 0px;
+            transform: scale(1.02);
+        }
+    }
+
+    &__right-notlogged {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        width: 400px;
+        justify-items: center;
+        align-items: center;
+        align-self: center;
+
+        &-btn {
+            height: fit-content !important;
+            width: 80%;
         }
     }
 

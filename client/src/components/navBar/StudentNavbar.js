@@ -1,86 +1,84 @@
-import React, { useState } from 'react';
-import { NavItem,Button, ProgressBar } from 'react-bootstrap';
-import { Link,NavLink } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Button, ProgressBar } from 'react-bootstrap';
+import { NavLink } from 'react-router-dom';
 import './StudentNavbar.scss';
 import useAuth from "../../hooks/useAuth"
 
-const dataNavbar = [
-    {
-        title: "Convenio y Plan de Aprendizaje",
-        link: "/student-agreement"
-    },
-    {
-        title: "Matrícula",
-        link: "/m"
-    } ,
-    {
-        title: "Ficha de inscripción",
-        link: "/student-registration"
-    },
-    {
-        title: "Elección del supervisor",
-        link: "/supervisor-selection"
-    },
-    {
-        title: "Entregables",
-        link: "/deliverables"
-    },    
-    {
-        title: "Coordinador Convenio",
-        link: "/agreement-review"
+// const offsets =[-380,-160,-70,-30,0,20,32]
+    
+function StudentNavbar () {
+    const {user} = useAuth();
+    const [navbar, setNavbar] = useState([]);
+
+    useEffect(()=> {
+        const dataNavbar = [];
+        user.navbar.forEach(item => {
+            const newItem = {
+                ...item,
+                link: getLink(item.code)
+            }
+            dataNavbar.push(newItem)
+        })
+        setNavbar(dataNavbar);
+    }, [setNavbar])
+
+    const getLink = code => {
+        let name = '';
+        switch (code) {
+            case "CONV": name="/agreement"; break;
+            case "MATR": name="/enrollment"; break;
+            case "FINS": name="/inscription"; break;
+            case "ESUP": name="/supervisor-selection"; break;
+            case "IFIN": name="/final-report"; break;
+            default: name="/deliverables"; break;
+        }
+        return `${name}/idStudent=${user.idPersona}&idProcess=${user.fidProceso}&phase=${code}`
     }
-
-]
-
-const offsets =[-380,-160,-70,-30,0,20,32]
+    const getColorClassItem = position => {
+        const currentPhase = user.estadoProceso;
+        if(position < currentPhase) return 'completed';
+        else if(position === currentPhase) return 'here';
+        else return 'hiddenIcon';
+    }
     
-
-
-function StudentNavbar (props){
-    
-    const transformText = "rotate(90deg) scaleY(.4) scaleX(" + (0.25 + 0.2*(dataNavbar.length-2)) + ") translateX(" + offsets[dataNavbar.length-2] + "px)" 
-    const {user} = useAuth()
-    const linkProgreso = "/student-registration/" + user.idPersona
-    // if(!user) return ""
-    const [progreso, setProgreso] = useState(user.estadoProceso)
+    // const transformText = "rotate(90deg) scaleY(.4) scaleX(" + (0.25 + 0.2*(navbar.length-2)) + ") translateX(" + offsets[navbar.length-2] + "px)"
+    // const transformText = "rotate(90deg) scaleY(0.3) translateY(172px)";
+   
     return(
-        
     <div className="studentNavBar">
-        {<ProgressBar className= "studentNavBar__progressbar" 
-            now={(100*progreso/(dataNavbar.length-1))} 
+        <ProgressBar className= "studentNavBar__progressbar" 
+            now={(100*(user.estadoProceso-1)/(navbar.length-1))} 
             variant="success"
-            style={{transform: transformText}}
-        />}
+            // style={{transform: transformText}}
+        />
         <nav className='studentNavBar__Nav'>
             <div>
-                <div className='studentNavBar__titulo'>
+                <div className='studentNavBar__Nav-titulo'>
                     <span>Tu progreso</span>
-                    <Button className='studentNavBar__progress'
-                        onClick={() => document.getElementById("sidebarList").addClass("displayNone")} >
+                    <Button className='studentNavBar__Nav-progress'
+                        // onClick={() => document.getElementById("sidebarList").addClass("displayNone")} 
+                        >
                         <i className="bi bi-chevron-down"/>
                     </Button>
                 </div>         
             </div>
             
-            <ul className="sidebarList" id='sidebarList'>
-            {dataNavbar.map((val,key)=>{
+            <ul className="studentNavBar__sideBarList">
+            {navbar.map(phase => {
                 return (
-                    <NavLink key = {key}
-                        to = {(val.link === "/student-registration")? linkProgreso : val.link}
-                        className = {`dataRow ${(progreso>key)? "active": ((window.location.pathname=== val.link) )? "current": ((window.location.pathname=== linkProgreso) )? "current" : '' }`}
+                    <NavLink key = {phase.order}
+                        to = {phase.link}
+                        className = {e => 
+                            `studentNavBar__sideBarList-dataRow ${getColorClassItem(phase.order)} ${e.isActive? "selected" : ""}`
+                          }
                         >
-                        <span className='icono'>
-                            <i className="bi bi-check"></i>
-                        </span>
-                
-                        <span className='texto'>
-                            {val.title}
-                        </span>
+                        <span className='studentNavBar__sideBarList-dataRow-icono'><i className="bi bi-check"/></span>
+                        <span className='studentNavBar__sideBarList-dataRow-texto'>{phase.title}</span>
                     </NavLink>
                 )
             })}
             </ul>
-            <Button className="btn btn-secondary" style={{width:"80%"}} >Renuncia</Button>
+            <Button variant='secondary' style={{width:"80%"}} >Renuncia</Button>
         </nav>
     </div>
 

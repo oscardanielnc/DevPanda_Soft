@@ -15,9 +15,15 @@ export function getstudentInscriptionForm(idAlumno) {
             return response.json()
         })
         .then(infoFicha => {
+            if(infoFicha.success) {
+                return {
+                    infoFicha,
+                    success: true
+                }
+            }
             return {
-                infoFicha,
-                success: true
+                errMsg: infoFicha.message,
+                success: false
             }
         })
         .catch(errMsg => {
@@ -44,7 +50,7 @@ export function getstudentInscriptionForm(idAlumno) {
          .then(result => {
              return {
                  msg: result.message,
-                 success: true
+                 success: result.success
              }
          })
          .catch(err => {
@@ -72,7 +78,7 @@ export function getstudentInscriptionForm(idAlumno) {
         .then(result => {
             return {
                 msg: result.message,
-                success: true
+                success: result.success
             }
         })
         .catch(err => {
@@ -98,9 +104,89 @@ export function getListStudentsInscriptionForm(idEspecialidad){
             return response.json()
         })
         .then(data => {
+            if(data.success) {
+                return {
+                    data: data.result,
+                    success: true
+                }
+            }
             return {
-                data,
-                success: true
+                errMsg: data.message,
+                success: false
+            }
+        })
+        .catch(errMsg => {
+            return {
+                errMsg,
+                success: false
+            }
+        })
+}
+
+
+export function getListOfCountry(){
+    const url = `${BASE_PATH}/${API_VERSION}/countryList`;
+    const params = {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            //Authorization: PANDA_KEY
+        }
+    }
+    console.log("En la funcion getListOfCountry");
+    return fetch(url, params)
+        .then(response => {
+            console.log("El response es: ",response);
+            return response.json()
+        })
+        .then(data => {
+            if(data.success) {
+                console.log("En el success de la funcion");
+                return {
+                    data: data.result,
+                    success: true
+                }
+            }
+            console.log("En el failed de la funcion");
+            return {
+                errMsg: data.message,
+                success: false
+            }
+        })
+        .catch(errMsg => {
+            console.log("En el catch la funcion");
+            return {
+                errMsg,
+                success: false
+            }
+        })
+}
+
+
+export function getLineBusinessList(){
+    const url = `${BASE_PATH}/${API_VERSION}/lineBusinessList`;
+    const params = {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            //Authorization: PANDA_KEY
+        }
+    }
+
+    return fetch(url, params)
+        .then(response => {
+            return response.json()
+        })
+        .then(data => {
+            if(data.success) {
+                return {
+                    data: data.result,
+                    success: true
+                }
+            }
+            return {
+                errMsg: data.message,
+                success: false
             }
         })
         .catch(errMsg => {

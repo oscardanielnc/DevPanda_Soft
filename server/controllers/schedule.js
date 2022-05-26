@@ -1,44 +1,43 @@
 const mysql = require('mysql');
 const {MYSQL_CREDENTIALS} = require("../config");
+const { sqlAsync } = require('../utils/async');
 
 async function changeHoursSchedule(req, res){
     //cambia de estado un horario seleccionado
     const connection = mysql.createConnection(MYSQL_CREDENTIALS);
-    const {arrHours, idPersona, isStudent} = req.body;
-    const idAlumno = isStudent? idPersona: null;
+    const arrHours = req.body;
 
-    sqlAsync = (sql) =>{
-        return new Promise((resolve, reject)=>{
-            connection.query(sql, async (err, result) => {
-                if (err) {
-                    return reject(err);
-                }else{
-                    return resolve(result)
-                }
-            })
-        })
-    }
+    // sqlAsync = (sql) =>{
+    //     return new Promise((resolve, reject)=>{
+    //         connection.query(sql, async (err, result) => {
+    //             if (err) {
+    //                 return reject(err);
+    //             }else{
+    //                 return resolve(result)
+    //             }
+    //         })
+    //     })
+    // }
     connection.connect(err => {
         if (err) throw err;
     });
 
     for(const i in arrHours) {
-        // console.log(arrHours[i])
         const element = arrHours[i]
         try {
             const sqlQuery = `UPDATE HorarioDisponibilidad 
-                SET estado = ${element.state}, idAlumno=${idAlumno}
+                SET estado = ${element.state}, idAlumno=${element.idAlumno}
                 WHERE idHorario = ${element.id}`;
-            const result = await sqlAsync(sqlQuery);
-            console.log(i, result)
+            await sqlAsync(sqlQuery, connection);
         } catch (err) {
-            console.log(err)
             res.status(505).send({
+                success: false,
                 message: "Error inesperado del servidor: " + err.message
             })
         }
     };
     res.status(200).send({
+        success: true,
         message: "Registro de horas correcta!"
     })
     connection.end();
@@ -59,11 +58,13 @@ function getSupervisorSchedule(req, res) {
     connection.query(sqlQuery, (err, result) => {
         if (err) {
             res.status(505).send({
+                success: false,
                 message: "Error inesperado en el servidor"
             })
         }
         else if(result.length === 0) {
             res.status(404).send({
+                success: false,
                 message: "No se han encontrado horarios para este Supervisor"
             })
         } else {
@@ -91,6 +92,7 @@ function getSupervisorSchedule(req, res) {
                 for(let j=0; j<14; j++) {
                     const dat = {
                         state: dataOrdered[i*14 + j].estado,
+                        idAlumno: dataOrdered[i*14 + j].idAlumno,
                         id: dataOrdered[i*14 + j].idHorario
                     }
                     newDay.hours.push(dat)
@@ -98,13 +100,16 @@ function getSupervisorSchedule(req, res) {
                 data.push(newDay)
             }
             
-            res.status(200).send(data)
+            res.status(200).send({
+                success: true,
+                data
+            })
         }
     });
 
     connection.end();
 }
-function getSupervisorsBySpecialty(req, res) {
+function getSupervisorsBySpecialty(req, res) { 
     const connection = mysql.createConnection(MYSQL_CREDENTIALS);
 
     const {idSpecialty} = req.params;
@@ -126,11 +131,13 @@ function getSupervisorsBySpecialty(req, res) {
     connection.query(sqlQuery, (err, result) => {
         if (err) {
             res.status(505).send({
+                success: false,
                 message: "Error inesperado en el servidor"
             })
         }
         else if(result.length === 0) {
             res.status(404).send({
+                success: false,
                 message: "No se han encontrado supervisores para esta especialidad"
             })
         } else {
@@ -144,7 +151,10 @@ function getSupervisorsBySpecialty(req, res) {
                 }
             });
             
-            res.status(200).send(data)
+            res.status(200).send({
+                success: true,
+                data
+            })
         }
     });
 }

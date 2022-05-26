@@ -15,9 +15,15 @@ export function specialtySelectAllApi() {
             return response.json()
         })
         .then(specialties => {
+            if(specialties.success) {
+                return {
+                    specialties: specialties.result,
+                    success: true
+                }
+            }
             return {
                 specialties,
-                success: true
+                errMsg: specialties.message
             }
         })
         .catch(errMsg => {
@@ -45,7 +51,7 @@ export function specialtyInsertApi(specialty) {
         .then(result => {
             return {
                 msg: result.message,
-                success: true
+                success: result.success
             }
         })
         .catch(err => {

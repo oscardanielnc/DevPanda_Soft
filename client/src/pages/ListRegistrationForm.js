@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { specialtySelectAllApi } from "../api/specialty";
 import TableRegistrationForm from "../components/Tables/TableRegistrationForm";
 import LayoutBasic from "../layouts/LayoutCoordFACI";
