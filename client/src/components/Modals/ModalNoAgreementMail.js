@@ -1,11 +1,11 @@
 import React from "react";
 import {Modal, Button} from 'react-bootstrap';
 import './ModalNoAgreementMail.scss';
+import ModalBasic from "./ModalBasic";
 export default function ModalNoAgreementMail (props) {
     const {show, setShow} = props;
     return (
-        <Modal
-
+        <Modal className="modalBasic"
             show={show}
             onHide={()=>setShow(false)}
             backdrop="static"
@@ -17,11 +17,11 @@ export default function ModalNoAgreementMail (props) {
             <Modal.Body>
 
                 <div className="row">
-                <div className="col-sm-4 subtitles">
+                <div className="col-sm-4 ">
                     <i className = "bi bi-envelope-fill correo"></i>
                 </div>
-                <div className="col-sm-8 subtitles">
-                    <p style={{textAlign: "left",marginTop:"5px"}}>
+                <div className="col-sm-8">
+                    <p style={{textAlign: "left",marginTop:"30px"}}>
                         Su solicitud ha sido enviada con éxito. En máximo 3 días se le notificará por correo si es que cuenta con permiso para comenzar el proceso de convalidación de PSP
                     </p>
                 </div>
