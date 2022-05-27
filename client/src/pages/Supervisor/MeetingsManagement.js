@@ -40,7 +40,7 @@ export default function MeetingsManegement() {
         const newSchude = schedule.map((day, index) => {
             const newHours = day.hours.map((h, i) => {
                     if(index===indexDay && i===indexHour) {
-                        if (h.state===1 || h.state===2  && isEdditing){
+                        if ((h.state===1 || h.state===2 ) && isEdditing){
                             const newH = {
                                 state: h.state===1 ? 2 : 1,
                                 idAlumno: hour.idAlumno,
