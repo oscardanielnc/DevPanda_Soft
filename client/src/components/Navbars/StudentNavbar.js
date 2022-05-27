@@ -50,8 +50,7 @@ function StudentNavbar () {
         else return 'hiddenIcon';
     }
     
-    // const transformText = "rotate(90deg) scaleY(.4) scaleX(" + (0.25 + 0.2*(navbar.length-2)) + ") translateX(" + offsets[navbar.length-2] + "px)"
-    const transformText = `rotate(90deg) scale(${navbar.length/6},0.3) translate(${(navbar.length-6)*20}px, 307px)`;
+    const transformText = `rotate(90deg) scale(${navbar.length/6},0.3) translate(${(navbar.length-6)*30}px, 410px)`;
    
     return(
     <div className="studentNavBar">

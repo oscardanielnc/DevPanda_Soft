@@ -32,6 +32,32 @@ export function getListStudentsRequests(idEspecialidad){
         }
     })
 }
+export function verifyRequest(fidAlumno){
+    const url = `${BASE_PATH}/${API_VERSION}/verifyRequest/${fidAlumno}`;
+    const params = {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            //Authorization: PANDA_KEY
+        }
+    }
+    return fetch(url, params)
+    .then(response => {
+        return response.json()
+    })
+    .then(data => {
+        return {
+            data,
+            success: data.success
+        }
+    })
+    .catch(errMsg => {
+        return {
+            errMsg,
+            success: false
+        }
+    })
+}
 
 export function registerRequestApi (data) {
     const url = `${BASE_PATH}/${API_VERSION}/request`

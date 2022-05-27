@@ -38,9 +38,9 @@
 
     &__progressbar {
         position: absolute;
-        transform: rotate(90deg) scale(1, 0.3) translate(0px, 307px);
-        top: 289px;
-        width: 260px;
+        transform: rotate(90deg) scale(1, 0.3) translate(0px, 410px);
+        top: 320px;
+        width: 325px;
     }
 
     &__sideBarList {
@@ -64,6 +64,7 @@
 
         &-dataRow {
             text-decoration: auto;
+            margin-bottom: 0.75em;
             padding: 0.5em;
             display: flex;
             align-items: center;

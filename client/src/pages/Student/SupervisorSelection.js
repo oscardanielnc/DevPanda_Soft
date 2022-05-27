@@ -8,6 +8,7 @@ import {changeOneHourSchedule, getSupervisorScheduleApi, searchAssessorsBySpecia
 import useAuth from "../../hooks/useAuth";
 import {ToastContainer, toast} from "react-toastify";
 import { isNotEmptyObj } from "../../utils/objects";
+import PandaLoaderPage from "../General/PandaLoaderPage";
 
 // const supervisoresDummy = [
 //     {
@@ -45,12 +46,15 @@ export default function SupervisorSelection () {
     const [supervisores, setSupervisores] = useState([]);
     const [schedule, setSchedule] = useState([]);
     const [hourSelecteds, setHourSelecteds] = useState([]);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
+        setLoading(true);
         const fetchRequest = async () => {
             const result = await searchAssessorsBySpecialty(user.fidEspecialidad);
             if(result.success) {
                 setSupervisores(result.supervisors);
+                setLoading(false);
             }
         }
         fetchRequest()
@@ -155,6 +159,7 @@ export default function SupervisorSelection () {
         }
     }
 
+    if(loading) return <PandaLoaderPage type="e"/>
     return(
         <LayoutBasic>
             <ToastContainer />

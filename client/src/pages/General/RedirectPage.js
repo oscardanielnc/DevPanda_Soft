@@ -7,7 +7,7 @@ export default function AddSpecialty () {
     } else {
         if(user.tipoPersona==="e")
             window.location.href = `/welcome-process/idStudent=${user.idPersona}&idProcess=${user.fidProceso}&phase=WPRO`;
-        else window.location.href = `/students-management`
+        else window.location.href = `/students-management/idProcess=${user.fidProceso}`
     }
     return null
 }
