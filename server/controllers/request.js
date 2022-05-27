@@ -40,6 +40,45 @@ function requestList(req, res){
 //Traer una solicitud en especifico 
 //TO DO:
 
+//Verificador de solicitud de un alumno
+function verifyRequest(req, res){
+    const connection = mysql.createConnection(MYSQL_CREDENTIALS);
+
+    const fidAlumno= req.params.fidAlumno;
+
+    let sqlQuery = `SELECT idSolicitud 
+                    FROM SolicitudesSinConvenio 
+                    WHERE fidAlumno = ${fidAlumno}
+                    AND estado = "Sin revisar"`
+    
+    connection.connect(err => {
+        if (err) throw err;
+    });
+    
+    connection.query(sqlQuery, (err, result) => {
+        if (err) {
+            res.status(505).send({
+                success: false,
+                message: "Error inesperado en el servidor" + err.message
+            })
+        }else{
+            
+            if(result[0]){
+                res.status(200).send({
+                    success: true,
+                    conSolicitud: true
+                })
+            }else{
+                res.status(200).send({
+                    success: true,
+                    conSolicitud: false
+                })
+            }        
+        }
+    });
+
+    connection.end();
+}
 
 //Insertar una solicitud
 async function insertRequest(req, res){
@@ -107,5 +146,6 @@ async function insertRequest(req, res){
 
 module.exports = {
     insertRequest,
-    requestList
+    requestList,
+    verifyRequest
 }
