@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Button } from 'react-bootstrap';
 import {ToastContainer, toast} from "react-toastify";
 import { changeOneHourSchedule, getSupervisorScheduleApi } from '../../api/schedule';
+import ModalStudentManagement from '../../components/Modals/ModalStudentManagement';
+import ModalStudentMeeting from '../../components/Modals/ModalStudentMeeting';
 import Timetable from '../../components/Timetable/Timetable';
 import useAuth from '../../hooks/useAuth';
 import LayoutAdministrative from '../../layouts/LayoutAdministrative';
@@ -14,6 +16,8 @@ export default function MeetingsManegement() {
     const [schedule, setSchedule] = useState([]);
     const [hourSelecteds, setHourSelecteds] = useState([]);
     const [isEdditing, setIsEdditing] = useState(false);
+    const [show, setShow] = useState(false);
+    const [hourModalSelected, setHourModalSelected] = useState(null);
 
 
     useEffect(() => {
@@ -35,8 +39,8 @@ export default function MeetingsManegement() {
         let newHourClicked = {}
         const newSchude = schedule.map((day, index) => {
             const newHours = day.hours.map((h, i) => {
-                    if(index===indexDay && i===indexHour && isEdditing) {
-                        if (h.state===1 || h.state===2){
+                    if(index===indexDay && i===indexHour) {
+                        if (h.state===1 || h.state===2  && isEdditing){
                             const newH = {
                                 state: h.state===1 ? 2 : 1,
                                 idAlumno: hour.idAlumno,
@@ -44,6 +48,9 @@ export default function MeetingsManegement() {
                             }
                             newHourClicked = newH
                             return newH
+                        }else if(h.state===4){
+                            setHourModalSelected(hour.idAlumno)
+                            setShow(true)
                         }
                     }
                     return h
@@ -111,6 +118,7 @@ export default function MeetingsManegement() {
     return(
         <LayoutAdministrative>
         <ToastContainer/>
+        <ModalStudentMeeting show={show} setShow={setShow} hourModalSelected={hourModalSelected}/>
             <div className="container">
                 <div class="row rows">
                     <h1>Disponibilidad y Reuniones</h1>
