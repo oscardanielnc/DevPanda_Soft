@@ -50,6 +50,11 @@ export default function SupervisorSelection () {
     const [isEdditing, setIsEdditing] = useState(false);
 
     useEffect(() => {
+        viewDidLoad()
+     }, [setSupervisores])
+
+
+    const viewDidLoad = () => {
         setLoading(true);
         const fetchRequest = async () => {
             const result = await searchAssessorsBySpecialty(user.fidEspecialidad);
@@ -59,7 +64,7 @@ export default function SupervisorSelection () {
             }
         }
         fetchRequest()
-     }, [setSupervisores])
+    }
 
     const getSchedule = (idSup) => {
         setIsEdditing(false)
@@ -163,6 +168,7 @@ export default function SupervisorSelection () {
                         draggable: true,
                         progress: undefined,
                     });
+                    viewDidLoad()
                 })
             } else {
                 toast.warning("No tiene ningun horario seleccionado!", {
