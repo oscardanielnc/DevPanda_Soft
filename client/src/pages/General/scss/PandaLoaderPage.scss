@@ -1,0 +1,11 @@
+.pandaLoaderPage {
+    display: grid;
+
+    &__img {
+        display: flex;
+        justify-content: center;
+    }
+    &__placeholder {
+        margin-top: 2em;
+    }
+}

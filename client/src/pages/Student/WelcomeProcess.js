@@ -22,18 +22,12 @@ export default function WelcomeProcess () {
                     <p>
                     Bienvenido al proceso de convalidación de prácticas pre profesionales de la Pontificia Universidad Católica del Perú. Este es el primer paso para comenzar con la convalidación de tus prácticas y por consecuente la aprobación del curso de PSP de tu especialidad.
                     </p>
-                </div>
-                <div  className="row rows" style={{textAlign: "left"}}>
                     <p>
                         El proceso consta de varias fases las cuales se deberán ir completando secuencialmente para culiminar la convalidación. Cabe resaltar que las fases pueden tener algunos cambios dependiendo de las especialidad a la que pertenezcas.
                     </p> 
-                </div>
-                <div  className="row rows" style={{textAlign: "left"}}>
                     <p>
                         Todos los avances que se realizen de una fase a otra se te notificarán por correo electrónico.
                     </p> 
-                </div>
-                <div  className="row rows" style={{textAlign: "left"}}>
                     <p>
                         Si aún no has revisado las fases del proceso de convalidación de PSP, puedes acceder a información detallada en la página principal. Si ya las has revisado, continua con la lectura de la página.
                     </p> 
@@ -52,7 +46,7 @@ export default function WelcomeProcess () {
                     <Button className="btn btn-primary" style={{width:"20%",marginRight:"50px"}} onClick={()=>setShow(true)}>No cuento con los documentos</Button>
                     <ModalNoAgreement show={show} setShow={setShow} user={user}showSm={showSm}setShowSm={setShowSm}></ModalNoAgreement>
                     <ModalNoAgreementMail show={showSm} setShow={setShowSm}></ModalNoAgreementMail>
-                    <Button className="btn btn-primary" style={{width:"20%"}}>Si cuento con los documentos</Button>
+                    <Button className="btn btn-primary" style={{width:"20%"}}>Sí cuento con los documentos</Button>
                 </div>
             </div>
         </LayoutBasic>

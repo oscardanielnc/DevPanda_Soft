@@ -336,6 +336,7 @@ async function selectDocumentsInfoByProcessOnlyStudent(req, res){
     const connection = mysql.createConnection(MYSQL_CREDENTIALS);
     //Se pedirá el idAlumno e idAsesor para poder obtener la info documentos asociados.
     const fidAlumno = req.params.fidAlumno;
+    let idAlumnoProceso;
     const sqlQuery = `  SELECT
                             estadoFaci, estadoEspecialidad, observaciones
                         FROM
@@ -366,7 +367,7 @@ async function selectDocumentsInfoByProcessOnlyStudent(req, res){
     });
 
     try{
-        let resultado = await sqlAsync(connection, sqlQuery)
+        let resultado = await sqlAsync(sqlQuery, connection)
         if(!resultado.lenght){
             //Insert en tabla
                 //obtener fidAlumnoProceso
@@ -387,11 +388,11 @@ async function selectDocumentsInfoByProcessOnlyStudent(req, res){
                                                                             Persona
                                                                         WHERE
                                                                             idPersona = ${fidAlumno})
-                                                    AND activo = 1)
-                            AND estado = 'C'`
-            let idAlumnoProceso;
+                                                AND activo = 1)
+
+                            AND estado = 'C'`;
             try {
-                const res = await sqlAsync(connection, sqlQuery)
+                const res = await sqlAsync(sqlQuery, connection)
                 if(!resultElement.length){
                     res.status(404).send({ 
                         success: false,
@@ -412,7 +413,6 @@ async function selectDocumentsInfoByProcessOnlyStudent(req, res){
             sqlQuery = `INSERT INTO EntregaConvenioYPlan (fidConvenioYPlan, fidAlumnoProceso, estadoFaci, estadoEspecialidad, observaciones)
                         values(1,${idAlumnoProceso},'P','P',"") `
             try {
-                
                 let resultElement  = await sqlAsync(connection,sqlQuery)
                 if(!resultElement){
                     res.status(404).send({ 
@@ -487,6 +487,7 @@ function selectAgreementByStudent(req, res){
 
     connection.end();
 }
+
 module.exports = {
     select,
     selectInfoByStudent,

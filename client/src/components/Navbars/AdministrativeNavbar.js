@@ -118,3 +118,24 @@ export default function AdministrativeNavbar() {
     )
     
 }
+
+// // te devolvere
+// const objGet = {
+//     firstname: "",
+//     lastname: "",
+//     email: "",
+//     code: "",
+//     zoom: {
+//         link: "",
+//         date: "dd/MM/aaaa",
+//         hour: "23:59"
+//     }
+// }
+// // me envias
+// const obtPut = {
+//     idHorario: 1,
+//     link: ""
+// }
+
+
+// // modificar el correo de los supervisores

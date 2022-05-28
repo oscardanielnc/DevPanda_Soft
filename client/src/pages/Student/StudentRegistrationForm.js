@@ -20,6 +20,8 @@ import ShowFiles from "../../components/FileManagement/ShowFiles";
 
 import './scss/StudentRegistrationForm.scss';
 import { useParams } from "react-router-dom";
+import PandaLoaderPage from "../General/PandaLoaderPage";
+import { isNotEmptyObj } from "../../utils/objects";
 
 //consultar a Oscar
 const documents={
@@ -144,6 +146,8 @@ export default function StudentRegistrationForm () {
     const [fileList, setFileList] = useState([])
     const [docs, setDocs] = useState([]);
     const [studentDocs, setStudentDocs] = useState([]);
+    const [loading, setLoading] = useState(false);
+
     let typeUser=user.tipoPersona;
     if(typeUser==="p"){
         typeUser=user.tipoPersonal;
@@ -158,6 +162,7 @@ export default function StudentRegistrationForm () {
     
     useEffect(()=> {
         const fetchData = async () => {
+            setLoading(true);
             const result = await getstudentInscriptionForm(idAlumno);
             const resultado=await getListOfCountry();
             const resultado2=await getLineBusinessList();
@@ -204,6 +209,7 @@ export default function StudentRegistrationForm () {
                 const lineData = resultado2.data;
                 setLineBusiness(lineData);
             }
+            setLoading(false);
         }
         fetchData()
     }, [setData])
@@ -229,7 +235,7 @@ export default function StudentRegistrationForm () {
         fetchData()
     },[setStudentDocs])
 
-    if(!data.generalData) return null
+    // if(!data.generalData) return null
 
     const deliver = async () => {
         if(fileList.length <= maxFiles && fileList.length!=0) {
@@ -376,6 +382,7 @@ export default function StudentRegistrationForm () {
     const goBack = e => {
         window.history.back();
     }
+    if(loading || !isNotEmptyObj(data)) return <PandaLoaderPage type={typeUser}/>
 
     return (
         typeUser==="e"? <LayoutBasic>

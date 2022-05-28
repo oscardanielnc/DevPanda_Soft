@@ -391,10 +391,58 @@ async function updatefieldsDeliverables(req,res){
     connection.end();
 }
 
+function getDeliverableByStudentSpecialty(req,res){
+    const connection = mysql.createConnection(MYSQL_CREDENTIALS);
+
+    const idAlumno = req.params.idAlumno;
+    const idFacultad = req.params.idFacultad;
+    
+    const sqlQuery =`   select
+                            RE.idRespuestaEntregable, E.idEntregable, E.nombre, RE.aprobado, RE.estadoDocumento
+                        from
+                            RespuestaEntregable as RE inner join
+                            Entregable as E on RE.fidEntregable = E.idEntregable inner join
+                            AlumnoProceso as AP on AP.idAlumnoProceso = RE.fidAlumnoProceso inner join
+                            Persona as P on AP.fidAlumno = P.idPersona
+                        where
+                            P.idPersona = ${idAlumno} and
+                            P.fidEspecialidad = ${idFacultad}`;
+
+
+    connection.connect(err => {
+        if (err) throw err;
+    });
+    
+    connection.query(sqlQuery, (err, result) => {
+        if(err){
+            res.status(505).send({
+                success: false,
+                message: "Error inesperado del servidor: " + err.message
+            })
+        }else{
+            const data =  result.map(e => {
+                return {
+                    idDeliverableResponse: e.idRespuestaEntregable,
+                    code: "ENT" + e.idEntregable,
+                    idDeliverable:e.idEntregable,
+                    nameDeiverable: e.nombre,
+                    estado: e.estadoDocumento == 'S'? 'S' : e.aprobado
+                }
+            });
+            res.status(200).send({
+                success: true,
+                data
+            })
+        }   
+    });
+    connection.end();
+}
+
 module.exports = {
     deliverableStudent,
     updateDeliverableStudent,
     deliverablesProcess,
     fieldsDeliverables,
-    updatefieldsDeliverables
+    updatefieldsDeliverables,
+    getDeliverableByStudentSpecialty
 }
