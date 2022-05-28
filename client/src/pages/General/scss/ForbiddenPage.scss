@@ -1,0 +1,25 @@
+@import "../../../App.scss";
+
+.forbiddenPage {
+    background-color: #f3f3f3;
+    display: grid;
+    justify-items: center;
+    min-height: 100vh;
+
+    &__title {
+        margin-top: 2em;
+        display: grid;
+        align-content: center;
+        justify-items: center;
+        & h1 {
+            font-size: 6em;
+        }
+        & h3 {
+            color: gray;
+        }
+    }
+    &__img {
+        width: 25%;
+        margin-left: 5%;
+    }
+}

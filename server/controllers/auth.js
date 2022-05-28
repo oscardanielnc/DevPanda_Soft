@@ -120,7 +120,6 @@ async function signUp(req, res) {
         const resultPersona  = await sqlAsync(sqlQueryPersonas, connection);
 
         if(resultPersona.length === 0) {
-            // TODO: regsitro en la BD
             const sqlQueryPersona = `INSERT INTO Persona(fidEspecialidad, nombres, apellidos, correo, contrasena, tipoPersona, activo) 
                                             values(${specialty},'${firstName}','${lastName}','${email}',null,'e',1);`
             const resultPersona  = await sqlAsync(sqlQueryPersona, connection);

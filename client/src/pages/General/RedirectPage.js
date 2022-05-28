@@ -7,7 +7,16 @@ export default function AddSpecialty () {
     } else {
         if(user.tipoPersona==="e")
             window.location.href = `/welcome-process/idStudent=${user.idPersona}&idProcess=${user.fidProceso}&phase=WPRO`;
-        else window.location.href = `/students-management/idProcess=${user.fidProceso}`
+        else {
+            switch (user.tipoPersonal) {
+                case 'S': 
+                    window.location.href = `/meetings-management/permissions=SC&idSupervisor=${user.idPersona}&idProcess=${user.fidProceso}`; break;
+                case 'E': window.location.href = `/students-management/permissions=E&idProcess=${user.fidProceso}`; break;
+                case 'F': window.location.href = `/specialty-management/permissions=AF`; break;
+                case 'A': window.location.href = `/specialty-management/permissions=AF`; break;
+                default: window.location.href = `/list-supervisors/permissions=C`; break;
+            }
+        }
     }
     return null
 }
