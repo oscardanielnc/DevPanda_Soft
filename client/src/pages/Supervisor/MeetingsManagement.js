@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Button } from 'react-bootstrap';
+import { useParams } from 'react-router-dom';
 import {ToastContainer, toast} from "react-toastify";
 import { changeOneHourSchedule, getSupervisorScheduleApi } from '../../api/schedule';
 import ModalStudentManagement from '../../components/Modals/ModalStudentManagement';
@@ -18,22 +19,21 @@ export default function MeetingsManegement() {
     const [isEdditing, setIsEdditing] = useState(false);
     const [show, setShow] = useState(false);
     const [hourModalSelected, setHourModalSelected] = useState(null);
-
-
-    useEffect(() => {
-        callSchedule()
-     }, [setSchedule])
+    const idSupervisor = useParams().idSupervisor
 
     const callSchedule = () => {
         setIsEdditing(false)
         setHourSelecteds([])
-        getSupervisorScheduleApi(user.idPersona).then(response => {
+        getSupervisorScheduleApi(idSupervisor).then(response => {
             if(response.success) {
                 setSchedule(response.schedule)
             }
         })
     }
     
+    useEffect(() => {
+        callSchedule()
+     }, [setSchedule])
 
     const handleClickCell = (hour, indexDay, indexHour) => {
         let newHourClicked = {}
@@ -63,10 +63,10 @@ export default function MeetingsManegement() {
         })
         // Evita repetidos 
         const dummy = hourSelecteds.filter(function(value, index, arr){ 
-            if (newHourClicked == null) return true;
-            if (newHourClicked == []) return true;
-            if (newHourClicked.id == null) return true;
-            return value.id != newHourClicked.id;
+            if (newHourClicked === null) return true;
+            if (newHourClicked === []) return true;
+            if (newHourClicked.id === null) return true;
+            return value.id !== newHourClicked.id;
         });
         setHourSelecteds([
             ...dummy,
