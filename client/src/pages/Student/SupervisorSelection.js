@@ -47,8 +47,14 @@ export default function SupervisorSelection () {
     const [schedule, setSchedule] = useState([]);
     const [hourSelecteds, setHourSelecteds] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [isEdditing, setIsEdditing] = useState(false);
 
     useEffect(() => {
+        viewDidLoad()
+     }, [setSupervisores])
+
+
+    const viewDidLoad = () => {
         setLoading(true);
         const fetchRequest = async () => {
             const result = await searchAssessorsBySpecialty(user.fidEspecialidad);
@@ -58,18 +64,21 @@ export default function SupervisorSelection () {
             }
         }
         fetchRequest()
-     }, [setSupervisores])
+    }
 
     const getSchedule = (idSup) => {
+        setIsEdditing(false)
         getSupervisorScheduleApi(idSup).then(response => {
             if(response.success) {
-                setSchedule(response.schedule)
+                setScheduleBy(response.schedule)
             }
         })
     }
     console.log(hourSelecteds)
     const handleClickCell = (hour, indexDay, indexHour) => {
         let newHourClicked = {}
+        if (!isEdditing) return;
+
         const newSchude = schedule.map((day, index) => {
             const newHours = day.hours.map((h, i) => {
                     if(index===indexDay && i===indexHour && hour.state===2) {
@@ -99,7 +108,32 @@ export default function SupervisorSelection () {
             newHourClicked
         ])
         
-        setSchedule(newSchude)
+        setScheduleBy(newSchude)
+    }
+
+    const setScheduleBy = (schedule) => {
+        var isEddited = false
+        const dummy = schedule.map((day, index) => {
+            const newHours = day.hours.map((h, i) => {
+                    if(h.state===4 && h.idAlumno === user.idPersona) {
+                        const newH = {
+                            state: 3,
+                            idAlumno: h.idAlumno,
+                            id: h.id
+                        }
+                        isEddited = true
+                        return newH
+                    }
+                    return h
+                })
+            return {
+                day: day.day,
+                date: day.date,
+                hours: newHours
+            }
+        })
+        setIsEdditing(!isEddited)
+        setSchedule(dummy)
     }
     // const isSomeHourSelected = () => {
     //     let isSelected = false
@@ -134,6 +168,7 @@ export default function SupervisorSelection () {
                         draggable: true,
                         progress: undefined,
                     });
+                    viewDidLoad()
                 })
             } else {
                 toast.warning("No tiene ningun horario seleccionado!", {
@@ -182,7 +217,9 @@ export default function SupervisorSelection () {
                         />
                 </div>
                 <div className="row rows boton">
-                    <Button className="btn btn-primary" style={{width:"40%"}} onClick={insertHorario}>Agendar</Button>
+                    {
+                        isEdditing && <Button className="btn btn-primary" style={{width:"40%"}} onClick={insertHorario}>Agendar</Button>
+                    }
                 </div>
             </div>     
         </LayoutBasic>        
