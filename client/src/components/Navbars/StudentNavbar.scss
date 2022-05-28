@@ -44,7 +44,6 @@
     }
 
     &__sideBarList {
-        height: 180%;
         padding: 0;
         margin: 0%;
 
@@ -91,6 +90,11 @@
             }
         }
 
+    }
+    &__renuncia {
+        width: 80%;
+        height: fit-content;
+        margin: auto;
     }
 }
 

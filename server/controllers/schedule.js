@@ -115,14 +115,14 @@ function getSupervisorsBySpecialty(req, res) {
     const {idSpecialty} = req.params;
 
     const sqlQuery = `SELECT
-	                    P.nombres, P.apellidos, P.idPersona, E.nombreEsp
+	                    P.nombres, P.apellidos, P.idPersona, P.correo
                     FROM
-	                     Persona AS P INNER JOIN PersonalAdministrativo as PA on P.idPersona = PA.idPersonal, Especialidad as E
+	                     Persona AS P INNER JOIN PersonalAdministrativo as PA ON P.idPersona = PA.idPersonal
                     WHERE
                         PA.tipoPersonal = 'S'
-                        AND P.fidEspecialidad = ${idSpecialty}
                         AND P.activo = 1
-                        AND E.idEspecialidad = ${idSpecialty};`;
+                        AND P.tipoPersona = 'p'
+                        AND P.fidEspecialidad = ${idSpecialty};`;
 
     connection.connect(err => {
         if (err) throw err;
@@ -143,11 +143,11 @@ function getSupervisorsBySpecialty(req, res) {
         } else {
             const data =  result.map(e => {
                 return {
-                    id:e.idPersona,
+                    id: e.idPersona,
                     name: e.nombres + " " + e.apellidos,
-                    idfacultad:e.nombreEsp,
+                    email: e.correo,
                     isSelected: true,
-                    isMySupervisor: false
+                    isMySupervisor: false,
                 }
             });
             

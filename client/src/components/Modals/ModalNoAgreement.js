@@ -115,7 +115,7 @@ export default function ModalNoAgreement (props) {
         <ModalBasic
             show={show}
             setShow={setShow}
-            handlePrimaryAction={prueba}
+            handlePrimaryAction={handleEnviar}
             title="Comenzar proceso sin Convenio ni Plan de Aprendizaje"
             primaryAction="Enviar Solicitud"
             secundaryAction="Cancelar"

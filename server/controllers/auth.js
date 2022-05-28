@@ -67,8 +67,8 @@ async function singIn(req, res) {
                         navbar: navbar
                     }
                     const accessToken = jwt.encode(user, PANDA_KEY);
-                    // res.status(200).send({accessToken});
-                    res.status(200).send({user});
+                    res.status(200).send({accessToken});
+                    // res.status(200).send({user});
 
                 } else {
                     res.status(404).send({

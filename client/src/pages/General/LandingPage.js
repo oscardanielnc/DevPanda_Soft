@@ -17,7 +17,7 @@ export default function LandingPage () {
             {
                 user? 
                 <Link to="/redirect"><Button variant="primary">Continuar proceso</Button></Link>: 
-                <Link to="/sign-up"><Button variant="primary">Empiezaz Ya!</Button></Link>
+                <Link to="/sign-up"><Button variant="primary">Empieza Ya!</Button></Link>
             }
             </div>
             

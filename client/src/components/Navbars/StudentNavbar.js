@@ -86,8 +86,8 @@ function StudentNavbar () {
                 )
             })}
             </ul>
-            <Button variant='secondary' style={{width:"80%"}} >Renuncia</Button>
         </nav>
+        <Button variant='secondary' className='studentNavBar__renuncia'>Renuncia</Button>
     </div>
 
     )

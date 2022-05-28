@@ -76,9 +76,11 @@ function HeaderLogged ({user}) {
 function HeaderNotLogged () {
     const responseGoogle = async (response) => {
         const result = await signInApi(response.profileObj.email);
+        console.log(result)
 
         if(result.success) {
             const {accessToken} = result;
+            console.log(accessToken)
             localStorage.setItem("ACCESS_TOKEN", accessToken);
             window.location.href = "/redirect";
         } else {

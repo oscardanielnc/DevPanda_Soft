@@ -2,6 +2,7 @@ import React from "react";
 import './SupervisorSelector.scss';
 
 export default function SupervisorSelector ({supervisores,setSupervisores, getSchedule}) {
+    if(supervisores.lenght === 0) return <h3>No existen supervisores en tu especialidad</h3>
     return (
         <div className="supervisors" >
             {
