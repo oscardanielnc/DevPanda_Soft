@@ -34,7 +34,7 @@ export default function AdministrativeNavbar() {
             link: `/list-deliverables/idSupervisor=${user.idPersona}&idProcess=${user.fidProceso}`
         }
     ]
-    const coorSpecialty = [
+    const coorSpecialty = [ 
         {
             title: "Gestión de alumnos",
             link: `/students-management/idProcess=${user.fidProceso}`

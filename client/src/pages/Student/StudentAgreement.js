@@ -54,14 +54,14 @@ export default function StudentAgreement () {
     },[setStudentDocs])
 
     useEffect(()=>{
-        selectDocumentsInfoByProcessOnlyStudent(user.idPersona).then(response => {
-            if(response.success) {
-                setData(response.files)
-                console.log("consola:",response)
+        // selectDocumentsInfoByProcessOnlyStudent(user.idPersona).then(response => {
+        //     if(response.success) {
+        //         setData(response.files)
+        //         console.log("consola:",response)
                 
-            }
-        }
-        )
+        //     }
+        // }
+        // )
     },[setData])
 
     console.log("ga",data[0].estadoEspecialidad);
@@ -159,7 +159,7 @@ export default function StudentAgreement () {
                 </div>
                 <div className="row rows" style={{textAlign: "left"}}>
                     <p>
-                    Aquí podras ingresar tu convenio y plan de aprendizaje, una vez esten firmados por tu empresa y por ti, para que la universidad lo revise y puedas obtener la aprobación de los mismos. Adicionalmente, debes de completar la información que se solicita en el apartado “Información sobre el convenio”. 
+                    Aquí podrá ingresar su Convenio y Plan de aprendizaje, una vez esten firmados por tu empresa y por ti, para que la universidad lo revise y puedas obtener la aprobación de los mismos. Adicionalmente, debes de completar la información que se solicita en el apartado “Información sobre el convenio”. 
                     </p>
                     <p>
                     A continuación se presenta el modelo para convenio y plan de aprendizaje:

@@ -252,7 +252,7 @@ export default function AgreementReview(){
                         Adicionalmente, debe de completar la información que se solicita en el apartado “Información sobre el Informe”.    
                         <br></br>
                         <br></br>
-                        A continuación se presentan la <b>Guía de Elaboración del Informe </b>, el <b>Modelo del Informe del Practicante</b> y la <b>Carta de Conformidad de la Empresa.</b>                           
+                        A continuación se presentan la <b>Guía de Elaboración del Informe</b>, el <b>Modelo del Informe del Practicante</b> y la <b>Carta de Conformidad de la Empresa.</b>                           
                         </p>
                     </div>
                     <ShowFiles docs={docs} /> 

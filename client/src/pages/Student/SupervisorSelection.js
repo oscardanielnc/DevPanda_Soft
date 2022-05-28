@@ -200,7 +200,7 @@ export default function SupervisorSelection () {
             <ToastContainer />
             <div className='container principal'>
                 <div className="row rows">
-                    <h1>Eleccion de Supervisor</h1>
+                    <h1>Elección de Supervisor</h1>
                 </div>
                 <div className="row" style={{marginLeft: "1.3em"}}>
                     <p style={{marginTop:"10px"}}>

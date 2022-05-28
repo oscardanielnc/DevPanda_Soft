@@ -122,7 +122,7 @@ export default function AboutDurationPSP ({data, setData, notgrabado}) {
     return (
         <div className="container chartAboutDurationPSP">
              <nav className="navbar navbar-fixed-top navbar-inverse bg-inverse "style={{ backgroundColor: "#E7E7E7"}}>
-                <h3 style={{"marginLeft":"15px"}}>Sobre la duración del PSP</h3>
+                <h3 style={{"marginLeft":"15px"}}>Sobre la duración de la PSP</h3>
              </nav>
             <div className="row rows">
                 <div className="col-sm-6 subtitles" >
