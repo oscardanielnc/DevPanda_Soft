@@ -5,19 +5,20 @@ import LayoutBasic from "../../layouts/LayoutBasic";
 import {Form, FormControl} from 'react-bootstrap';
 import TableDeliverables from "../../components/Tables/TableDeliverables";
 import './scss/DeliverablesStudent.scss';
+import { getDeliverableByStudentSpecialty } from "../../api/deliverables";
 
-const data=[
-    {
-        idDeliverable: "1",
-        nameDeliverable: "Certificado Taller",
-        estado: "Sin entregar"
-    },
-    {
-        idDeliverable: "2",
-        nameDeliverable: "Certificado Taller II",
-        estado: "Pendiente de aprobación"
-    }
-]
+// const data=[
+//     {
+//         idDeliverable: "1",
+//         nameDeliverable: "Certificado Taller",
+//         estado: "Sin entregar"
+//     },
+//     {
+//         idDeliverable: "2",
+//         nameDeliverable: "Certificado Taller II",
+//         estado: "Pendiente de aprobación"
+//     }
+// ]
 
 const states = [
     {
@@ -43,8 +44,19 @@ let textSelect = "-1"
 
 export default function DeliverablesStudent(){
     const {user} = useAuth();
+    const [entregables, setEntregables] = useState([]);
+    //const [filteredData, setFilteredData] = useState(data);
 
-    const [filteredData, setFilteredData] = useState(data);
+    useEffect(()=> {
+        //acá llamar a la función corresponidente
+        getDeliverableByStudentSpecialty(user.idPersona,user.fidEspecialidad).then(response => {
+            if(response.success===true) {
+                console.log("En el success el response es: ",response);
+                setEntregables(response.data.data);
+                //setFilteredData(response.data);
+            }
+        })
+    }, [setEntregables])
 
     return(
         <LayoutBasic>
@@ -73,7 +85,7 @@ export default function DeliverablesStudent(){
                     </Form.Select>
                 </div> */}
                 <div className="row rows">
-                    <TableDeliverables rows={filteredData}/>
+                    <TableDeliverables rows={entregables}/>
                 </div>
             </div>
             
