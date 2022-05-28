@@ -138,5 +138,6 @@ export default function AdministrativeNavbar() {
 // }
 
 
-// // modificar el correo de los supervisores
+// crear supervisores y coorEspecialides
+// excel
 // modificar fidAsesor cuando ya selecciona asies
