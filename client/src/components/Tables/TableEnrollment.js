@@ -1,6 +1,5 @@
 import React from "react";
 import { Button, Table } from 'react-bootstrap';
-import { Link } from "react-router-dom";
 
 import './TableRegistrationForm.scss';
 

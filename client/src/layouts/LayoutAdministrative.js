@@ -40,7 +40,6 @@ function isAllowed(personalType) {
 
     for(let i=0; i<permissions.length; i++) {
         const c = permissions.charAt(i);
-        console.log(c)
         if(personalType===c)
             return true
     }

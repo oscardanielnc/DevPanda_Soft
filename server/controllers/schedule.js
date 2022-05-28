@@ -171,7 +171,7 @@ function getSupervisorsBySpecialty(req, res) {
                     id: e.idPersona,
                     name: e.nombres + " " + e.apellidos,
                     email: e.correo,
-                    isSelected: true,
+                    isSelected: false,
                     isMySupervisor: false,
                 }
             });

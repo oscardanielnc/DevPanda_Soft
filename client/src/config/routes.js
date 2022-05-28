@@ -64,17 +64,17 @@ const routes = [
         component: StudentsManagement,
     },
     {
-        path: "/config-process/permissions=E&idSpecialty=:idSpecialty",
+        path: "/config-process/permissions=E",
         exact: true,
         component: ConfigProcess,
     },
     {
-        path: "/inscription-config/permissions=E&idSpecialty=:idSpecialty",
+        path: "/inscription-config/permissions=E",
         exact: true,
         component: ConfigInscription,
     },
     {
-        path: "/supervisors-management/permissions=E&idSpecialty=:idSpecialty",
+        path: "/supervisors-management/permissions=E",
         exact: true,
         component: SupervisorsManagement,
     },

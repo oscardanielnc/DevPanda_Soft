@@ -10,36 +10,6 @@ import {ToastContainer, toast} from "react-toastify";
 import { isNotEmptyObj } from "../../utils/objects";
 import PandaLoaderPage from "../General/PandaLoaderPage";
 
-// const supervisoresDummy = [
-//     {
-//         id:1,
-//         name: "Javier Palacios",
-//         idfacultad:"informatica",
-//         isSelected: true,
-//         isMySupervisor: false
-//     },
-//     {
-//         id:2,
-//         name: "Luis Flores",
-//         idfacultad:"informatica",
-//         isSelected: false,
-//         isMySupervisor: false
-//     },
-//     {
-//         id:3,
-//         name: "Andres Melgar",
-//         idfacultad:"informatica",
-//         isSelected: false,
-//         isMySupervisor: false
-//     },
-//     {
-//         id:4,
-//         name:"Pedro Castillo",
-//         idfacultad:"informatica",
-//         isSelected: false,
-//         isMySupervisor: false
-//     }
-// ]
 
 export default function SupervisorSelection () {
     const {user} = useAuth();

@@ -27,25 +27,25 @@ export default function AdministrativeNavbar() {
     const supervisor = [
         {
             title: "Disponibilidad y Reuniones",
-            link: `/meetings-management/permissions=SC&idSupervisor=${user.idPersona}&idProcess=${user.fidProceso}`
+            link: `/meetings-management/permissions=SC&idSupervisor=${user.idPersona}&idProcess=${user.fidEspecialidad}`
         },
         {
             title: "Gestión de Entregables",
-            link: `/list-deliverables/permissions=S&idSupervisor=${user.idPersona}&idProcess=${user.fidProceso}`
+            link: `/list-deliverables/permissions=S&idSupervisor=${user.idPersona}&idProcess=${user.fidEspecialidad}`
         }
     ]
     const coorSpecialty = [ 
         {
             title: "Gestión de alumnos",
-            link: `/students-management/permissions=E&idProcess=${user.fidProceso}`
+            link: `/students-management/permissions=E&idProcess=${user.fidEspecialidad}`
         },
         {
             title: "Solicitudes sin convenio",
-            link: `/list-students-requests/permissions=E&idProcess=${user.fidProceso}`
+            link: `/list-students-requests/permissions=E&idProcess=${user.fidEspecialidad}`
         },
         {
             title: "Revisión de Convenios",
-            link: `/list-students-agreement/permissions=EF&idProcess=${user.fidProceso}`
+            link: `/list-students-agreement/permissions=EF&idProcess=${user.fidEspecialidad}`
         },
         // {
         //     title: "Entregables",
@@ -53,29 +53,29 @@ export default function AdministrativeNavbar() {
         // },
         {
             title: "Gestión de supervisores",
-            link: `/supervisors-management/permissions=E&idSpecialty=${user.fidEspecialidad}`
+            link: `/supervisors-management/permissions=E`
         },
         {
             title: "Configuración del proceso",
-            link: `/config-process/permissions=E&idSpecialty=${user.fidEspecialidad}`
+            link: `/config-process/permissions=E`
         },
         {
             title: "Gestión de Campos Ficha de Inscripción",
-            link: `/inscription-config/permissions=E&idSpecialty=${user.fidEspecialidad}`
+            link: `/inscription-config/permissions=E`
         },
         {
             title: "Revisión Ficha de Inscripción",
-            link: `/list-inscriptions-form/permissions=EF&idProcess=${user.fidProceso}`
+            link: `/list-inscriptions-form/permissions=EF&idProcess=${user.fidEspecialidad}`
         },
     ]
     const coorFaci = [
         {
             title: "Revisión de Convenios",
-            link: `/list-students-agreement/permissions=EF&idProcess=${user.fidProceso}`
+            link: `/list-students-agreement/permissions=EF&idProcess=${user.fidEspecialidad}`
         },
         {
             title: "Revisión Ficha de Inscripción",
-            link: `/list-inscriptions-form/permissions=EF&idProcess=${user.fidProceso}`
+            link: `/list-inscriptions-form/permissions=EF&idProcess=${user.fidEspecialidad}`
         },
         {
             title: "Gestionar Especialidades",

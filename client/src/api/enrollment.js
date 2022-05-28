@@ -1,7 +1,7 @@
 import {API_VERSION, BASE_PATH} from './config';
 
-export function selectStudentsByProcessSpecialtyApi(idSpecialty, fidProceso) {
-    const url = `${BASE_PATH}/${API_VERSION}/enrollment-students/${idSpecialty}/${fidProceso}`;
+export function selectStudentsByProcessSpecialtyApi(idProceso) {
+    const url = `${BASE_PATH}/${API_VERSION}/enrollment-students/${idProceso}`;
     const params = {
         method: "GET",
         headers: {

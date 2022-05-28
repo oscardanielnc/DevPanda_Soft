@@ -32,10 +32,10 @@ function Supervisor ({element, setSupervisores, supervisores, getSchedule}) {
         getSchedule(element.id)
         setSupervisores(newSupervisors);
     }
+    console.log(element)
     return (
-        
-        <div className="supervisor" onClick={selectSup} style={element.isSelected?{backgroundColor: 'gray'}:{backgroundColor: 'white'}}>
-
+        <div className="supervisor" onClick={selectSup} 
+            style={element.isSelected?{backgroundColor: 'gray'}:{backgroundColor: 'white'}}>
             <i className="bi bi-person"></i>
             <p  style={{marginTop:"10px"}}>   
                 {element.name}

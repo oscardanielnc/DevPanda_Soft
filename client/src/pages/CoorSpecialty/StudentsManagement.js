@@ -6,6 +6,7 @@ import TableEnrollment from "../../components/Tables/TableEnrollment";
 import "./scss/StudentsManagement.scss";
 import { selectStudentsByProcessSpecialtyApi } from "../../api/enrollment";
 import ModalStudentManagement from "../../components/Modals/ModalStudentManagement";
+import { useParams } from "react-router-dom";
 
 const states = [
     {
@@ -83,7 +84,7 @@ let textFilter = ""
 let textSelect = "-1"
 
 export default function StudentsManagement () {
-    const {user} = useAuth();
+    const {idProcess} = useParams();
     const [show, setShow] = useState(false);
     const [alumnos, setAlumnos] = useState([]);
     const [newDataStudent, setNewDataStudent] = useState({
@@ -99,7 +100,7 @@ export default function StudentsManagement () {
     const [filteredData, setFilteredData] = useState([]);
 
     useEffect(()=> {
-        selectStudentsByProcessSpecialtyApi(user.fidEspecialidad, user.fidProceso).then(response => {
+        selectStudentsByProcessSpecialtyApi(idProcess).then(response => {
             if(response.success) {
                 setAlumnos(response.students);
                 setFilteredData(response.students);
@@ -163,7 +164,7 @@ export default function StudentsManagement () {
                     <TableEnrollment rows={filteredData} setShow={setShow} setNewDataStudent={setNewDataStudent}/>
                 </Row>
                 
-                <ModalStudentManagement student={alumnos[0]} show={show} setShow={setShow} updateStudent={updateStudent}
+                <ModalStudentManagement show={show} setShow={setShow} updateStudent={updateStudent}
                     newDataStudent={newDataStudent} setNewDataStudent={setNewDataStudent}/>
             </div>
         </LayoutAdministrative>

@@ -3,6 +3,6 @@ const EnrollmentController = require("../controllers/enrollment");
 
 const api = express.Router();
 
-api.get("/enrollment-students/:idSpecialty/:fidProceso", EnrollmentController.selectStudentsByProcessSpecialty);
+api.get("/enrollment-students/:fidProceso", EnrollmentController.selectStudentsByProcessSpecialty); 
 
 module.exports = api;

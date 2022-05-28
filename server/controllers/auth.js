@@ -21,78 +21,79 @@ async function singIn(req, res) {
                 res.status(404).send({
                     message: "El usuario se encuentra desactivado!"
                 })
-            }
-            const preUser = {
-                idPersona: dbUser.idPersona,
-                fidEspecialidad: dbUser.fidEspecialidad,
-                nombres: dbUser.nombres,
-                apellidos: dbUser.apellidos,
-                correo: dbUser.correo,
-                tipoPersona: dbUser.tipoPersona,
-                activo: 1,
-                expire: moment().add(8, 'hours').unix(),
-            }
-            // aqui extrahemos los datos segun su tipo
-            if(preUser.tipoPersona === 'e') {
-                const sqlQueryAlumno = `SELECT * FROM Alumno A INNER JOIN AlumnoProceso AP 
-                                     ON A.idAlumno = AP.fidAlumno WHERE idAlumno = ${preUser.idPersona} AND estado='C';`
-                const resultAlumno  = await sqlAsync(sqlQueryAlumno, connection);
-                if(resultAlumno.length>0) {
-                    const dbAlumno = resultAlumno[0];
-                    const sqlQueryNavbar = `SELECT * FROM EtapaProceso WHERE fidProceso=${dbAlumno.fidProceso} order by orden;`
-                    const resultNavbar  = await sqlAsync(sqlQueryNavbar, connection);
-                    const navbar = [];
-                    if(resultNavbar.length>0) {
-                        resultNavbar.forEach(e => {
-                            const item = {
-                                code: e.codigo,
-                                title: e.nombre,
-                                order: e.orden
-                            }
-                            navbar.push(item);
+            } else {
+                const preUser = {
+                    idPersona: dbUser.idPersona,
+                    fidEspecialidad: dbUser.fidEspecialidad,
+                    nombres: dbUser.nombres,
+                    apellidos: dbUser.apellidos,
+                    correo: dbUser.correo,
+                    tipoPersona: dbUser.tipoPersona,
+                    activo: 1,
+                    expire: moment().add(8, 'hours').unix(),
+                }
+                // aqui extrahemos los datos segun su tipo
+                if(preUser.tipoPersona === 'e') {
+                    const sqlQueryAlumno = `SELECT * FROM Alumno A INNER JOIN AlumnoProceso AP 
+                                         ON A.idAlumno = AP.fidAlumno WHERE idAlumno = ${preUser.idPersona} AND estado='C';`
+                    const resultAlumno  = await sqlAsync(sqlQueryAlumno, connection);
+                    if(resultAlumno.length>0) {
+                        const dbAlumno = resultAlumno[0];
+                        const sqlQueryNavbar = `SELECT * FROM EtapaProceso WHERE fidProceso=${dbAlumno.fidProceso} order by orden;`
+                        const resultNavbar  = await sqlAsync(sqlQueryNavbar, connection);
+                        const navbar = [];
+                        if(resultNavbar.length>0) {
+                            resultNavbar.forEach(e => {
+                                const item = {
+                                    code: e.codigo,
+                                    title: e.nombre,
+                                    order: e.orden
+                                }
+                                navbar.push(item);
+                            })
+                        }
+    
+                        const user = {
+                            ...preUser,
+                            estadoMatriculado: dbAlumno.estadoMatriculado,
+                            estadoProceso: dbAlumno.estadoProceso,
+                            codigo: dbAlumno.codigo,
+                            idAlumnoProceso: dbAlumno.idAlumnoProceso,
+                            fidProceso: dbAlumno.fidProceso,
+                            fidAsesor: dbAlumno.fidAsesor,
+                            nota: dbAlumno.nota,
+                            grupoAsignado: dbAlumno.grupoAsignado,
+                            estado: 'C',
+                            navbar: navbar
+                        }
+                        const accessToken = jwt.encode(user, PANDA_KEY);
+                        res.status(200).send({accessToken});
+                        // res.status(200).send({user});
+    
+                    } else {
+                        res.status(404).send({
+                            message: "No se ha encontrado que el alumno esté dentro de un proceso, o se hizo un mal registro de él."
                         })
                     }
-
-                    const user = {
-                        ...preUser,
-                        estadoMatriculado: dbAlumno.estadoMatriculado,
-                        estadoProceso: dbAlumno.estadoProceso,
-                        codigo: dbAlumno.codigo,
-                        idAlumnoProceso: dbAlumno.idAlumnoProceso,
-                        fidProceso: dbAlumno.fidProceso,
-                        fidAsesor: dbAlumno.fidAsesor,
-                        nota: dbAlumno.nota,
-                        grupoAsignado: dbAlumno.grupoAsignado,
-                        estado: 'C',
-                        navbar: navbar
-                    }
-                    const accessToken = jwt.encode(user, PANDA_KEY);
-                    res.status(200).send({accessToken});
-                    // res.status(200).send({user});
-
                 } else {
-                    res.status(404).send({
-                        message: "No se ha encontrado que el alumno esté dentro de un proceso, o se hizo un mal registro de él."
-                    })
-                }
-            } else {
-                const sqlQueryPersonal = `SELECT * FROM PersonalAdministrativo WHERE idPersonal=${preUser.idPersona};`
-                const resultPersonal  = await sqlAsync(sqlQueryPersonal, connection);
-                if(resultPersonal.length>0) {
-                    const dbPersonal = resultPersonal[0];
-                    const user = {
-                        ...preUser,
-                        tipoPersonal: dbPersonal.tipoPersonal,
-                        estado: dbPersonal.estado,
+                    const sqlQueryPersonal = `SELECT * FROM PersonalAdministrativo WHERE idPersonal=${preUser.idPersona};`
+                    const resultPersonal  = await sqlAsync(sqlQueryPersonal, connection);
+                    if(resultPersonal.length>0) {
+                        const dbPersonal = resultPersonal[0];
+                        const user = {
+                            ...preUser,
+                            tipoPersonal: dbPersonal.tipoPersonal,
+                            estado: dbPersonal.estado,
+                        }
+                        const accessToken = jwt.encode(user, PANDA_KEY);
+                        res.status(200).send({accessToken});
+                        // res.status(200).send({user});
+    
+                    } else {
+                        res.status(404).send({
+                            message: "No se ha encontrado que al personal administrativo. Posiblemente se hizo un mal registro de él."
+                        })
                     }
-                    const accessToken = jwt.encode(user, PANDA_KEY);
-                    res.status(200).send({accessToken});
-                    // res.status(200).send({user});
-
-                } else {
-                    res.status(404).send({
-                        message: "No se ha encontrado que al personal administrativo. Posiblemente se hizo un mal registro de él."
-                    })
                 }
             }
         } else {
