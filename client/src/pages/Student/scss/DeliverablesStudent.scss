@@ -1,0 +1,26 @@
+@import '../../../scss/index.scss';
+
+.modified{
+    padding-top: 15px;
+}
+
+.rows{
+    margin-top: 2em !important;
+}
+
+.studentRequests {
+    &__title {
+        text-align: center;
+    }
+    &__actions {
+        margin-right: 0;
+        margin-left: auto;
+        display: flex;
+        justify-content: space-between;
+    }
+    &__select{
+        border-color: $primary-color;
+        position: relative;
+    }
+
+}
