@@ -138,6 +138,9 @@ export default function AdministrativeNavbar() {
 // }
 
 
-// crear supervisores y coorEspecialides
-// excel
-// modificar fidAsesor cuando ya selecciona asies
+// crear supervisores y coorEspecialides <-----------
+// excel <-----------
+// modificar fidAsesor cuando ya selecciona asies  
+// coordEsp vigente <-----------
+// docs con horas como moment <-----------
+// bloqueo <-----------

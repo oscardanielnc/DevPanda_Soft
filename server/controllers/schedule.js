@@ -7,17 +7,6 @@ async function changeHoursSchedule(req, res){
     const connection = mysql.createConnection(MYSQL_CREDENTIALS);
     const arrHours = req.body;
 
-    // sqlAsync = (sql) =>{
-    //     return new Promise((resolve, reject)=>{
-    //         connection.query(sql, async (err, result) => {
-    //             if (err) {
-    //                 return reject(err);
-    //             }else{
-    //                 return resolve(result)
-    //             }
-    //         })
-    //     })
-    // }
     connection.connect(err => {
         if (err) throw err;
     });
@@ -28,7 +17,14 @@ async function changeHoursSchedule(req, res){
             const sqlQuery = `UPDATE HorarioDisponibilidad 
                 SET estado = ${element.state}, idAlumno=${element.idAlumno}
                 WHERE idHorario = ${element.id}`;
-            await sqlAsync(sqlQuery, connection);
+            const result = await sqlAsync(sqlQuery, connection);
+
+            if(element.idAlumno && element.state===4 && result.affectedRows) {
+                // este es un alumno que esta seleccionando un supervisor
+                const sqlQueryUpdate = `UPDATE AlumnoProceso SET fidAsesor=${element.idAsesor}
+                    WHERE fidAlumno = ${element.idAlumno}`;
+                await sqlAsync(sqlQueryUpdate, connection);
+            }
         } catch (err) {
             res.status(505).send({
                 success: false,
@@ -40,6 +36,34 @@ async function changeHoursSchedule(req, res){
         success: true,
         message: "Registro de horas correcta!"
     })
+    connection.end();
+}
+
+function updateMeetingLink(req, res){
+    const connection = mysql.createConnection(MYSQL_CREDENTIALS);
+    const {idHour, link} = req.body;
+
+    connection.connect(err => {
+        if (err) throw err;
+    });
+
+    const sqlQuery = `UPDATE HorarioDisponibilidad 
+        SET link='${link}' WHERE idHorario = ${idHour}`;
+
+    connection.query(sqlQuery, (err, result) => {
+        if (err) {
+            console.log(err)
+            res.status(505).send({
+                success: false,
+                message: "Error del servidor: " + err.message
+            })
+        } else {
+            res.status(200).send({
+                success: true,
+                message: "Se registró el link de la reunión correctamente!"
+            })
+        }
+    });
     connection.end();
 }
 
@@ -93,7 +117,8 @@ function getSupervisorSchedule(req, res) {
                     const dat = {
                         state: dataOrdered[i*14 + j].estado,
                         idAlumno: dataOrdered[i*14 + j].idAlumno,
-                        id: dataOrdered[i*14 + j].idHorario
+                        id: dataOrdered[i*14 + j].idHorario,
+                        link: dataOrdered[i*14 + j].link
                     }
                     newDay.hours.push(dat)
                 }
@@ -158,6 +183,47 @@ function getSupervisorsBySpecialty(req, res) {
         }
     });
 }
+
+function getStudentDate(req, res) {
+    const connection = mysql.createConnection(MYSQL_CREDENTIALS);
+
+    const {idStudent} = req.params;
+
+    const sqlQuery = `SELECT codigo, nombres, apellidos, correo, activo FROM Alumno A 
+        INNER JOIN Persona P ON A.idAlumno = P.idPersona WHERE P.idPersona = ${idStudent};`;
+
+    connection.connect(err => {
+        if (err) throw err;
+    });
+
+    connection.query(sqlQuery, (err, result) => {
+        if (err) {
+            res.status(505).send({
+                success: false,
+                message: "Error inesperado en el servidor" + err.message
+            })
+        }
+        else if(result.length === 0) {
+            res.status(404).send({
+                success: false,
+                message: "No se ha encontrado información de este alumno en BD"
+            })
+        } else {
+            const data = {
+                firstname: result[0].nombres,
+                lastname: result[0].apellidos,
+                email: result[0].correo,
+                code: result[0].codigo,
+            }
+            
+            res.status(200).send({
+                success: true,
+                data
+            })
+        }
+    });
+}
+
 function getDay(date) {
     const auxArr = date.split('-');
     const newDate = `${auxArr[1]}-${auxArr[0]}-${auxArr[2]}`;
@@ -178,5 +244,7 @@ function getDay(date) {
 module.exports = {
     changeHoursSchedule,
     getSupervisorSchedule,
-    getSupervisorsBySpecialty
+    getSupervisorsBySpecialty,
+    getStudentDate,
+    updateMeetingLink
 }

@@ -144,14 +144,24 @@ export default function SupervisorSelection () {
     //     })
     //     return isSelected
     // }
+    const getIdSupervisorSelected = () => {
+        let id = null
+        supervisores.forEach(item => {
+            if(item.isSelected) {
+                id = item.id
+            }
+        })
+        return id;
+    }
 
     const insertHorario = () => {
         if(schedule.length>0) {
             const hourInArr = hourSelecteds[0];
-            if(hourSelecteds.length>0 && isNotEmptyObj(hourInArr)) { //si exsite el estado, no es un objeto vacio
+            if(hourSelecteds.length>0 && isNotEmptyObj(hourInArr)) {
                 const arrHours = [
                     {
                         state: 4,
+                        idAsesor: getIdSupervisorSelected(),
                         id: hourInArr.id,
                         idAlumno: user.idPersona
                     }
@@ -162,11 +172,6 @@ export default function SupervisorSelection () {
                     toast[resultState](response.msg, {
                         position: "top-right",
                         autoClose: 3000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
                     });
                     viewDidLoad()
                 })
@@ -174,22 +179,12 @@ export default function SupervisorSelection () {
                 toast.warning("No tiene ningun horario seleccionado!", {
                     position: "top-right",
                     autoClose: 3000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
                 });
             }
         } else {
             toast.warning("No tiene ningun supervisor seleccionado!", {
                 position: "top-right",
                 autoClose: 3000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
             });
         }
     }
