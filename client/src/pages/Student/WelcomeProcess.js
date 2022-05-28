@@ -10,6 +10,7 @@ export default function WelcomeProcess () {
     const {user} = useAuth();
     const [showSm,setShowSm]=useState(false);
     console.log(user);
+    const link =`/agreement/idStudent=${user.idPersona}&idProcess=${user.fidProceso}&phase=CONV`
     return(
         <LayoutBasic>
             <div className="container" style={{"padding":"1px"}}>
@@ -46,7 +47,7 @@ export default function WelcomeProcess () {
                     <Button className="btn btn-primary" style={{width:"20%",marginRight:"50px"}} onClick={()=>setShow(true)}>No cuento con los documentos</Button>
                     <ModalNoAgreement show={show} setShow={setShow} user={user}showSm={showSm}setShowSm={setShowSm}></ModalNoAgreement>
                     <ModalNoAgreementMail show={showSm} setShow={setShowSm}></ModalNoAgreementMail>
-                    <Button className="btn btn-primary" style={{width:"20%"}}>Sí cuento con los documentos</Button>
+                        <Button className="btn btn-primary" style={{width:"20%"}} href={link}>Sí cuento con los documentos</Button>
                 </div>
             </div>
         </LayoutBasic>
