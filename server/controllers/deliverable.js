@@ -398,7 +398,7 @@ function getDeliverableByStudentSpecialty(req,res){
     const idFacultad = req.params.idFacultad;
     
     const sqlQuery =`   select
-                            RE.iduestaEntregable, E.idEntregable, E.nombre, RE.aprobado, RE.estadoDocumento
+                            RE.idRespuestaEntregable, E.idEntregable, E.nombre, RE.aprobado, RE.estadoDocumento
                         from
                             RespuestaEntregable as RE inner join
                             Entregable as E on RE.fidEntregable = E.idEntregable inner join
@@ -423,6 +423,7 @@ function getDeliverableByStudentSpecialty(req,res){
             const data =  result.map(e => {
                 return {
                     idDeliverableResponse: e.idRespuestaEntregable,
+                    code: "ENT" + e.idEntregable,
                     idDeliverable:e.idEntregable,
                     nameDeiverable: e.nombre,
                     estado: e.estadoDocumento == 'S'? 'S' : e.aprobado
