@@ -3,8 +3,6 @@ import { Button, ProgressBar } from 'react-bootstrap';
 import { NavLink } from 'react-router-dom';
 import './StudentNavbar.scss';
 import useAuth from "../../hooks/useAuth"
-
-// const offsets =[-380,-160,-70,-30,0,20,32]
     
 function StudentNavbar () {
     const {user} = useAuth();
@@ -51,7 +49,7 @@ function StudentNavbar () {
     }
     
     const transformText = `rotate(90deg) scale(${navbar.length/6},0.3) translate(${(navbar.length-6)*30}px, 410px)`;
-   
+
     return(
     <div className="studentNavBar">
         <ProgressBar className= "studentNavBar__progressbar" 
@@ -86,8 +84,8 @@ function StudentNavbar () {
                 )
             })}
             </ul>
-            <Button variant='secondary' style={{width:"80%"}} >Renuncia</Button>
         </nav>
+        <Button variant='secondary' className='studentNavBar__renuncia'>Renuncia</Button>
     </div>
 
     )

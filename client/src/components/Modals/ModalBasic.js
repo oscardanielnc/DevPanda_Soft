@@ -19,14 +19,22 @@ export default function ModalBasic (props) {
             <Modal.Body>
                 {children}
             </Modal.Body>
-            <Modal.Footer>
-            <Button variant="secondary" onClick={()=>setShow(false)}>
-                {secundaryAction}
-            </Button>
-            <Button variant="primary" onClick={handlePrimaryAction}>
-                {primaryAction}
-            </Button>
+            {
+            secundaryAction && primaryAction && <Modal.Footer>
+                {
+                secundaryAction && 
+                <Button variant="secondary" onClick={()=>setShow(false)}>
+                    {secundaryAction}
+                </Button>
+                }
+                {
+                primaryAction && 
+                <Button variant="primary" onClick={handlePrimaryAction}>
+                    {primaryAction}
+                </Button>
+                }
             </Modal.Footer>
+            }
         </Modal>
     )
 }

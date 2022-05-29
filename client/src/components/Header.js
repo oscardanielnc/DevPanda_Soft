@@ -52,6 +52,7 @@ function HeaderLogged ({user}) {
                 </div>
                 <div>
                     <strong>{fullName}<br/></strong>
+            {/* <span>(Ingeniería informática)</span> */}
                 </div>
             </div>
             <div className="header__rightusuarioImagen"
@@ -76,9 +77,11 @@ function HeaderLogged ({user}) {
 function HeaderNotLogged () {
     const responseGoogle = async (response) => {
         const result = await signInApi(response.profileObj.email);
+        console.log(result)
 
         if(result.success) {
             const {accessToken} = result;
+            console.log(accessToken)
             localStorage.setItem("ACCESS_TOKEN", accessToken);
             window.location.href = "/redirect";
         } else {

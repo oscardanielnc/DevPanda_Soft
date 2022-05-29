@@ -7,8 +7,8 @@ import { getAllDocsApi,uploadDocsApi } from "../../api/files";
 import "./scss/FinalReport.scss";
 import useAuth from "../../hooks/useAuth";
 import FileManagement from "../../components/FileManagement/FileManagement";
-import { getDeliverableStudent, setDeliverableStudent } from "../../api/deliverables";
-
+import { getDeliverableStudent, setDeliverableStudent,getfieldsDeliverables,updatefieldsDeliverables } from "../../api/deliverables";
+import { ToastContainer, toast } from 'react-toastify';
 const dataDummy = { 
     "ecoSector" : "Financiero",
     "productService" : "Prestamos",
@@ -18,37 +18,46 @@ const dataDummy = {
 }
 
 
+
 let staticDocument;
 let staticEsp;
 let disable;
 let flag=1;
 let idEntregable=3; //como obtener esto?
+let dataTemporal;
 export default function AgreementReview(){  
     
     const {user} = useAuth();
     const [fileList, setFileList] = useState([])
     const [data, setData] = useState({});
+    const [dataFields,setDataFields] = useState({})
     const [docs, setDocs] = useState([])
     const [docsStudent, setDocsStudent] = useState([])
     const [docsSup, setDocsSup] = useState([])
-    
-   
-    
-    useEffect(()=> {
-        getDeliverableStudent(user.idPersona,idEntregable).then(response => {
-            if(response.success) {                
-                setData(response.data.valor);                
-            }            
-        })
-    }, [setData])
 
+    useEffect(()=> {
+        const fetchData = async () => {
+            const result1 = await getDeliverableStudent(user.idPersona,idEntregable);
+            dataTemporal = result1.data.valor            
+            if(result1.success) {                                           
+                setData(result1.data.valor);                                                
+            }      
+            const result2 = await getfieldsDeliverables(idEntregable,dataTemporal.deliverableResponse.idRespuestaEntregable);                                    
+            if(result2.success) {                                           
+                setDataFields(result2.data); //esto es la data.others de jeison                                               
+            }  
+        }
+        fetchData()
+    }, [setData,setDataFields])
     
-    useEffect(() => {                           //se debe cambiar por INFI
-        getAllDocsApi(`1-${user.fidEspecialidad}-CONV`, 0).then(response => {
-            if(response.success) {
-                setDocs(response.docs)
+    useEffect(() => {                           //se debe cambiar por INFI   
+        const fetchData = async () => { 
+            const result = await getAllDocsApi(`1-${user.fidEspecialidad}-CONV`, 0);
+            if(result.success) {
+                setDocs(result.docs)
             }
-        })
+        }
+        fetchData()
     },[setDocs])    
     
 //    useEffect(() => {                                            //PUEDO COLOCAR OTRA COSA QUE NO SEA CONV?
@@ -87,19 +96,31 @@ export default function AgreementReview(){
     }
     
 
-    /* const submit = async e => {
-        if(fileList.length === 2) {                        
-            dataForApi.idEntregaConvenio = data.idEntregaConvenio
-            dataForApi.fidAlumnoProceso = fidAlumnoProceso
-            dataForApi.estadoFaci = data.estadoFaci
-            dataForApi.estadoEspecialidad = data.estadoEspecialidad
-            dataForApi.observaciones = data.observaciones
+    const submit = async e => {
+        if(fileList.length === 2) {    
+            const newData1 = {
+                ...data,
+                deliverableResponse:{
+                    idRespuestaEntregable: data.deliverableResponse.idRespuestaEntregable,
+                    docState: "E",
+                    evaState: data.deliverableResponse.evaState,
+                    observation: data.deliverableResponse.observation,
+                    grade: data.deliverableResponse.grade,
+                    uploadDate: data.deliverableResponse.uploadDate,
+                }                
+            }
             
-            const response1 = await uploadDocsApi(fileList, `${user.fidProceso}-${user.fidEspecialidad}-CONV-${user.idPersona}`, 1);
-
-            const response2 = await finalReportUpdateApi(dataForApi)
-            if(response2.success && response1.success) {                
-                toast.success(response2.msg, {
+            const newData2 = {
+                idRespuestaEntregable: data.deliverableResponse.idRespuestaEntregable,
+                campos:dataFields.data                                
+            }
+            
+            
+            //const response1 = await uploadDocsApi(fileList, `${user.fidProceso}-${user.fidEspecialidad}-CONV-${user.idPersona}`, 1);
+            const response1 = await setDeliverableStudent(newData1)   
+            const repsonse2 = await updatefieldsDeliverables(newData2)    
+            if(response1.success &&repsonse2.success) {                
+                toast.success(response1.msg, {
                     position: "top-right",
                     autoClose: 3000,
                     hideProgressBar: false,
@@ -110,7 +131,7 @@ export default function AgreementReview(){
                 });            
                 window.location.reload()
             } else {
-                toast.error(response2.msg, {
+                toast.error(response1.msg, {
                     position: "top-right",
                     autoClose: 3000,
                     hideProgressBar: false,
@@ -132,7 +153,8 @@ export default function AgreementReview(){
                 progress: undefined,
             });
         }
-    } */
+    }
+
     let comentarioEsp="";
     if(staticEsp === "A")
         comentarioEsp="Aprobado";
@@ -190,13 +212,31 @@ export default function AgreementReview(){
 
     function changeLearnLevel(e) {        
         dataDummy.learnLevel = e.target.id;        
-       /*  setData({
+        /* setData({
             ...data,
             estadoFaci: "P",             
-        })      */        
-        console.log(dataDummy)
+        }) */
+        console.log(dataFields)
     }
 
+    const handleChangeCamps = (e) => {
+        console.log(dataFields)
+        const newCamps = dataFields.data.map(elem => {
+            if(elem.nombreCampoEntregable === e.target.name)
+                return {                    
+                    idCampoEntregableProceso: elem.idCampoEntregableProceso,
+                    idCampoLlenadoEntregable: elem.idCampoLlenadoEntregable,
+                    nombreCampoEntregable: elem.nombreCampoEntregable,
+                    flagEntregable: elem.flagEntregable,           
+                    valorAlumno: e.target.value                       
+                }
+            return elem;
+        })        
+        setDataFields({
+            ...dataFields,        
+            data: newCamps
+        }) 
+    }
 
     return (
         data.idAlumno && <LayoutBasic>            
@@ -212,7 +252,7 @@ export default function AgreementReview(){
                         Adicionalmente, debe de completar la información que se solicita en el apartado “Información sobre el Informe”.    
                         <br></br>
                         <br></br>
-                        A continuación se presentan la <b>Guía de Elaboración del Informe </b>, el <b>Modelo del Informe del Practicante</b> y la <b>Carta de Conformidad de la Empresa.</b>                           
+                        A continuación se presentan la <b>Guía de Elaboración del Informe</b>, el <b>Modelo del Informe del Practicante</b> y la <b>Carta de Conformidad de la Empresa.</b>                           
                         </p>
                     </div>
                     <ShowFiles docs={docs} /> 
@@ -234,8 +274,31 @@ export default function AgreementReview(){
                 <div className="shadowbox">
                     <div className="row row1" style={{textAlign: "left",marginTop:"25px"}}>
                         <h2 className="subtitulo">Información sobre el informe</h2>
-                        <h4 className="subSubtitulo">Sobre la empresa</h4>
-                        <div className="wordAndTextBoxFirst">  
+                        <p className="textito" >Aquí deberá ingresar los datos solicitados a continuación:</p> 
+
+                        {                                                       
+                            dataFields.data && dataFields.data.map((e,index) => {                       
+                                var texto = "Ingrese su respuesta";                                                        
+                                return (
+                                    <div className="wordAndTextBoxFirst">  
+                                        <div className="col-sm-5 subtitles">
+                                            <h6 style={{marginTop:"10px",marginBottom:"25px"}} >{e.nombreCampoEntregable}</h6> 
+                                        </div>
+                                        <div className="col-sm-7 subtitles">
+                                            <Form.Control  
+                                                style={{width: "100%",marginBottom:"15px"}} 
+                                                type="text" 
+                                                name={e.nombreCampoEntregable}
+                                                placeholder= {texto}
+                                                defaultValue={e.valorAlumno} 
+                                                onChange = {handleChangeCamps}
+                                                disabled={disable}/>
+                                        </div>                   
+                                    </div>                                    
+                                ) 
+                            })                   
+                        }
+                        {/* <div className="wordAndTextBoxFirst">  
                             <div className="col-sm-5 subtitles">
                                 <h6 style={{marginTop:"9px"}} >Sector económico:</h6> 
                             </div>
@@ -243,7 +306,8 @@ export default function AgreementReview(){
                                 <Form.Control  
                                     style={{width: "100%"}} 
                                     type="text" 
-                                    placeholder="Ingrese el sector económico de la empresa."  
+                                    placeholder="Ingrese el sector económico de la empresa." 
+                                    //defaultValue={dataFields[0]} 
                                     //onChange = {changeEcoSector}
                                     disabled={disable}/>
                             </div>                   
@@ -296,6 +360,13 @@ export default function AgreementReview(){
                         <div className="wordAndTextBox">  
                             <div className="col-sm-4 subtitles">
                                 <h6 style={{marginTop:"9px",textAlign:"justify"}}>¿Considera que lo aprendido en la universidad contribuyó para que pueda tener un buen desempeño durante sus prácticas?:</h6> 
+                            </div>
+                            <div className="col-sm-7 subtitles" style={{marginTop:"10px"}}>
+                                <Form.Control  
+                                    style={{width: "100%"}} 
+                                    type="text"                                     
+                                    //onChange = {changeInfluArea}
+                                    disabled={disable}/>
                             </div>
                             <div className="col-sm-7" style={{marginTop:"7px"}}>
                                 <p>Donde 1 es no me sirvió mucho y 5 es me sirvió mucho, elija:</p>
@@ -350,8 +421,8 @@ export default function AgreementReview(){
                                     </div>
                                 ))}
                                 </Form>
-                            </div>                   
-                        </div>                               
+                            </div>                  
+                        </div> */}                                            
                     </div>
                 </div> 
                 <div className="shadowbox">
@@ -382,7 +453,7 @@ export default function AgreementReview(){
                     </div>                    
                 </div>
                 <div className="row botones" style={{marginLeft:"10px"}}>                            
-                {/* <Button  className="btn btn-pri" style={{width:"20%",marginLeft:"50px"}} onClick={submit}>Entregar</Button> */}                 
+                <Button  className="btn btn-pri" style={{width:"20%",marginLeft:"50px"}} onClick={submit} disabled={disable}>Entregar</Button>                 
                 </div>                            
             </div>
         </LayoutBasic>

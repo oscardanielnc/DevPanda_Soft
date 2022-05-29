@@ -1,0 +1,40 @@
+.modalStudentManagement {
+   
+    &__formGroup {
+        margin: 1.5em 0;
+        display: grid;
+        grid-template-columns: 165px 1fr;
+        
+        &-label {
+            font-weight: 600;
+            font-size: 1.1em;
+            letter-spacing: 0.5px;
+        }
+    }
+
+    &__switches{
+        margin: 1.5em 0;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+
+        &-group {
+            display: grid;
+            grid-template-columns: 165px auto;
+
+            &-input {
+                transform: scale(1.5) translate(30px, 3px);
+            }
+        }
+        
+        &-label {
+            font-weight: 600;
+            font-size: 1.1em;
+            letter-spacing: 0.5px;
+        }
+    }
+}
+
+
+.noFiles{
+    font-size: 1em;
+}

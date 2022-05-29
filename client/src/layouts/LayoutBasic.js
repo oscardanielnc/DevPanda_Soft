@@ -5,9 +5,17 @@ import StudentNavBar from "../components/Navbars/StudentNavbar"
 
 
 import './LayoutBasic.scss';
+import useAuth from "../hooks/useAuth";
+import ForbiddenPage from "../pages/General/ForbiddenPage";
 
 export default function LayoutBasic (props) {
+    const {user} = useAuth();
     const {children} = props;
+
+       
+    // solo almnos pueden acceder a esta pagina 
+    if(user.tipoPersona !== 'e') 
+        return <ForbiddenPage />
 
     return (
         <div className="main">
