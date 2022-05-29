@@ -66,6 +66,47 @@ export function getSupervisorsApi(idSpecialty) {
             }
     })
 }
+
+export function getSupervisorByID(idSupervisor) {
+    const url = `${BASE_PATH}/${API_VERSION}/supervisor/${idSupervisor}`;
+    const params = {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            //Authorization: PANDA_KEY
+        }
+    }
+
+    return fetch(url, params)
+        .then(response => {
+            return response.json()
+        })
+        .then(result => {
+            if(result.success) {
+                const data = {
+                    firstname: result.result[0].nombres,
+                    lastname: result.result[0].apellidos,
+                    email: result.result[0].correo,
+                    code: result.result[0].idPersona
+                }
+                return {
+                    data: data,
+                    success: true
+                }
+            }
+            return {
+                message: result.message,
+                success: false
+            }
+        })
+        .catch(errMsg => {
+            return {
+                message: errMsg.message,
+                success: false
+            }
+    })
+}
+
 export function createAdministrativeApi(personal) {
     const url = `${BASE_PATH}/${API_VERSION}/create-administrative`;
     const params = {
