@@ -31,7 +31,7 @@ export default function AdministrativeNavbar() {
         },
         {
             title: "Gestión de Entregables",
-            link: `/list-deliverables/permissions=S&idSupervisor=${user.idPersona}&idProcess=${user.fidEspecialidad}`
+            link: `/list-deliverables/permissions=S&idProcess=${user.fidEspecialidad}`
         }
     ]
     const coorSpecialty = [ 

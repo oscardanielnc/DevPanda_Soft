@@ -106,7 +106,7 @@ const routes = [
         component: MeetingsManagement,//cambiar acá
     },
     {
-        path: "/list-deliverables/permissions=S&idSupervisor=:idSupervisor&idProcess=:idProcess",
+        path: "/list-deliverables/permissions=S&idProcess=:idProcess",
         exact: true,
         component: DeliverablesList,//cambiar acá
     },
