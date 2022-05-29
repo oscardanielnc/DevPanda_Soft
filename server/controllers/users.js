@@ -144,8 +144,43 @@ function getSupervisors(req, res) {
         }
     });
 }
+
+function getSupervisorByID(req, res) {
+    const connection = mysql.createConnection(MYSQL_CREDENTIALS);
+    const {idSupervisor} = req.params;
+
+    const sqlQuery = `SELECT P.nombres, P.apellidos, P.idPersona, P.correo, PA.estado, P.activo FROM
+        Persona AS P INNER JOIN PersonalAdministrativo as PA ON P.idPersona = PA.idPersonal
+        WHERE PA.tipoPersonal = 'S' AND P.activo = 1 AND P.tipoPersona = 'p' AND P.idPersona = ${idSupervisor};`;
+
+    connection.connect(err => {
+        if (err) throw err;
+    });
+
+    connection.query(sqlQuery, (err, result) => {
+        if (err) {
+            res.status(505).send({
+                success: false,
+                message: "Error inesperado en el servidor"
+            })
+        }
+        else if(result.length === 0) {
+            res.status(404).send({
+                success: false,
+                message: "No se han encontrado suvervisor para este ID"
+            })
+        } else {            
+            res.status(200).send({
+                success: true,
+                result
+            })
+        }
+    });
+}
+
 module.exports = {
     createAdministrative,
     getCoordinators,
-    getSupervisors
+    getSupervisors,
+    getSupervisorByID
 }
