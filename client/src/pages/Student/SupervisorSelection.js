@@ -191,7 +191,7 @@ export default function SupervisorSelection () {
     return(
         <LayoutBasic>
             <ToastContainer />
-            <ModalStudentMeetingStudent show={show} setShow={setShow} hourModalSelected={hourModalSelected}/>
+            <ModalStudentMeetingStudent show={show} setShow={setShow} hourModalSelected={hourModalSelected} idAsesor={getIdSupervisorSelected()}/>
             <div className='container principal'>
                 <div className="row rows">
                     <h1>Elección de Supervisor</h1>
