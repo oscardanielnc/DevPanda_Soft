@@ -12,7 +12,7 @@ import ModalBasic from './ModalBasic';
 
 import './ModalStudentMeeting.scss';
 
-export default function ModalStudentMeeting (props) {
+export default function ModalStudentMeetingSupervisor (props) {
     
     const {user} = useAuth();
     const {show, setShow, hourModalSelected} = props;

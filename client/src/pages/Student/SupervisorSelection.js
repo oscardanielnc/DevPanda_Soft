@@ -10,6 +10,8 @@ import {ToastContainer, toast} from "react-toastify";
 import { isNotEmptyObj } from "../../utils/objects";
 import PandaLoaderPage from "../General/PandaLoaderPage";
 import Loading from "../General/PandaLoading";
+import ModalStudentMeetingSupervisor from "../../components/Modals/ModalStudentMeetingSupervisor";
+import ModalStudentMeetingStudent from "../../components/Modals/ModalStudentMeetingStudent";
 
 
 export default function SupervisorSelection () {
@@ -18,8 +20,10 @@ export default function SupervisorSelection () {
     const [schedule, setSchedule] = useState([]);
     const [hourSelecteds, setHourSelecteds] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [show, setShow] = useState(false);
     const [scheduledMeeting, setScheduledMeeting] = useState(null);
     const [hasMeeting, setHasMeeting] = useState(true);
+    const [hourModalSelected, setHourModalSelected] = useState(null);
 
     useEffect(() => {
         console.log("Obtener si tiene reuniones")
@@ -83,7 +87,6 @@ export default function SupervisorSelection () {
     }
     const handleClickCell = (hour, indexDay, indexHour) => {
         let newHourClicked = {}
-        if (hasMeeting) return;
 
         const newSchude = schedule.map((day, index) => {
             const newHours = day.hours.map((h, i) => {
@@ -95,6 +98,10 @@ export default function SupervisorSelection () {
                         }
                         newHourClicked = newH
                         return newH
+                    }
+                    else if(hasMeeting && index===indexDay && i===indexHour && hour.state===3){
+                        setHourModalSelected(h)
+                        setShow(true)
                     }
                     else if (h.state===3) return {
                         state: 2,
@@ -109,6 +116,8 @@ export default function SupervisorSelection () {
                 hours: newHours
             }
         })
+
+        if (hasMeeting) return;
         setHourSelecteds([
             // ...hourSelecteds,
             newHourClicked
@@ -182,6 +191,7 @@ export default function SupervisorSelection () {
     return(
         <LayoutBasic>
             <ToastContainer />
+            <ModalStudentMeetingStudent show={show} setShow={setShow} hourModalSelected={hourModalSelected}/>
             <div className='container principal'>
                 <div className="row rows">
                     <h1>Elección de Supervisor</h1>

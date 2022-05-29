@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import {ToastContainer, toast} from "react-toastify";
 import { changeOneHourSchedule, getSupervisorScheduleApi } from '../../api/schedule';
 import ModalStudentManagement from '../../components/Modals/ModalStudentManagement';
-import ModalStudentMeeting from '../../components/Modals/ModalStudentMeeting';
+import ModalStudentMeetingSupervisor from '../../components/Modals/ModalStudentMeetingSupervisor';
 import Timetable from '../../components/Timetable/Timetable';
 import useAuth from '../../hooks/useAuth';
 import LayoutAdministrative from '../../layouts/LayoutAdministrative';
@@ -125,7 +125,7 @@ export default function MeetingsManegement() {
     return(
         <LayoutAdministrative>
             <ToastContainer/>
-            <ModalStudentMeeting show={show} setShow={setShow} hourModalSelected={hourModalSelected}/>
+            <ModalStudentMeetingSupervisor show={show} setShow={setShow} hourModalSelected={hourModalSelected}/>
             
                 <div className="container">
                     <div class="row rows">
