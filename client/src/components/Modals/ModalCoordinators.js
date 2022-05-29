@@ -102,7 +102,6 @@ export default function ModalCoordinators (props) {
             primaryAction="Guardar"
             secundaryAction="Cancelar"
         >
-            <ToastContainer />  
             <Form className="modalStudentManagement">
                 <InputLabel name="nombres" value={newData.nombres} handleChangeText={handleChangeText}/>
                 <InputLabel name="apellidos" value={newData.apellidos} handleChangeText={handleChangeText}/>

@@ -22,9 +22,7 @@ export default function MeetingsManegement() {
     const [hourModalSelected, setHourModalSelected] = useState(null);
     const idSupervisor = useParams().idSupervisor
 
-    if(user.tipoPersonal === "S" && idSupervisor!== user.idPersona)
-        return <ForbiddenPage />
-
+    
     const callSchedule = () => {
         setIsEdditing(false)
         setHourSelecteds([])
@@ -37,8 +35,11 @@ export default function MeetingsManegement() {
     
     useEffect(() => {
         callSchedule()
-     }, [setSchedule])
-
+    }, [setSchedule])
+    
+    if(user.tipoPersonal === "S" && idSupervisor!== user.idPersona)
+        return <ForbiddenPage />
+        
     const handleClickCell = (hour, indexDay, indexHour) => {
         let newHourClicked = {}
         const newSchude = schedule.map((day, index) => {

@@ -6,6 +6,7 @@ import { getSupervisorsApi } from "../../api/users";
 import FilterData from "../../components/Filters/FilterData";
 import ModalSupervisor from "../../components/Modals/ModalSupervisor";
 import useAuth from "../../hooks/useAuth";
+import { ToastContainer } from "react-toastify";
 
 
 const emptySup = {
@@ -43,6 +44,7 @@ export default function SupervisorsManagement () {
 
     return (
         <LayoutAdministrative>
+            <ToastContainer />  
             <div className="container">
                 <Row className="rows studentsManagement__title">
                     <h1 className="studentsManagement__title-h1">Gestión de Supervisores</h1>

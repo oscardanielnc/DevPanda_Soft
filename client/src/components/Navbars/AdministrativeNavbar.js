@@ -122,29 +122,3 @@ export default function AdministrativeNavbar() {
     )
     
 }
-
-// // te devolvere
-// const objGet = {
-//     firstname: "",
-//     lastname: "",
-//     email: "",
-//     code: "",
-//     zoom: {
-//         link: "",
-//         date: "dd/MM/aaaa",
-//         hour: "23:59"
-//     }
-// }
-// // me envias
-// const obtPut = {
-//     idHorario: 1,
-//     link: ""
-// }
-
-
-// crear supervisores y coorEspecialides <-----------
-// excel <-----------
-// modificar fidAsesor cuando ya selecciona asies  
-// coordEsp vigente <-----------
-// docs con horas como moment <-----------
-// bloqueo

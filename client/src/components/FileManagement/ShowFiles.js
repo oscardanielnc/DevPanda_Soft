@@ -6,7 +6,7 @@ export default function ShowFiles({docs}) {
         <div className="row normalrow" style={{marginTop:"5px",marginBottom:"10px"}}>
             {
                 docs.length>0 && docs.map((e, index) => (
-                    <DocumentPlusIcon name={e.nombre} path={e.ruta} key={index}/>
+                    <DocumentPlusIcon doc={e} key={index}/>
                 ))                
             }
             {

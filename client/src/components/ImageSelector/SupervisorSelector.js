@@ -2,6 +2,7 @@ import React from "react";
 import './SupervisorSelector.scss';
 
 export default function SupervisorSelector ({supervisores,setSupervisores, getSchedule}) {
+    if(!supervisores) return <h3>No system!</h3>
     if(supervisores.lenght === 0) return <h3>No existen supervisores en tu especialidad</h3>
     return (
         <div className="supervisors" >
@@ -34,8 +35,7 @@ function Supervisor ({element, setSupervisores, supervisores, getSchedule}) {
     }
     console.log(element)
     return (
-        <div className="supervisor" onClick={selectSup} 
-            style={element.isSelected?{backgroundColor: 'gray'}:{backgroundColor: 'white'}}>
+        <div className={"supervisor" + (element.isSelected? " supervisor__selected": "")} onClick={selectSup}>
             <i className="bi bi-person"></i>
             <p  style={{marginTop:"10px"}}>   
                 {element.name}
