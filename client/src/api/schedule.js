@@ -161,3 +161,39 @@ export function getStudentDate(idStudent) {
             }
         })
 }
+
+export function getMeetingByStudent(idStudent) {
+    const url = `${BASE_PATH}/${API_VERSION}/schedule-get-meeting/${idStudent}`;
+    const params = {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            //Authorization: PANDA_KEY
+        },
+    }
+
+    return fetch(url, params)
+        .then(response => {
+            return response.json()
+        })
+        .then(result => {
+            console.log(result)
+            if(result.success) {
+                return {
+                    hasMeeting: result.hasMeeting,
+                    meeting: result.meeting,
+                    success: true
+                }
+            }
+            return {
+                errMsg: result.message,
+                success: false
+            }
+        })
+        .catch(errMsg => {
+            return {
+                errMsg,
+                success: false
+            }
+        })
+}
