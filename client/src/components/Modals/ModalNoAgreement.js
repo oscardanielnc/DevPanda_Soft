@@ -120,7 +120,6 @@ export default function ModalNoAgreement (props) {
             primaryAction="Enviar Solicitud"
             secundaryAction="Cancelar"
         >
-            <ToastContainer/>
             <Modal.Body>
                 <div className="row" style={{textAlign: "left"}}>
                         <p>

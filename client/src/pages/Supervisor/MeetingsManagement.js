@@ -9,6 +9,7 @@ import Timetable from '../../components/Timetable/Timetable';
 import useAuth from '../../hooks/useAuth';
 import LayoutAdministrative from '../../layouts/LayoutAdministrative';
 import { isNotEmptyObj } from '../../utils/objects';
+import ForbiddenPage from '../General/ForbiddenPage';
 import PandaLoaderPage from '../General/PandaLoaderPage';
 import Loading from '../General/PandaLoading';
 
@@ -23,6 +24,7 @@ export default function MeetingsManegement() {
     const [hourModalSelected, setHourModalSelected] = useState(null);
     const idSupervisor = useParams().idSupervisor
 
+    
     const callSchedule = () => {
         // setIsEdditing(false)
         setLoading(true)
@@ -37,8 +39,11 @@ export default function MeetingsManegement() {
     
     useEffect(() => {
         callSchedule()
-     }, [setSchedule])
-
+    }, [setSchedule])
+    
+    if(user.tipoPersonal === "S" && idSupervisor!== user.idPersona)
+        return <ForbiddenPage />
+        
     const handleClickCell = (hour, indexDay, indexHour) => {
         let newHourClicked = {}
         const newSchude = schedule.map((day, index) => {

@@ -4,6 +4,7 @@ import ModalNoAgreement from "../../components/Modals/ModalNoAgreement";
 import { useState } from "react";
 import useAuth from "../../hooks/useAuth";
 import ModalNoAgreementMail from "../../components/Modals/ModalNoAgreementMail";
+import { ToastContainer } from "react-toastify";
 
 export default function WelcomeProcess () {
     const [show,setShow]=useState(false);
@@ -13,6 +14,7 @@ export default function WelcomeProcess () {
     const link =`/agreement/idStudent=${user.idPersona}&idProcess=${user.fidProceso}&phase=CONV`
     return(
         <LayoutBasic>
+            <ToastContainer/>
             <div className="container" style={{"padding":"1px"}}>
                 <div className="row rows" style={{textAlign: "left"}}>
                     <h1>

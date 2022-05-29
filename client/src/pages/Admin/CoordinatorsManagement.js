@@ -5,6 +5,7 @@ import ModalCoordinators from "../../components/Modals/ModalCoordinators";
 import TableCoordSups from "../../components/Tables/TableCoordSups";
 import { specialtySelectAllApi } from "../../api/specialty";
 import { getCoordinatorsApi } from "../../api/users";
+import { ToastContainer } from "react-toastify";
 
 let textFilter = ""
 let textSelect = "-1";
@@ -72,6 +73,7 @@ export default function CoordinatorsManagement () {
 
     return (
         <LayoutAdministrative>
+            <ToastContainer />  
             <div className="container">
                 <Row className="rows studentsManagement__title">
                     <h1 className="studentsManagement__title-h1">Gestión de Coordinadores</h1>
