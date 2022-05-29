@@ -5,15 +5,16 @@ import {emailValidation,numberValidation,maxLengthValidation} from "../../utils/
 import './GeneralData.scss';
 
 
-export default function GeneralData ({data, setData, imStudent=true,isSaved}) {
+export default function GeneralData ({data, setData, imStudent=true,isSaved,correctoFormato,setCorrectoFormato}) {
     const {generalData} = data;
     const handleChange = (e) => {
-        console.log("En el handleChange el es es: ",e);
         if(e.target.name==="personalEmail"){
             if(emailValidation(e.target)){
                 e.target.classList.add("success");
+                setCorrectoFormato(true);
             }else{
                 e.target.classList.add("error");
+                setCorrectoFormato(false);
             }
             setData({
                 ...data,
@@ -21,12 +22,12 @@ export default function GeneralData ({data, setData, imStudent=true,isSaved}) {
                     ...data.generalData,
                     [e.target.name]: e.target.value
                 }
-            })
-            
+            }) 
         }else{
             if(e.target.name==="cellphone"){
                 if(numberValidation(e.target) && maxLengthValidation(e.target,9)){
                     e.target.classList.add("success");
+                    setCorrectoFormato(true);
                     setData({
                         ...data,
                         generalData: {
@@ -39,8 +40,10 @@ export default function GeneralData ({data, setData, imStudent=true,isSaved}) {
                         e.target.value=data.generalData.cellphone;
                         if(numberValidation(e.target) && maxLengthValidation(e.target,9)){
                             e.target.classList.add("success");
+                            setCorrectoFormato(true);
                         }else{
                             e.target.classList.add("error");
+                            setCorrectoFormato(false);
                         }
                     }else{
                         setData({
@@ -129,7 +132,7 @@ export default function GeneralData ({data, setData, imStudent=true,isSaved}) {
             </div>
             <div className="row rows">
                 <div className="col-sm-4 subtitles">
-                    <div>Teléfono</div>
+                    <div>Teléfono *</div>
                     <Form.Control placeholder="Ingrese su número de celular" 
                         onChange={handleChange}
                         value={generalData.cellphone}
@@ -150,12 +153,18 @@ export default function GeneralData ({data, setData, imStudent=true,isSaved}) {
                     if(e.seccion === "Datos Generales"){
                         var one = 'Ingrese el ';
                         var two = e.nombreCampo;
-                        var texto = one + two;
+                        var texto = one + two+":";
+                        var texto2=texto;
+                        if(e.flag==="opcional"){
+                            texto=texto+ " (Opcional)";
+                        }else{
+                            texto=texto+ " *";
+                        }
                         return (
                             <div key={index}>
                                 <div className="rowsOthers">{texto}</div>
                                 <div className="row rows" style={{"paddingTop":"10px !important"}}>
-                                    <Form.Control placeholder={texto}
+                                    <Form.Control placeholder={texto2}
                                     onChange={handleChangeOthers}
                                     value={e.valorAlumno}
                                     disabled = {isSaved}

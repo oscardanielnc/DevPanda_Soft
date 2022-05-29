@@ -4,13 +4,14 @@ import {emailValidation,numberValidation,maxLengthValidation} from "../../utils/
 import './DirectBoss.scss';
 
 
-export default function DirectBoss ({data, setData, notgrabado}) {
+export default function DirectBoss ({data, setData, notgrabado,correctoFormato,setCorrectoFormato}) {
     const {aboutBoss} = data;
 
     const handleChange = (e) => {
         if(e.target.name==="cellphone"){
             if(numberValidation(e.target)&& maxLengthValidation(e.target,9)){
                 e.target.classList.add("success");
+                setCorrectoFormato(true);
                 setData({
                     ...data,
                     aboutBoss: {
@@ -23,8 +24,10 @@ export default function DirectBoss ({data, setData, notgrabado}) {
                     e.target.value=data.aboutBoss.cellphone;
                     if(numberValidation(e.target) && maxLengthValidation(e.target,9)){
                         e.target.classList.add("success");
+                        setCorrectoFormato(true);
                     }else{
                         e.target.classList.add("error");
+                        setCorrectoFormato(false);
                     }
                 }else{
                     setData({
@@ -41,8 +44,10 @@ export default function DirectBoss ({data, setData, notgrabado}) {
             if(e.target.name==="email"){
                 if(emailValidation(e.target)){
                     e.target.classList.add("success");
+                    setCorrectoFormato(true);
                 }else{
                     e.target.classList.add("error");
+                    setCorrectoFormato(false);
                 }
                 setData({
                     ...data,
@@ -90,7 +95,7 @@ export default function DirectBoss ({data, setData, notgrabado}) {
              </nav>
             <div className="row rows">
                 <div className="col-sm-6 subtitles">
-                    <div>Nombre del Responsable/Tutor</div>
+                    <div>Nombre del Responsable/Tutor: *</div>
                     <Form.Control placeholder="Escriba el nombre del responable/tutor" 
                         onChange={handleChange}
                         disabled={notgrabado}
@@ -98,7 +103,7 @@ export default function DirectBoss ({data, setData, notgrabado}) {
                         name="name"/>
                 </div>
                 <div className="col-sm-6 subtitles">
-                    <div>Área o Departamento</div>
+                    <div>Área o Departamento: *</div>
                     <Form.Control placeholder="Escriba el área o departamento del responble/tutor" 
                         onChange={handleChange}
                         value={aboutBoss.area}
@@ -108,7 +113,7 @@ export default function DirectBoss ({data, setData, notgrabado}) {
             </div>
             <div className="row rows" >
                 <div className="col-sm-6 subtitles">
-                    <div>Correo</div>
+                    <div>Correo: *</div>
                     <Form.Control placeholder="Ingrese el correo de su jefe directo" 
                         onChange={handleChange}
                         value={aboutBoss.email}
@@ -116,7 +121,7 @@ export default function DirectBoss ({data, setData, notgrabado}) {
                         name="email"/>
                 </div>
                 <div className="col-sm-6 subtitles">
-                    <div>Teléfono</div>
+                    <div>Teléfono: *</div>
                     <Form.Control placeholder="Ingrese el número de celular" 
                         onChange={handleChange}
                         value={aboutBoss.cellphone}
@@ -129,12 +134,18 @@ export default function DirectBoss ({data, setData, notgrabado}) {
                     if(e.seccion === "Sobre el jefe"){
                         var one = 'Ingrese el ';
                         var two = e.nombreCampo;
-                        var texto = one + two;
+                        var texto = one + two+":";
+                        var texto2=texto;
+                        if(e.flag==="opcional"){
+                            texto=texto+ " (Opcional)";
+                        }else{
+                            texto=texto+ " *";
+                        }
                         return (
                             <div key={index}>
                                 <div className="rowsOthers">{texto}</div>
                                 <div className="row rows" style={{"paddingTop":"10px !important"}}>
-                                    <Form.Control placeholder={texto}
+                                    <Form.Control placeholder={texto2}
                                     onChange={handleChangeOthers}
                                     value={e.valorAlumno}
                                     disabled = {notgrabado}
