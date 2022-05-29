@@ -49,7 +49,7 @@ export default function MeetingsManegement() {
                             newHourClicked = newH
                             return newH
                         }else if(h.state===4){
-                            setHourModalSelected(hour.idAlumno)
+                            setHourModalSelected(hour)
                             setShow(true)
                         }
                     }
@@ -83,7 +83,7 @@ export default function MeetingsManegement() {
         callSchedule()
     }
     const saveEditedHorario = () => {
-        if(hourSelecteds.length>0) { //si exsite el estado, no es un objeto vacio
+        if(hourSelecteds.length>0) { //si existe el estado, no es un objeto vacio
             const dummy = hourSelecteds.filter(function(value, index, arr){
                 return isNotEmptyObj(value)
             });
