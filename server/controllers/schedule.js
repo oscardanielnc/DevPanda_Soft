@@ -260,12 +260,7 @@ function getMeetingByAlumno(req, res) {
                 message: "Error inesperado en el servidor"
             })
         }
-        else if(result.length === 0) {
-            res.status(404).send({
-                success: false,
-                message: "No se han encontrado reuniones para este Alumno"
-            })
-        } else {
+        else {
             const data = [];
             var hasMeeting = false;
             var meeting = null;

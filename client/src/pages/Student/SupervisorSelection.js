@@ -3,12 +3,13 @@ import LayoutBasic from "../../layouts/LayoutBasic";
 import SupervisorSelector from "../../components/ImageSelector/SupervisorSelector"
 import './scss/SupervisorSelection.scss';
 import Timetable from "../../components/Timetable/Timetable";
-import { Button } from "react-bootstrap";
-import {changeOneHourSchedule, getSupervisorScheduleApi, searchAssessorsBySpecialty} from "../../api/schedule"
+import { Alert, Button } from "react-bootstrap";
+import {changeOneHourSchedule, getMeetingByStudent, getSupervisorScheduleApi, searchAssessorsBySpecialty} from "../../api/schedule"
 import useAuth from "../../hooks/useAuth";
 import {ToastContainer, toast} from "react-toastify";
 import { isNotEmptyObj } from "../../utils/objects";
 import PandaLoaderPage from "../General/PandaLoaderPage";
+import Loading from "../General/PandaLoading";
 
 
 export default function SupervisorSelection () {
@@ -17,37 +18,72 @@ export default function SupervisorSelection () {
     const [schedule, setSchedule] = useState([]);
     const [hourSelecteds, setHourSelecteds] = useState([]);
     const [loading, setLoading] = useState(false);
-    const [isEdditing, setIsEdditing] = useState(false);
+    const [scheduledMeeting, setScheduledMeeting] = useState(null);
+    const [hasMeeting, setHasMeeting] = useState(true);
 
     useEffect(() => {
-        viewDidLoad()
-     }, [setSupervisores])
-
-
-    const viewDidLoad = () => {
-        setLoading(true);
-        const fetchRequest = async () => {
-            const result = await searchAssessorsBySpecialty(user.fidEspecialidad);
-            if(result.success) {
-                setSupervisores(result.supervisors);
-                setLoading(false);
+        console.log("Obtener si tiene reuniones")
+        setLoading(true)
+        getMeetingByStudent(user.idPersona).then(response => {
+            setLoading(false)
+            if (response.success){
+                setScheduledMeeting(response.meeting)
+            }else{
+                setScheduledMeeting(null)
             }
-        }
-        fetchRequest()
-    }
+            setHasMeeting(response.hasMeeting ?? false)
+        })
+    }, [hasMeeting])
 
+    useEffect(() => {
+        console.log("Obtener supervisores")
+        setLoading(true);
+        setSupervisores([])
+        searchAssessorsBySpecialty(user.fidEspecialidad).then( result =>{
+            if(result.success) {
+                setLoading(false);
+                const dummy = result.supervisors.map( supervisor => {
+                    if (scheduledMeeting !== null){
+                        if(scheduledMeeting, scheduledMeeting.fidAsesor, scheduledMeeting.fidAsesor === supervisor.id){
+                            supervisor.isSelected = true;
+                            getSchedule(supervisor.id)
+                        }
+                    }
+                    return supervisor
+                })
+                setSupervisores(dummy);
+            }
+        })
+     }, [scheduledMeeting])
+
+
+
+    const showToast = ( msg, state = "warning") => {
+        toast[state](msg, {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+        });
+    }
     const getSchedule = (idSup) => {
-        setIsEdditing(false)
+        console.log("Obtener horario de supervisor", idSup)
+        setScheduleBy([])
+        setHourSelecteds([])
+        setLoading(true);
         getSupervisorScheduleApi(idSup).then(response => {
+            setLoading(false);
             if(response.success) {
                 setScheduleBy(response.schedule)
             }
         })
     }
-    console.log(hourSelecteds)
     const handleClickCell = (hour, indexDay, indexHour) => {
         let newHourClicked = {}
-        if (!isEdditing) return;
+        if (hasMeeting) return;
 
         const newSchude = schedule.map((day, index) => {
             const newHours = day.hours.map((h, i) => {
@@ -82,16 +118,14 @@ export default function SupervisorSelection () {
     }
 
     const setScheduleBy = (schedule) => {
-        var isEddited = false
         const dummy = schedule.map((day, index) => {
             const newHours = day.hours.map((h, i) => {
-                    if(h.state===4 && h.idAlumno === user.idPersona) {
+                    if(h.state===4 && h.idAlumno === user.idPersona && h.id === scheduledMeeting.idHorario) {
                         const newH = {
                             state: 3,
                             idAlumno: h.idAlumno,
                             id: h.id
                         }
-                        isEddited = true
                         return newH
                     }
                     return h
@@ -102,18 +136,9 @@ export default function SupervisorSelection () {
                 hours: newHours
             }
         })
-        setIsEdditing(!isEddited)
         setSchedule(dummy)
     }
-    // const isSomeHourSelected = () => {
-    //     let isSelected = false
-    //     schedule.forEach(day => {
-    //         day.hours.forEach(hour => {
-    //             if(hour.state===3) isSelected = true
-    //         })
-    //     })
-    //     return isSelected
-    // }
+    
     const getIdSupervisorSelected = () => {
         let id = null
         supervisores.forEach(item => {
@@ -125,6 +150,9 @@ export default function SupervisorSelection () {
     }
 
     const insertHorario = () => {
+        if(hasMeeting){
+            showToast("Ya tienes una reunion programada", "warning")
+        }
         if(schedule.length>0) {
             const hourInArr = hourSelecteds[0];
             if(hourSelecteds.length>0 && isNotEmptyObj(hourInArr)) {
@@ -137,29 +165,20 @@ export default function SupervisorSelection () {
                     }
                 ]
 
+                setLoading(true);
                 changeOneHourSchedule(arrHours).then(response => {
-                    const resultState = response.success? "success": "error";
-                    toast[resultState](response.msg, {
-                        position: "top-right",
-                        autoClose: 3000,
-                    });
-                    viewDidLoad()
+                    setLoading(false);
+                    showToast(response.msg, response.success? "success": "error")
+                    setHasMeeting(true)
                 })
             } else {
-                toast.warning("No tiene ningun horario seleccionado!", {
-                    position: "top-right",
-                    autoClose: 3000,
-                });
+                showToast("No tiene ningun horario seleccionado!", "warning")
             }
         } else {
-            toast.warning("No tiene ningun supervisor seleccionado!", {
-                position: "top-right",
-                autoClose: 3000,
-            });
+            showToast("No tiene ningun supervisor seleccionado!", "warning")
         }
     }
 
-    if(loading) return <PandaLoaderPage type="e"/>
     return(
         <LayoutBasic>
             <ToastContainer />
@@ -167,25 +186,30 @@ export default function SupervisorSelection () {
                 <div className="row rows">
                     <h1>Elección de Supervisor</h1>
                 </div>
-                <div className="row" style={{marginLeft: "1.3em"}}>
-                    <p style={{marginTop:"10px"}}>
-                    Elige al asesor que prefieras para ver su disponibilidad.
-                    </p>
-                </div>
-                <div className="row rows">     
-                    <SupervisorSelector supervisores={supervisores} setSupervisores={setSupervisores} getSchedule={getSchedule}/>
-                </div>
-                <div className="row rows">
-                    <Timetable inputs={schedule} setInputs={setSchedule} 
-                        setHourSelecteds={setHourSelecteds} 
-                        hourSelecteds={hourSelecteds} handleClickCell={handleClickCell}
-                        />
-                </div>
-                <div className="row rows boton">
-                    {
-                        isEdditing && <Button className="btn btn-primary" style={{width:"40%"}} onClick={insertHorario}>Agendar</Button>
-                    }
-                </div>
+                { hasMeeting && scheduledMeeting && <Alert key={'warning'} variant={'warning'}>Recuerda que tienes una reunion con tu supervisor, programada para el {scheduledMeeting.fecha} a las {scheduledMeeting.hora-1}:00</Alert>}
+                
+                {
+                    supervisores &&
+                    <><div className="row" style={{ marginLeft: "1.3em" }}>
+                        { !hasMeeting && <p style={{ marginTop: "10px" }}>
+                            Elige al asesor que prefieras para ver su disponibilidad.
+                        </p>}
+                    </div>
+                    <div className="row rows">
+                        <SupervisorSelector supervisores={supervisores} setSupervisores={setSupervisores} getSchedule={getSchedule} disable={hasMeeting}/>
+                    </div></>
+                }{
+                    !loading && schedule.length > 0 && <><div className="row rows">
+                        <Timetable inputs={schedule} setInputs={setSchedule}
+                            setHourSelecteds={setHourSelecteds}
+                            hourSelecteds={hourSelecteds} handleClickCell={handleClickCell} />
+                    </div><div className="row rows boton">
+                        {!hasMeeting && <Button className="btn btn-primary" style={{ width: "40%" }} onClick={insertHorario}>Agendar</Button>}
+                    </div></>
+                }
+                {
+                    loading && <div className="row rows"><Loading/></div>
+                }
             </div>     
         </LayoutBasic>        
     )
