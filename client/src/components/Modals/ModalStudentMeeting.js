@@ -109,7 +109,16 @@ export default function ModalStudentMeeting (props) {
         }
      }, [props])
      
-
+    const copyEmail = () => {
+        if (!student.email) return
+        navigator.clipboard.writeText(student.email)
+        showToast("Email copiado", "success")
+    }
+    const sendEmail = () => {
+        if (!student.email) return
+        // Se abre link en navegador externo
+        window.open(`mailto:${student.email}`,'_self');
+    }
     const openMeetingLink = () => {
         if (!hourModalSelected.link) return
         // Si no contiene el http le agregamos
@@ -143,7 +152,18 @@ export default function ModalStudentMeeting (props) {
                     { student.code && <InputLabel name="Codigo PUCP" value={student.code} readOnly/> }
                     { student.firstname && <InputLabel name="Nombres" value={student.firstname} readOnly/> }
                     { student.lastname && <InputLabel name="Apellidos" value={student.lastname} readOnly/>}
-                    { student.email &&<InputLabel name="Correo" value={student.email} readOnly/>}
+                    { student.email && 
+                        <Form.Group className="modalStudentManagement__formGroup">
+                            <Form.Label className="modalStudentManagement__formGroup-label">
+                                Correo: 
+                            </Form.Label>
+                            <InputGroup className="mb-3">
+                                <Form.Control className="modalStudentManagement__formGroup-input" type="text" value={student.email} readOnly/>
+                                <Button variant="outline-secondary" id="button-addon2" onClick={copyEmail}> Copiar </Button>
+                                <Button variant="outline-secondary" id="button-addon2" onClick={sendEmail}> Enviar correo </Button>
+                            </InputGroup>
+                        </Form.Group> 
+                    }
                     <Form.Group className="modalStudentManagement__formGroup">
                         <Form.Label className="modalStudentManagement__formGroup-label">Link de reunion: </Form.Label>
                         <InputGroup className="mb-3">
