@@ -19,7 +19,8 @@ export default function ModalBasic (props) {
             <Modal.Body>
                 {children}
             </Modal.Body>
-            <Modal.Footer>
+            {
+            secundaryAction && primaryAction && <Modal.Footer>
                 {
                 secundaryAction && 
                 <Button variant="secondary" onClick={()=>setShow(false)}>
@@ -33,6 +34,7 @@ export default function ModalBasic (props) {
                 </Button>
                 }
             </Modal.Footer>
+            }
         </Modal>
     )
 }

@@ -241,10 +241,64 @@ function getDay(date) {
 }
 
 
+function getMeetingByAlumno(req, res) {
+    //Busca una lista de horarios segun un alumno
+    const connection = mysql.createConnection(MYSQL_CREDENTIALS);
+
+    const {idStudent} = req.params;
+
+    const sqlQuery = `SELECT * FROM HorarioDisponibilidad
+                        WHERE idAlumno = ${idStudent} AND activo = 1;`
+
+    connection.connect(err => {
+        if (err) throw err;
+    });
+    connection.query(sqlQuery, (err, result) => {
+        if (err) {
+            res.status(505).send({
+                success: false,
+                message: "Error inesperado en el servidor"
+            })
+        }
+        else {
+            const data = [];
+            var hasMeeting = false;
+            var meeting = null;
+
+            const dataOrdered = result.sort((a,b) => {
+                const fechaA = a.fecha
+                const fechaB = b.fecha
+                const horaA = a.hora
+                const horaB = b.hora
+                const auxArrA = fechaA.split('-');
+                const numA = Number(auxArrA[2])*1000000 + Number(auxArrA[1])*10000 + Number(auxArrA[0])*100 + horaA
+                const auxArrB = fechaB.split('-');
+                const numB = Number(auxArrB[2])*1000000 + Number(auxArrB[1])*10000 + Number(auxArrB[0])*100 + horaB
+                if(numA>numB) return 1
+                else if(numA<numB) return -1
+                return 0
+            })
+            if (dataOrdered.length > 0){
+                meeting = dataOrdered[0]
+                hasMeeting = true
+            }
+
+            res.status(200).send({
+                success: true,
+                hasMeeting: hasMeeting,
+                meeting: meeting
+            })
+        }
+    });
+
+    connection.end();
+}
+
 module.exports = {
     changeHoursSchedule,
     getSupervisorSchedule,
     getSupervisorsBySpecialty,
     getStudentDate,
-    updateMeetingLink
+    updateMeetingLink,
+    getMeetingByAlumno
 }
