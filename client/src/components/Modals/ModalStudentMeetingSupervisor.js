@@ -99,7 +99,7 @@ export default function ModalStudentMeetingSupervisor (props) {
                 setLoading(false)
                 if(response.success) {
                     setStudent(response.student)
-                    getDocumentsByStudent(response.student.code)
+                    getDocumentsByStudent(hourModalSelected.idAlumno)
                 }
             })
         }else{

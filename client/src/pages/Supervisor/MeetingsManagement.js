@@ -41,7 +41,7 @@ export default function MeetingsManegement() {
         callSchedule()
     }, [setSchedule])
     
-    if(user.tipoPersonal === "S" && idSupervisor!== user.idPersona)
+    if(!(user.tipoPersonal === "S" && idSupervisor!== user.idPersona))
         return <ForbiddenPage />
         
     const handleClickCell = (hour, indexDay, indexHour) => {

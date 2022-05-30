@@ -101,7 +101,7 @@ const routes = [
     },
     // Supervisor
     {
-        path: "/meetings-management/permissions=SC&idSupervisor=:idSupervisor&idProcess=:idProcess",
+        path: "/meetings-management/permissions=S&idSupervisor=:idSupervisor&idProcess=:idProcess",
         exact: true,
         component: MeetingsManagement,//cambiar acá
     },
