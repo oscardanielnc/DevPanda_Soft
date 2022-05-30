@@ -45,7 +45,7 @@ export default function ModalStudentMeetingStudent (props) {
     }
 
     
-    const getDocumentsOfExample = () => { //1-1-ESUP-20172585
+    const getDocumentsOfExample = () => { //1-1-ESUP-1
         console.log(`CONSULTANDO documentos de ejemplo de ESUP`)
         setLoading(true)
         getAllDocsApi(`1-${user.fidEspecialidad}-ESUP`, 0).then(response => {
@@ -55,7 +55,7 @@ export default function ModalStudentMeetingStudent (props) {
             }
         })
     }
-    const getDocumentsByStudent = ( code ) => { //1-1-ESUP-20172585
+    const getDocumentsByStudent = ( code ) => { //1-1-ESUP-1
         if (code === null) return;
         console.log(`CONSULTANDO documentos de ESUP ${code}`)
         setLoading(true)
@@ -101,7 +101,7 @@ export default function ModalStudentMeetingStudent (props) {
     const copyEmail = () => {
         if (!supervisor.email) return
         navigator.clipboard.writeText(supervisor.email)
-        showToast("Email copiado", "success")
+        showToast("Correo copiado", "success")
     }
     const sendEmail = () => {
         if (!supervisor.email) return
@@ -141,7 +141,7 @@ export default function ModalStudentMeetingStudent (props) {
     return ( 
         <ModalBasic show={show}
             setShow={setShow}
-            title="Detalle de reunion"
+            title="Detalle de reunión"
         >
             <ToastContainer />  
             {
@@ -152,7 +152,7 @@ export default function ModalStudentMeetingStudent (props) {
             {
                 !loading && (supervisor.code > 0) &&
                 <Form className="modalStudentManagement">
-                    { hourModalSelected && <Alert key={'warning'} variant={'info'}>Reunion programada para el {hourModalSelected.fecha} a las {hourModalSelected.hora-1}:00</Alert>}
+                    { hourModalSelected && <Alert key={'warning'} variant={'info'}>Reunión programada para el {hourModalSelected.fecha} a las {hourModalSelected.hora-1}:00</Alert>}
                     { (supervisor.firstname || supervisor.lastname) && <InputLabel name="Supervisor" value={`${supervisor.firstname} ${supervisor.lastname}`} readOnly/> }
                     { supervisor.email && 
                         <Form.Group className="modalStudentManagement__formGroup">
@@ -167,7 +167,7 @@ export default function ModalStudentMeetingStudent (props) {
                         </Form.Group> 
                     }
                     { !(studentDocs.length<maxFiles) && <Form.Group className="modalStudentManagement__formGroup">
-                        <Form.Label className="modalStudentManagement__formGroup-label">Link de reunion: </Form.Label>
+                        <Form.Label className="modalStudentManagement__formGroup-label">Enlace de reunión: </Form.Label>
                         <InputGroup className="mb-3">
                             <FormControl value={hourModalSelected.link} readOnly/>
                             {
@@ -179,7 +179,7 @@ export default function ModalStudentMeetingStudent (props) {
                     <div>
                         { docs.length > 0 && <ShowFiles docs={docs} /> }
                         <FileManagement canUpload={studentDocs.length<maxFiles} docs={studentDocs} maxFiles={maxFiles} fileList={fileList} setFileList={setFileList}/>
-                        { studentDocs.length<maxFiles && <Alert key={'warning'} variant={'warning'}>Recuerda subir la constancia de consentimiento informado antes de la reunion.</Alert>}
+                        { studentDocs.length<maxFiles && <Alert key={'warning'} variant={'warning'}>Recuerda subir la constancia de consentimiento informado antes de la reunión.</Alert>}
                         {(studentDocs.length<maxFiles) && <Button className="btn btn-primary" style={{margin: "5px 0"}} onClick={deliver}>Subir consentimiento informado</Button>}
                     </div>
                     
@@ -189,7 +189,7 @@ export default function ModalStudentMeetingStudent (props) {
             }
             {
                 !loading && !(supervisor.code > 0)  &&
-                <p>Este horario no tiene datos del supervisor, Consulte con el equipo de Soporte</p>
+                <p>Este horario no tiene datos del supervisor, Consulte con el equipo de soporte.</p>
             }
         </ModalBasic>
     )

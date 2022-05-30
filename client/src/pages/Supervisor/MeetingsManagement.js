@@ -115,7 +115,7 @@ export default function MeetingsManegement() {
                 }
             })
         } else {
-            toast.warning("No ha realizado cambios", {
+            toast.warning("No ha realizado cambios.", {
                 position: "top-right",
                 autoClose: 3000,
                 hideProgressBar: false,
@@ -151,7 +151,7 @@ export default function MeetingsManegement() {
                             {/* <Button className="btn btn-primary" style={{width:"40%"}} onClick={saveEditedHorario} hidden={!isEdditing}>Guardar</Button> */}
                             <Button className="btn btn-primary" style={{ width: "40%" }} onClick={saveEditedHorario}>Guardar</Button>
                             {/* <Button className="btn btn-secondary" style={{width:"100px", marginLeft: "10px"}} onClick={cancelEditedHorario} hidden={!isEdditing}>Limpiar modificaciones</Button> */}
-                            <Button className="btn btn-secondary" style={{ width: "40%", marginLeft: "10px" }} onClick={cancelEditedHorario}>Limpiar modificaciones</Button>
+                            <Button className="btn btn-secondary" style={{ width: "40%", marginLeft: "10px" }} onClick={cancelEditedHorario}>Limpiar modificaciones / Refrescar</Button>
                         </div></>
                     }
                 </div>

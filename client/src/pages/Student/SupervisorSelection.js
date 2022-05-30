@@ -163,7 +163,7 @@ export default function SupervisorSelection () {
 
     const insertHorario = () => {
         if(hasMeeting){
-            showToast("Ya tienes una reunion programada", "warning")
+            showToast("Ya tienes una reunión programada.", "warning")
         }
         if(schedule.length>0) {
             const hourInArr = hourSelecteds[0];
@@ -184,10 +184,10 @@ export default function SupervisorSelection () {
                     setHasMeeting(true)
                 })
             } else {
-                showToast("No tiene ningun horario seleccionado!", "warning")
+                showToast("No tiene ningún horario seleccionado.", "warning")
             }
         } else {
-            showToast("No tiene ningun supervisor seleccionado!", "warning")
+            showToast("No tiene ningún supervisor seleccionado", "warning")
         }
     }
 
@@ -197,9 +197,9 @@ export default function SupervisorSelection () {
             <ModalStudentMeetingStudent show={show} setShow={setShow} hourModalSelected={scheduledMeeting}/>
             <div className='container principal'>
                 <div className="row rows">
-                    <h1>Elección de Supervisor</h1>
+                    <h1>Elección de supervisor</h1>
                 </div>
-                { hasMeeting && scheduledMeeting && <Alert key={'warning'} variant={'warning'}>Recuerda que tienes una reunion con tu supervisor, programada para el {scheduledMeeting.fecha} a las {scheduledMeeting.hora-1}:00</Alert>}
+                { hasMeeting && scheduledMeeting && <Alert key={'warning'} variant={'warning'}>Recuerda que tienes una reunión con tu supervisor, programada para el {scheduledMeeting.fecha} a las {scheduledMeeting.hora-1}:00</Alert>}
                 
                 {
                     supervisores &&
