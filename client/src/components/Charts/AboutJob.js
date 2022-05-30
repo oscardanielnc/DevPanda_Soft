@@ -4,7 +4,7 @@ import { Button, Table,Form,InputGroup,FormControl } from 'react-bootstrap';
 import './AboutJob.scss';
 
 
-export default function AboutJob ({data, setData, notgrabado}) {
+export default function AboutJob ({data, setData, notgrabado,correctoFormato,setCorrectoFormato}) {
     const {aboutJob} = data;
 
     const handleChange = (e) => {
@@ -44,7 +44,7 @@ export default function AboutJob ({data, setData, notgrabado}) {
              </nav>
             <div className="row rows">
                 <div className="col-sm-6 subtitles">
-                    <div>Nombre del Área</div>
+                    <div>Nombre del Área: *</div>
                     <Form.Control placeholder="Escriba el nombre del área" 
                         onChange={handleChange}
                         disabled={notgrabado}
@@ -52,7 +52,7 @@ export default function AboutJob ({data, setData, notgrabado}) {
                         name="areaName"/>
                 </div>
                 <div className="col-sm-6 subtitles">
-                    <div>Puesto</div>
+                    <div>Puesto: *</div>
                     <Form.Control placeholder="Escriba el puesto a desempeñar" 
                         onChange={handleChange}
                         disabled={notgrabado}
@@ -61,7 +61,7 @@ export default function AboutJob ({data, setData, notgrabado}) {
                 </div>
             </div>
             <div className="row rows" >
-                <div>Funciones Actividades</div>
+                <div>Funciones Actividades: *</div>
                 
                 <Form.Control className="Cuadro" style={{"marginLeft": "0px"}}
                     placeholder="Describa la funcion principal de su puesto y las actividades principales a desarrollar." 
@@ -78,12 +78,18 @@ export default function AboutJob ({data, setData, notgrabado}) {
                     if(e.seccion === "Sobre el puesto"){
                         var one = 'Ingrese el ';
                         var two = e.nombreCampo;
-                        var texto = one + two;
+                        var texto = one + two+":";
+                        var texto2=texto;
+                        if(e.flag==="opcional"){
+                            texto=texto+ " (Opcional)";
+                        }else{
+                            texto=texto+ " *";
+                        }
                         return (
                             <div key={index}>
                                 <div className="rowsOthers">{texto}</div>
                                 <div className="row rows" style={{"paddingTop":"10px !important"}}>
-                                    <Form.Control placeholder={texto}
+                                    <Form.Control placeholder={texto2}
                                     onChange={handleChangeOthers}
                                     value={e.valorAlumno}
                                     disabled = {notgrabado}
