@@ -48,7 +48,7 @@ export default function TableDeliverables ({rows, idProcess=1, phase="ENTS"}) {
                         <td>{row.nameDeiverable}</td>
                         <td>{getState(row.estado)}</td>
                         <td>
-                        <Link to ={`/deliverables/idStudent=${user.idPersona}&idProcess=${user.idProceso}&code=${row.code}`} 
+                        <Link to ={`/deliverable/idStudent=${user.idPersona}&code=${row.code}`} 
                             className= "btn btn-primary">Visualizar</Link>
                         </td>
                     </tr>

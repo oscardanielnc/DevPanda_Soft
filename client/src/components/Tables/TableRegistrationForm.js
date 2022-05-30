@@ -33,7 +33,7 @@ export default function TableRegistrationForm ({rows, idProcess=1, phase="FINS"}
                         <td>{row.nombreAlumno}</td>
                         <td>{row.estado}</td>
                         <td>
-                        <Link to ={`/inscription/idStudent=${row.idAlumno}&idProcess=${idProcess}&phase=${phase}`} 
+                        <Link to ={`/inscription/idStudent=${row.idAlumno}&phase=${phase}`} 
                             className= "btn btn-primary">Visualizar</Link>
                         </td>
                     </tr>
