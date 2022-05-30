@@ -488,7 +488,7 @@ function getListStudentsInscriptionForm(req, res){
 function getListOfCountry(req, res){
     const connection = mysql.createConnection(MYSQL_CREDENTIALS);
 
-    const sqlQuery = `SELECT * FROM Pais`;
+    const sqlQuery = `SELECT * FROM Pais ORDER BY nombrePais`;
 
     connection.connect(err => {
         if (err) throw err;
@@ -515,7 +515,7 @@ function getListOfCountry(req, res){
 function getListOfLineBusiness(req, res){
     const connection = mysql.createConnection(MYSQL_CREDENTIALS);
 
-    const sqlQuery = `SELECT * FROM LineaNegocio`;
+    const sqlQuery = `SELECT * FROM LineaNegocio ORDER BY nombreLineaNegocio`;
 
     connection.connect(err => {
         if (err) throw err;
