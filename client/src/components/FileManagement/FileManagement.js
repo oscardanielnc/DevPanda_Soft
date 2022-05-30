@@ -48,7 +48,7 @@ export default function FileManagement ({canUpload=true, docs, maxFiles=2, fileL
             {
                 (docs && docs.length>0) && ( 
                     <>
-                    <h2>
+                    <h2 className="headUpload">
                         {
                             titleUploadedFiles
                         }

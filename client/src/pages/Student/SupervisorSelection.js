@@ -94,7 +94,8 @@ export default function SupervisorSelection () {
                         const newH = {
                             state: 3,
                             idAlumno: hour.idAlumno,
-                            id: hour.id
+                            id: hour.id,
+                            link: hour.link
                         }
                         newHourClicked = newH
                         return newH
@@ -106,7 +107,8 @@ export default function SupervisorSelection () {
                     else if (h.state===3) return {
                         state: 2,
                         idAlumno: hour.idAlumno,
-                        id: h.id
+                        id: h.id,
+                        link: h.link
                     }
                     return h
                 })
@@ -133,7 +135,8 @@ export default function SupervisorSelection () {
                         const newH = {
                             state: 3,
                             idAlumno: h.idAlumno,
-                            id: h.id
+                            id: h.id,
+                            link: h.link
                         }
                         return newH
                     }
