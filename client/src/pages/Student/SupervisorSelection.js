@@ -173,7 +173,8 @@ export default function SupervisorSelection () {
                         state: 4,
                         idAsesor: getIdSupervisorSelected(),
                         id: hourInArr.id,
-                        idAlumno: user.idPersona
+                        idAlumno: user.idPersona,
+                        idProcess: user.fidProceso
                     }
                 ]
 

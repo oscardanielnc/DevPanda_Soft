@@ -70,7 +70,7 @@ export default function ModalStudentManagement (props) {
                             Matriculado: 
                         </Form.Label>
                         <Form.Switch name="enrolled" className="modalStudentManagement__switches-group-input" 
-                            defaultValue={newDataStudent.estadoMatriculado===1} onChange={handleChangeSwitch}/>
+                            defaultChecked={newDataStudent.estadoMatriculado===1} onChange={handleChangeSwitch}/>
                     </Form.Group>
 
                     <Form.Group className="modalStudentManagement__switches-group">
@@ -78,7 +78,7 @@ export default function ModalStudentManagement (props) {
                             Retirado: 
                         </Form.Label>
                         <Form.Switch name="retired" className="modalStudentManagement__switches-group-input"
-                            defaultValue={newDataStudent.estado==='R'} onChange={handleChangeSwitch}/>
+                            defaultChecked={newDataStudent.estado==='R'} onChange={handleChangeSwitch}/>
                     </Form.Group>
                 </div>
                 

@@ -78,12 +78,27 @@ async function singIn(req, res) {
                 } else {
                     const sqlQueryPersonal = `SELECT * FROM PersonalAdministrativo WHERE idPersonal=${preUser.idPersona};`
                     const resultPersonal  = await sqlAsync(sqlQueryPersonal, connection);
+
                     if(resultPersonal.length>0) {
                         const dbPersonal = resultPersonal[0];
-                        const user = {
+
+                        let user = {
                             ...preUser,
                             tipoPersonal: dbPersonal.tipoPersonal,
                             estado: dbPersonal.estado,
+                        }
+                        // seteamos el proceso actual del administrativo
+                        if(dbPersonal.tipoPersonal !== "A") {
+                            const sqlProcess = `SELECT * FROM Proceso WHERE fidEspecialidad=${dbUser.fidEspecialidad} AND procesoActivo=1;`
+                            const resultProcess  = await sqlAsync(sqlProcess, connection);
+
+                            if(resultProcess.length>0) {
+                                const idProcess = resultProcess[0].idProceso;
+                                user = {
+                                    ...user,
+                                    fidProceso: idProcess
+                                }
+                            }
                         }
                         const accessToken = jwt.encode(user, PANDA_KEY);
                         res.status(200).send({accessToken});
@@ -117,81 +132,93 @@ async function signUp(req, res) {
         if (err) throw err;
     });
     try{
-        const sqlQueryPersonas = `SELECT * FROM Persona WHERE correo='${email}'`;
-        const resultPersona  = await sqlAsync(sqlQueryPersonas, connection);
+        // buscamos el proceso vigente
+        const sqlProcess = `SELECT * FROM Proceso WHERE fidEspecialidad=${specialty} AND procesoActivo=1;`
+        const resultProcess  = await sqlAsync(sqlProcess, connection);
 
-        if(resultPersona.length === 0) {
-            const sqlQueryPersona = `INSERT INTO Persona(fidEspecialidad, nombres, apellidos, correo, contrasena, tipoPersona, activo) 
-                                            values(${specialty},'${firstName}','${lastName}','${email}',null,'e',1);`
-            const resultPersona  = await sqlAsync(sqlQueryPersona, connection);
+        if(resultProcess.length>0) {
+            const idProcess = resultProcess[0].idProceso;
 
-            const idPersona = resultPersona.insertId;
-            if(idPersona && idPersona >= 0) {
-                const sqlQueryAlumno = `INSERT INTO Alumno(idAlumno, codigo)
-                                                values(${idPersona},${code});`
-                const resultAlumno  = await sqlAsync(sqlQueryAlumno, connection);
-
-                if(resultAlumno.affectedRows) {
-                    const sqlQueryAlumnoProceso = `INSERT INTO AlumnoProceso(fidProceso, fidAlumno, fidAsesor, nota, grupoAsignado, estado, estadoMatriculado, estadoProceso)
-                                                    values(${specialty}, ${idPersona}, null, null, null, 'C', 0, 1);`
-                    const resultAlumnoProceso  = await sqlAsync(sqlQueryAlumnoProceso, connection);
-
-                    const sqlQueryNavbar = `SELECT * FROM EtapaProceso WHERE fidProceso=${specialty} order by orden;`
-                    const resultNavbar  = await sqlAsync(sqlQueryNavbar, connection);
-                    const navbar = [];
-                    if(resultNavbar.length>0) {
-                        resultNavbar.forEach(e => {
-                            const item = {
-                                code: e.codigo,
-                                title: e.nombre,
-                                order: e.orden
-                            }
-                            navbar.push(item);
-                        })
-                    }
-
-                    if(resultAlumnoProceso.affectedRows) {
-                        const student = {
-                            idPersona: idPersona,
-                            fidEspecialidad: specialty,
-                            nombres: firstName,
-                            apellidos: lastName,
-                            correo: email,
-                            tipoPersona: 'e',
-                            activo: 1,
-                            expire: moment().add(8, 'hours').unix(),
-                            estadoMatriculado: 0,
-                            estadoProceso: 1,
-                            codigo: code,
-                            idAlumnoProceso: resultAlumnoProceso.insertId,
-                            fidProceso: specialty,
-                            fidAsesor: null,
-                            nota: null,
-                            grupoAsignado: null,
-                            estado: 'C',
-                            navbar: navbar
+            const sqlQueryPersonas = `SELECT * FROM Persona WHERE correo='${email}'`;
+            const resultPersona  = await sqlAsync(sqlQueryPersonas, connection);
+    
+            if(resultPersona.length === 0) {
+                const sqlQueryPersona = `INSERT INTO Persona(fidEspecialidad, nombres, apellidos, correo, contrasena, tipoPersona, activo) 
+                                                values(${specialty},'${firstName}','${lastName}','${email}',null,'e',1);`
+                const resultPersona  = await sqlAsync(sqlQueryPersona, connection);
+    
+                const idPersona = resultPersona.insertId;
+                if(idPersona && idPersona >= 0) {
+                    const sqlQueryAlumno = `INSERT INTO Alumno(idAlumno, codigo)
+                                                    values(${idPersona},${code});`
+                    const resultAlumno  = await sqlAsync(sqlQueryAlumno, connection);
+    
+                    if(resultAlumno.affectedRows) {
+                        const sqlQueryAlumnoProceso = `INSERT INTO AlumnoProceso(fidProceso, fidAlumno, fidAsesor, nota, grupoAsignado, estado, estadoMatriculado, estadoProceso)
+                                                        values(${idProcess}, ${idPersona}, null, null, null, 'C', 0, 1);`
+                        const resultAlumnoProceso  = await sqlAsync(sqlQueryAlumnoProceso, connection);
+    
+                        const sqlQueryNavbar = `SELECT * FROM EtapaProceso WHERE fidProceso=${idProcess} order by orden;`
+                        const resultNavbar  = await sqlAsync(sqlQueryNavbar, connection);
+                        const navbar = [];
+                        if(resultNavbar.length>0) {
+                            resultNavbar.forEach(e => {
+                                const item = {
+                                    code: e.codigo,
+                                    title: e.nombre,
+                                    order: e.orden
+                                }
+                                navbar.push(item);
+                            })
                         }
-                        const accessToken = jwt.encode(student, PANDA_KEY);
-                        res.status(200).send({accessToken});
-                        // res.status(200).send({user});
+    
+                        if(resultAlumnoProceso.affectedRows) {
+                            const student = {
+                                idPersona: idPersona,
+                                fidEspecialidad: specialty,
+                                nombres: firstName,
+                                apellidos: lastName,
+                                correo: email,
+                                tipoPersona: 'e',
+                                activo: 1,
+                                expire: moment().add(8, 'hours').unix(),
+                                estadoMatriculado: 0,
+                                estadoProceso: 1,
+                                codigo: code,
+                                idAlumnoProceso: resultAlumnoProceso.insertId,
+                                fidProceso: idProcess,
+                                fidAsesor: null,
+                                nota: null,
+                                grupoAsignado: null,
+                                estado: 'C',
+                                navbar: navbar
+                            }
+                            const accessToken = jwt.encode(student, PANDA_KEY);
+                            res.status(200).send({accessToken});
+                            // res.status(200).send({user});
+                        } else {
+                            res.status(505).send({
+                                message: "Error al tratar de registrar en la tabla AlumnoProceso"
+                            })
+                        }
                     } else {
                         res.status(505).send({
-                            message: "Error al tratar de registrar en la tabla AlumnoProceso"
+                            message: "Error al tratar de registrar en la tabla Alumno"
                         })
                     }
                 } else {
                     res.status(505).send({
-                        message: "Error al tratar de registrar en la tabla Alumno"
+                        message: "Error al tratar de registrar en la tabla Persona"
                     })
                 }
             } else {
                 res.status(505).send({
-                    message: "Error al tratar de registrar en la tabla Persona"
+                    message: "Este usuario ya se encuentra registrado en la base de datos"
                 })
             }
         } else {
             res.status(505).send({
-                message: "Este usuario ya se encuentra registrado en la base de datos"
+                message: "La especialidad en la que intenta registrarse no cuanta con un proceso vigente"
             })
         }
     }catch(e){

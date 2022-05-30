@@ -26,7 +26,6 @@ export default function ModalExcel (props) {
             setNewStudents(news)
         }
     }, [excel])
-    console.log(newStudents)
 
     const isInExcel = std => {
         for(let emailExcel of excel) {

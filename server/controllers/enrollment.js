@@ -37,7 +37,7 @@ async function updateEnrollmentStudents(req, res) {
     });
     try{
         for (let id of arrStudents) {
-            const sqlQuery = `UPDATE AlumnoProceso SET estadoMatriculado=1 WHERE fidAlumno=${id} AND fidProceso=${fidProceso};`
+            const sqlQuery = `UPDATE AlumnoProceso SET estadoProceso=estadoProceso+1, estadoMatriculado=1 WHERE fidAlumno=${id} AND fidProceso=${fidProceso};`
             await sqlAsync(sqlQuery, connection);
         }
         res.status(200).send({ 

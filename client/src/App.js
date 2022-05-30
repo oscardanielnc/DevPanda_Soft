@@ -21,7 +21,7 @@ function App() {
           ))}
         </Routes>
       </Router>
-    </AuthProvider>
+    </AuthProvider> 
 
   );
 }
