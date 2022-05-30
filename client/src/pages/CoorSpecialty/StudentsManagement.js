@@ -5,9 +5,9 @@ import TableEnrollment from "../../components/Tables/TableEnrollment";
 import "./scss/StudentsManagement.scss";
 import { selectStudentsByProcessSpecialtyApi } from "../../api/enrollment";
 import ModalStudentManagement from "../../components/Modals/ModalStudentManagement";
-import { useParams } from "react-router-dom";
 import ModalExcel from "../../components/Modals/ModalExcel";
 import { ToastContainer } from "react-toastify";
+import useAuth from "../../hooks/useAuth";
 
 const states = [
     {
@@ -85,7 +85,8 @@ let textFilter = ""
 let textSelect = "-1"
 
 export default function StudentsManagement () {
-    const idProcess = Number(useParams().idProcess);
+    const {user} = useAuth();
+    const idProcess = user.fidProceso;
     const [show, setShow] = useState(false);
     const [showExcel, setShowExcel] = useState(false);
     const [alumnos, setAlumnos] = useState([]);

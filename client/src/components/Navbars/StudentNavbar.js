@@ -10,7 +10,7 @@ function StudentNavbar () {
 
     useEffect(()=> {
         const dataNavbar = [];
-        const link = `/welcome-process/idStudent=${user.idPersona}&idProcess=${user.fidProceso}&phase=WPRO`;
+        const link = `/welcome-process/idStudent=${user.idPersona}&phase=WPRO`;
         const wpro = {
             code: "WPRO",
             title: "Inicio del proceso",
@@ -39,7 +39,7 @@ function StudentNavbar () {
             case "IFIN": name="/final-report"; break;
             default: name="/deliverables"; break;
         }
-        return `${name}/idStudent=${user.idPersona}&idProcess=${user.fidProceso}&phase=${code}`
+        return `${name}/idStudent=${user.idPersona}&phase=${code}`
     }
     const getColorClassItem = position => {
         const currentPhase = user.estadoProceso;

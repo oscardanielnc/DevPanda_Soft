@@ -43,23 +43,23 @@ const routes = [
     },
     //Coordinador FACI
     {
-        path: "/list-students-agreement/permissions=EF&idProcess=:idProcess",
+        path: "/list-students-agreement/permissions=EF",
         exact: true,
         component: ListStudentsRequests,
     },
     {
-        path: "/list-inscriptions-form/permissions=EF&idProcess=:idProcess",
+        path: "/list-inscriptions-form/permissions=EF",
         exact: true,
         component: ListRegistrationForm,
     },
     {
-        path: "/agreement-review/permissions=EF&idStudent=:idStudent&idProcess=:idProcess",
+        path: "/agreement-review/permissions=EF&idStudent=:idStudent",
         exact: true,
         component: AgreementReview,
     },
     // Coordinador especialidad
     {
-        path: "/students-management/permissions=E&idProcess=:idProcess",
+        path: "/students-management/permissions=E",
         exact: true,
         component: StudentsManagement,
     },
@@ -79,7 +79,7 @@ const routes = [
         component: SupervisorsManagement,
     },
     {
-        path: "/list-students-requests/permissions=E&idProcess=:idProcess",
+        path: "/list-students-requests/permissions=E",
         exact: true,
         component: ListAgreementsRequests,
     },
@@ -106,48 +106,48 @@ const routes = [
         component: MeetingsManagement,//cambiar acá
     },
     {
-        path: "/list-deliverables/permissions=S&idProcess=:idProcess",
+        path: "/list-deliverables/permissions=S",
         exact: true,
         component: DeliverablesList,//cambiar acá
     },
     // Alumno
     {
-        path: "/welcome-process/idStudent=:idStudent&idProcess=:idProcess&phase=WPRO",
+        path: "/welcome-process/idStudent=:idStudent&phase=WPRO",
         exact: true,
         component:WelcomeProcess,
     },
     {
-        path: "/agreement/idStudent=:idStudent&idProcess=:idProcess&phase=:phase",
+        path: "/agreement/idStudent=:idStudent&phase=:phase",
         exact: true,
         component: StudentAgreement,
     },
     {
-        path: "/enrollment/idStudent=:idStudent&idProcess=:idProcess&phase=:phase",
+        path: "/enrollment/idStudent=:idStudent&phase=:phase",
         exact: true,
         component: EnrollmentStudent,
     },
     {
-        path: "/inscription/idStudent=:idStudent&idProcess=:idProcess&phase=:phase",
+        path: "/inscription/idStudent=:idStudent&phase=:phase",
         exact: true,
         component: StudentRegistrationForm,
     },
     {
-        path: "/supervisor-selection/idStudent=:idStudent&idProcess=:idProcess&phase=:phase",
+        path: "/supervisor-selection/idStudent=:idStudent&phase=:phase",
         exact: true,
         component: SupervisorSelection,
     },
     {
-        path: "/final-report/idStudent=:idStudent&idProcess=:idProcess&phase=:phase",
+        path: "/final-report/idStudent=:idStudent&phase=:phase",
         exact: true,
         component: FinalReport,
     },
     {
-        path: "/deliverables/idStudent=:idStudent&idProcess=:idProcess&phase=:phase",
+        path: "/deliverables/idStudent=:idStudent&phase=:phase",
         exact: true,
         component: DeliverablesStudent,
     },
     {
-        path: "/deliverable/idStudent=:idStudent&idProcess=:idProcess&code=:code",
+        path: "/deliverable/idStudent=:idStudent&code=:code",
         exact: true,
         component: Deliverable,
     },
