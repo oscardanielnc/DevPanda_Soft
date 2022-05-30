@@ -6,17 +6,17 @@ import './AdministrativeNavbar.scss';
 const secretary = [
     {
         title: "Disponibilidad Supervisores",
-        link: `/list-supervisors` //EVALUAR SI LO VAMOS A PONER, ASIES
+        link: `/list-supervisors/permissions=C` //EVALUAR SI LO VAMOS A PONER, ASIES
     }
 ]
 const admin = [
     {
         title: "Gestionar Especialidades",
-        link: `/specialty-management`
+        link: `/specialty-management/permissions=AF`
     },
     {
         title: "Gestionar Coordinadores",
-        link: `/coordinators-management`
+        link: `/coordinators-management/permissions=AF`
     }
 ]
 
@@ -27,21 +27,25 @@ export default function AdministrativeNavbar() {
     const supervisor = [
         {
             title: "Disponibilidad y Reuniones",
-            link: `/meetings-management/idSupervisor=${user.idPersona}&idProcess=${user.fidProceso}`
+            link: `/meetings-management/permissions=S&idSupervisor=${user.idPersona}&idProcess=${user.fidEspecialidad}`
         },
         {
             title: "Gestión de Entregables",
-            link: `/list-deliverables/idSupervisor=${user.idPersona}&idProcess=${user.fidProceso}`
+            link: `/list-deliverables/permissions=S&idProcess=${user.fidEspecialidad}`
         }
     ]
     const coorSpecialty = [ 
         {
             title: "Gestión de alumnos",
-            link: `/students-management/idProcess=${user.fidProceso}`
+            link: `/students-management/permissions=E&idProcess=${user.fidEspecialidad}`
+        },
+        {
+            title: "Solicitudes sin convenio",
+            link: `/list-students-requests/permissions=E&idProcess=${user.fidEspecialidad}`
         },
         {
             title: "Revisión de Convenios",
-            link: `/list-students-agreement/idProcess=${user.fidProceso}`
+            link: `/list-students-agreement/permissions=EF&idProcess=${user.fidEspecialidad}`
         },
         // {
         //     title: "Entregables",
@@ -49,49 +53,49 @@ export default function AdministrativeNavbar() {
         // },
         {
             title: "Gestión de supervisores",
-            link: `/supervisors-management/idSpecialty=${user.fidEspecialidad}`
+            link: `/supervisors-management/permissions=E`
         },
         {
             title: "Configuración del proceso",
-            link: `/config-process/idSpecialty=${user.fidEspecialidad}`
+            link: `/config-process/permissions=E`
         },
         {
             title: "Gestión de Campos Ficha de Inscripción",
-            link: `/inscription-config/idSpecialty=${user.fidEspecialidad}`
+            link: `/inscription-config/permissions=E`
         },
         {
             title: "Revisión Ficha de Inscripción",
-            link: `/list-inscriptions-form/idProcess=${user.fidProceso}`
+            link: `/list-inscriptions-form/permissions=EF&idProcess=${user.fidEspecialidad}`
         },
-        {
-            title: "Solicitudes sin convenio",
-            link: `/list-students-requests/idProcess=${user.fidProceso}`
-        }
     ]
     const coorFaci = [
         {
             title: "Revisión de Convenios",
-            link: `/list-students-agreement/idProcess=${user.fidProceso}`
+            link: `/list-students-agreement/permissions=EF&idProcess=${user.fidEspecialidad}`
         },
         {
             title: "Revisión Ficha de Inscripción",
-            link: `/list-inscriptions-form/idProcess=${user.fidProceso}`
+            link: `/list-inscriptions-form/permissions=EF&idProcess=${user.fidEspecialidad}`
         },
         {
             title: "Gestionar Especialidades",
-            link: `/specialty-management`
+            link: `/specialty-management/permissions=AF`
         },
+        {
+            title: "Gestionar Coordinadores",
+            link: `/coordinators-management/permissions=AF`
+        }
     ]
 
     useEffect(()=> {
-        // switch (user.tipoPersonal) {
-        //     case 'S': setNavbar(supervisor); break;
-        //     case 'E': setNavbar(coorSpecialty); break;
-        //     case 'F': setNavbar(coorFaci); break;
-        //     case 'A': setNavbar(admin); break;
-        //     default: setNavbar(secretary); break;
-        // }
-        setNavbar(coorSpecialty);
+        switch (user.tipoPersonal) {
+            case 'S': setNavbar(supervisor); break;
+            case 'E': setNavbar(coorSpecialty); break;
+            case 'F': setNavbar(coorFaci); break;
+            case 'A': setNavbar(admin); break;
+            default: setNavbar(secretary); break;
+        }
+        // setNavbar(coorSpecialty);
     }, [setNavbar])
     
     return(
@@ -118,29 +122,3 @@ export default function AdministrativeNavbar() {
     )
     
 }
-
-// // te devolvere
-// const objGet = {
-//     firstname: "",
-//     lastname: "",
-//     email: "",
-//     code: "",
-//     zoom: {
-//         link: "",
-//         date: "dd/MM/aaaa",
-//         hour: "23:59"
-//     }
-// }
-// // me envias
-// const obtPut = {
-//     idHorario: 1,
-//     link: ""
-// }
-
-
-// crear supervisores y coorEspecialides <-----------
-// excel <-----------
-// modificar fidAsesor cuando ya selecciona asies  
-// coordEsp vigente <-----------
-// docs con horas como moment <-----------
-// bloqueo <-----------

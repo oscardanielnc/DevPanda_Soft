@@ -1,22 +1,21 @@
 const mysql = require('mysql');
 const {MYSQL_CREDENTIALS} = require("../config")
-const fs = require('fs');
-const path = require('path');
+const moment = require("moment");
 
 function uploadDocs(req, res) {
     const code = req.params.code;
     const isStudent = Number(req.params.isStudent);
     const files = req.files;
 
-    for (const doc in files) {
-        const objDoc = files[doc];
-        if(!checkCorrectDocument(objDoc, ['pdf', 'docx', 'doc', 'xlsx', 'txt'])) {
-            res.status(505).send({ 
-                success: false,
-                message: "La extencion alguna imagen no es valida. Solo se aceptan: pdf, docx, doc, txt, xlsx."
-            })
-        }
-    }
+    // for (const doc in files) {
+    //     const objDoc = files[doc];
+    //     if(!checkCorrectDocument(objDoc, ['pdf', 'docx', 'doc', 'xlsx', 'txt'])) {
+    //         res.status(505).send({ 
+    //             success: false,
+    //             message: "La extencion alguna imagen no es valida. Solo se aceptan: pdf, docx, doc, txt, xlsx."
+    //         })
+    //     }
+    // }
     //console.log(req)
     const connection = mysql.createConnection(MYSQL_CREDENTIALS);
     connection.connect(err => {
@@ -40,12 +39,14 @@ function uploadDocs(req, res) {
             const docPathName = objDoc.path.split("/")[2];
             const docOriginalName = objDoc.originalFilename;
 
+            const now = new Date();
             const sqlObj = {
                 nombre: docOriginalName,
                 ruta: docPathName,
                 delAlumno: isStudent,
                 activo: 1,
-                codigo: code
+                codigo: code,
+                horaSubida: now.getTime()
             };
             const sqlQuery = `INSERT INTO Documento SET ?`;
 

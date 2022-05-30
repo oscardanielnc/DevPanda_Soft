@@ -57,6 +57,8 @@ $box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
 
 .drop-file-preview p {
     font-weight: 500;
+    word-break: break-all;
+    white-space: normal;
     
 }
 

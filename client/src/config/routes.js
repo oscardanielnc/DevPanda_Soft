@@ -43,71 +43,70 @@ const routes = [
     },
     //Coordinador FACI
     {
-        path: "/list-students-agreement/idProcess=:idProcess",
+        path: "/list-students-agreement/permissions=EF&idProcess=:idProcess",
         exact: true,
         component: ListStudentsRequests,
     },
     {
-        path: "/list-inscriptions-form/idProcess=:idProcess",
+        path: "/list-inscriptions-form/permissions=EF&idProcess=:idProcess",
         exact: true,
         component: ListRegistrationForm,
     },
-    
+    {
+        path: "/agreement-review/permissions=EF&idStudent=:idStudent&idProcess=:idProcess",
+        exact: true,
+        component: AgreementReview,
+    },
     // Coordinador especialidad
     {
-        path: "/students-management/idProcess=:idProcess",
+        path: "/students-management/permissions=E&idProcess=:idProcess",
         exact: true,
         component: StudentsManagement,
     },
     {
-        path: "/config-process/idSpecialty=:idSpecialty",
+        path: "/config-process/permissions=E",
         exact: true,
         component: ConfigProcess,
     },
     {
-        path: "/inscription-config/idSpecialty=:idSpecialty",
+        path: "/inscription-config/permissions=E",
         exact: true,
         component: ConfigInscription,
     },
     {
-        path: "/supervisors-management/idSpecialty=:idSpecialty",
+        path: "/supervisors-management/permissions=E",
         exact: true,
         component: SupervisorsManagement,
     },
     {
-        path: "/list-students-requests/idProcess=:idProcess",
+        path: "/list-students-requests/permissions=E&idProcess=:idProcess",
         exact: true,
         component: ListAgreementsRequests,
     },
     // Admin
     {
-        path: "/specialty-management",
+        path: "/specialty-management/permissions=AF",
         exact: true,
         component: SpecialtyManagement,
     },
     {
-        path: "/specialty-add",
+        path: "/specialty-add/permissions=A",
         exact: true,
         component: AddSpecialty,
     },
     {
-        path: "/coordinators-management",
+        path: "/coordinators-management/permissions=AF",
         exact: true,
         component: CoordinatorsManagement,//CAMBIA ACÁ
     },
     // Supervisor
     {
-        path: "/agreement-review/idStudent=:idStudent&idProcess=:idProcess",
-        exact: true,
-        component: AgreementReview,
-    },
-    {
-        path: "/meetings-management/idSupervisor=:idSupervisor&idProcess=:idProcess",
+        path: "/meetings-management/permissions=S&idSupervisor=:idSupervisor&idProcess=:idProcess",
         exact: true,
         component: MeetingsManagement,//cambiar acá
     },
     {
-        path: "/list-deliverables/idSupervisor=:idSupervisor&idProcess=:idProcess",
+        path: "/list-deliverables/permissions=S&idProcess=:idProcess",
         exact: true,
         component: DeliverablesList,//cambiar acá
     },
@@ -123,12 +122,12 @@ const routes = [
         component: StudentAgreement,
     },
     {
-        path: "enrollment/idStudent=:idStudent&idProcess=:idProcess&phase=:phase",
+        path: "/enrollment/idStudent=:idStudent&idProcess=:idProcess&phase=:phase",
         exact: true,
         component: EnrollmentStudent,
     },
     {
-        path: "inscription/idStudent=:idStudent&idProcess=:idProcess&phase=:phase",
+        path: "/inscription/idStudent=:idStudent&idProcess=:idProcess&phase=:phase",
         exact: true,
         component: StudentRegistrationForm,
     },

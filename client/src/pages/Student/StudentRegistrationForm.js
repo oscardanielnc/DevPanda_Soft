@@ -61,7 +61,8 @@ const documents={
          "dailyHours": 6,
          "weekHours": 30
      },
-     "aboutBoss": {//         "name":"Hugo Carlos",
+     "aboutBoss": {
+        "name":"Hugo Carlos",
          "area":"TI",
          "email":"hugoCar1548@gmail.com",
          "cellphone":"9856875564"
@@ -147,7 +148,7 @@ export default function StudentRegistrationForm () {
     const [docs, setDocs] = useState([]);
     const [studentDocs, setStudentDocs] = useState([]);
     const [loading, setLoading] = useState(false);
-
+    const [correctoFormato,setCorrectoFormato]=useState(true);
     let typeUser=user.tipoPersona;
     if(typeUser==="p"){
         typeUser=user.tipoPersonal;
@@ -236,9 +237,49 @@ export default function StudentRegistrationForm () {
     },[setStudentDocs])
 
     // if(!data.generalData) return null
+    function fieldsComplete(){
+        const resultadoGeneral= data.generalData.cellphone!=="" && data.generalData.cellphone!=null
+        let resultadoCompany=true;
+        console.log("El resultadoGeneral es: ",resultadoGeneral);
+        if(data.aboutCompany.isNational){
+            resultadoCompany= data.aboutCompany.ruc!=="" && data.aboutCompany.ruc!=null
+        }
 
+        resultadoCompany= resultadoCompany && (data.aboutCompany.companyName!=="" && data.aboutCompany.companyName!=null)
+                &&(data.aboutCompany.country!=="" && data.aboutCompany.country!=null && data.aboutCompany.country>0) &&(data.aboutCompany.lineBusiness!=="" && data.aboutCompany.lineBusiness!=null && data.aboutCompany.lineBusiness>0)
+                &&(data.aboutCompany.companyAddress!=="" && data.aboutCompany.companyAddress!=null);
+                
+        console.log("El resultadoCompany es: ",resultadoCompany);
+        
+        const resultadoJob= (data.aboutJob.areaName!=="" && data.aboutJob.areaName!=null)
+                &&(data.aboutJob.jobTitle!=="" && data.aboutJob.jobTitle!=null) &&(data.aboutJob.activities!=="" && data.aboutJob.activities!=null);
+        
+        console.log("El resultadoJob es: ",resultadoJob);
+                
+        const resultadoPSP=(data.aboutPSP.dateStart!=="" && data.aboutPSP.dateStart!=null)
+                &&(data.aboutPSP.dateEnd!=="" && data.aboutPSP.dateEnd!=null) &&(data.aboutPSP.dailyHours!=="" && data.aboutPSP.dailyHours!=null)
+                &&(data.aboutPSP.weekHours!=="" && data.aboutPSP.weekHours!=null);
+        console.log("El resultadoPSP es: ",resultadoPSP);        
+        
+        const resultadoBoss= (data.aboutBoss.name!=="" && data.aboutBoss.name!=null) && (data.aboutBoss.area!=="" && data.aboutBoss.area!=null)
+                &&(data.aboutBoss.email!=="" && data.aboutBoss.email!=null) &&(data.aboutBoss.cellphone!=="" && data.aboutBoss.cellphone!=null);
+        console.log("El resultadoBoss es: ",resultadoBoss);  
+
+        let resultadoOthers=true;
+        data.others.map((e,index) => {
+            if(e.flag==="obligatorio"){
+                resultadoOthers=resultadoOthers&&(e.valorAlumno!=null && e.valorAlumno!=="");
+            }
+        })
+        console.log("El resultadoOthers es: ",resultadoOthers); 
+
+        const resultado=resultadoGeneral&&resultadoCompany&&resultadoJob&&resultadoPSP
+            &&resultadoBoss&&resultadoOthers;
+
+        return resultado;
+    }
     const deliver = async () => {
-        if(fileList.length <= maxFiles && fileList.length!=0) {
+        if(fileList.length <= maxFiles && fileList.length!==0) {
             const response = await uploadDocsApi(fileList, `1-${user.fidEspecialidad}-RFOR-${idAlumno}`, 1);
             if(response.success) {
                 toast.success(response.msg, {
@@ -264,43 +305,80 @@ export default function StudentRegistrationForm () {
            }
         }
     }
+    function casoEspecial(){
+        if(correctoFormato===false && data.generalData.personalEmail===""){
+            console.log("Antes de setear: ",correctoFormato);
+            setCorrectoFormato(true);
+            console.log("Luego de setear: ",correctoFormato);
+        }
+        return true;
+    }
     const insert = async e => {
         e.preventDefault();
-        const newData = {
-            ...data,
-            documentsState: "Entregado",
-            approvalState: "Sin calificar",
-            // dateModified:new Date()
-        }
-        const response = await registrationUpdateApiStudentCamps(newData);
-        if(!response.success){
-            toast.error(response.msg, {
-                position: "top-right",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-            });
-            setData({
-                ...data,
-                idAlumno: data.idAlumno,
-                idAlumnoProceso: data.idAlumnoProceso,
-                idFicha: data.idFicha,
-                documentsState: "Sin entregar",
-                approvalState: "Sin entregar",
-               // dateModified:data.dateModified,
-                generalData: data.generalData,
-                aboutCompany: data.aboutCompany,
-                aboutJob:data.aboutJob,
-                aboutPSP: data.aboutPSP,
-                aboutBoss:data.aboutBoss,
-                calification:data.calification,
-                others: data.others,
-            })
+        if(fieldsComplete()){
+            console.log("En el insert el correctoFormato es: ",correctoFormato," y el email es: ",data.generalData.personalEmail);
+            const responseFunction=await casoEspecial();
+            if(correctoFormato){
+                const newData = {
+                    ...data,
+                    documentsState: "Entregado",
+                    approvalState: "Sin calificar",
+                    // dateModified:new Date()
+                }
+                const response = await registrationUpdateApiStudentCamps(newData);
+                if(!response.success){
+                    toast.error(response.msg, {
+                        position: "top-right",
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                    });
+                    setData({
+                        ...data,
+                        idAlumno: data.idAlumno,
+                        idAlumnoProceso: data.idAlumnoProceso,
+                        idFicha: data.idFicha,
+                        documentsState: "Sin entregar",
+                        approvalState: "Sin entregar",
+                       // dateModified:data.dateModified,
+                        generalData: data.generalData,
+                        aboutCompany: data.aboutCompany,
+                        aboutJob:data.aboutJob,
+                        aboutPSP: data.aboutPSP,
+                        aboutBoss:data.aboutBoss,
+                        calification:data.calification,
+                        others: data.others,
+                    })
+                }else{
+                    toast.success(response.msg, {
+                        position: "top-right",
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                    });
+                    deliver();
+                    setData(newData);
+                }
+            }else{
+                toast.error("No está cumpliendo con los formatos establecidos", {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
+            }
+            
         }else{
-            toast.success(response.msg, {
+            toast.error("Faltan rellenar campo(s) obligatorio(s) de la ficha", {
                 position: "top-right",
                 autoClose: 5000,
                 hideProgressBar: false,
@@ -309,9 +387,8 @@ export default function StudentRegistrationForm () {
                 draggable: true,
                 progress: undefined,
             });
-            deliver();
-            setData(newData);
         }
+        
     }
     let isSaved=null;
     let canUpload=null;
@@ -378,7 +455,6 @@ export default function StudentRegistrationForm () {
             isSaved=true;
         } 
     }
-
     const goBack = e => {
         window.history.back();
     }
@@ -406,21 +482,23 @@ export default function StudentRegistrationForm () {
                 </div>
                 <div className="row rows" style={{textAlign: "left",marginBottom:"0px"}}>
                     <h2 style={{marginBottom:"0px"}}>Datos por rellenar</h2>
+                    <p></p>
+                    <p style={{marginBottom:"0px"}}>Los campos que son obligatorios van a estar marcados con un *</p>
                 </div>
                 <div className="row rows">
-                    <GeneralData data={data} setData={setData} imStudent={isSaved} isSaved={isSaved}/>   
+                    <GeneralData data={data} setData={setData} imStudent={isSaved} isSaved={isSaved} correctoFormato={correctoFormato} setCorrectoFormato={setCorrectoFormato}/>   
                 </div>
                 <div className="row rows">
-                    <AboutCompany data={data} setData={setData} notgrabado={isSaved} countries={countries} lineBusiness={lineBusiness}/>
+                    <AboutCompany data={data} setData={setData} notgrabado={isSaved} countries={countries} lineBusiness={lineBusiness} correctoFormato={correctoFormato} setCorrectoFormato={setCorrectoFormato}/>
                 </div>
                 <div className="row rows">
-                    <AboutJob data={data} setData={setData} notgrabado={isSaved}/>
+                    <AboutJob data={data} setData={setData} notgrabado={isSaved} correctoFormato={correctoFormato} setCorrectoFormato={setCorrectoFormato}/>
                 </div>
                 <div className="row rows">
-                    <AboutDurationPSP data={data} setData={setData} notgrabado={isSaved}/>
+                    <AboutDurationPSP data={data} setData={setData} notgrabado={isSaved} correctoFormato={correctoFormato} setCorrectoFormato={setCorrectoFormato}/>
                 </div>
                 <div className="row rows">
-                    <DirectBoss data={data} setData={setData} notgrabado={isSaved}/>
+                    <DirectBoss data={data} setData={setData} notgrabado={isSaved} correctoFormato={correctoFormato} setCorrectoFormato={setCorrectoFormato}/>
                 </div>
                 <div className="row rows">
                     <div className="container Comments">
@@ -476,19 +554,19 @@ export default function StudentRegistrationForm () {
                     <h2 style={{marginBottom:"0px"}}>Datos por rellenar</h2>
                 </div>
                 <div className="row rows">
-                    <GeneralData data={data} setData={setData} imStudent={isSaved} isSaved={isSaved}/>   
+                    <GeneralData data={data} setData={setData} imStudent={isSaved} isSaved={isSaved} correctoFormato={correctoFormato} setCorrectoFormato={setCorrectoFormato}/>   
                 </div>
                 <div className="row rows">
-                    <AboutCompany data={data} setData={setData} notgrabado={isSaved} countries={countries} lineBusiness={lineBusiness}/>
+                    <AboutCompany data={data} setData={setData} notgrabado={isSaved} countries={countries} lineBusiness={lineBusiness} correctoFormato={correctoFormato} setCorrectoFormato={setCorrectoFormato}/>
                 </div>
                 <div className="row rows">
-                    <AboutJob data={data} setData={setData} notgrabado={isSaved}/>
+                    <AboutJob data={data} setData={setData} notgrabado={isSaved} correctoFormato={correctoFormato} setCorrectoFormato={setCorrectoFormato}/>
                 </div>
                 <div className="row rows">
-                    <AboutDurationPSP data={data} setData={setData} notgrabado={isSaved}/>
+                    <AboutDurationPSP data={data} setData={setData} notgrabado={isSaved} correctoFormato={correctoFormato} setCorrectoFormato={setCorrectoFormato}/>
                 </div>
                 <div className="row rows">
-                    <DirectBoss data={data} setData={setData} notgrabado={isSaved}/>
+                    <DirectBoss data={data} setData={setData} notgrabado={isSaved} correctoFormato={correctoFormato} setCorrectoFormato={setCorrectoFormato}/>
                 </div>
                 <div className="row rows uploadRegistration" >                            
                     <FileManagement canUpload={canUpload} docs={studentDocs} maxFiles={4} setFileList={setFileList} titleUploadedFiles="Archivos subidos por el alumno"/>

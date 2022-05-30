@@ -52,6 +52,7 @@ function HeaderLogged ({user}) {
                 </div>
                 <div>
                     <strong>{fullName}<br/></strong>
+            {/* <span>(Ingeniería informática)</span> */}
                 </div>
             </div>
             <div className="header__rightusuarioImagen"

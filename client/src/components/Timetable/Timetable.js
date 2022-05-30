@@ -80,9 +80,9 @@ export default function Timetable ({inputs, setInputs, setHourSelecteds, hourSel
 
     const leftPage = e => {
         // Verifica que no se salga del limite 
-        if (inputs.length>0 && indexs.actual > 0){
+        if (inputs.length>0 && indexs.actual - indexs.separator >= 0){
             setIndex({
-                actual: indexs.actual - 1,
+                actual: indexs.actual - indexs.separator,
                 separator: indexs.separator
             })
         }
@@ -91,7 +91,7 @@ export default function Timetable ({inputs, setInputs, setHourSelecteds, hourSel
         // Verifica que no se salga del limite 
         if (inputs.length>0 && indexs.actual < inputs.length - indexs.separator){
             setIndex({
-                actual: indexs.actual + 1,
+                actual: indexs.actual + indexs.separator,
                 separator: indexs.separator
             })
         }

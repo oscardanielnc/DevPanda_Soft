@@ -1,11 +1,13 @@
 import React, {useState, useEffect} from "react";
 import LayoutAdministrative from "../../layouts/LayoutAdministrative";
 import { Row, FormControl, Form, Button } from "react-bootstrap";
-import useAuth from "../../hooks/useAuth";
 import TableEnrollment from "../../components/Tables/TableEnrollment";
 import "./scss/StudentsManagement.scss";
 import { selectStudentsByProcessSpecialtyApi } from "../../api/enrollment";
 import ModalStudentManagement from "../../components/Modals/ModalStudentManagement";
+import { useParams } from "react-router-dom";
+import ModalExcel from "../../components/Modals/ModalExcel";
+import { ToastContainer } from "react-toastify";
 
 const states = [
     {
@@ -83,9 +85,11 @@ let textFilter = ""
 let textSelect = "-1"
 
 export default function StudentsManagement () {
-    const {user} = useAuth();
+    const idProcess = Number(useParams().idProcess);
     const [show, setShow] = useState(false);
+    const [showExcel, setShowExcel] = useState(false);
     const [alumnos, setAlumnos] = useState([]);
+    const [excel, setExcel] = useState([]);
     const [newDataStudent, setNewDataStudent] = useState({
         idPersona: 0,
         nombres: "",
@@ -99,7 +103,7 @@ export default function StudentsManagement () {
     const [filteredData, setFilteredData] = useState([]);
 
     useEffect(()=> {
-        selectStudentsByProcessSpecialtyApi(user.fidEspecialidad, user.fidProceso).then(response => {
+        selectStudentsByProcessSpecialtyApi(idProcess).then(response => {
             if(response.success) {
                 setAlumnos(response.students);
                 setFilteredData(response.students);
@@ -128,18 +132,43 @@ export default function StudentsManagement () {
     const updateStudent = () => {
         setShow(false);
     }
+    const uploadExcel = input => {
+        const files = input.target.files;
+        if(files.length == 0) return;
+        const file = files[0];
+        const reader = new FileReader();
+
+        reader.onload= function() {
+            const text = this.result; //texto
+            const emails = text.match(/([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]+)/gi);
+            setExcel(emails);
+        };
+        reader.onerror = (e) => alert(e.target.error.name);
+        reader.readAsText(file);
+    }
+    const matchExcel = () => {
+        setShowExcel(true);
+    }
 
     return (
         <LayoutAdministrative>
+            <ToastContainer />
             <div className="container">
-                <Row className="rows studentsManagement__title">
-                    <h1 className="studentsManagement__title-h1">Gestión de alumnos</h1>
-                    <Button className="studentsManagement__title-excel"
-                        variant="primary" disabled>Subir excel de matriculados
+                <Row className="rows studentsManagement">
+                    <h1>Gestión de alumnos</h1>
+                </Row>
+                <Row className="rows studentsManagement__excel">
+                    <Form.Group controlId="formFileSm" className="mb-3 studentsManagement__excel-title">
+                        <Form.Label>Subir excel de matriculados</Form.Label>
+                        <Form.Control type="file" size="sm" onChange={uploadExcel}/>
+                    </Form.Group>
+                    <Button className="studentsManagement__excel-btn" onClick={matchExcel}
+                        variant="primary" disabled={excel.length===0}>Comprobar
                     </Button>
                 </Row>
 
                 <div className="row rows studentManagement__actions">
+                    <h3>Alumnos del proceso actual</h3>
                     <FormControl
                         placeholder={"Filtrar alumnos"}
                         onChange={filter}
@@ -163,8 +192,9 @@ export default function StudentsManagement () {
                     <TableEnrollment rows={filteredData} setShow={setShow} setNewDataStudent={setNewDataStudent}/>
                 </Row>
                 
-                <ModalStudentManagement student={alumnos[0]} show={show} setShow={setShow} updateStudent={updateStudent}
+                <ModalStudentManagement show={show} setShow={setShow} updateStudent={updateStudent}
                     newDataStudent={newDataStudent} setNewDataStudent={setNewDataStudent}/>
+                <ModalExcel show={showExcel} setShow={setShowExcel} students={alumnos} excel={excel} idProcess={idProcess}/>
             </div>
         </LayoutAdministrative>
     )

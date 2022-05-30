@@ -9,13 +9,14 @@ import es from 'date-fns/locale/es';
 registerLocale('es', es);
 
 
-export default function AboutDurationPSP ({data, setData, notgrabado}) {
+export default function AboutDurationPSP ({data, setData, notgrabado,correctoFormato,setCorrectoFormato}) {
     const {aboutPSP} = data;
 
     const handleChangeText = (e) => {
         if(e.target.name==="dailyHours"){
             if(e.target.valueAsNumber>=0){
                 e.target.classList.add("success");
+                setCorrectoFormato(true);
                 setData({
                     ...data,
                     aboutPSP: {
@@ -28,14 +29,17 @@ export default function AboutDurationPSP ({data, setData, notgrabado}) {
                 e.target.valueAsNumber=Number(data.aboutPSP.dailyHours);
                 if(e.target.valueAsNumber>=0){
                     e.target.classList.add("success");
+                    setCorrectoFormato(true);
                 }else{
                     e.target.classList.add("error");
+                    setCorrectoFormato(false);
                 }
             }
         }else{
             if(e.target.name==="weekHours"){
                 if(e.target.valueAsNumber>=0){
                     e.target.classList.add("success");
+                    setCorrectoFormato(true);
                     setData({
                         ...data,
                         aboutPSP: {
@@ -48,8 +52,10 @@ export default function AboutDurationPSP ({data, setData, notgrabado}) {
                     e.target.valueAsNumber=Number(data.aboutPSP.weekHours);
                     if(e.target.valueAsNumber>=0){
                         e.target.classList.add("success");
+                        setCorrectoFormato(true);
                     }else{
                         e.target.classList.add("error");
+                        setCorrectoFormato( false);
                     }
                 }
             }else{
@@ -126,7 +132,7 @@ export default function AboutDurationPSP ({data, setData, notgrabado}) {
              </nav>
             <div className="row rows">
                 <div className="col-sm-6 subtitles" >
-                    <div>Fecha de inicio</div>
+                    <div>Fecha de inicio: *</div>
                     <DatePicker
                         onChange={(e)=> handleChangeDate(e, "dateStart")}
                         locale="es"
@@ -138,7 +144,7 @@ export default function AboutDurationPSP ({data, setData, notgrabado}) {
                     />
                 </div>
                 <div className="col-sm-6 subtitles">
-                    <div>Fecha de fin</div>
+                    <div>Fecha de fin: *</div>
                     <DatePicker
                         onChange={(e)=> handleChangeDate(e, "dateEnd")}
                         locale="es"
@@ -154,7 +160,7 @@ export default function AboutDurationPSP ({data, setData, notgrabado}) {
                 <div className="col-sm-6 columnas">
                     <div className="row filas">
                          <div className="col-sm-8 subtitles">
-                         <div  className="horas">Horas Diarias Promedio</div>
+                         <div  className="horas">Horas Diarias Promedio: *</div>
                             <Form.Control placeholder="Ingrese número de horas diarias" 
                                 onChange={handleChangeText}
                                 value={aboutPSP.dailyHours}
@@ -170,7 +176,7 @@ export default function AboutDurationPSP ({data, setData, notgrabado}) {
                 <div className="col-sm-6 horas columnas">
                 <div className="row filas">
                          <div className="col-sm-8 subtitles">
-                         <div  className="horas">Horas Semanales Promedio</div>
+                         <div  className="horas">Horas Semanales Promedio: *</div>
                             <Form.Control placeholder="Ingrese número de horas semanales" 
                                 onChange={handleChangeText}
                                 value={aboutPSP.weekHours}
@@ -189,12 +195,18 @@ export default function AboutDurationPSP ({data, setData, notgrabado}) {
                     if(e.seccion === "Sobre la PSP"){
                         var one = 'Ingrese el ';
                         var two = e.nombreCampo;
-                        var texto = one + two;
+                        var texto = one + two+":";
+                        var texto2=texto;
+                        if(e.flag==="opcional"){
+                            texto=texto+ " (Opcional)";
+                        }else{
+                            texto=texto+ " *";
+                        }
                         return (
                             <div key={index}>
                                 <div className="rowsOthers">{texto}</div>
                                 <div className="row rows" style={{"paddingTop":"10px !important"}}>
-                                    <Form.Control placeholder={texto}
+                                    <Form.Control placeholder={texto2}
                                     onChange={handleChangeOthers}
                                     value={e.valorAlumno}
                                     disabled = {notgrabado}

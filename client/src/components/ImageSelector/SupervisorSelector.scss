@@ -1,18 +1,30 @@
+@import "../../App.scss";
+
 .rows{
     margin-top: 2em !important;
 }
 .supervisors {
     display: flex;
-    justify-content: center ;
+    justify-content: space-evenly ;
     .supervisor {
         width: 150px;
         margin: 0 .5em;
         text-align: center;
-        box-shadow: #c3c3c3 1px 1px 1px;
         cursor: pointer;
+        background-color: #efefef;
+        border-radius: 8px;
+        font-weight: 500;
+        padding: 6px;
 
+        &__selected {
+            background-color: $primary-color;
+            color: #fff;
+            & i {
+                color: $primary-color;
+            }
+        }
         i {
-            background-color: #c3c3c3;
+            background-color: #fff;
             display: flex;
             width: fit-content;
             margin-top: 20px !important;
@@ -22,7 +34,7 @@
             margin: auto;
         }
         &:hover {
-            box-shadow: #b6b6b6 2px 2px 2px;
+            box-shadow: #b6b6b6 6px 6px 6px 3px;
         }
     }
 }

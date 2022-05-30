@@ -1,15 +1,18 @@
+@import "../../../App.scss";
 .studentsManagement {
-    &__title {
-        display: flex !important;
-        justify-content: space-between !important;
-
-        &-h1 {
-            width: fit-content !important;
+    &__excel {
+        background-color: #efefef;
+        border-radius: 5px;
+        padding: 1em !important;
+        margin-top: 0.5em !important;
+        justify-content: center;
+        
+        &-btn {
+            width: 200px !important; 
         }
-        &-excel {
-            width: fit-content !important;
-            height: fit-content;
-            align-self: center;
+        &-title {
+            font-size: 1.2em;
+            font-weight: 500;
         }
     }
 }
