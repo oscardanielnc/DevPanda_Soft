@@ -34,21 +34,21 @@ export default function ModalStudentMeetingSupervisor (props) {
         console.log(hourModalSelected.id, linkMeetingToSave)
         // Validar que no se vaya a guardar un enlace vacio
         if (linkMeetingToSave === "") {
-            showToast("No se puede guardar un link vacio")
+            showToast("No se puede guardar un enlace vacío.")
             setLinkMeetingToSave(hourModalSelected.link ?? "")
             return
         }
 
         // Validar formato de url
         if (!regexURL.test(linkMeetingToSave)) {
-            showToast("No es un enlace valido")
+            showToast("No es un enlace válido.")
             setLinkMeetingToSave( regexURL.test(hourModalSelected.link ?? "") ? (hourModalSelected.link ?? "") : "")
             return
         }
 
         // Validar que no se quiera guardar el mismo link
         if (hourModalSelected.link === linkMeetingToSave){
-            showToast("No ha realizado cambios en el enlace de la reunion")
+            showToast("No ha realizado cambios en el enlace de la reunión.")
             return 
         }
 
@@ -112,7 +112,7 @@ export default function ModalStudentMeetingSupervisor (props) {
     const copyEmail = () => {
         if (!student.email) return
         navigator.clipboard.writeText(student.email)
-        showToast("Email copiado", "success")
+        showToast("Correo copiado", "success")
     }
     const sendEmail = () => {
         if (!student.email) return
@@ -138,7 +138,7 @@ export default function ModalStudentMeetingSupervisor (props) {
     return ( 
         <ModalBasic show={show}
             setShow={setShow}
-            title="Detalle de reunion"
+            title="Detalle de reunión"
         >
             <ToastContainer />  
             {
@@ -165,7 +165,7 @@ export default function ModalStudentMeetingSupervisor (props) {
                         </Form.Group> 
                     }
                     <Form.Group className="modalStudentManagement__formGroup">
-                        <Form.Label className="modalStudentManagement__formGroup-label">Link de reunion: </Form.Label>
+                        <Form.Label className="modalStudentManagement__formGroup-label">Enlace de reunión: </Form.Label>
                         <InputGroup className="mb-3">
                             <FormControl onChange={updateLinkText} value={linkMeetingToSave}/>
                             {
@@ -179,7 +179,7 @@ export default function ModalStudentMeetingSupervisor (props) {
                         <Form.Label className="modalStudentManagement__formGroup-label">Consentimiento informado: </Form.Label>
                         <ShowFiles docs={docs} /> 
                     </Form.Group>  
-                    { docs.length < 1 && <Alert key={'warning'} variant={'warning'}>Recuerda que no se puede dar la reunion sin la constancia de consentimiento informado, para mayor detalle consulte con el area legal</Alert>}
+                    { docs.length < 1 && <Alert key={'warning'} variant={'warning'}>Recuerda que no se puede dar la reunión sin la constancia de consentimiento informado, para mayor detalle consulte con el área legal.</Alert>}
                 </Form>
 
             }
