@@ -79,7 +79,7 @@ export default function AdministrativeNavbar() {
     const supervisor = [
         {
             title: "Disponibilidad y Reuniones",
-            link: `/meetings-management/permissions=S&idSupervisor=${user.idPersona}&idProcess=${user.fidProceso}`
+            link: `/meetings-management/permissions=SC&idSupervisor=${user.idPersona}`
         },
         {
             title: "Gestión de Entregables",
