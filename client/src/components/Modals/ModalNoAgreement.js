@@ -13,31 +13,40 @@ const maxFiles = 1;
 export default function ModalNoAgreement (props) {
     const {show, setShow,user,showSm,setShowSm} = props;
     const [fileList, setFileList] = useState([]);
-    const prueba = async()=>{
-        const responseVerify = await verifyRequest(user.idPersona);
-        if(responseVerify.data.conSolicitud){
-            toast.warning(`Ya haz registrado una solicitud anteriormente.`, {
-                position: "top-right",
-                autoClose: 3000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-            });
-        }
-        else{
-            setShowSm(true);
-            setShow(false);
-        }
-        console.log("Tiene solicitud:",responseVerify.data.conSolicitud);
+    const [alumno,setAlumno] =useState( {
+        fidAlumno:user.idPersona,
+        fidEspecialidad:user.fidEspecialidad
+    });
 
 
-    }
+    // const prueba = async()=>{
+    //     const responseVerify = await verifyRequest(user.idPersona);
+    //     if(responseVerify.data.conSolicitud){
+    //         toast.warning(`Ya haz registrado una solicitud anteriormente.`, {
+    //             position: "top-right",
+    //             autoClose: 3000,
+    //             hideProgressBar: false,
+    //             closeOnClick: true,
+    //             pauseOnHover: true,
+    //             draggable: true,
+    //             progress: undefined,
+    //         });
+    //     }
+    //     else{
+    //         setShowSm(true);
+    //         setShow(false);
+    //     }
+
+
+
+    // }
     const handleEnviar = async () =>{
+        //Se verifica que se encuentre la cantidad de archivos necesarios
         if(fileList.length === maxFiles) {
+            //Se verifica que la persona ya haya registrado una solicitud con anterioridad 
             const responseVerify = await verifyRequest(user.idPersona);
             if(responseVerify.success){
+                console.log("Tiene solicitud:",responseVerify.data.conSolicitud);
                 if(responseVerify.data.conSolicitud){
                     toast.warning(`Ya haz registrado una solicitud anteriormente.`, {
                         position: "top-right",
@@ -50,10 +59,14 @@ export default function ModalNoAgreement (props) {
                     });
                 }
                 else{
+                    //ser realiza la subida de archivo
                     const response = await uploadDocsApi(fileList, `1-${user.fidEspecialidad}-NOCONV-${user.idPersona}`, 1);
+                    console.log("subio archivo",response)
                     if(response.success) {
-                        const responseReg = await registerRequestApi(user);
+                        //se realiza el registro de la solicitud
+                        const responseReg = await registerRequestApi(alumno);
                         if(responseReg.success){
+                            console.log("Se registra bien",responseReg)
                             //cambio de modals
                             setShowSm(true);
                             setShow(false);

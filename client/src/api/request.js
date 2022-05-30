@@ -59,7 +59,7 @@ export function verifyRequest(fidAlumno){
     })
 }
 
-export function registerRequestApi (data) {
+export function registerRequestApi (alumno) {
     const url = `${BASE_PATH}/${API_VERSION}/request`
 
     const params = {
@@ -67,7 +67,7 @@ export function registerRequestApi (data) {
         headers: {
             'Content-type': 'application/json'
         },
-        body: JSON.stringify(data)
+        body: JSON.stringify(alumno)
     }
     return fetch(url, params)
         .then(response => {
