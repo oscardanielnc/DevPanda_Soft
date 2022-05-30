@@ -16,7 +16,7 @@ import './ModalStudentMeeting.scss';
 export default function ModalStudentMeetingStudent (props) {
     
     const {user} = useAuth();
-    const {show, setShow, hourModalSelected, idAsesor} = props;
+    const {show, setShow, hourModalSelected} = props;
 
     const [fileList, setFileList] = useState([])
     const [docs, setDocs] = useState([])
@@ -61,6 +61,7 @@ export default function ModalStudentMeetingStudent (props) {
         setLoading(true)
         getAllDocsApi(`1-${user.fidEspecialidad}-ESUP-${code}`, 1).then(response => {
             setLoading(false)
+            getDocumentsOfExample()
             if(response.success) {
                 setStudentDocs(response.docs)
             }
@@ -75,10 +76,9 @@ export default function ModalStudentMeetingStudent (props) {
      const getSupervisorData =  () => {
         console.log(props)
         if (props.show && props.hourModalSelected !== null){
-            console.log("Se busca los datos del supervisor", idAsesor)
+            console.log("Se busca los datos del supervisor", hourModalSelected.fidAsesor)
             setLoading(true)
-            getDocumentsOfExample()
-            getSupervisorByID(idAsesor).then(response => {
+            getSupervisorByID(hourModalSelected.fidAsesor).then(response => {
                 setLoading(false)
                 console.log(response)
                 if(response.success) {
@@ -93,6 +93,9 @@ export default function ModalStudentMeetingStudent (props) {
             console.log("Se cierra el modal")
             // Limpiamos la seleccion
             setSupervisor({ firstname:"", lastname:"", email:"", code: -1 })
+            setDocs([])
+            setFileList([])
+            setStudentDocs([])
         }
      }
     const copyEmail = () => {
@@ -142,13 +145,14 @@ export default function ModalStudentMeetingStudent (props) {
         >
             <ToastContainer />  
             {
-                loading && <>
+                (loading || !(supervisor.code > 0)) && <>
                     <Loading tiny={true}/>
                 </>
             }
             {
                 !loading && (supervisor.code > 0) &&
                 <Form className="modalStudentManagement">
+                    { hourModalSelected && <Alert key={'warning'} variant={'info'}>Reunion programada para el {hourModalSelected.fecha} a las {hourModalSelected.hora-1}:00</Alert>}
                     { (supervisor.firstname || supervisor.lastname) && <InputLabel name="Supervisor" value={`${supervisor.firstname} ${supervisor.lastname}`} readOnly/> }
                     { supervisor.email && 
                         <Form.Group className="modalStudentManagement__formGroup">
