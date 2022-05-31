@@ -248,7 +248,6 @@ export default function StudentRegistrarionFormCoordinator () {
     console.log("La data es: ",data);
     const typeDocumentState = (data.documentsState==="Sin entregar")? "fileEmpty": "success";
     let typeApprovalState = "";
-    if(data.approvalState) savedCoordinator=true;
     switch(data.approvalState) {
         case "Observado": typeApprovalState = "warning"; break;
         case "Sin entregar": typeApprovalState = "pending"; break;
