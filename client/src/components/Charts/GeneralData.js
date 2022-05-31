@@ -9,13 +9,15 @@ export default function GeneralData ({data, setData, imStudent=true,isSaved,corr
     const {generalData} = data;
     const handleChange = (e) => {
         if(e.target.name==="personalEmail"){
-            if(emailValidation(e.target)){
+            console.log("El valor es: ",e.target.value);
+            if(emailValidation(e.target) || e.target.value===""){
                 e.target.classList.add("success");
                 setCorrectoFormato(true);
             }else{
                 e.target.classList.add("error");
                 setCorrectoFormato(false);
             }
+            
             setData({
                 ...data,
                 generalData: {

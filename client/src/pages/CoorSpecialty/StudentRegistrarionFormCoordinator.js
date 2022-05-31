@@ -18,7 +18,7 @@ import { getstudentInscriptionForm,registrationUpdateApiStudent,registrationUpda
 import { getAllDocsApi,uploadDocsApi } from "../../api/files";
 import ShowFiles from "../../components/FileManagement/ShowFiles";
 
-import './scss/StudentRegistrationForm.scss';
+import './scss/StudentRegistrarionFormCoordinator.scss';
 import { useParams } from "react-router-dom";
 import PandaLoaderPage from "../General/PandaLoaderPage";
 import { isNotEmptyObj } from "../../utils/objects";
@@ -134,9 +134,9 @@ const lineBussinessDummy=[
 //const idAlumno=parseInt(arrayCadena[2]);
 const maxFiles = 4;
 
-export default function StudentRegistrationForm () {
+export default function StudentRegistrarionFormCoordinator () {
     const {user} = useAuth();
-    const idAlumno= user.idPersona;
+    const idAlumno= useParams().idStudent;
     const [data, setData] = useState({});
     //const [data, setData] = useState(dataDummy);
     const [countries,setCountries]=useState({});
@@ -149,6 +149,11 @@ export default function StudentRegistrationForm () {
     const [loading, setLoading] = useState(false);
     const [correctoFormato,setCorrectoFormato]=useState(true);
     let typeUser=user.tipoPersona;
+    if(typeUser==="p"){
+        typeUser=user.tipoPersonal;
+    }else{
+
+    }
     //console.log("El arrayCadena es: ",window.location.pathname);
     //debugger
     if(isNaN(idAlumno)) window.location.reload();
@@ -167,28 +172,7 @@ export default function StudentRegistrationForm () {
            
             if(result.success) {
                 const resData = result.infoFicha.infoFicha;
-                const newData = {
-                    idAlumno: resData.idAlumno,
-                    idAlumnoProceso: resData.idAlumnoProceso,
-                    idFicha: resData.idFicha,
-                    documentsState: resData.documentsState,
-                    approvalState: resData.approvalState,
-                    generalData: {
-                        name: user.nombres,
-                        lastname:user.apellidos,
-                        code:user.codigo,
-                        email:user.correo,
-                        cellphone: resData.generalData.cellphone,
-                        personalEmail: resData.generalData.personalEmail
-                    },
-                    aboutCompany: resData.aboutCompany,
-                    aboutJob:resData.aboutJob,
-                    aboutPSP: resData.aboutPSP,
-                    aboutBoss:resData.aboutBoss,
-                    calification:resData.calification,
-                    others: resData.others,
-                }
-                setData(newData)  
+                setData(resData);
             }
             
             if(resultado.success){
@@ -227,48 +211,6 @@ export default function StudentRegistrationForm () {
         fetchData()
     },[setStudentDocs])
 
-    // if(!data.generalData) return null
-    function fieldsComplete(){
-        const resultadoGeneral= data.generalData.cellphone!=="" && data.generalData.cellphone!=null
-        let resultadoCompany=true;
-        console.log("El resultadoGeneral es: ",resultadoGeneral);
-        if(data.aboutCompany.isNational){
-            resultadoCompany= data.aboutCompany.ruc!=="" && data.aboutCompany.ruc!=null
-        }
-
-        resultadoCompany= resultadoCompany && (data.aboutCompany.companyName!=="" && data.aboutCompany.companyName!=null)
-                &&(data.aboutCompany.country!=="" && data.aboutCompany.country!=null && data.aboutCompany.country>0) &&(data.aboutCompany.lineBusiness!=="" && data.aboutCompany.lineBusiness!=null && data.aboutCompany.lineBusiness>0)
-                &&(data.aboutCompany.companyAddress!=="" && data.aboutCompany.companyAddress!=null);
-                
-        console.log("El resultadoCompany es: ",resultadoCompany);
-        
-        const resultadoJob= (data.aboutJob.areaName!=="" && data.aboutJob.areaName!=null)
-                &&(data.aboutJob.jobTitle!=="" && data.aboutJob.jobTitle!=null) &&(data.aboutJob.activities!=="" && data.aboutJob.activities!=null);
-        
-        console.log("El resultadoJob es: ",resultadoJob);
-                
-        const resultadoPSP=(data.aboutPSP.dateStart!=="" && data.aboutPSP.dateStart!=null)
-                &&(data.aboutPSP.dateEnd!=="" && data.aboutPSP.dateEnd!=null) &&(data.aboutPSP.dailyHours!=="" && data.aboutPSP.dailyHours!=null)
-                &&(data.aboutPSP.weekHours!=="" && data.aboutPSP.weekHours!=null);
-        console.log("El resultadoPSP es: ",resultadoPSP);        
-        
-        const resultadoBoss= (data.aboutBoss.name!=="" && data.aboutBoss.name!=null) && (data.aboutBoss.area!=="" && data.aboutBoss.area!=null)
-                &&(data.aboutBoss.email!=="" && data.aboutBoss.email!=null) &&(data.aboutBoss.cellphone!=="" && data.aboutBoss.cellphone!=null);
-        console.log("El resultadoBoss es: ",resultadoBoss);  
-
-        let resultadoOthers=true;
-        data.others.map((e,index) => {
-            if(e.flag==="obligatorio"){
-                resultadoOthers=resultadoOthers&&(e.valorAlumno!=null && e.valorAlumno!=="");
-            }
-        })
-        console.log("El resultadoOthers es: ",resultadoOthers); 
-
-        const resultado=resultadoGeneral&&resultadoCompany&&resultadoJob&&resultadoPSP
-            &&resultadoBoss&&resultadoOthers;
-
-        return resultado;
-    }
     const deliver = async () => {
         if(fileList.length <= maxFiles && fileList.length!==0) {
             const response = await uploadDocsApi(fileList, `1-${user.fidEspecialidad}-RFOR-${idAlumno}`, 1);
@@ -296,90 +238,12 @@ export default function StudentRegistrationForm () {
            }
         }
     }
-
-    const insert = async e => {
-        e.preventDefault();
-        if(fieldsComplete()){
-            console.log("En el insert el correctoFormato es: ",correctoFormato," y el email es: ",data.generalData.personalEmail);
-            if(correctoFormato){
-                const newData = {
-                    ...data,
-                    documentsState: "Entregado",
-                    approvalState: "Sin calificar",
-                    // dateModified:new Date()
-                }
-                const response = await registrationUpdateApiStudentCamps(newData);
-                if(!response.success){
-                    toast.error(response.msg, {
-                        position: "top-right",
-                        autoClose: 5000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
-                    });
-                    setData({
-                        ...data,
-                        idAlumno: data.idAlumno,
-                        idAlumnoProceso: data.idAlumnoProceso,
-                        idFicha: data.idFicha,
-                        documentsState: "Sin entregar",
-                        approvalState: "Sin entregar",
-                       // dateModified:data.dateModified,
-                        generalData: data.generalData,
-                        aboutCompany: data.aboutCompany,
-                        aboutJob:data.aboutJob,
-                        aboutPSP: data.aboutPSP,
-                        aboutBoss:data.aboutBoss,
-                        calification:data.calification,
-                        others: data.others,
-                    })
-                }else{
-                    toast.success(response.msg, {
-                        position: "top-right",
-                        autoClose: 5000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
-                    });
-                    deliver();
-                    setData(newData);
-                }
-            }else{
-                toast.warn("No está cumpliendo con los formatos establecidos", {
-                    position: "top-right",
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                });
-            }
-            
-        }else{
-            toast.warn("Faltan rellenar campo(s) obligatorio(s) de la ficha", {
-                position: "top-right",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-            });
-        }
-        
-    }
+    
     let isSaved=null;
     let canUpload=null;
-    
-    isSaved=((data.documentsState==="Sin entregar")||
-    (data.documentsState==="Entregado"&&data.approvalState==="Observado"))? false: true;
-    canUpload=isSaved===false?true:false;
-    
+    isSaved=true;
+    canUpload=true;
+
     console.log("La data es: ",data);
     const typeDocumentState = (data.documentsState==="Sin entregar")? "fileEmpty": "success";
     let typeApprovalState = "";
@@ -402,13 +266,46 @@ export default function StudentRegistrationForm () {
         })
     }
 
+    const insertCoordinator = async e => {
+        e.preventDefault();
+        let response=null;
+        const newData = {
+            ...data,
+            // dateModified:new Date()
+        }
+        response = await registrationUpdateApiStudent(newData);
+        if(!response.success){
+            toast.error(response.msg, {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
+        }else{
+            toast.success(response.msg, {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
+            deliver();
+            setData(newData);
+            isSaved=true;
+        } 
+    }
     const goBack = e => {
         window.history.back();
     }
     if(loading || !isNotEmptyObj(data)) return <PandaLoaderPage type={typeUser}/>
 
     return (
-        <LayoutBasic>
+         <LayoutAdministrative>
             <div className="container principal" style={{"padding":"1px"}}>
                 <div className="row rows" style={{textAlign: "left"}}>
                     <h1>Ficha de Inscripción</h1>
@@ -429,8 +326,6 @@ export default function StudentRegistrationForm () {
                 </div>
                 <div className="row rows" style={{textAlign: "left",marginBottom:"0px"}}>
                     <h2 style={{marginBottom:"0px"}}>Datos por rellenar</h2>
-                    <p></p>
-                    <p style={{marginBottom:"0px"}}>Los campos que son obligatorios van a estar marcados con un *</p>
                 </div>
                 <div className="row rows">
                     <GeneralData data={data} setData={setData} imStudent={isSaved} isSaved={isSaved} correctoFormato={correctoFormato} setCorrectoFormato={setCorrectoFormato}/>   
@@ -447,6 +342,12 @@ export default function StudentRegistrationForm () {
                 <div className="row rows">
                     <DirectBoss data={data} setData={setData} notgrabado={isSaved} correctoFormato={correctoFormato} setCorrectoFormato={setCorrectoFormato}/>
                 </div>
+                <div className="row rows uploadRegistration" >                            
+                    <FileManagement canUpload={canUpload} docs={studentDocs} maxFiles={4} setFileList={setFileList} titleUploadedFiles="Archivos subidos por el alumno"/>
+                </div>
+                <div className="row rows">
+                    <CalificationFormStudent data={data} setData={setData} notgrabado={false}/>
+                </div> 
                 <div className="row rows">
                     <div className="container Comments">
                         <nav className="navbar navbar-fixed-top navbar-inverse bg-inverse "style={{ backgroundColor: "#E7E7E7"}}>
@@ -454,7 +355,7 @@ export default function StudentRegistrationForm () {
                         </nav>
                         <div className="row rows" >
                             <Form.Control className="observaciones"
-                                    placeholder="" 
+                                    placeholder="Esciba las observaciones de la entrega" 
                                     onChange={changeComments}
                                     value={data.calification.comments}
                                     name="comments"
@@ -465,20 +366,23 @@ export default function StudentRegistrationForm () {
                         </div> 
                     </div>
                 </div>
-                <div className="row rows uploadRegistration" >                            
-                    <FileManagement canUpload={canUpload} docs={studentDocs} maxFiles={4} fileList={fileList} titleUpload="Subir archivos de Ficha de Inscripcion" setFileList={setFileList} titleUploadedFiles="Archivos subidos por el alumno"/>
-                </div>
-                <div className="row rows BotonAlumno">
-                    <Button className="btn btn-primary" style={{width:"40%"}} onClick={insert} disabled={isSaved}>Enviar</Button>
-                    <ToastContainer />
-                </div>           
+                <div className="row rows" >
                 <div className="col-sm-2 subtitles">
                 </div>
+                <div className="col-sm-4 botons">
+                    <Button variant="primary" onClick={goBack} style={{"marginBottom":"4px"}}>Regresar</Button>
+                </div>
+                <div className="col-sm-4 botons">
+                    <Button variant="primary" onClick={insertCoordinator} style={{"marginBottom":"4px"}}>Guardar</Button>
+                </div>
+                <div className="col-sm-2 subtitles">
+                </div>
+                </div> 
                 <div className="row rows">
                     
-                </div>  
+                </div>
             </div>
-        </LayoutBasic>
+        </LayoutAdministrative>
     )
 
 }
