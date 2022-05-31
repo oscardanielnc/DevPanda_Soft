@@ -1,0 +1,60 @@
+@import "../../../App.scss";
+.processList__title {
+    & h1 {
+        width: fit-content;
+    }
+    &-btn {
+        width: 100px !important;
+        height: fit-content;
+        margin: auto 1em auto auto;
+    }
+}
+.accordionProcess {
+    &__header {
+        &-check {
+            position: relative;
+            color: white;
+            background: #212529;
+            display: flex;
+            font-size: 16px;
+            border-radius: 50px;
+            padding: 2px;
+        }
+        &-name {
+            font-weight: 500 !important;
+            margin-left: 1em;
+        }
+    }
+    &__body {
+        
+        &-date {
+            display: flex;
+            justify-content: center;
+            font-weight: 200;
+            margin-bottom: 0.75em;
+        }
+        &-item {
+            &-circle {
+                color: white;
+                background: $primary-color;
+                display: flex;
+                font-size: 18px;
+                border-radius: 50px;
+                padding: 4px;
+                margin: 0.35em 1em 0.35em 1.6em;
+                display: inline-grid;
+                vertical-align: middle;
+            }
+            &-title {
+                display: contents;
+                color: black;
+                font-weight: 500;
+            }
+        }
+    }
+}
+.accordion-button:not(.collapsed) { 
+    .accordionProcess__header-check {
+        background: #0c63e4;
+    }
+}

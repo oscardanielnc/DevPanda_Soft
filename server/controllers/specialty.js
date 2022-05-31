@@ -4,12 +4,13 @@ const {MYSQL_CREDENTIALS} = require("../config")
 function insert(req, res) {
     const connection = mysql.createConnection(MYSQL_CREDENTIALS);
 
+
     const nombreEsp = req.body.nombreEsp;
-    const flagMatricula = req.body.flagMatricula? 1: 0;
-    const flagConvenio = req.body.flagConvenio? 1: 0;
+    const codigo = req.body.codigo;
+    const activo = req.body.activo? 1: 0;
 
     const sqlObj = {
-        nombreEsp, flagMatricula, flagConvenio
+        nombreEsp, codigo, activo
     };
     const sqlQuery = `INSERT INTO Especialidad SET ?`;
     connection.connect(err => {
@@ -22,9 +23,16 @@ function insert(req, res) {
                 message: "Error inesperado en el servidor"
             })
         }
+        const specialty = {
+            idEspecialidad: result.insertId,
+            nombreEsp: nombreEsp,
+            codigo: codigo,
+            fidCoordVigente: null,
+            activo: activo
+        }
         res.status(200).send({
             success: true,
-            message: "Especialidad insertada correctamente"
+            specialty
         })
     });
 

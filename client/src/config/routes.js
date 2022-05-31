@@ -24,6 +24,7 @@ import CoordinatorsManagement from "../pages/Admin/CoordinatorsManagement";
 import MeetingsManagement from "../pages/Supervisor/MeetingsManagement";
 import DeliverablesList from "../pages/Supervisor/DeliverablesList";
 import StudentRegistrarionFormCoordinator from "../pages/CoorSpecialty/StudentRegistrarionFormCoordinator";
+import ProcessList from "../pages/CoorSpecialty/ProcessList";
 
 const routes = [ 
     // General
@@ -65,6 +66,11 @@ const routes = [
         component: StudentsManagement,
     },
     {
+        path: "/list-process/permissions=E",
+        exact: true,
+        component: ProcessList,
+    },
+    {
         path: "/config-process/permissions=E",
         exact: true,
         component: ConfigProcess,
@@ -91,7 +97,7 @@ const routes = [
     },
     // Admin
     {
-        path: "/specialty-management/permissions=AF",
+        path: "/specialty-management/permissions=A",
         exact: true,
         component: SpecialtyManagement,
     },

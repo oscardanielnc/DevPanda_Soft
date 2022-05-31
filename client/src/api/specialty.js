@@ -49,14 +49,20 @@ export function specialtyInsertApi(specialty) {
             return response.json()
         })
         .then(result => {
+            if(result.success) {
+                return {
+                    specialty: result.specialty,
+                    success: result.success
+                }
+            }
             return {
-                msg: result.message,
+                message: result.message,
                 success: result.success
             }
         })
         .catch(err => {
             return {
-                msg: err.message,
+                message: err.message,
                 success: false
             }
         })

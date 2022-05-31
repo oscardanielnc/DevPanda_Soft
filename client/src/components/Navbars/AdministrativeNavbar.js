@@ -12,7 +12,7 @@ const secretary = [
 const admin = [
     {
         title: "Gestionar Especialidades",
-        link: `/specialty-management/permissions=AF`
+        link: `/specialty-management/permissions=A`
     },
     {
         title: "Gestionar Coordinadores",
@@ -41,8 +41,8 @@ const coorSpecialty = [
         link: `/supervisors-management/permissions=E`
     },
     {
-        title: "Configuración del proceso",
-        link: `/config-process/permissions=E`
+        title: "Lista de Procesos",
+        link: `/list-process/permissions=E`
     },
     {
         title: "Gestión de Campos Ficha de Inscripción",
@@ -61,10 +61,6 @@ const coorFaci = [
     {
         title: "Revisión Ficha de Inscripción",
         link: `/list-inscriptions-form/permissions=EF`
-    },
-    {
-        title: "Gestionar Especialidades",
-        link: `/specialty-management/permissions=AF`
     },
     {
         title: "Gestionar Coordinadores",

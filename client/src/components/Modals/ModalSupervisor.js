@@ -96,7 +96,7 @@ export default function ModalSupervisor (props) {
         <ModalBasic show={show}
             setShow={setShow}
             handlePrimaryAction={handleClick}
-            title={`Datos del supervisor (${mode===update? "Editar": "Agregar"})`}
+            title={`Datos del supervisor (${mode==="update"? "Editar": "Agregar"})`}
             primaryAction="Guardar"
             secundaryAction="Cancelar"
         >
