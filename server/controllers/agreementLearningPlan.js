@@ -337,30 +337,30 @@ async function selectDocumentsInfoByProcessOnlyStudent(req, res){
     //Se pedirá el idAlumno e idAsesor para poder obtener la info documentos asociados.
     const fidAlumno = req.params.fidAlumno;
     let idAlumnoProceso;
-    let sqlQuery = ` SELECT
-    estadoFaci, estadoEspecialidad, observaciones
-FROM
-    EntregaConvenioYPlan
-WHERE
-    fidAlumnoProceso = (SELECT
-                            idAlumnoProceso
-                        FROM
-                            AlumnoProceso
-                        WHERE
-                            fidAlumno = 1
-                            AND fidProceso = (  SELECT
-                                                    idProceso
-                                                FROM
-                                                    Proceso
-                                                WHERE
-                                                    fidEspecialidad =(  SELECT
-                                                                            fidEspecialidad
-                                                                        FROM
-                                                                            Persona
-                                                                        WHERE
-                                                                            idPersona = 4)
-                                                    AND activo = 1)
-                            AND estado = 'C');`;
+    let sqlQuery = `SELECT
+                        estadoFaci, estadoEspecialidad, observaciones
+                    FROM
+                        EntregaConvenioYPlan
+                    WHERE
+                        fidAlumnoProceso = (SELECT
+                                                idAlumnoProceso
+                                            FROM
+                                                AlumnoProceso
+                                            WHERE
+                                                fidAlumno = ${fidAlumno}
+                                                AND fidProceso = (  SELECT
+                                                                        idProceso
+                                                                    FROM
+                                                                        Proceso
+                                                                    WHERE
+                                                                        fidEspecialidad =(  SELECT
+                                                                                                fidEspecialidad
+                                                                                            FROM
+                                                                                                Persona
+                                                                                            WHERE
+                                                                                                idPersona = ${fidAlumno})
+                                                                        AND activo = 1)
+                                                AND estado = 'C');`;
 
     connection.connect(err => {
         if (err) throw err;
@@ -368,8 +368,8 @@ WHERE
 
     try{
         let resultado = await sqlAsync(sqlQuery, connection)
-        console.log(resultado.lenght)
-        if(!resultado.lenght){
+        console.log(resultado.length)
+        if(resultado.lenght == 0){
             //Insert en tabla
                 //obtener fidAlumnoProceso
             sqlQuery = `SELECT
@@ -392,7 +392,7 @@ WHERE
                                                     AND activo = 1)
                             AND estado = 'C'`;
             try {
-                resultado= await sqlAsync(sqlQuery, connection)
+                resultado = await sqlAsync(sqlQuery, connection)
                 if(!resultado.length){
                     res.status(404).send({ 
                         success: false,
