@@ -133,6 +133,7 @@ const lineBussinessDummy=[
 
 //const idAlumno=parseInt(arrayCadena[2]);
 const maxFiles = 4;
+let savedCoordinator=false;
 
 export default function StudentRegistrarionFormCoordinator () {
     const {user} = useAuth();
@@ -243,10 +244,11 @@ export default function StudentRegistrarionFormCoordinator () {
     let canUpload=null;
     isSaved=true;
     canUpload=true;
-
+    
     console.log("La data es: ",data);
     const typeDocumentState = (data.documentsState==="Sin entregar")? "fileEmpty": "success";
     let typeApprovalState = "";
+    if(data.approvalState) savedCoordinator=true;
     switch(data.approvalState) {
         case "Observado": typeApprovalState = "warning"; break;
         case "Sin entregar": typeApprovalState = "pending"; break;
@@ -297,6 +299,8 @@ export default function StudentRegistrarionFormCoordinator () {
             deliver();
             setData(newData);
             isSaved=true;
+            savedCoordinator=true;
+            window.scrollTo(0, 0);
         } 
     }
     const goBack = e => {
@@ -346,7 +350,7 @@ export default function StudentRegistrarionFormCoordinator () {
                     <FileManagement canUpload={canUpload} docs={studentDocs} maxFiles={4} setFileList={setFileList} titleUploadedFiles="Archivos subidos por el alumno"/>
                 </div>
                 <div className="row rows">
-                    <CalificationFormStudent data={data} setData={setData} notgrabado={false}/>
+                    <CalificationFormStudent data={data} setData={setData} notgrabado={savedCoordinator}/>
                 </div> 
                 <div className="row rows">
                     <div className="container Comments">
@@ -359,7 +363,7 @@ export default function StudentRegistrarionFormCoordinator () {
                                     onChange={changeComments}
                                     value={data.calification.comments}
                                     name="comments"
-                                    disabled={typeUser==="e"? true: false}
+                                    disabled={savedCoordinator}
                                     style={{"marginBottom":"10px !important"}}
                                     as="textarea"
                                     rows={6}/>

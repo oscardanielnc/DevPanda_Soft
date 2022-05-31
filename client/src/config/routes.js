@@ -85,7 +85,7 @@ const routes = [
         component: ListAgreementsRequests,
     },
     {
-        path: "/registration-review/permissions=E&idStudent:=idStudent",
+        path: "/registration-review/permissions=E&idStudent=:idStudent",
         exact: true,
         component: StudentRegistrarionFormCoordinator,
     },

@@ -347,6 +347,7 @@ export default function StudentRegistrationForm () {
                     });
                     deliver();
                     setData(newData);
+                    window.scrollTo(0, 0);
                 }
             }else{
                 toast.warn("No está cumpliendo con los formatos establecidos", {

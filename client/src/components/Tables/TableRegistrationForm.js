@@ -27,13 +27,12 @@ export default function TableRegistrationForm ({rows, idProcess=1, phase="FINS"}
             <tbody>
             {
                 rows.map((row, index) => (
-                    console.log("ID alumno:",row.idAlumno),
                     <tr key={index}>
                         <td>{index+1}</td>
                         <td>{row.nombreAlumno}</td>
                         <td>{row.estado}</td>
                         <td>
-                        <Link to ={`/inscription/idStudent=${row.idAlumno}&phase=${phase}`} 
+                        <Link to ={`/registration-review/permissions=E&idStudent=${row.idAlumno}`} 
                             className= "btn btn-primary">Visualizar</Link>
                         </td>
                     </tr>
