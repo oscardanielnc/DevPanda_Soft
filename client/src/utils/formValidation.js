@@ -7,10 +7,8 @@ export function minLengthValidation (inputData, minLength) {
     removeClassErrorSuccess(inputData)
 
     if(value.length >= minLength) {
-        inputData.classList.add('success')
         return true
     } else {
-        inputData.classList.add('error')
         return false
     }
 }
@@ -25,10 +23,8 @@ export function emailValidation(inputData) {
     const resultValidation = emailValid.test(value); //para esta RegularExp, esta cadena cumple?´
     console.log(resultValidation)
     if(resultValidation) {
-        inputData.classList.add('success')
         return true
     } else {
-        inputData.classList.add('error')
         return false
     }
 }
@@ -38,10 +34,8 @@ export function maxLengthValidation(inputData,maxLength){
     removeClassErrorSuccess(inputData);
 
     if(value.length <=maxLength){
-        inputData.classList.add("success");
         return true;
     }else{
-        inputData.classList.add("error");
         return false;
     }
 }
@@ -53,10 +47,8 @@ export function numberValidation(inputData){
     console.log("En el numberValidation el value es: ",value);
     const resultValidation = numberValidation.test(value) //para esta RegularExp, esta cadena cumple?
     if(resultValidation) {
-        inputData.classList.add('success')
         return true
     } else {
-        inputData.classList.add('error')
         return false
     }
 }
