@@ -59,6 +59,7 @@ export default function ModalCoordinators (props) {
                     personalType: 'E',
                     active: newData.activo
                 }
+                console.log(personal)
                 const result = await createAdministrativeApi(personal);
                 if(result.success) {
                     const coord = {

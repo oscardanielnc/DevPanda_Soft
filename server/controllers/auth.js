@@ -88,7 +88,7 @@ async function singIn(req, res) {
                             estado: dbPersonal.estado,
                         }
                         // seteamos el proceso actual del administrativo
-                        if(dbPersonal.tipoPersonal !== "A") {
+                        if(dbPersonal.tipoPersonal !== "A" && dbPersonal.tipoPersonal !== "F") {
                             const sqlProcess = `SELECT * FROM Proceso WHERE fidEspecialidad=${dbUser.fidEspecialidad} AND procesoActivo=1;`
                             const resultProcess  = await sqlAsync(sqlProcess, connection);
 
