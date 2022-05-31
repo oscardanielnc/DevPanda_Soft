@@ -9,16 +9,7 @@ function StudentNavbar () {
     const [navbar, setNavbar] = useState([]);
 
     useEffect(()=> {
-        const dataNavbar = [];
-        const link = `/welcome-process/idStudent=${user.idPersona}&phase=WPRO`;
-        const wpro = {
-            code: "WPRO",
-            title: "Inicio del proceso",
-            order: 0,
-            link: link
-        }
-        dataNavbar.push(wpro);
-        
+        const dataNavbar = [];       
         user.navbar.forEach(item => {
             const newItem = {
                 ...item,
@@ -33,13 +24,14 @@ function StudentNavbar () {
         let name = '';
         switch (code) {
             case "CONV": name="/agreement"; break;
+            case "WPRO": name="/welcome-process"; break;
             case "MATR": name="/enrollment"; break;
             case "FINS": name="/inscription"; break;
             case "ESUP": name="/supervisor-selection"; break;
             case "IFIN": name="/final-report"; break;
             default: name="/deliverables"; break;
         }
-        return `${name}/idStudent=${user.idPersona}&phase=${code}`
+        return `${name}/phase=${code}`
     }
     const getColorClassItem = position => {
         const currentPhase = user.estadoProceso;
