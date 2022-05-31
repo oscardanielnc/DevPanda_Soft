@@ -1,0 +1,42 @@
+.configProcess {
+    &__basic {
+        &-anio {
+            width: 30% !important;
+            // margin: auto;
+            // margin-left: 0;
+        }
+        &-ciclo {
+            width: 15% !important;
+            // margin: auto;
+            // margin-right: 0;
+        }
+    }
+    &__flow {
+        &-flows {
+            margin: 1em 0 !important;
+            &-item {
+                margin: 0.75em 0;
+            }
+            &-name {
+                background: #e9ecef;
+                display: grid;
+                border: 1px solid #ced4da;
+                border-radius: 0 5px 5px 0;
+                width: calc(100% - 45px);
+                & span {
+                    margin-left: 2em;
+                    align-self: center;
+                    font-weight: 500;
+                }
+            }
+        }
+    }
+    &__btns {
+        display: flex;
+        justify-content: flex-end;
+        &-btn {
+            width: 140px !important;
+            margin-right: 1em;
+        }
+    }
+}

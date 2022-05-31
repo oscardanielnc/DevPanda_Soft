@@ -1,13 +1,29 @@
 import React from "react";
 import { Form } from "react-bootstrap";
-import { toast, ToastContainer } from "react-toastify";
-import { createAdministrativeApi } from "../../api/users";
+import { toast } from "react-toastify";
+import { specialtyInsertApi } from "../../api/specialty";
+// import { createAdministrativeApi } from "../../api/users";
 import ModalBasic from './ModalBasic';
 
 import './ModalStudentManagement.scss';
 
-export default function ModalCoordinators (props) {
-    const {show, setShow, newData, setNewData, specialties, mode, setCoordinators, coordinators, setFilteredData} = props;
+const coordinators = [
+    // {
+    //     name: "Bello Torres",
+    //     id: 1
+    // },
+    // {
+    //     name: "Blanco Negro",
+    //     id: 2
+    // },
+    // {
+    //     name: "Pika Chug",
+    //     id: 3
+    // }
+]
+
+export default function ModalSupervisor (props) {
+    const {show, setShow, newData, setNewData, mode, setEspecialidades, setFilteredData, especialidades} = props;
 
     const handleChangeSwitch = e => {
         setNewData({
@@ -26,59 +42,41 @@ export default function ModalCoordinators (props) {
 
         setNewData({
             ...newData,
-            fidEspecialidad: Number(text)
+            fidCoordVigente: Number(text)
         })
     }
-    const getSpecialtyName = (index) => {
-        for(let i=0; i<specialties.length; i++) {
-            if(specialties[i].idEspecialidad===index)
-                return specialties[i].nombreEsp;
-        }
-    }
+
     const update = () => {
         setShow(false);
     }
     const insert = async () => {
-        if(newData.nombres === "" || newData.apellidos === "" || newData.correo === "") {
-            toast.warning("Los nombres, apellidos y el correo no pueden ser campos vacíos", {
+        if(newData.nombreEsp === "" || newData.codigo === "") {
+            toast.warning("El nombre de la especialidad y el código no pueden ser campos vacíos", {
                 position: "top-right",
                 autoClose: 3000,
             });
         } else {
-            if(newData.fidEspecialidad === -1) {
-                toast.warning("Tiene que seleccioar alguna especialidad para este coordinador", {
-                    position: "top-right",
-                    autoClose: 3000,
-                });
-            } else {
-                const personal = {
-                    firstName: newData.nombres, 
-                    lastName: newData.apellidos, 
-                    email: newData.correo, 
-                    specialty: newData.fidEspecialidad, 
-                    personalType: 'E',
-                    active: newData.activo
+                const specialty = {
+                    nombreEsp: newData.nombreEsp,
+                    codigo: newData.codigo,
+                    activo: newData.activo
                 }
-                console.log(personal)
-                const result = await createAdministrativeApi(personal);
+                const result = await specialtyInsertApi(specialty);
                 if(result.success) {
-                    const coord = {
-                        idPersona: result.personal.idPersona,
-                        nombres: newData.nombres,
-                        apellidos: newData.apellidos,
-                        fidEspecialidad: newData.fidEspecialidad,
-                        nombreEsp: getSpecialtyName(newData.fidEspecialidad),
-                        correo: newData.correo,
-                        activo: newData.activo,
-                        estado: "1"
+                    const spe = {
+                        idEspecialidad: result.specialty.idEspecialidad,
+                        nombreEsp: newData.nombreEsp,
+                        codigo: newData.codigo,
+                        fidCoordVigente: null,
+                        activo: newData.activo
                     }
-                    setCoordinators([
-                        ...coordinators,
-                        coord
+                    setEspecialidades([
+                        ...especialidades,
+                        spe
                     ])
                     setFilteredData([
-                        ...coordinators,
-                        coord
+                        ...especialidades,
+                        spe
                     ])
                     setShow(false);
                 }
@@ -87,7 +85,6 @@ export default function ModalCoordinators (props) {
                     position: "top-right",
                     autoClose: 3000,
                 });
-            }
         }
     }
 
@@ -99,14 +96,13 @@ export default function ModalCoordinators (props) {
         <ModalBasic show={show}
             setShow={setShow}
             handlePrimaryAction={handleClick}
-            title={`Datos del coordinador (${mode==="update"? "Editar": "Agregar"})`}
+            title={`Datos de la especialidad (${mode==="update"? "Editar": "Agregar"})`}
             primaryAction="Guardar"
             secundaryAction="Cancelar"
         >
             <Form className="modalStudentManagement">
-                <InputLabel name="nombres" value={newData.nombres} handleChangeText={handleChangeText}/>
-                <InputLabel name="apellidos" value={newData.apellidos} handleChangeText={handleChangeText}/>
-                <InputLabel name="correo" value={newData.correo} handleChangeText={handleChangeText}/>
+                <InputLabel name="nombreEsp" value={newData.nombreEsp} handleChangeText={handleChangeText} nombre="Nombre"/>
+                <InputLabel name="codigo" value={newData.codigo} handleChangeText={handleChangeText} nombre="Código"/>
  
                 <div className="modalStudentManagement__switches">
                     <Form.Group className="modalStudentManagement__switches-group">
@@ -119,14 +115,14 @@ export default function ModalCoordinators (props) {
                 </div>
                 <Form.Group className="modalStudentManagement__switches-group">
                     <Form.Label className="modalStudentManagement__switches-label">
-                        Especialidad: 
+                        Coordinador: 
                     </Form.Label>
                     <Form.Select className="studentManagement__select form-select" onChange={handleSelect} name="select">
                             <option value={"-1"}>Todos</option>
-                            { specialties.length > 0 &&
-                                specialties.map((element, index) => (
-                                    <option value={`${element.idEspecialidad}`} 
-                                    key={index}>{element.nombreEsp}
+                            { coordinators.length >0 &&
+                                coordinators.map((element, index) => (
+                                    <option value={`${element.id}`} 
+                                    key={index}>{element.name}
                                     </option>
                                 ))
                             }
@@ -138,11 +134,11 @@ export default function ModalCoordinators (props) {
     )
 }
 
-function InputLabel({name, value, handleChangeText}) {
+function InputLabel({name, value, handleChangeText, nombre}) {
     return (
         <Form.Group className="modalStudentManagement__formGroup">
             <Form.Label className="modalStudentManagement__formGroup-label">
-                {name[0].toUpperCase() + name.slice(1)}
+                {nombre}
             </Form.Label>
             <Form.Control className="modalStudentManagement__formGroup-input" type="text" 
                 value={value} onChange={handleChangeText} name={name}/>

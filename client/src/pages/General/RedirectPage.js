@@ -12,8 +12,8 @@ export default function AddSpecialty () {
                 case 'S': 
                     window.location.href = `/meetings-management/permissions=S&idSupervisor=${user.idPersona}&idProcess=${user.fidProceso}`; break;
                 case 'E': window.location.href = `/students-management/permissions=E`; break;
-                case 'F': window.location.href = `/specialty-management/permissions=AF`; break;
-                case 'A': window.location.href = `/specialty-management/permissions=AF`; break;
+                case 'F': window.location.href = `/list-students-agreement/permissions=EF`; break;
+                case 'A': window.location.href = `/specialty-management/permissions=A`; break;
                 default: window.location.href = `/list-supervisors/permissions=C`; break;
             }
         }
