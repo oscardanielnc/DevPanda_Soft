@@ -52,7 +52,7 @@ export default function AgreementReview(){
     
     useEffect(() => {                           //se debe cambiar por INFI   
         const fetchData = async () => { 
-            const result = await getAllDocsApi(`1-${user.fidEspecialidad}-CONV`, 0);
+            const result = await getAllDocsApi(`1-${user.fidEspecialidad}-IFIN`, 0);
             if(result.success) {
                 setDocs(result.docs)
             }
