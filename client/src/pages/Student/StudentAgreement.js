@@ -21,15 +21,16 @@ export default function StudentAgreement () {
     const [fileList, setFileList] = useState([])
     const [docs, setDocs] = useState([])
     const [studentDocs, setStudentDocs] = useState([])
-    const [data, setData] = useState([{
-            files:[{
-                    estadoEspecialidad:0,
-                    estadoFaci:0,
-                    observaciones:null,
-            }]
-    }
+    const [data, setData] = useState([
+        {
+            estadoFaci: "0",
+            estadoEspecialidad: "0",
+            observaciones: "HOLA"
+        },
     ]); 
+    const [numFiles,setNumFiles]=useState(0);
     const {user} = useAuth();
+    const fidAlumno=user.idPersona;
     useEffect(() => {
         getAllDocsApi(`1-${user.fidEspecialidad}-CONV`, 0).then(response => {
             if(response.success) {
@@ -54,27 +55,32 @@ export default function StudentAgreement () {
     },[setStudentDocs])
 
     useEffect(()=>{
-        // selectDocumentsInfoByProcessOnlyStudent(user.idPersona).then(response => {
-        //     if(response.success) {
-        //         setData(response.files)
-        //         console.log("consola:",response)
-                
-        //     }
-        // }
-        // )
+        selectDocumentsInfoByProcessOnlyStudent(fidAlumno).then(response => {
+            if(response.success) {
+                setData(response.files)
+                if(response.files.length>0){
+                    setNumFiles(response.files.length-1);
+                }
+                console.log("response:",response.files);
+
+            }
+        }
+        )
     },[setData])
 
-    console.log("ga",data[0].estadoEspecialidad);
+    // console.log("ga",data.estadoEspecialidad);
+    
     const typeDocumentState = (docuemntsState==="Sin entregar")? "fileEmpty": "success";
-    let typeApprovalState = "";
-
-    if(data[0].estadoFaci === "o" || data[0].estadoEspecialidad === "o"){
+    let typeApprovalState = "fileEmpty";
+    let observaciones=data[numFiles].observaciones;
+    console.log("lenght",numFiles);
+    if(data[numFiles].estadoFaci === "o" || data[numFiles].estadoEspecialidad === "o"){
         approvalState = "Observado"
     }
-    else if(data[0].estadoFaci === "a" || data[0].estadoEspecialidad ==="a"  ){
+    else if(data[numFiles].estadoFaci === "a" || data[numFiles].estadoEspecialidad ==="a"  ){
         approvalState= "Aprobado"
     }
-    else if(data[0].estadoFaci === "P" || data[0].estadoEspecialidad ==="P"){
+    else if(data[numFiles].estadoFaci === "P" || data[numFiles].estadoEspecialidad ==="P"){
         approvalState= "Pendiente"
         console.log("holi");
     }
@@ -183,7 +189,7 @@ export default function StudentAgreement () {
                     <h2>Observaciones</h2>  
                     <Form>                        
                         <Form.Group className="mb-3" controlId="ControlTextarea1">                            
-                            <Form.Control as="textarea" rows={8} />
+                            <Form.Control  placeholder={`${observaciones}`} as="textarea" rows={8}/>
                         </Form.Group>
                     </Form>                           
                 </div>

@@ -48,7 +48,7 @@ export default function ModalNoAgreement (props) {
             if(responseVerify.success){
                 console.log("Tiene solicitud:",responseVerify.data.conSolicitud);
                 if(responseVerify.data.conSolicitud){
-                    toast.warning(`Ya haz registrado una solicitud anteriormente.`, {
+                    toast.warning(`Ya haz registrado una solicitud anteriormente. Proximamente le llegara la respuesta de la especialidad por correo`, {
                         position: "top-right",
                         autoClose: 3000,
                         hideProgressBar: false,
