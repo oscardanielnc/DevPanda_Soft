@@ -85,11 +85,11 @@ export default function AgreementReview(){
         staticEsp =  data.deliverableResponse.evaState;
         flag=0;                               
         if(data.deliverableResponse.docState==="S"){
-            disable=false;            
+            disable=false;      
         }
         else{
             disable=true;   
-            filledFieldsFlag = 1;         
+            filledFieldsFlag = 1;                     
         }       
     }
     
@@ -120,7 +120,8 @@ export default function AgreementReview(){
                     if(response2.success){
                         const response3 = await uploadDocsApi(fileList, `${user.fidProceso}-${user.fidEspecialidad}-IFIN-${user.idPersona}`, 1);
                         if(response3.success){
-                            toast.success(response1.msg, {
+                            window.location.reload()
+                            toast.success(`Datos registrados con éxito.`, {
                                 position: "top-right",
                                 autoClose: 3000,
                                 hideProgressBar: false,
@@ -128,8 +129,7 @@ export default function AgreementReview(){
                                 pauseOnHover: true,
                                 draggable: true,
                                 progress: undefined,
-                            });            
-                            window.location.reload()
+                            });                        
                         }else{
                             toast.error(response3.msg, {
                                 position: "top-right",
@@ -243,14 +243,14 @@ export default function AgreementReview(){
     //     })        
     // }
 
-    function changeLearnLevel(e) {        
-        dataDummy.learnLevel = e.target.id;        
-        /* setData({
-            ...data,
-            estadoFaci: "P",             
-        }) */
-        console.log(dataFields)
-    }
+    // function changeLearnLevel(e) {        
+    //     dataDummy.learnLevel = e.target.id;        
+    //     /* setData({
+    //         ...data,
+    //         estadoFaci: "P",             
+    //     }) */
+    //     console.log(dataFields)
+    // }
 
     const handleChangeCamps = (e) => {     
         let counter = 0;
@@ -312,7 +312,7 @@ export default function AgreementReview(){
                 </div>
                 <div className="shadowbox">
                     <div className="row row1" style={{textAlign: "left",marginTop:"25px"}}>                                       
-                        <FileManagement canUpload={true} docs={docsStudent} maxFiles={2} fileList={fileList} setFileList={setFileList} titleUpload="Subir archivos" />
+                        <FileManagement canUpload={!disable} docs={docsStudent} maxFiles={2} fileList={fileList} setFileList={setFileList} titleUpload="Subir archivos" />
                     </div>
                 </div>
                 <div className="shadowbox">
@@ -342,47 +342,7 @@ export default function AgreementReview(){
                                 ) 
                             })                   
                         }
-                        {/* <div className="wordAndTextBoxFirst">  
-                            <div className="col-sm-5 subtitles">
-                                <h6 style={{marginTop:"9px"}} >Sector económico:</h6> 
-                            </div>
-                            <div className="col-sm-7 subtitles">
-                                <Form.Control  
-                                    style={{width: "100%"}} 
-                                    type="text" 
-                                    placeholder="Ingrese el sector económico de la empresa." 
-                                    //defaultValue={dataFields[0]} 
-                                    //onChange = {changeEcoSector}
-                                    disabled={disable}/>
-                            </div>                   
-                        </div> 
-                        <div className="wordAndTextBox">  
-                            <div className="col-sm-5 subtitles">
-                                <h6 style={{marginTop:"9px"}}>Principal producto o servicio ofrecido:</h6> 
-                            </div>
-                            <div className="col-sm-7 subtitles">
-                                <Form.Control  
-                                    style={{width: "100%"}} 
-                                    type="text" 
-                                    placeholder="Ingrese el principal producto o servicio ofrecido por la empresa."
-                                    //onChange = {changeProdSer} 
-                                    disabled={disable}/>
-                            </div>                   
-                        </div>  
-                        <div className="wordAndTextBox">  
-                            <div className="col-sm-5 subtitles">
-                                <h6 style={{marginTop:"9px"}}>Área de influencia:</h6> 
-                            </div>
-                            <div className="col-sm-7 subtitles">
-                                <Form.Control  
-                                    style={{width: "100%"}} 
-                                    type="text" 
-                                    placeholder="Ingrese el area de influencia de la empresa." 
-                                    //onChange = {changeInfluArea}
-                                    disabled={disable}/>
-                            </div>                   
-                        </div>  
-                        <h4 className="subSubtitulo">Sobre la práctica</h4>    
+                        {/*                      
                         <div className="wordAndTextBoxFirst">  
                             <div className="col-sm-4 subtitles">
                                 <h6 style={{marginTop:"9px",textAlign:"justify"}}>Rama de la Ingeniería Informática en la que se desempeñó:</h6> 
