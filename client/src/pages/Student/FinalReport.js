@@ -120,7 +120,8 @@ export default function AgreementReview(){
                     if(response2.success){
                         const response3 = await uploadDocsApi(fileList, `${user.fidProceso}-${user.fidEspecialidad}-IFIN-${user.idPersona}`, 1);
                         if(response3.success){
-                            toast.success(response1.msg, {
+                            window.location.reload()
+                            toast.success(`Datos registrados con éxito.`, {
                                 position: "top-right",
                                 autoClose: 3000,
                                 hideProgressBar: false,
@@ -128,8 +129,7 @@ export default function AgreementReview(){
                                 pauseOnHover: true,
                                 draggable: true,
                                 progress: undefined,
-                            });            
-                            window.location.reload()
+                            });                        
                         }else{
                             toast.error(response3.msg, {
                                 position: "top-right",
