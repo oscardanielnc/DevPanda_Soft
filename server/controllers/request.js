@@ -173,7 +173,7 @@ function requestListAgreement(req, res){
             const data =  result.map(e => {
                 return {
                     idPersona: e.idPersona,
-                    nombres: e.completeName,
+                    nombres: e.nombres,
                     estadoMatriculado: e.estadoMatriculado? "Matriculado" : "Sin matricular"
                 }
             });
