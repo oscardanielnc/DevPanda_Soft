@@ -7,12 +7,12 @@ import './TableAgreement.scss';
 
 
 export default function TableAgreement ({rows}) {
+    
     if(rows.length === 0) {
         return (
-            <p>No se han registrado convenios todavía.</p>
+            <p>No se han registrado entregas todavía.</p>
         )
     }
-
 
     return (
         <Table striped bordered hover className="TableAgreement">
@@ -21,7 +21,6 @@ export default function TableAgreement ({rows}) {
                     <th>#</th>
                     <th>Nombre</th>
                     <th>Estado</th>
-                    <th>Visualización</th>
                 </tr>
             </thead>
             <tbody>
@@ -29,10 +28,12 @@ export default function TableAgreement ({rows}) {
                 rows.map((row, index) => (
                     <tr key={index}>
                         <td>{index+1}</td>
-                        <td>{row.nombreAlumno}</td>
-                        <td>{row.estado}</td>
-                        <td>
-                        <Link to ={"/student-registration-review/" + row.idAlumno} className= "btn btn-primary">Visualizar</Link>
+                        <td>{row.nombres}</td>
+                        <td>{row.estadoMatriculado}</td>
+                        <td className="buttonRequest">
+                        
+                        <Link to ={`/agreement-review/permissions=EF&idStudent=${row.idAlumno}`} 
+                            className= "btn btn-primary">Visualizar</Link>
                         </td>
                     </tr>
                 ))
