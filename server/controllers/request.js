@@ -143,9 +143,53 @@ async function insertRequest(req, res){
     })
 }
 
+function requestListAgreement(req, res){
+    const connection = mysql.createConnection(MYSQL_CREDENTIALS);
+
+    const fidEspecialidad = req.params.idEspecialidad;
+    
+    
+    const sqlQuery = `  select
+                            P.idPersona, concat(P.nombres, " ", P.Apellidos) "nombres", AP.estadoMatriculado
+                        from
+                            Persona as P inner join AlumnoProceso as AP on P.idPersona = AP.fidAlumno
+                        where
+                            idPersona not in( SELECT A.idAlumno
+                                                FROM SolicitudesSinConvenio S inner join Alumno as A on S.fidAlumno = A.idAlumno
+                                                WHERE S.fidEspecialidad = ${fidEspecialidad});`;
+
+
+    connection.connect(err => {
+        if (err) throw err;
+    });
+    
+    connection.query(sqlQuery, (err, result) => {
+        if (err) {
+            res.status(505).send({
+                success: false,
+                message: "Error inesperado en el servidor" + err.message
+            })
+        }else{
+            const data =  result.map(e => {
+                return {
+                    idPersona: e.idPersona,
+                    nombres: e.completeName,
+                    estadoMatriculado: e.estadoMatriculado? "Matriculado" : "Sin matricular"
+                }
+            });
+            res.status(200).send({
+                success: true,
+                data
+            })
+        }
+    });
+
+    connection.end();
+}
 
 module.exports = {
     insertRequest,
     requestList,
-    verifyRequest
+    verifyRequest,
+    requestListAgreement
 }
