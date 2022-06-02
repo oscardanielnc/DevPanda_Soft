@@ -7,15 +7,16 @@ import "./scss/ListStudentsRequests.scss";
 import useAuth from "../../hooks/useAuth";
 import FilterData from "../../components/Filters/FilterData";
 import {Form, FormControl} from 'react-bootstrap';
-/*
-import {getListStudentsInscriptionForm} from  "../api/registrationForm";
-*/
+import useWindowDimensions from "../../hooks/useWindowResize";
+
+import {getListStudentsAgreement} from  "../../api/agreementList";
+
 
 const dataDummy = [
     /*
     {
         idAlumno : "1",
-        nombreAlumno: "Carlos Lescano",
+        nombreAlumno: "Javier Palacios",
         estado: "Aprobado"
     },
     {
@@ -63,8 +64,8 @@ const dataDummy = [
 
 const states = [
     {
-    name: "Aceptado",
-    value: "Aceptado"
+        name: "Aceptado",
+        value: "Aceptado"
     },
     {
         name: "Rechazado",
@@ -84,25 +85,28 @@ let textSelect = "-1"
 
 export default function ListStudentsRequests () {
     
+    const {user} = useAuth();
     const [alumnos, setAlumnos] = useState([]);
-    const [filteredData, setFilteredData] = useState(dataDummy);
+    const [filteredData, setFilteredData] = useState([]);
     // const [textFilter, setTextFilter] = useState("");
     // const [textSelect, setTextSelect] = useState("-1");
 
-    let idEspecialidad = 1
     //console.log(useAuth()); // el useAuth() nos permite acceder a la informacion del usuario desde cualquier lugar. Por ahora ese objeto esta hardcodeado.
-
+    console.log("El user tiene: ",user);    
 
     useEffect(()=> {
-        /*
-        getListStudentsInscriptionForm(1).then(response => {
+        
+        getListStudentsAgreement(user.fidEspecialidad).then(response => {
+            console.log(response)            
             if(response.success===true) {
                 console.log("En el success el response es: ",response);
                 setAlumnos(response.data);
                 setFilteredData(response.data);
             }
+
         })
-        */
+
+        
     }, [setAlumnos])
 
     const filter = e => {
@@ -121,16 +125,21 @@ export default function ListStudentsRequests () {
        }))
 
     }
-
+    
+    const Component = () =>{
+        const {height,width} = useWindowDimensions();
+    }
 
     return (
         
         <LayoutAdministrative>
-
             
             <div className="container principal">
                 <div className="row rows studentManagement__title">
-                    <h1>Listado de convenios</h1>
+                    <h1>Listado de alumnos por convenio</h1>
+                </div>
+                <div className="row rows studentRequests__title">
+                    Buscar por Nombre, Apellidos o Estado
                 </div>
                 <div className="row rows studentManagement__actions">
                     <FormControl
@@ -151,8 +160,6 @@ export default function ListStudentsRequests () {
                         }
                     </Form.Select>
                     
-                   
-
                 </div>
                 <div className="row rows">
                     <TableAgreement rows={filteredData}/>
