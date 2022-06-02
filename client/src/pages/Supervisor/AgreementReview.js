@@ -24,7 +24,7 @@ let dataForApi = {
 
 let staticFaci;
 let staticEsp;
-
+let dataTemporal;
 let flag=1;
 export default function AgreementReview (){
     const idAlumno= useParams().idStudent;
@@ -36,41 +36,64 @@ export default function AgreementReview (){
     const [docsCoord, setDocsCoord] = useState([])   
     //Enviar idAlumno, idRevisor
     
-        
     useEffect(() => {
-        getAgreement(idAlumno,user.idPersona).then(response => {                
-            if(response.success) {  
-                setData(response.agreement[0]);            
-            }else{
-                console.log(response.errMsg)
-            }            
-        })
-    }, [setData])
-
-    //VER BIEN LO DEL FORMATO 1-1
-    useEffect(() => {
-        getAllDocsApi(`1-${user.fidEspecialidad}-CONV`, 0).then(response => {
-            if(response.success) {
-                setDocs(response.docs)
+        const fetchData = async () => {
+            const result1 = await getAgreement(idAlumno,user.idPersona);
+            //dataTemporal =result1.data.valor;                   
+            if(result1.success) {  
+                setData(result1.agreement[0]);            
             }
-        })
-    },[setDocs])
-
-    useEffect(() => {
-        getAllDocsApi(`1-${user.fidEspecialidad}-CONV-${idAlumno}`, 1).then(response => {
-            if(response.success) {
-                setDocsStudent(response.docs)
+            const result2 = await getAllDocsApi(`1-${user.fidEspecialidad}-CONV`, 0)
+            if(result2.success) {
+                setDocs(result2.docs)
             }
-        })
-    },[setDocsStudent])
-
-    useEffect(() => {
-        getAllDocsApi(`1-${user.fidEspecialidad}-CONV-${idAlumno}`, 0).then(response => {
-            if(response.success) {
-                setDocsCoord(response.docs)
+            const result3 = await getAllDocsApi(`1-${user.fidEspecialidad}-CONV-${idAlumno}`, 1)
+            if(result3.success) {
+                setDocsStudent(result3.docs)
             }
-        })
-    },[setDocsCoord])       
+            const result4 = await getAllDocsApi(`1-${user.fidEspecialidad}-CONV-${idAlumno}`, 0)
+            if(result4.success) {
+                setDocsCoord(result4.docs)
+            }
+        }
+        fetchData()
+    }, [setData,setDocs,setDocsStudent,setDocsCoord])   
+
+             
+    // useEffect(() => {
+    //     getAgreement(idAlumno,user.idPersona).then(response => {                
+    //         if(response.success) {  
+    //             setData(response.agreement[0]);            
+    //         }else{
+    //             console.log(response.errMsg)
+    //         }            
+    //     })
+    // }, [setData])
+
+    // //VER BIEN LO DEL FORMATO 1-1
+    // useEffect(() => {
+    //     getAllDocsApi(`1-${user.fidEspecialidad}-CONV`, 0).then(response => {
+    //         if(response.success) {
+    //             setDocs(response.docs)
+    //         }
+    //     })
+    // },[setDocs])
+
+    // useEffect(() => {
+    //     getAllDocsApi(`1-${user.fidEspecialidad}-CONV-${idAlumno}`, 1).then(response => {
+    //         if(response.success) {
+    //             setDocsStudent(response.docs)
+    //         }
+    //     })
+    // },[setDocsStudent])
+
+    // useEffect(() => {
+    //     getAllDocsApi(`1-${user.fidEspecialidad}-CONV-${idAlumno}`, 0).then(response => {
+    //         if(response.success) {
+    //             setDocsCoord(response.docs)
+    //         }
+    //     })
+    // },[setDocsCoord])       
 
     
     if(flag && data.estadoFaci){         
