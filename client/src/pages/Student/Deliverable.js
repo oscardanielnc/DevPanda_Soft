@@ -102,13 +102,15 @@ export default function DeliverablesStudent(){
             if(response.success) {
                 setDeliverableStudent(newData).then(response => {
                     const typeName = response.success? "success": "error";
-                    toast[typeName](response.message, {
+                    console.log(response)
+                    toast[typeName](response.msg, {
                         position: "top-right",
-                        autoClose: 3000,
+                        autoClose: 3000
                     });
                     if(response.success) {
                         // console.log("setear",response)
                         window.scrollTo(0, 0);
+                        setData(newData);
                         //window.location.reload();
                     }
                 })              
@@ -173,14 +175,14 @@ export default function DeliverablesStudent(){
                         <FileManagement canUpload={true} docs={studentDocs} maxFiles={maxFiles} fileList={fileList} setFileList={setFileList}/>
                     </div>
                 </div>
-            <div className="shadowbox">
-                <div className="row row1" style={{textAlign: "left",marginTop:"25px"}}>
-                    <h2>Observaciones</h2>  
-                    <Form>                        
-                        <Form.Group className="mb-3" controlId="ControlTextarea1">                            
-                            <Form.Control as="textarea" rows={10} />
-                        </Form.Group>
-                    </Form>                           
+                <div className="shadowbox">
+                    <div className="row row1" style={{textAlign: "left",marginTop:"25px"}}>
+                        <h2>Observaciones</h2>  
+                        <Form>                        
+                            <Form.Group className="mb-3" controlId="ControlTextarea1">                            
+                                <Form.Control as="textarea" rows={10} />
+                            </Form.Group>
+                        </Form>                           
                 </div>
             </div>
                 <div className="row botonCancelar" style={{marginLeft:"10px",marginTop:"10px",marginBottom:"30px"}}>                    

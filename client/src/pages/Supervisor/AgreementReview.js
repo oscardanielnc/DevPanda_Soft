@@ -35,7 +35,6 @@ export default function AgreementReview (){
     const [docsStudent, setDocsStudent] = useState([])
     const [docsCoord, setDocsCoord] = useState([])    
     //Enviar idAlumno, idRevisor
-    console.log(user.fidEspecialidad)
         
     useEffect(() => {
         getAgreement(idAlumno,user.idPersona).then(response => {                
@@ -100,8 +99,7 @@ export default function AgreementReview (){
             const response1 = await uploadDocsApi(fileList, `1-${user.fidEspecialidad}-CONV-${idAlumno}`, 0);
             if(response1.success){
                 const response2 = await agreementReviewUpdateApi(dataForApi)
-                if(response2.success){
-                    window.location.reload()
+                if(response2.success){                    
                     toast.success(`Información actualizada con éxito.`, {
                         position: "top-right",
                         autoClose: 3000,
@@ -110,7 +108,9 @@ export default function AgreementReview (){
                         pauseOnHover: true,
                         draggable: true,
                         progress: undefined,
-                    });
+                    });                    
+                    //window.scrollTo(0, 0);
+                    window.location.reload()
                 }else{
                     toast.error(response2.msg, {
                         position: "top-right",

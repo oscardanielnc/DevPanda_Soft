@@ -70,14 +70,7 @@ export default function AgreementReview(){
         }
         fetchData()
     },[setDocsStudent]) 
-
-    // useEffect(() => {  //mismo para alumno que para supervisor?                       
-    //     getAllDocsApi(`${user.fidProceso}-${user.fidEspecialidad}-INFI-${user.fidAsesor}`, 0).then(response => {
-    //         if(response.success) {
-    //             setDocsSup(response.docs)
-    //         }
-    //     })
-    // },[setDocsSup])      
+      
 
     
     if(flag && data.deliverableResponse){
