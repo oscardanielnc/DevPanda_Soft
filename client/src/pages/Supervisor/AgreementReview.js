@@ -39,7 +39,8 @@ export default function AgreementReview (){
     useEffect(() => {
         const fetchData = async () => {
             const result1 = await getAgreement(idAlumno,user.idPersona);
-            //dataTemporal =result1.data.valor;                   
+            
+            dataTemporal =result1.agreement[0];                   
             if(result1.success) {  
                 setData(result1.agreement[0]);            
             }
