@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from "react";
 import LayoutAdministrative from "../../layouts/LayoutAdministrative";
-import { Row, FormControl, Form, Button } from "react-bootstrap";
+import { Row, FormControl, Form, Button, Tooltip, OverlayTrigger } from "react-bootstrap";
 import TableEnrollment from "../../components/Tables/TableEnrollment";
 import "./scss/StudentsManagement.scss";
 import { selectStudentsByProcessSpecialtyApi } from "../../api/enrollment";
@@ -150,6 +150,10 @@ export default function StudentsManagement () {
     const matchExcel = () => {
         setShowExcel(true);
     }
+    const trashCan = () => {
+        document.getElementById("studentsManagement_excel").value = "";
+        setExcel([]);
+    }
 
     return (
         <LayoutAdministrative>
@@ -159,9 +163,16 @@ export default function StudentsManagement () {
                     <h1>Gestión de alumnos</h1>
                 </Row>
                 <Row className="rows studentsManagement__excel">
-                    <Form.Group controlId="formFileSm" className="mb-3 studentsManagement__excel-title">
+                    <Form.Group  className="mb-3 studentsManagement__excel-title">
                         <Form.Label>Subir excel de matriculados</Form.Label>
-                        <Form.Control type="file" size="sm" onChange={uploadExcel}/>
+                        <div className="studentsManagement__excel-input">
+                            <Form.Control type="file" size="sm" onChange={uploadExcel} id="studentsManagement_excel"/>
+                            <OverlayTrigger overlay={<Tooltip>Limpiar documento subido</Tooltip>}>
+                                <Button className="studentsManagement__excel-input-trash" onClick={trashCan}
+                                    variant="primary"><i className="bi bi-trash"></i>
+                                </Button>
+                            </OverlayTrigger>
+                        </div>
                     </Form.Group>
                     <Button className="studentsManagement__excel-btn" onClick={matchExcel}
                         variant="primary" disabled={excel.length===0}>Comprobar

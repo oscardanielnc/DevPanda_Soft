@@ -91,7 +91,7 @@ export default function ModalExcel (props) {
                     }
                     </tbody>
                 </Table>:
-                <h6>Ningún alumno (no matriculado) coincide con la búsqueda en este docuemnto.</h6>
+                <h6>Ningún alumno (no matriculado) coincide con la búsqueda en este documento.</h6>
             }
             </div>
         </ModalBasic>
