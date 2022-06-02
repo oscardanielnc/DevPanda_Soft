@@ -12,7 +12,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import { useParams } from "react-router-dom";
 /*PENDIENTE */
 //ESTO SE DEBE CAMBIAR
-const fidAlumnoProceso = 12;
+const fidAlumnoProceso = 14;
 
 let dataForApi = {
     idEntregaConvenio: "",
