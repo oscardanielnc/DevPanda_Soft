@@ -173,14 +173,14 @@ export default function DeliverablesStudent(){
                         <FileManagement canUpload={true} docs={studentDocs} maxFiles={maxFiles} fileList={fileList} setFileList={setFileList}/>
                     </div>
                 </div>
-            <div className="shadowbox">
-                <div className="row row1" style={{textAlign: "left",marginTop:"25px"}}>
-                    <h2>Observaciones</h2>  
-                    <Form>                        
-                        <Form.Group className="mb-3" controlId="ControlTextarea1">                            
-                            <Form.Control as="textarea" rows={10} />
-                        </Form.Group>
-                    </Form>                           
+                <div className="shadowbox">
+                    <div className="row row1" style={{textAlign: "left",marginTop:"25px"}}>
+                        <h2>Observaciones</h2>  
+                        <Form>                        
+                            <Form.Group className="mb-3" controlId="ControlTextarea1">                            
+                                <Form.Control as="textarea" rows={10} />
+                            </Form.Group>
+                        </Form>                           
                 </div>
             </div>
                 <div className="row botonCancelar" style={{marginLeft:"10px",marginTop:"10px",marginBottom:"30px"}}>                    
