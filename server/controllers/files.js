@@ -54,7 +54,7 @@ function uploadDocs(req, res) {
                 if (err) {
                     res.status(505).send({
                         success: false,
-                        message: "Error al tratar de insertar un docuemnto."
+                        message: "Error al tratar de insertar un documento."
                     })
                 }
             });
