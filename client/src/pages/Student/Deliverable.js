@@ -62,7 +62,7 @@ export default function DeliverablesStudent(){
         console.log(user.idPersona,idEntregable)
         getDeliverableStudent(user.idPersona,idEntregable).then(response => {
             if(response.success) {
-                console.log("response",response);
+                console.log("deliverable",response);
                 setData(response.data.valor);
             }
         })
