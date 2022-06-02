@@ -198,7 +198,7 @@ export default function StudentAgreement () {
                         <h2>Observaciones</h2>  
                         <Form>                        
                             <Form.Group className="mb-3" controlId="ControlTextarea1">                            
-                                <Form.Control  placeholder={`${observaciones}`} as="textarea" rows={8}/>
+                                <Form.Control  disabled placeholder={`${observaciones}`} as="textarea" rows={8}/>
                             </Form.Group>
                         </Form>                           
                     </div>
