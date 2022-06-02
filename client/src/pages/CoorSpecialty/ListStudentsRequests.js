@@ -92,8 +92,8 @@ export default function ListStudentsRequests () {
     // const [textSelect, setTextSelect] = useState("-1");
 
     //console.log(useAuth()); // el useAuth() nos permite acceder a la informacion del usuario desde cualquier lugar. Por ahora ese objeto esta hardcodeado.
-    console.log("El user tiene: ",user);    
-
+    console.log("El user tiene: ",user);   
+    
     useEffect(()=> {
         
         getListStudentsAgreement(user.fidEspecialidad).then(response => {

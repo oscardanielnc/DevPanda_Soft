@@ -32,7 +32,7 @@ export default function TableAgreement ({rows}) {
                         <td>{row.estadoMatriculado}</td>
                         <td className="buttonRequest">
                         
-                        <Link to ={`/agreement-review/permissions=EF&idStudent=${row.idAlumno}`} 
+                        <Link to ={`/agreement-review/permissions=EF&idStudent=${row.idPersona}`} 
                             className= "btn btn-primary">Visualizar</Link>
                         </td>
                     </tr>
