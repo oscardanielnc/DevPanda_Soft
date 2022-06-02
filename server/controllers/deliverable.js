@@ -421,7 +421,7 @@ async function getDeliverableByStudentSpecialty(req,res){
                     code: "ENT" + e.idEntregable,
                     idDeliverable:e.idEntregable,
                     nameDeiverable: e.nombre,
-                    estado: "Sin Entregar"
+                    estado: 'S'
                 }
             });
             for(let index = 0; index < data.length; index ++){
