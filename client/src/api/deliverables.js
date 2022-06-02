@@ -126,8 +126,8 @@ export function updatefieldsDeliverables(data) {
     })
 }
 
-export function getDeliverableByStudentSpecialty(idAlumno,idEspecialidad) {
-    const url = `${BASE_PATH}/${API_VERSION}/getDeliverableByStudentSpecialty/${idAlumno}/${idEspecialidad}`;
+export function getDeliverableByStudentSpecialty(idEspecialidad,idAlumno) {
+    const url = `${BASE_PATH}/${API_VERSION}/getDeliverableByStudentSpecialty/${idEspecialidad}/${idAlumno}`;
     const params = {
         method: "GET",
         headers: {
