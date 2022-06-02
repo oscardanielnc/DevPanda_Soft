@@ -6,7 +6,7 @@ import "./scss/StudentsManagement.scss";
 import { selectStudentsByProcessSpecialtyApi } from "../../api/enrollment";
 import ModalStudentManagement from "../../components/Modals/ModalStudentManagement";
 import ModalExcel from "../../components/Modals/ModalExcel";
-import { ToastContainer } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import useAuth from "../../hooks/useAuth";
 
 const states = [
@@ -142,7 +142,12 @@ export default function StudentsManagement () {
         reader.onload= function() {
             const text = this.result; //texto
             const emails = text.match(/([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]+)/gi);
-            setExcel(emails);
+            if(!emails) {
+                toast.warning("Necesita subir un archivo de texto que contenga los correos de los estudiantes.", {
+                    position: "top-right",
+                    autoClose: 3000,
+                });
+            } else setExcel(emails);
         };
         reader.onerror = (e) => alert(e.target.error.name);
         reader.readAsText(file);
