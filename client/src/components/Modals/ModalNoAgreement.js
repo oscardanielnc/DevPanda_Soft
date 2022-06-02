@@ -60,7 +60,7 @@ export default function ModalNoAgreement (props) {
                 }
                 else{
                     //ser realiza la subida de archivo
-                    const response = await uploadDocsApi(fileList, `1-${user.fidEspecialidad}-NOCONV-${user.idPersona}`, 1);
+                    const response = await uploadDocsApi(fileList, `1-${user.fidEspecialidad}-NCON-${user.idPersona}`, 1);
                     console.log("subio archivo",response)
                     if(response.success) {
                         //se realiza el registro de la solicitud

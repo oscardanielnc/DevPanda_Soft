@@ -1,0 +1,24 @@
+@import '../../../scss/index.scss';
+
+.deliverables {
+    .titulo{
+        color:$primary-color;
+    }   
+    .row1{
+        color:$primary-color;
+        margin-left: 10px;
+        margin-right: 5px;        
+        .checkboxes{
+            color:black;
+        }        
+    }
+    .normalrow{
+        margin-left: 10px;
+        margin-right: 5px;
+    }
+    .shadowbox{
+        box-shadow: rgba(149,157,165,0.2) 0px 8px 24px;
+        border-radius: 20px;
+        padding-bottom: 8px;        
+    }
+}
