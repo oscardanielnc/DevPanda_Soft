@@ -9,10 +9,10 @@ import { getAllDocsApi,uploadDocsApi } from "../../api/files";
 import { getAgreement, agreementReviewUpdateApi} from "../../api/agreementRev";
 import useAuth from "../../hooks/useAuth";
 import { ToastContainer, toast } from 'react-toastify';
-
+import { useParams } from "react-router-dom";
 /*PENDIENTE */
-const idAlumno = 5;
-const fidAlumnoProceso = 4;
+//ESTO SE DEBE CAMBIAR
+const fidAlumnoProceso = 12;
 
 let dataForApi = {
     idEntregaConvenio: "",
@@ -27,7 +27,7 @@ let staticEsp;
 
 let flag=1;
 export default function AgreementReview (){
-
+    const idAlumno= useParams().idStudent;
     const {user} = useAuth();
     const [fileList, setFileList] = useState([])
     const [data, setData] = useState({});
@@ -35,7 +35,7 @@ export default function AgreementReview (){
     const [docsStudent, setDocsStudent] = useState([])
     const [docsCoord, setDocsCoord] = useState([])    
     //Enviar idAlumno, idRevisor
-    
+    console.log(user.fidEspecialidad)
         
     useEffect(() => {
         getAgreement(idAlumno,user.idPersona).then(response => {                
@@ -49,7 +49,7 @@ export default function AgreementReview (){
 
     //VER BIEN LO DEL FORMATO 1-1
     useEffect(() => {
-        getAllDocsApi("1-1-CONV", 0).then(response => {
+        getAllDocsApi(`1-${user.fidEspecialidad}-CONV`, 0).then(response => {
             if(response.success) {
                 setDocs(response.docs)
             }
@@ -57,7 +57,7 @@ export default function AgreementReview (){
     },[setDocs])
 
     useEffect(() => {
-        getAllDocsApi(`1-1-CONV-${idAlumno}`, 1).then(response => {
+        getAllDocsApi(`1-${user.fidEspecialidad}-CONV-${idAlumno}`, 1).then(response => {
             if(response.success) {
                 setDocsStudent(response.docs)
             }
@@ -98,21 +98,32 @@ export default function AgreementReview (){
             dataForApi.observaciones = data.observaciones
             
             const response1 = await uploadDocsApi(fileList, `1-${user.fidEspecialidad}-CONV-${idAlumno}`, 0);
-
-            const response2 = await agreementReviewUpdateApi(dataForApi)
-            if(response2.success && response1.success) {                
-                toast.success(response2.msg, {
-                    position: "top-right",
-                    autoClose: 3000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                });            
-                window.location.reload()
-            } else {
-                toast.error(response2.msg, {
+            if(response1.success){
+                const response2 = await agreementReviewUpdateApi(dataForApi)
+                if(response2.success){
+                    window.location.reload()
+                    toast.success(`Información actualizada con éxito.`, {
+                        position: "top-right",
+                        autoClose: 3000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                    });
+                }else{
+                    toast.error(response2.msg, {
+                        position: "top-right",
+                        autoClose: 3000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                    });
+                }
+            }else{
+                toast.error(response1.msg, {
                     position: "top-right",
                     autoClose: 3000,
                     hideProgressBar: false,
@@ -121,7 +132,7 @@ export default function AgreementReview (){
                     draggable: true,
                     progress: undefined,
                 });
-            }                        
+            }    
         }
         else {
             toast.warning(`Se requieren 2 archivos para esta entrega.`, {
