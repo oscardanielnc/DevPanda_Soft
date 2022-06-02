@@ -289,11 +289,12 @@ function selectDocumentsInfoByProcess(req, res){
     const connection = mysql.createConnection(MYSQL_CREDENTIALS);
     //Se pedirá el idAlumno e idAsesor para poder obtener la info documentos asociados.
     const fidAlumno = req.params.fidAlumno;
-    const fidAsesor = req.params.fidAsesor;
     const sqlQuery = `  SELECT
-                            idEntregaConvenio, estadoFaci, estadoEspecialidad, observaciones
+                            E.idEntregaConvenio, E.estadoFaci, E.estadoEspecialidad, E.observaciones, E.fidAlumnoProceso, ES.idEspecialidad
                         FROM
-                            EntregaConvenioYPlan
+                            EntregaConvenioYPlan as E inner join AlumnoProceso as AP on AP.idAlumnoProceso = E.fidAlumnoProceso
+                            inner join Proceso as P on P.idProceso = AP.fidProceso inner join Especialidad as ES on 
+                            ES.idEspecialidad = P.fidEspecialidad
                         WHERE
                             fidAlumnoProceso = (SELECT
                                                     idAlumnoProceso
