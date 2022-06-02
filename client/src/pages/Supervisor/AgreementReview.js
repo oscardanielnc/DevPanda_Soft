@@ -125,7 +125,7 @@ export default function AgreementReview (){
                 dataForApi.estadoEspecialidad = data.estadoEspecialidad
                 dataForApi.observaciones = data.observaciones           
                 console.log(dataForApi)
-                const response1 = await uploadDocsApi(fileList, `1-${dataTemporal.idEspecialidad}-CONV-${idAlumno}`, 0);
+                const response1 = await uploadDocsApi(fileList, `${user.fidProceso}-${dataTemporal.idEspecialidad}-CONV-${idAlumno}`, 0);
                 if(response1.success){
                     console.log(dataForApi)
                     const response2 = await agreementReviewUpdateApi(dataForApi)
@@ -139,8 +139,8 @@ export default function AgreementReview (){
                             draggable: true,
                             progress: undefined,
                         });                    
-                        //window.scrollTo(0, 0);
-                        window.location.reload()
+                        window.location.reload();
+                        window.scrollTo(0, 0);
                     }else{
                         toast.error(response2.msg, {
                             position: "top-right",
@@ -193,8 +193,8 @@ export default function AgreementReview (){
                     draggable: true,
                     progress: undefined,
                 });                    
-                //window.scrollTo(0, 0);
-                window.location.reload()
+                window.location.reload();
+                window.scrollTo(0, 0);
             }else{
                 toast.error(response2.msg, {
                     position: "top-right",
