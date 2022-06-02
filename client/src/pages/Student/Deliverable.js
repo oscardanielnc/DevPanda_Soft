@@ -10,6 +10,7 @@ import useAuth from "../../hooks/useAuth";
 import { ToastContainer, toast } from 'react-toastify';
 import { getAllDocsApi, uploadDocsApi } from "../../api/files";
 import "./scss/Deliverable.scss";
+import ShowFiles from "../../components/FileManagement/ShowFiles";
 
 // const dataDummy={
 //     "idAlumno": 1,
@@ -161,6 +162,7 @@ export default function DeliverablesStudent(){
                         </p>
                     </div> 
                 </div>
+                <ShowFiles docs={docs} />
                 <div className="shadowbox">
                     <div className="row row1" style={{textAlign: "left",marginTop:"25px"}}>
                         <h2>Estado de la entrega</h2>
