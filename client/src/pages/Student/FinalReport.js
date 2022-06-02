@@ -36,6 +36,7 @@ export default function AgreementReview(){
     const [docsSup, setDocsSup] = useState([])
 
     useEffect(()=> {
+        console.log(user)
         const fetchData = async () => {
             const result1 = await getDeliverableStudent(user.idPersona,idEntregable);
             dataTemporal = result1.data.valor            

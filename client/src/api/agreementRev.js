@@ -1,8 +1,8 @@
 import {API_VERSION, BASE_PATH, PANDA_KEY} from './config';
 
-export function getAgreement(fidAlumno,fidAsesor){
+export function getAgreement(fidAlumno){
 
-    const url = `${BASE_PATH}/${API_VERSION}/agreementLearningPlan-selectDocumentsInfoByProcess/${fidAlumno}/${fidAsesor}`;
+    const url = `${BASE_PATH}/${API_VERSION}/agreementLearningPlan-selectDocumentsInfoByProcess/${fidAlumno}`;
     //http://localhost:3977/api/v1/agreementLearningPlan-selectDocumentsInfoByProcess/:fidAlumno/:fidAsesor
 
     const params = {
