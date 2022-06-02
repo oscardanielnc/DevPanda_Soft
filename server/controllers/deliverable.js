@@ -407,7 +407,8 @@ function getDeliverableByStudentSpecialty(req,res){
                             Persona as P on AP.fidAlumno = P.idPersona
                         where
                             P.idPersona = ${idAlumno} and
-                            P.fidEspecialidad = ${idFacultad}`;
+                            P.fidEspecialidad = ${idFacultad} and
+                            E.nombre<>"Informe Final"`;
 
 
     connection.connect(err => {
