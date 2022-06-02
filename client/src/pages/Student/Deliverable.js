@@ -102,13 +102,15 @@ export default function DeliverablesStudent(){
             if(response.success) {
                 setDeliverableStudent(newData).then(response => {
                     const typeName = response.success? "success": "error";
-                    toast[typeName](response.message, {
+                    console.log(response)
+                    toast[typeName](response.msg, {
                         position: "top-right",
-                        autoClose: 3000,
+                        autoClose: 3000
                     });
                     if(response.success) {
                         // console.log("setear",response)
                         window.scrollTo(0, 0);
+                        setData(newData);
                         //window.location.reload();
                     }
                 })              
