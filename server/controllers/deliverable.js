@@ -2,7 +2,7 @@ const mysql = require('mysql');
 const {MYSQL_CREDENTIALS} = require("../config");
 const { sqlAsync } = require('../utils/async');
 
-//Traer los entregables de cierto proceso
+//Traer los entregables de cierto proceso sin el informe Final
 //function 
 
 function deliverablesProcess(req, res){
@@ -13,7 +13,8 @@ function deliverablesProcess(req, res){
     
     const sqlQuery = `SELECT idEntregable, nombre 
                         FROM Entregable
-                        WHERE fidProceso = ${idProceso}`;
+                        WHERE fidProceso = ${idProceso}
+                        and nombre <> "Informe Final"`;
 
 
     connection.connect(err => {
@@ -406,7 +407,8 @@ function getDeliverableByStudentSpecialty(req,res){
                             Persona as P on AP.fidAlumno = P.idPersona
                         where
                             P.idPersona = ${idAlumno} and
-                            P.fidEspecialidad = ${idFacultad}`;
+                            P.fidEspecialidad = ${idFacultad} and
+                            E.nombre<>"Informe Final"`;
 
 
     connection.connect(err => {

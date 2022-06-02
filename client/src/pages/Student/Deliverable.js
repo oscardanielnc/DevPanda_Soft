@@ -1,4 +1,5 @@
 import React, {useState,useEffect} from "react";
+import { useParams } from "react-router-dom";
 import LayoutBasic from "../../layouts/LayoutBasic";
 import { Button, Form} from "react-bootstrap";
 import StateViewer,{StatesViewType} from "../../components/StateViewer/StateViewer";
@@ -6,7 +7,9 @@ import StateViewer,{StatesViewType} from "../../components/StateViewer/StateView
 import FileManagement from "../../components/FileManagement/FileManagement";
 import { getDeliverableStudent, setDeliverableStudent } from "../../api/deliverables";
 import useAuth from "../../hooks/useAuth";
+import { ToastContainer, toast } from 'react-toastify';
 import { getAllDocsApi, uploadDocsApi } from "../../api/files";
+import "./scss/Deliverable.scss";
 
 // const dataDummy={
 //     "idAlumno": 1,
@@ -31,7 +34,7 @@ import { getAllDocsApi, uploadDocsApi } from "../../api/files";
 //     }
 // }
 
-const idEntregable=1;
+//const idEntregable=1;
 const maxFiles = 1;
 
 let estadoDoc= "";
@@ -43,6 +46,8 @@ let idDelivResponse=0;
 
 export default function DeliverablesStudent(){
     const {user} = useAuth();
+    const idEntregable = Number(useParams().code)
+
     if(!user) {
         window.location.href = "/";
     }
@@ -54,16 +59,17 @@ export default function DeliverablesStudent(){
     const [data, setData] = useState({})
     console.log("user",user);
     useEffect(()=> {
+        console.log(user.idPersona,idEntregable)
         getDeliverableStudent(user.idPersona,idEntregable).then(response => {
             if(response.success) {
-                console.log("response",response);
+                console.log("deliverable",response);
                 setData(response.data.valor);
             }
         })
     }, [setData])
 
     useEffect(() => {
-        getAllDocsApi(`1-${user.fidEspecialidad}-DELIV`, 0).then(response => {
+        getAllDocsApi(`1-${user.fidEspecialidad}-ENT${idEntregable}`, 0).then(response => {
             if(response.success) {
                 setDocs(response.docs)
             }
@@ -71,7 +77,7 @@ export default function DeliverablesStudent(){
     },[setDocs])
     
     useEffect(() => {
-        getAllDocsApi(`1-${user.fidEspecialidad}-DELIV-${user.idPersona}`, 1).then(response => {
+        getAllDocsApi(`1-${user.fidEspecialidad}-ENT${idEntregable}-${user.idPersona}`, 1).then(response => {
             if(response.success) {
                 setStudentDocs(response.docs)
             }
@@ -81,7 +87,7 @@ export default function DeliverablesStudent(){
     const deliver = async() => {
         
         if(fileList.length === maxFiles) {
-            const response = await uploadDocsApi(fileList, `1-${user.fidEspecialidad}-DELIV-${user.idPersona}`, 1);
+            const response = await uploadDocsApi(fileList, `1-${user.fidEspecialidad}-ENT${idEntregable}-${user.idPersona}`, 1);
             const newData = {
                 ...data,
                 deliverableResponse:{
@@ -95,12 +101,17 @@ export default function DeliverablesStudent(){
             }
             if(response.success) {
                 setDeliverableStudent(newData).then(response => {
+                    const typeName = response.success? "success": "error";
+                    toast[typeName](response.message, {
+                        position: "top-right",
+                        autoClose: 3000,
+                    });
                     if(response.success) {
-                        console.log("setear",response)
+                        // console.log("setear",response)
+                        window.scrollTo(0, 0);
+                        //window.location.reload();
                     }
-                })
-
-                window.location.reload()
+                })              
             }
         }
     }
@@ -137,24 +148,32 @@ export default function DeliverablesStudent(){
     return(
         data.deliverable &&
         <LayoutBasic>
+            <ToastContainer />  
             <div className="container deliverables">
-            <div className="row row1" style={{textAlign: "left",marginTop:"25px"}}>
+                <div className="row row1" style={{textAlign: "left",marginTop:"25px"}}>
                     <h1>{data.deliverable.name}</h1>
                 </div>
-                <div className="row normalrow" style={{textAlign: "justify", marginTop:"10px"}}>
-                    <p> {data.deliverable.description}   
-                    </p>
-                </div> 
-                <div className="row row1" style={{textAlign: "left",marginTop:"25px"}}>
-                    <h2>Estado de la entrega</h2>
+                <div className="shadowbox">
+                    <div className="row normalrow" style={{textAlign: "justify", marginTop:"10px"}}>
+                        <p style={{marginTop:"15px"}}> {data.deliverable.description}   
+                        </p>
+                    </div> 
                 </div>
-                <div className="row normalrow" style={{marginTop:"10px"}}>
-                    <StateViewer states={[StatesViewType[estadoDoc]("Documentos", comentarioDoc),
-                    StatesViewType[estadoEva]("Aprobación", comentarioCalificado)]}/>
+                <div className="shadowbox">
+                    <div className="row row1" style={{textAlign: "left",marginTop:"25px"}}>
+                        <h2>Estado de la entrega</h2>
+                    </div>
+                    <div className="row normalrow" style={{marginTop:"10px"}}>
+                        <StateViewer states={[StatesViewType[estadoDoc]("Documentos", comentarioDoc),
+                        StatesViewType[estadoEva]("Aprobación", comentarioCalificado)]}/>
+                    </div>
                 </div>
-                <div className="row rows uploadAgreement" >                
-                    <FileManagement canUpload={true} docs={studentDocs} maxFiles={maxFiles} fileList={fileList} setFileList={setFileList}/>
+                <div className="shadowbox">
+                    <div className="row rows uploadAgreement" >                
+                        <FileManagement canUpload={true} docs={studentDocs} maxFiles={maxFiles} fileList={fileList} setFileList={setFileList}/>
+                    </div>
                 </div>
+            <div className="shadowbox">
                 <div className="row row1" style={{textAlign: "left",marginTop:"25px"}}>
                     <h2>Observaciones</h2>  
                     <Form>                        
@@ -163,6 +182,7 @@ export default function DeliverablesStudent(){
                         </Form.Group>
                     </Form>                           
                 </div>
+            </div>
                 <div className="row botonCancelar" style={{marginLeft:"10px",marginTop:"10px",marginBottom:"30px"}}>                    
                     <Button  className="btn btn-sec" style={{width:"20%",marginRight:"50px"}} >Regresar</Button>                   
                     <Button  className="btn btn-pri" style={{width:"20%",marginLeft:"50px"}} onClick={deliver}>Guardar</Button>                  
