@@ -4,6 +4,8 @@ import moment from "moment";
 import {API_VERSION, BASE_PATH, PANDA_KEY} from '../../api/config';
 
 export default function DocumentPlusIcon({doc}){
+    const mxx = moment
+    debugger
     return (
         <div className="documentIcon">
             <i className="bi bi-file-earmark-text documentIcon__doc" target="_blank"></i>                    
