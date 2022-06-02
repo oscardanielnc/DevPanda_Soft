@@ -461,7 +461,8 @@ function getListStudentsInscriptionForm(req, res){
                         and AP.fidProceso = P.idProceso
                         and E.fidAlumnoProceso = AP.idAlumnoProceso
                         and P.procesoActivo = true
-                        and E.nombres is not null`;
+                        and E.nombres is not null
+                        ORDER BY E.idFicha DESC`;
 
     connection.connect(err => {
         if (err) throw err;
