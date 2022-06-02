@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, ProgressBar } from 'react-bootstrap';
+import { Button, OverlayTrigger, ProgressBar, Tooltip } from 'react-bootstrap';
 import { NavLink } from 'react-router-dom';
 import './StudentNavbar.scss';
 import useAuth from "../../hooks/useAuth"
@@ -39,6 +39,12 @@ function StudentNavbar () {
         else if(position === currentPhase) return 'here';
         else return 'hiddenIcon';
     }
+    const getNameTooltip = position => {
+        const currentPhase = user.estadoProceso;
+        if(position < currentPhase) return 'Completado';
+        else if(position === currentPhase) return 'Actual';
+        else return 'Bloqueado';
+    }
     
     const transformText = `rotate(90deg) scale(${navbar.length/6},0.3) translate(${(navbar.length-6)*30}px, 410px)`;
 
@@ -70,7 +76,9 @@ function StudentNavbar () {
                             `studentNavBar__sideBarList-dataRow ${getColorClassItem(phase.order)} ${e.isActive? "selected" : ""}`
                           }
                         >
-                        <span className='studentNavBar__sideBarList-dataRow-icono'><i className="bi bi-check"/></span>
+                        <OverlayTrigger overlay={<Tooltip>{getNameTooltip(phase.order)}</Tooltip>}>
+                            <span className='studentNavBar__sideBarList-dataRow-icono'><i className="bi bi-check"/></span>
+                        </OverlayTrigger>
                         <span className='studentNavBar__sideBarList-dataRow-texto'>{phase.title}</span>
                     </NavLink>
                 )

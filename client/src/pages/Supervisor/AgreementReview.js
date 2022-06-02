@@ -12,7 +12,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import { useParams } from "react-router-dom";
 /*PENDIENTE */
 //ESTO SE DEBE CAMBIAR
-const fidAlumnoProceso = 14;
+
 
 let dataForApi = {
     idEntregaConvenio: "",
@@ -36,22 +36,23 @@ export default function AgreementReview (){
     const [docsCoord, setDocsCoord] = useState([])   
     //Enviar idAlumno, idRevisor
     
-    useEffect(() => {
+    useEffect(() => {        
         const fetchData = async () => {
-            const result1 = await getAgreement(idAlumno,user.idPersona);
-            //dataTemporal =result1.data.valor;                   
+            const result1 = await getAgreement(idAlumno);            
+            dataTemporal =result1.agreement[0];  
+                            
             if(result1.success) {  
                 setData(result1.agreement[0]);            
             }
-            const result2 = await getAllDocsApi(`1-${user.fidEspecialidad}-CONV`, 0)
+            const result2 = await getAllDocsApi(`${user.fidProceso}-${dataTemporal.idEspecialidad}-CONV`, 0)
             if(result2.success) {
                 setDocs(result2.docs)
             }
-            const result3 = await getAllDocsApi(`1-${user.fidEspecialidad}-CONV-${idAlumno}`, 1)
+            const result3 = await getAllDocsApi(`${user.fidProceso}-${dataTemporal.idEspecialidad}-CONV-${idAlumno}`, 1)
             if(result3.success) {
                 setDocsStudent(result3.docs)
             }
-            const result4 = await getAllDocsApi(`1-${user.fidEspecialidad}-CONV-${idAlumno}`, 0)
+            const result4 = await getAllDocsApi(`${user.fidProceso}-${dataTemporal.idEspecialidad}-CONV-${idAlumno}`, 0)
             if(result4.success) {
                 setDocsCoord(result4.docs)
             }
@@ -119,12 +120,12 @@ export default function AgreementReview (){
         if(user.tipoPersonal === "F"){
             if(fileList.length === 2) {                        
                 dataForApi.idEntregaConvenio = data.idEntregaConvenio
-                dataForApi.fidAlumnoProceso = fidAlumnoProceso
+                dataForApi.fidAlumnoProceso = dataTemporal.fidAlumnoProceso
                 dataForApi.estadoFaci = data.estadoFaci
                 dataForApi.estadoEspecialidad = data.estadoEspecialidad
                 dataForApi.observaciones = data.observaciones           
                 console.log(dataForApi)
-                const response1 = await uploadDocsApi(fileList, `1-${user.fidEspecialidad}-CONV-${idAlumno}`, 0);
+                const response1 = await uploadDocsApi(fileList, `${user.fidProceso}-${dataTemporal.idEspecialidad}-CONV-${idAlumno}`, 0);
                 if(response1.success){
                     console.log(dataForApi)
                     const response2 = await agreementReviewUpdateApi(dataForApi)
@@ -138,8 +139,8 @@ export default function AgreementReview (){
                             draggable: true,
                             progress: undefined,
                         });                    
-                        //window.scrollTo(0, 0);
-                        //window.location.reload()
+                        window.location.reload();
+                        window.scrollTo(0, 0);
                     }else{
                         toast.error(response2.msg, {
                             position: "top-right",
@@ -176,7 +177,7 @@ export default function AgreementReview (){
             }
         }else{
             dataForApi.idEntregaConvenio = data.idEntregaConvenio
-            dataForApi.fidAlumnoProceso = fidAlumnoProceso
+            dataForApi.fidAlumnoProceso = dataTemporal.fidAlumnoProceso
             dataForApi.estadoFaci = data.estadoFaci
             dataForApi.estadoEspecialidad = data.estadoEspecialidad
             dataForApi.observaciones = data.observaciones            
@@ -192,8 +193,8 @@ export default function AgreementReview (){
                     draggable: true,
                     progress: undefined,
                 });                    
-                //window.scrollTo(0, 0);
-                window.location.reload()
+                window.location.reload();
+                window.scrollTo(0, 0);
             }else{
                 toast.error(response2.msg, {
                     position: "top-right",
@@ -293,7 +294,11 @@ export default function AgreementReview (){
                 observaciones: e.target.value                
             })         
     }
-    
+
+    const goBack = e => {
+        window.history.back();
+    }
+
     let typeApprovalStateFACI = "";
     switch(staticFaci) {
         case "O": typeApprovalStateFACI = "warning"; break;
@@ -404,7 +409,7 @@ export default function AgreementReview (){
                     </div>
                 </div>
                 <div className="row botones" style={{marginLeft:"10px"}}>                    
-                    <Button  className="btn btn-sec" style={{width:"20%",marginRight:"50px"}}>Regresar</Button>                   
+                    <Button  className="btn btn-sec" style={{width:"20%",marginRight:"50px"}} onClick={goBack}>Regresar</Button>                   
                     <Button  className="btn btn-pri" style={{width:"20%",marginLeft:"50px"}} onClick={update}>Guardar</Button>                  
                 </div>           
             </div>   

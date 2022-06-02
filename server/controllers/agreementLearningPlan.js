@@ -308,7 +308,7 @@ function selectDocumentsInfoByProcess(req, res){
         if (err) throw err;
     });
 
-    connection.query(sqlQuery, (err, result) => {
+    connection.query(sqlQuery, (err, result) => {        
         if (err) {
             if(!idEntregaConvenio){
                 res.status(505).send({
