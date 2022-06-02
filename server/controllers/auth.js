@@ -100,6 +100,12 @@ async function singIn(req, res) {
                                 }
                             }
                         }
+                        if(dbPersonal.tipoPersonal === "F") {
+                            user = {
+                                ...user,
+                                fidProceso: 1
+                            }
+                        }
                         const accessToken = jwt.encode(user, PANDA_KEY);
                         res.status(200).send({accessToken});
                         // res.status(200).send({user});
