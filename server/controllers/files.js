@@ -39,14 +39,14 @@ function uploadDocs(req, res) {
             const docPathName = objDoc.path.split("/")[2];
             const docOriginalName = objDoc.originalFilename;
 
-            const now = new Date();
+            console.log("Ho: ", new Date().getTime())
             const sqlObj = {
                 nombre: docOriginalName,
                 ruta: docPathName,
                 delAlumno: isStudent,
                 activo: 1,
                 codigo: code,
-                horaSubida: now.getTime()
+                horaSubida: new Date().getTime()
             };
             const sqlQuery = `INSERT INTO Documento SET ?`;
 

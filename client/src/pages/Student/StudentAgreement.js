@@ -25,7 +25,7 @@ export default function StudentAgreement () {
         {
             estadoFaci: "0",
             estadoEspecialidad: "0",
-            observaciones: "HOLA"
+            observaciones: ""
         },
     ]); 
     const [numFiles,setNumFiles]=useState(0);
@@ -62,7 +62,7 @@ export default function StudentAgreement () {
                     setNumFiles(response.files.length-1);
                 }
                 console.log("response:",response.files);
-
+                
             }
         }
         )
@@ -71,7 +71,7 @@ export default function StudentAgreement () {
     // console.log("ga",data.estadoEspecialidad);
     
     const typeDocumentState = (docuemntsState==="Sin entregar")? "fileEmpty": "success";
-    let typeApprovalState = "fileEmpty";
+    let typeApprovalState = "pending";
     let observaciones=data[numFiles].observaciones;
     console.log("lenght",numFiles);
     if(data[numFiles].estadoFaci === "o" || data[numFiles].estadoEspecialidad === "o"){
@@ -120,7 +120,9 @@ export default function StudentAgreement () {
                     progress: undefined,
                 });
                 // llamada al API para actualizar los eatados
+                window.scrollTo(0, 0);
                 window.location.reload();
+
             } else {
                 toast.error(response.msg, {
                     position: "top-right",
@@ -163,36 +165,45 @@ export default function StudentAgreement () {
                         Convenio y Plan de Aprendizaje
                     </h1>
                 </div>
-                <div className="row rows" style={{textAlign: "left"}}>
-                    <p>
-                    Aquí podrá ingresar su Convenio y Plan de aprendizaje, una vez esten firmados por tu empresa y por ti, para que la universidad lo revise y puedas obtener la aprobación de los mismos. Adicionalmente, debes de completar la información que se solicita en el apartado “Información sobre el convenio”. 
-                    </p>
-                    <p>
-                    A continuación se presenta el modelo para convenio y plan de aprendizaje:
-                    </p>
-                    <ShowFiles docs={docs} />
+                <div className="shadowbox">
+                    <div className="row rows" style={{textAlign: "left"}}>
+                        <p>
+                        Aquí podrá ingresar su Convenio y Plan de aprendizaje, una vez esten firmados por tu empresa y por ti, para que la universidad lo revise y puedas obtener la aprobación de los mismos. Adicionalmente, debes de completar la información que se solicita en el apartado “Información sobre el convenio”. 
+                        </p>
+                        <p>
+                        A continuación se presenta el modelo para convenio y plan de aprendizaje:
+                        </p>
+                        <ShowFiles docs={docs} />
+                    </div>
                 </div>
-                <div className="row rows estado">
-                    <h2>
-                        Estado de la entrega
-                    </h2>
+                <div className="shadowbox">
+                    <div className="row rows estado">
+                        <h2>
+                            Estado de la entrega
+                        </h2>
+                    </div>
+                    <div className="row rows">
+                        <StateViewer states={[
+                            StatesViewType[typeDocumentState]("Documentos", docuemntsState),
+                            StatesViewType[typeApprovalState]("Aprobación", approvalState)]}/>
+                    </div>
                 </div>
-                <div className="row rows">
-                    <StateViewer states={[
-                        StatesViewType[typeDocumentState]("Documentos", docuemntsState),
-                        StatesViewType[typeApprovalState]("Aprobación", approvalState)]}/>
+                <div className="shadowbox">
+                    <div className="row rows uploadAgreement" >                
+                        <FileManagement canUpload={true} docs={studentDocs} maxFiles={maxFiles} fileList={fileList} setFileList={setFileList}/>
+                    </div>
                 </div>
-                <div className="row rows uploadAgreement" >                
-                    <FileManagement canUpload={true} docs={studentDocs} maxFiles={maxFiles} fileList={fileList} setFileList={setFileList}/>
+                <div className="shadowbox">
+                    <div className="row rows" style={{textAlign: "left",marginTop:"25px"}}>
+                        <h2>Observaciones</h2>  
+                        <Form>                        
+                            <Form.Group className="mb-3" controlId="ControlTextarea1">                            
+                                <Form.Control  disabled placeholder={`${observaciones}`} as="textarea" rows={8}/>
+                            </Form.Group>
+                        </Form>                           
+                    </div>
                 </div>
-                <div className="row row1" style={{textAlign: "left",marginTop:"25px"}}>
-                    <h2>Observaciones</h2>  
-                    <Form>                        
-                        <Form.Group className="mb-3" controlId="ControlTextarea1">                            
-                            <Form.Control  placeholder={`${observaciones}`} as="textarea" rows={8}/>
-                        </Form.Group>
-                    </Form>                           
-                </div>
+
                 <div className="row rows boton">
                     <Button className="btn btn-primary" style={{width:"40%"}} onClick={deliver}>Entregar</Button>
                 </div>

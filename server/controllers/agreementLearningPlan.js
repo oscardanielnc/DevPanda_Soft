@@ -368,15 +368,8 @@ async function selectDocumentsInfoByProcessOnlyStudent(req, res){
 
     try{
         let resultado = await sqlAsync(sqlQuery, connection)
-        console.log(resultado.length)
-        if(resultado.lenght > 0){
-            res.status(200).send({
-                success: true,
-                resultado
-            })
+        if(resultado.lenght == 0){
             
-
-        }else{
             //Insert en tabla
             //obtener fidAlumnoProceso
             sqlQuery = `SELECT
@@ -446,6 +439,12 @@ async function selectDocumentsInfoByProcessOnlyStudent(req, res){
                 success: true,
                 respuestaCascaron
             })
+
+        }else{
+            res.status(200).send({
+                success: true,
+                resultado
+            })
         }
     }catch(e){
         res.status(505).send({ 
@@ -489,6 +488,51 @@ function selectAgreementByStudent(req, res){
     connection.end();
 }
 
+
+function requestListAgreement(req, res){
+    const connection = mysql.createConnection(MYSQL_CREDENTIALS);
+
+    const fidEspecialidad = req.params.idEspecialidad;
+    
+    
+    const sqlQuery = `  select
+                            P.idPersona, concat(P.nombres, " ", P.Apellidos) "nombres", AP.estadoMatriculado
+                        from
+                            Persona as P inner join AlumnoProceso as AP on P.idPersona = AP.fidAlumno
+                        where
+                            idPersona not in( SELECT A.idAlumno
+                                                FROM SolicitudesSinConvenio S inner join Alumno as A on S.fidAlumno = A.idAlumno
+                                                WHERE S.fidEspecialidad = ${fidEspecialidad});`;
+
+
+    connection.connect(err => {
+        if (err) throw err;
+    });
+    
+    connection.query(sqlQuery, (err, result) => {
+        if (err) {
+            res.status(505).send({
+                success: false,
+                message: "Error inesperado en el servidor" + err.message
+            })
+        }else{
+            const data =  result.map(e => {
+                return {
+                    idPersona: e.idPersona,
+                    nombres: e.nombres,
+                    estadoMatriculado: e.estadoMatriculado? "Matriculado" : "Sin matricular"
+                }
+            });
+            res.status(200).send({
+                success: true,
+                data
+            })
+        }
+    });
+
+    connection.end();
+}
+
 module.exports = {
     select,
     selectInfoByStudent,
@@ -499,5 +543,6 @@ module.exports = {
     updateDocumentByAgreement,
     selectDocumentsInfoByProcess,
     selectDocumentsInfoByProcessOnlyStudent,
-    selectAgreementByStudent
+    selectAgreementByStudent,
+    requestListAgreement
 }

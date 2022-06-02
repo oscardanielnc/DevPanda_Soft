@@ -48,7 +48,7 @@ export default function SignUp (){
 
         const emailDomain = basicData.email.split("@")[1];
 
-        if(emailDomain === "pucp.edu.pe") {
+        if(emailDomain /*emailDomain === "pucp.edu.pe"*/) {
             setData({
                 ...data,
                 email: basicData.email,

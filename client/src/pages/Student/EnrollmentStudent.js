@@ -24,6 +24,11 @@ export default function EnrollmentStudent () {
                 <StateViewer states={[
                         StatesViewType[typeApprovalState](textApprovalState, '')]}/>
                 </Row>
+                <Row className="rows">
+                    {
+                        user.estadoMatriculado===1 && <h6>Ya puede avanzar a la siguiente etapa.</h6>
+                    }
+                </Row>
             </div>
         </LayoutBasic>
     )

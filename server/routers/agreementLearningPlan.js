@@ -13,6 +13,7 @@ api.get("/agreementLearningPlan-selectDocumentsInfoByProcess/:fidAlumno/:fidAses
 api.get("/agreementLearningPlan-selectDocumentsInfoByProcessOnlyStudent/:fidAlumno", AgreementLearningPlanController.selectDocumentsInfoByProcessOnlyStudent);
 api.get("/agreementLearningPlan-selectAgreementByStudent/:fidEspecialidad", AgreementLearningPlanController.selectAgreementByStudent);
 
+api.get("/requestListAgreement/:idEspecialidad",AgreementLearningPlanController.requestListAgreement);
 api.put("/agreementLearningPlan-updateInfoByStudent", AgreementLearningPlanController.updateInfoByStudent);
 api.put("/agreementLearningPlan-updateDocumentByAgreement", AgreementLearningPlanController.updateDocumentByAgreement);
 

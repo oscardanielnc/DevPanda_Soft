@@ -317,7 +317,7 @@ export default function AgreementReview(){
                             dataFields.data && dataFields.data.map((e,index) => {                       
                                 var texto = "Ingrese su respuesta";                                                        
                                 return (
-                                    <div className="wordAndTextBoxFirst">  
+                                    <div key={index} className="wordAndTextBoxFirst">  
                                         <div className="col-sm-5 subtitles">
                                             <h6 style={{marginTop:"10px",marginBottom:"25px"}} >{e.nombreCampoEntregable}</h6> 
                                         </div>

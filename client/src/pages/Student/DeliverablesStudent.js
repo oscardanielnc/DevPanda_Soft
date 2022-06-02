@@ -50,6 +50,7 @@ export default function DeliverablesStudent(){
     useEffect(()=> {
         //acá llamar a la función corresponidente
         getDeliverableByStudentSpecialty(user.idPersona,user.fidEspecialidad).then(response => {
+            console.log(user)
             if(response.success===true) {
                 console.log("En el success el response es: ",response);
                 setEntregables(response.data.data);
