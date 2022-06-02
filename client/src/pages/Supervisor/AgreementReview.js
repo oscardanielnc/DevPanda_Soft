@@ -12,7 +12,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import { useParams } from "react-router-dom";
 /*PENDIENTE */
 //ESTO SE DEBE CAMBIAR
-const fidAlumnoProceso = 12;
+const fidAlumnoProceso = 14;
 
 let dataForApi = {
     idEntregaConvenio: "",
@@ -33,8 +33,9 @@ export default function AgreementReview (){
     const [data, setData] = useState({});
     const [docs, setDocs] = useState([])
     const [docsStudent, setDocsStudent] = useState([])
-    const [docsCoord, setDocsCoord] = useState([])    
+    const [docsCoord, setDocsCoord] = useState([])   
     //Enviar idAlumno, idRevisor
+    
         
     useEffect(() => {
         getAgreement(idAlumno,user.idPersona).then(response => {                
@@ -75,7 +76,8 @@ export default function AgreementReview (){
     if(flag && data.estadoFaci){         
         staticFaci = data.estadoFaci;
         staticEsp =  data.estadoEspecialidad;
-        flag=0;                
+        flag=0;      
+              
     }
 
     let documentState ="";
@@ -84,35 +86,50 @@ export default function AgreementReview (){
     }       
     else
         if(data.estadoFaci && user.tipoPersonal === "E")
-            documentState = data.estadoEspecialidad;       
+            documentState = data.estadoEspecialidad;  
+            
+    
     
         
     
     const update = async e => {
-        if(fileList.length === 2) {                        
-            dataForApi.idEntregaConvenio = data.idEntregaConvenio
-            dataForApi.fidAlumnoProceso = fidAlumnoProceso
-            dataForApi.estadoFaci = data.estadoFaci
-            dataForApi.estadoEspecialidad = data.estadoEspecialidad
-            dataForApi.observaciones = data.observaciones
-            
-            const response1 = await uploadDocsApi(fileList, `1-${user.fidEspecialidad}-CONV-${idAlumno}`, 0);
-            if(response1.success){
-                const response2 = await agreementReviewUpdateApi(dataForApi)
-                if(response2.success){                    
-                    toast.success(`Información actualizada con éxito.`, {
-                        position: "top-right",
-                        autoClose: 3000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
-                    });                    
-                    //window.scrollTo(0, 0);
-                    window.location.reload()
+        if(user.tipoPersonal === "F"){
+            if(fileList.length === 2) {                        
+                dataForApi.idEntregaConvenio = data.idEntregaConvenio
+                dataForApi.fidAlumnoProceso = fidAlumnoProceso
+                dataForApi.estadoFaci = data.estadoFaci
+                dataForApi.estadoEspecialidad = data.estadoEspecialidad
+                dataForApi.observaciones = data.observaciones           
+                console.log(dataForApi)
+                const response1 = await uploadDocsApi(fileList, `1-${user.fidEspecialidad}-CONV-${idAlumno}`, 0);
+                if(response1.success){
+                    console.log(dataForApi)
+                    const response2 = await agreementReviewUpdateApi(dataForApi)
+                    if(response2.success){                    
+                        toast.success(`Información actualizada con éxito.`, {
+                            position: "top-right",
+                            autoClose: 3000,
+                            hideProgressBar: false,
+                            closeOnClick: true,
+                            pauseOnHover: true,
+                            draggable: true,
+                            progress: undefined,
+                        });                    
+                        //window.scrollTo(0, 0);
+                        //window.location.reload()
+                    }else{
+                        toast.error(response2.msg, {
+                            position: "top-right",
+                            autoClose: 3000,
+                            hideProgressBar: false,
+                            closeOnClick: true,
+                            pauseOnHover: true,
+                            draggable: true,
+                            progress: undefined,
+                        });
+                    }
                 }else{
-                    toast.error(response2.msg, {
+                    toast.error(response1.msg, {
                         position: "top-right",
                         autoClose: 3000,
                         hideProgressBar: false,
@@ -121,9 +138,10 @@ export default function AgreementReview (){
                         draggable: true,
                         progress: undefined,
                     });
-                }
-            }else{
-                toast.error(response1.msg, {
+                }    
+            }
+            else {
+                toast.warning(`Se requieren 2 archivos para esta entrega.`, {
                     position: "top-right",
                     autoClose: 3000,
                     hideProgressBar: false,
@@ -132,19 +150,39 @@ export default function AgreementReview (){
                     draggable: true,
                     progress: undefined,
                 });
-            }    
-        }
-        else {
-            toast.warning(`Se requieren 2 archivos para esta entrega.`, {
-                position: "top-right",
-                autoClose: 3000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-            });
-        }
+            }
+        }else{
+            dataForApi.idEntregaConvenio = data.idEntregaConvenio
+            dataForApi.fidAlumnoProceso = fidAlumnoProceso
+            dataForApi.estadoFaci = data.estadoFaci
+            dataForApi.estadoEspecialidad = data.estadoEspecialidad
+            dataForApi.observaciones = data.observaciones            
+            //const response1 = await uploadDocsApi(fileList, `1-${user.fidEspecialidad}-CONV-${idAlumno}`, 0);            
+            const response2 = await agreementReviewUpdateApi(dataForApi)
+            if(response2.success){                    
+                toast.success(`Información actualizada con éxito.`, {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });                    
+                //window.scrollTo(0, 0);
+                window.location.reload()
+            }else{
+                toast.error(response2.msg, {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
+            }            
+        }        
     }
     
     let pass=(documentState==="A")?true:false;
@@ -223,14 +261,14 @@ export default function AgreementReview (){
                     estadoEspecialidad: "O",            
                 })                
             }
-        }        
+        }    
     }
 
     const changeComments = e => { 
             setData({
                 ...data,
                 observaciones: e.target.value                
-            })        
+            })         
     }
     
     let typeApprovalStateFACI = "";

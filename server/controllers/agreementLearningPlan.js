@@ -207,17 +207,17 @@ function updateInfoByStudent(req, res){
     const observaciones = req.body.observaciones;
     
     const sqlQuery = `UPDATE EntregaConvenioYPlan 
-                        SET estadoFaci = "${estadoFaci}", estadoEspecialidad= "${estadoEspecialidad}", observaciones = "${observaciones}" 
+                        SET  estadoEspecialidad= "${estadoEspecialidad}", estadoFaci= "${estadoFaci}", observaciones = "${observaciones}" 
                         WHERE idEntregaConvenio = ${idEntregaConvenio} 
-                        AND fidAlumnoProceso = ${fidAlumnoProceso}`;
-
-
+                        AND fidAlumnoProceso = ${fidAlumnoProceso}`;    
+    
     connection.connect(err => {
         if (err) throw err;
     });
 
     
     connection.query(sqlQuery, (err, result) => {
+        console.log(sqlQuery)
         if(err){
             res.status(505).send({
                 success: false,
