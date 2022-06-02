@@ -84,7 +84,7 @@ let textSelect = "-1"
 
 
 export default function ListStudentsRequests () {
-    
+    window.scrollTo(0, 0);
     const {user} = useAuth();
     const [alumnos, setAlumnos] = useState([]);
     const [filteredData, setFilteredData] = useState([]);

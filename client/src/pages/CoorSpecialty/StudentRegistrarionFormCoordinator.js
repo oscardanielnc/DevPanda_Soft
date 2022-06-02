@@ -211,6 +211,34 @@ export default function StudentRegistrarionFormCoordinator () {
         }
         fetchData()
     },[setStudentDocs])
+
+    // const deliver = async () => {
+    //     if(fileList.length <= maxFiles && fileList.length!==0) {
+    //         const response = await uploadDocsApi(fileList, `1-${user.fidEspecialidad}-RFOR-${idAlumno}`, 1);
+    //         if(response.success) {
+    //             toast.success(response.msg, {
+    //                 position: "top-right",
+    //                 autoClose: 3000,
+    //                 hideProgressBar: false,
+    //                 closeOnClick: true,
+    //                 pauseOnHover: true,
+    //                 draggable: true,
+    //                 progress: undefined,
+    //             });
+    //             window.location.reload();
+    //        } else {
+    //            toast.error(response.msg, {
+    //                position: "top-right",
+    //               autoClose: 3000,
+    //                 hideProgressBar: false,
+    //                 closeOnClick: true,
+    //                 pauseOnHover: true,
+    //                 draggable: true,
+    //                 progress: undefined,
+    //             });
+    //        }
+    //     }
+    // }
     
     let isSaved=null;
     let canUpload=null;
@@ -267,6 +295,7 @@ export default function StudentRegistrarionFormCoordinator () {
                 draggable: true,
                 progress: undefined,
             });
+            //deliver();
             setData(newData);
             isSaved=true;
             savedCoordinator=true;

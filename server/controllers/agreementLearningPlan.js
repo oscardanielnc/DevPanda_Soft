@@ -207,17 +207,17 @@ function updateInfoByStudent(req, res){
     const observaciones = req.body.observaciones;
     
     const sqlQuery = `UPDATE EntregaConvenioYPlan 
-                        SET estadoFaci = "${estadoFaci}", estadoEspecialidad= "${estadoEspecialidad}", observaciones = "${observaciones}" 
+                        SET  estadoEspecialidad= "${estadoEspecialidad}", estadoFaci= "${estadoFaci}", observaciones = "${observaciones}" 
                         WHERE idEntregaConvenio = ${idEntregaConvenio} 
-                        AND fidAlumnoProceso = ${fidAlumnoProceso}`;
-
-
+                        AND fidAlumnoProceso = ${fidAlumnoProceso}`;    
+    
     connection.connect(err => {
         if (err) throw err;
     });
 
     
     connection.query(sqlQuery, (err, result) => {
+        console.log(sqlQuery)
         if(err){
             res.status(505).send({
                 success: false,
@@ -289,11 +289,12 @@ function selectDocumentsInfoByProcess(req, res){
     const connection = mysql.createConnection(MYSQL_CREDENTIALS);
     //Se pedirá el idAlumno e idAsesor para poder obtener la info documentos asociados.
     const fidAlumno = req.params.fidAlumno;
-    const fidAsesor = req.params.fidAsesor;
     const sqlQuery = `  SELECT
-                            idEntregaConvenio, estadoFaci, estadoEspecialidad, observaciones
+                            E.idEntregaConvenio, E.estadoFaci, E.estadoEspecialidad, E.observaciones, E.fidAlumnoProceso, ES.idEspecialidad
                         FROM
-                            EntregaConvenioYPlan
+                            EntregaConvenioYPlan as E inner join AlumnoProceso as AP on AP.idAlumnoProceso = E.fidAlumnoProceso
+                            inner join Proceso as P on P.idProceso = AP.fidProceso inner join Especialidad as ES on 
+                            ES.idEspecialidad = P.fidEspecialidad
                         WHERE
                             fidAlumnoProceso = (SELECT
                                                     idAlumnoProceso
@@ -307,7 +308,7 @@ function selectDocumentsInfoByProcess(req, res){
         if (err) throw err;
     });
 
-    connection.query(sqlQuery, (err, result) => {
+    connection.query(sqlQuery, (err, result) => {        
         if (err) {
             if(!idEntregaConvenio){
                 res.status(505).send({
@@ -368,15 +369,8 @@ async function selectDocumentsInfoByProcessOnlyStudent(req, res){
 
     try{
         let resultado = await sqlAsync(sqlQuery, connection)
-        console.log(resultado.length)
-        if(resultado.lenght > 0){
-            res.status(200).send({
-                success: true,
-                resultado
-            })
+        if(resultado.lenght == 0){
             
-
-        }else{
             //Insert en tabla
             //obtener fidAlumnoProceso
             sqlQuery = `SELECT
@@ -446,6 +440,12 @@ async function selectDocumentsInfoByProcessOnlyStudent(req, res){
                 success: true,
                 respuestaCascaron
             })
+
+        }else{
+            res.status(200).send({
+                success: true,
+                resultado
+            })
         }
     }catch(e){
         res.status(505).send({ 
@@ -489,6 +489,51 @@ function selectAgreementByStudent(req, res){
     connection.end();
 }
 
+
+function requestListAgreement(req, res){
+    const connection = mysql.createConnection(MYSQL_CREDENTIALS);
+
+    const fidEspecialidad = req.params.idEspecialidad;
+    
+    
+    const sqlQuery = `  select
+                            P.idPersona, concat(P.nombres, " ", P.Apellidos) "nombres", AP.estadoMatriculado
+                        from
+                            Persona as P inner join AlumnoProceso as AP on P.idPersona = AP.fidAlumno
+                        where
+                            idPersona not in( SELECT A.idAlumno
+                                                FROM SolicitudesSinConvenio S inner join Alumno as A on S.fidAlumno = A.idAlumno
+                                                WHERE S.fidEspecialidad = ${fidEspecialidad});`;
+
+
+    connection.connect(err => {
+        if (err) throw err;
+    });
+    
+    connection.query(sqlQuery, (err, result) => {
+        if (err) {
+            res.status(505).send({
+                success: false,
+                message: "Error inesperado en el servidor" + err.message
+            })
+        }else{
+            const data =  result.map(e => {
+                return {
+                    idPersona: e.idPersona,
+                    nombres: e.nombres,
+                    estadoMatriculado: e.estadoMatriculado? "Matriculado" : "Sin matricular"
+                }
+            });
+            res.status(200).send({
+                success: true,
+                data
+            })
+        }
+    });
+
+    connection.end();
+}
+
 module.exports = {
     select,
     selectInfoByStudent,
@@ -499,5 +544,6 @@ module.exports = {
     updateDocumentByAgreement,
     selectDocumentsInfoByProcess,
     selectDocumentsInfoByProcessOnlyStudent,
-    selectAgreementByStudent
+    selectAgreementByStudent,
+    requestListAgreement
 }

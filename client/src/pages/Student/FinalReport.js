@@ -36,6 +36,7 @@ export default function AgreementReview(){
     const [docsSup, setDocsSup] = useState([])
 
     useEffect(()=> {
+        console.log(user)
         const fetchData = async () => {
             const result1 = await getDeliverableStudent(user.idPersona,idEntregable);
             dataTemporal = result1.data.valor            
@@ -70,14 +71,7 @@ export default function AgreementReview(){
         }
         fetchData()
     },[setDocsStudent]) 
-
-    // useEffect(() => {  //mismo para alumno que para supervisor?                       
-    //     getAllDocsApi(`${user.fidProceso}-${user.fidEspecialidad}-INFI-${user.fidAsesor}`, 0).then(response => {
-    //         if(response.success) {
-    //             setDocsSup(response.docs)
-    //         }
-    //     })
-    // },[setDocsSup])      
+      
 
     
     if(flag && data.deliverableResponse){
@@ -324,7 +318,7 @@ export default function AgreementReview(){
                             dataFields.data && dataFields.data.map((e,index) => {                       
                                 var texto = "Ingrese su respuesta";                                                        
                                 return (
-                                    <div className="wordAndTextBoxFirst">  
+                                    <div key={index} className="wordAndTextBoxFirst">  
                                         <div className="col-sm-5 subtitles">
                                             <h6 style={{marginTop:"10px",marginBottom:"25px"}} >{e.nombreCampoEntregable}</h6> 
                                         </div>

@@ -11,7 +11,7 @@ export default function WelcomeProcess () {
     const {user} = useAuth();
     const [showSm,setShowSm]=useState(false);
     console.log(user);
-    const link =`/agreement/idStudent=${user.idPersona}&phase=CONV`
+    const link =`/agreement/phase=CONV`
     return(
         <LayoutBasic>
             <ToastContainer/>
