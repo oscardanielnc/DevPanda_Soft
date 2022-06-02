@@ -9,6 +9,7 @@ import { getDeliverableStudent, setDeliverableStudent } from "../../api/delivera
 import useAuth from "../../hooks/useAuth";
 import { ToastContainer, toast } from 'react-toastify';
 import { getAllDocsApi, uploadDocsApi } from "../../api/files";
+import "./scss/Deliverable.scss";
 
 // const dataDummy={
 //     "idAlumno": 1,
@@ -108,7 +109,7 @@ export default function DeliverablesStudent(){
                     if(response.success) {
                         // console.log("setear",response)
                         window.scrollTo(0, 0);
-                        window.location.reload();
+                        //window.location.reload();
                     }
                 })              
             }
@@ -149,23 +150,30 @@ export default function DeliverablesStudent(){
         <LayoutBasic>
             <ToastContainer />  
             <div className="container deliverables">
-            <div className="row row1" style={{textAlign: "left",marginTop:"25px"}}>
+                <div className="row row1" style={{textAlign: "left",marginTop:"25px"}}>
                     <h1>{data.deliverable.name}</h1>
                 </div>
-                <div className="row normalrow" style={{textAlign: "justify", marginTop:"10px"}}>
-                    <p> {data.deliverable.description}   
-                    </p>
-                </div> 
-                <div className="row row1" style={{textAlign: "left",marginTop:"25px"}}>
-                    <h2>Estado de la entrega</h2>
+                <div className="shadowbox">
+                    <div className="row normalrow" style={{textAlign: "justify", marginTop:"10px"}}>
+                        <p style={{marginTop:"15px"}}> {data.deliverable.description}   
+                        </p>
+                    </div> 
                 </div>
-                <div className="row normalrow" style={{marginTop:"10px"}}>
-                    <StateViewer states={[StatesViewType[estadoDoc]("Documentos", comentarioDoc),
-                    StatesViewType[estadoEva]("Aprobación", comentarioCalificado)]}/>
+                <div className="shadowbox">
+                    <div className="row row1" style={{textAlign: "left",marginTop:"25px"}}>
+                        <h2>Estado de la entrega</h2>
+                    </div>
+                    <div className="row normalrow" style={{marginTop:"10px"}}>
+                        <StateViewer states={[StatesViewType[estadoDoc]("Documentos", comentarioDoc),
+                        StatesViewType[estadoEva]("Aprobación", comentarioCalificado)]}/>
+                    </div>
                 </div>
-                <div className="row rows uploadAgreement" >                
-                    <FileManagement canUpload={true} docs={studentDocs} maxFiles={maxFiles} fileList={fileList} setFileList={setFileList}/>
+                <div className="shadowbox">
+                    <div className="row rows uploadAgreement" >                
+                        <FileManagement canUpload={true} docs={studentDocs} maxFiles={maxFiles} fileList={fileList} setFileList={setFileList}/>
+                    </div>
                 </div>
+            <div className="shadowbox">
                 <div className="row row1" style={{textAlign: "left",marginTop:"25px"}}>
                     <h2>Observaciones</h2>  
                     <Form>                        
@@ -174,6 +182,7 @@ export default function DeliverablesStudent(){
                         </Form.Group>
                     </Form>                           
                 </div>
+            </div>
                 <div className="row botonCancelar" style={{marginLeft:"10px",marginTop:"10px",marginBottom:"30px"}}>                    
                     <Button  className="btn btn-sec" style={{width:"20%",marginRight:"50px"}} >Regresar</Button>                   
                     <Button  className="btn btn-pri" style={{width:"20%",marginLeft:"50px"}} onClick={deliver}>Guardar</Button>                  
