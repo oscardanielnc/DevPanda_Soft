@@ -1,0 +1,30 @@
+{
+  "files": {
+    "main.css": "/DevPanda_Soft/static/css/main.8aed7b1c.css",
+    "main.js": "/DevPanda_Soft/static/js/main.b74b17d0.js",
+    "static/js/787.c4e7f8f9.chunk.js": "/DevPanda_Soft/static/js/787.c4e7f8f9.chunk.js",
+    "static/media/404.gif": "/DevPanda_Soft/static/media/404.1800fd75df43304d379c.gif",
+    "static/media/loading.gif": "/DevPanda_Soft/static/media/loading.565056f595ad6e372c08.gif",
+    "static/media/landinxd.png": "/DevPanda_Soft/static/media/landinxd.f1501d4dee1a4864be42.png",
+    "static/media/403.gif": "/DevPanda_Soft/static/media/403.d71517be32d46d767343.gif",
+    "static/media/PicLogoPucpJunto.svg": "/DevPanda_Soft/static/media/PicLogoPucpJunto.74b86aedba9a24cd78186ddd5cebabf8.svg",
+    "static/media/logoPUCP.PNG": "/DevPanda_Soft/static/media/logoPUCP.0c4ba9846ecc8f6a66a6.PNG",
+    "static/media/filetype-docx.svg": "/DevPanda_Soft/static/media/filetype-docx.046650c69bee97494613da45f1c62272.svg",
+    "static/media/Logo LinkedIn.svg": "/DevPanda_Soft/static/media/Logo LinkedIn.42671053c5b26970ec7d4453579843c5.svg",
+    "static/media/Boton IG.svg": "/DevPanda_Soft/static/media/Boton IG.33ec493a971c3087fd7612d755a5c957.svg",
+    "static/media/Boton Tiktok.svg": "/DevPanda_Soft/static/media/Boton Tiktok.f907c7a91337573d406eca9c529846db.svg",
+    "static/media/Boton Twitter.svg": "/DevPanda_Soft/static/media/Boton Twitter.6143b3e5a8767547e1736b719f666320.svg",
+    "static/media/filetype-pdf.svg": "/DevPanda_Soft/static/media/filetype-pdf.988caa5bf76cc67c1a83885460640c41.svg",
+    "index.html": "/DevPanda_Soft/index.html",
+    "static/media/Boton Facebook.svg": "/DevPanda_Soft/static/media/Boton Facebook.7a816f4617fb4ca006a0427ba9ec2702.svg",
+    "static/media/file-earmark-word.svg": "/DevPanda_Soft/static/media/file-earmark-word.e0d2ec8dfa6dd076ac4b9b19829b5ca2.svg",
+    "static/media/file-earmark-arrow-up.svg": "/DevPanda_Soft/static/media/file-earmark-arrow-up.f2cbc1284c00309ebac60cb28394c6c4.svg",
+    "main.8aed7b1c.css.map": "/DevPanda_Soft/static/css/main.8aed7b1c.css.map",
+    "main.b74b17d0.js.map": "/DevPanda_Soft/static/js/main.b74b17d0.js.map",
+    "787.c4e7f8f9.chunk.js.map": "/DevPanda_Soft/static/js/787.c4e7f8f9.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.8aed7b1c.css",
+    "static/js/main.b74b17d0.js"
+  ]
+}
