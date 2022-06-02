@@ -15,7 +15,7 @@ import ModalStudentMeetingStudent from "../../components/Modals/ModalStudentMeet
 
 
 export default function SupervisorSelection () {
-    const {user} = useAuth();
+    const {user, setUser} = useAuth();
     const [supervisores, setSupervisores] = useState([]);
     const [schedule, setSchedule] = useState([]);
     const [hourSelecteds, setHourSelecteds] = useState([]);
@@ -181,6 +181,7 @@ export default function SupervisorSelection () {
                 setLoading(true);
                 changeOneHourSchedule(arrHours).then(response => {
                     setLoading(false);
+                    setUser({...user, estadoProceso: user.estadoProceso+1})
                     showToast(response.msg, response.success? "success": "error")
                     setHasMeeting(true)
                 })

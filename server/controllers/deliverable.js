@@ -395,7 +395,6 @@ async function updatefieldsDeliverables(req,res){
 function getDeliverableByStudentSpecialty(req,res){
     const connection = mysql.createConnection(MYSQL_CREDENTIALS);
 
-    const idAlumno = req.params.idAlumno;
     const idFacultad = req.params.idFacultad;
     
     const sqlQuery =`   select
@@ -406,7 +405,6 @@ function getDeliverableByStudentSpecialty(req,res){
                             AlumnoProceso as AP on AP.idAlumnoProceso = RE.fidAlumnoProceso inner join
                             Persona as P on AP.fidAlumno = P.idPersona
                         where
-                            P.idPersona = ${idAlumno} and
                             P.fidEspecialidad = ${idFacultad} and
                             E.nombre<>"Informe Final"`;
 
