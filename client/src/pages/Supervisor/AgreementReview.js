@@ -294,7 +294,11 @@ export default function AgreementReview (){
                 observaciones: e.target.value                
             })         
     }
-    
+
+    const goBack = e => {
+        window.history.back();
+    }
+
     let typeApprovalStateFACI = "";
     switch(staticFaci) {
         case "O": typeApprovalStateFACI = "warning"; break;
@@ -405,7 +409,7 @@ export default function AgreementReview (){
                     </div>
                 </div>
                 <div className="row botones" style={{marginLeft:"10px"}}>                    
-                    <Button  className="btn btn-sec" style={{width:"20%",marginRight:"50px"}}>Regresar</Button>                   
+                    <Button  className="btn btn-sec" style={{width:"20%",marginRight:"50px"}} onClick={goBack}>Regresar</Button>                   
                     <Button  className="btn btn-pri" style={{width:"20%",marginLeft:"50px"}} onClick={update}>Guardar</Button>                  
                 </div>           
             </div>   
