@@ -369,8 +369,7 @@ async function selectDocumentsInfoByProcessOnlyStudent(req, res){
 
     try{
         let resultado = await sqlAsync(sqlQuery, connection)
-        if(resultado.lenght == 0){
-            
+        if(resultado.length === 0){
             //Insert en tabla
             //obtener fidAlumnoProceso
             sqlQuery = `SELECT
@@ -394,6 +393,7 @@ async function selectDocumentsInfoByProcessOnlyStudent(req, res){
                             AND estado = 'C'`;
             try {
                 resultado = await sqlAsync(sqlQuery, connection)
+                console.log("resultado", resultado)
                 if(!resultado.length){
                     res.status(404).send({ 
                         success: false,
@@ -442,6 +442,7 @@ async function selectDocumentsInfoByProcessOnlyStudent(req, res){
             })
 
         }else{
+            console.log("else")
             res.status(200).send({
                 success: true,
                 resultado
