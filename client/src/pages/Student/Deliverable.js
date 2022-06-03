@@ -10,6 +10,9 @@ import useAuth from "../../hooks/useAuth";
 import { ToastContainer, toast } from 'react-toastify';
 import { getAllDocsApi, uploadDocsApi } from "../../api/files";
 import "./scss/Deliverable.scss";
+import PandaLoaderPage from "../General/PandaLoaderPage";
+import { isNotEmptyObj } from "../../utils/objects";
+import ShowFiles from "../../components/FileManagement/ShowFiles";
 
 // const dataDummy={
 //     "idAlumno": 1,
@@ -57,17 +60,23 @@ export default function DeliverablesStudent(){
     const [docs, setDocs] = useState([])
     const [studentDocs, setStudentDocs] = useState([])
     const [data, setData] = useState({})
+    const [loading, setLoading] = useState(false);
+    let typeUser=user.tipoPersona;
+
+    //const 
     console.log("user",user);
     useEffect(()=> {
         console.log(user.idPersona,idEntregable)
         getDeliverableStudent(user.idPersona,idEntregable).then(response => {
+            setLoading(true);
             if(response.success) {
                 console.log("deliverable",response);
                 setData(response.data.valor);
             }
+            setLoading(false)
         })
     }, [setData])
-
+    
     useEffect(() => {
         getAllDocsApi(`1-${user.fidEspecialidad}-ENT${idEntregable}`, 0).then(response => {
             if(response.success) {
@@ -111,10 +120,21 @@ export default function DeliverablesStudent(){
                         // console.log("setear",response)
                         window.scrollTo(0, 0);
                         setData(newData);
-                        //window.location.reload();
+                        window.location.reload();
                     }
                 })              
             }
+        }else{
+            toast.warning(`Se requiere ${maxFiles} archivo para esta entrega.`, {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
+
         }
     }
 
@@ -146,7 +166,8 @@ export default function DeliverablesStudent(){
         return null
     }
 
-    
+    if(loading || !isNotEmptyObj(data)) return <PandaLoaderPage type={typeUser}/>
+
     return(
         data.deliverable &&
         <LayoutBasic>
@@ -161,6 +182,7 @@ export default function DeliverablesStudent(){
                         </p>
                     </div> 
                 </div>
+                <ShowFiles docs={docs} />
                 <div className="shadowbox">
                     <div className="row row1" style={{textAlign: "left",marginTop:"25px"}}>
                         <h2>Estado de la entrega</h2>
@@ -179,8 +201,8 @@ export default function DeliverablesStudent(){
                     <div className="row row1" style={{textAlign: "left",marginTop:"25px"}}>
                         <h2>Observaciones</h2>  
                         <Form>                        
-                            <Form.Group className="mb-3" controlId="ControlTextarea1">                            
-                                <Form.Control as="textarea" rows={10} />
+                            <Form.Group  className="mb-3" controlId="ControlTextarea1">                            
+                                <Form.Control disabled as="textarea" rows={10} />
                             </Form.Group>
                         </Form>                           
                 </div>
