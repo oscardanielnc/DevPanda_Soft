@@ -180,9 +180,10 @@ export default function DeliverablesStudent(){
                     <div className="row normalrow" style={{textAlign: "justify", marginTop:"10px"}}>
                         <p style={{marginTop:"15px"}}> {data.deliverable.description}   
                         </p>
-                    </div> 
+                    </div>
+                    <ShowFiles docs={docs} /> 
                 </div>
-                <ShowFiles docs={docs} />
+                
                 <div className="shadowbox">
                     <div className="row row1" style={{textAlign: "left",marginTop:"25px"}}>
                         <h2>Estado de la entrega</h2>
