@@ -72,10 +72,6 @@ export default function AboutCompany ({data, setData, notgrabado,countries,lineB
             }
             const boxInput= document.getElementById("idFormCompanyRUC");
             console.log("El box input es: ",boxInput);
-<<<<<<< HEAD
-            //debugger;
-=======
->>>>>>> ae7ac000b66b36bb9647afe17d65296cc3b377c1
             boxInput.classList.remove("success");
             boxInput.classList.remove("error");
             setData(newData);
