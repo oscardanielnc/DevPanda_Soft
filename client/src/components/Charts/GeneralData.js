@@ -5,16 +5,18 @@ import {emailValidation,numberValidation,maxLengthValidation} from "../../utils/
 import './GeneralData.scss';
 
 
-export default function GeneralData ({data, setData, imStudent=true,isSaved,correctoFormato,setCorrectoFormato}) {
+export default function GeneralData ({data, setData, imStudent=true,isSaved,correctoFormato,setCorrectoFormato,validacionesGenenal}) {
     const {generalData} = data;
     const handleChange = (e) => {
         if(e.target.name==="personalEmail"){
             console.log("El valor es: ",e.target.value);
             if(emailValidation(e.target) || e.target.value===""){
                 e.target.classList.add("success");
+                validacionesGenenal[1]=true;
                 setCorrectoFormato(true);
             }else{
                 e.target.classList.add("error");
+                validacionesGenenal[1]=false;
                 setCorrectoFormato(false);
             }
             
@@ -29,6 +31,7 @@ export default function GeneralData ({data, setData, imStudent=true,isSaved,corr
             if(e.target.name==="cellphone"){
                 if(numberValidation(e.target) && maxLengthValidation(e.target,9)){
                     e.target.classList.add("success");
+                    validacionesGenenal[0]=true;
                     setCorrectoFormato(true);
                     setData({
                         ...data,
@@ -42,9 +45,11 @@ export default function GeneralData ({data, setData, imStudent=true,isSaved,corr
                         e.target.value=data.generalData.cellphone;
                         if(numberValidation(e.target) && maxLengthValidation(e.target,9)){
                             e.target.classList.add("success");
+                            validacionesGenenal[0]=true;
                             setCorrectoFormato(true);
                         }else{
                             e.target.classList.add("error");
+                            validacionesGenenal[0]=false;
                             setCorrectoFormato(false);
                         }
                     }else{

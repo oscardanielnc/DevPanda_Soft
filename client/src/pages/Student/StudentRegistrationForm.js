@@ -133,6 +133,10 @@ const lineBussinessDummy=[
 
 //const idAlumno=parseInt(arrayCadena[2]);
 const maxFiles = 4;
+const validacionesGenenal=[false, false];
+const validacionesCompany=[false];
+const validacionesPSP=[false, false];
+const validacionesBoss=[false, false];
 
 export default function StudentRegistrationForm () {
     const {user} = useAuth();
@@ -229,7 +233,7 @@ export default function StudentRegistrationForm () {
 
     // if(!data.generalData) return null
     function fieldsComplete(){
-        const resultadoGeneral= data.generalData.cellphone!=="" && data.generalData.cellphone!=null
+        let resultadoGeneral= data.generalData.cellphone!=="" && data.generalData.cellphone!=null;
         let resultadoCompany=true;
         console.log("El resultadoGeneral es: ",resultadoGeneral);
         if(data.aboutCompany.isNational){
@@ -296,12 +300,26 @@ export default function StudentRegistrationForm () {
            }
         }
     }
-
+    function validation(){
+        let resultadoGeneral= validacionesGenenal[0];
+        if(data.generalData.personalEmail!=="" && data.generalData.personalEmail!=null){
+            resultadoGeneral=resultadoGeneral&&validacionesGenenal[1];
+        }
+        let resultadoCompany=true;
+        if(data.aboutCompany.isNational){
+            resultadoCompany= resultadoCompany&&validacionesCompany[0];
+        }
+        let resultadoPSP= validacionesPSP[0] && validacionesPSP[1];
+        let resultadoBoss= validacionesBoss[0] && validacionesBoss[1];
+        const resultado=resultadoGeneral&&resultadoCompany&&resultadoPSP&&resultadoBoss;
+        return resultado;
+    }
     const insert = async e => {
         e.preventDefault();
         if(fieldsComplete()){
             console.log("En el insert el correctoFormato es: ",correctoFormato," y el email es: ",data.generalData.personalEmail);
-            if(correctoFormato){
+            let formattCorrect=validation();
+            if(formattCorrect){
                 const newData = {
                     ...data,
                     documentsState: "Entregado",
@@ -434,19 +452,19 @@ export default function StudentRegistrationForm () {
                     <p style={{marginBottom:"0px"}}>Los campos que son obligatorios van a estar marcados con un *</p>
                 </div>
                 <div className="row rows">
-                    <GeneralData data={data} setData={setData} imStudent={isSaved} isSaved={isSaved} correctoFormato={correctoFormato} setCorrectoFormato={setCorrectoFormato}/>   
+                    <GeneralData data={data} setData={setData} imStudent={isSaved} isSaved={isSaved} correctoFormato={correctoFormato} setCorrectoFormato={setCorrectoFormato} validacionesGenenal={validacionesGenenal}/>   
                 </div>
                 <div className="row rows">
-                    <AboutCompany data={data} setData={setData} notgrabado={isSaved} countries={countries} lineBusiness={lineBusiness} correctoFormato={correctoFormato} setCorrectoFormato={setCorrectoFormato}/>
+                    <AboutCompany data={data} setData={setData} notgrabado={isSaved} countries={countries} lineBusiness={lineBusiness} correctoFormato={correctoFormato} setCorrectoFormato={setCorrectoFormato} validacionesCompany={validacionesCompany}/>
                 </div>
                 <div className="row rows">
                     <AboutJob data={data} setData={setData} notgrabado={isSaved} correctoFormato={correctoFormato} setCorrectoFormato={setCorrectoFormato}/>
                 </div>
                 <div className="row rows">
-                    <AboutDurationPSP data={data} setData={setData} notgrabado={isSaved} correctoFormato={correctoFormato} setCorrectoFormato={setCorrectoFormato}/>
+                    <AboutDurationPSP data={data} setData={setData} notgrabado={isSaved} correctoFormato={correctoFormato} setCorrectoFormato={setCorrectoFormato} validacionesPSP={validacionesPSP}/>
                 </div>
                 <div className="row rows">
-                    <DirectBoss data={data} setData={setData} notgrabado={isSaved} correctoFormato={correctoFormato} setCorrectoFormato={setCorrectoFormato}/>
+                    <DirectBoss data={data} setData={setData} notgrabado={isSaved} correctoFormato={correctoFormato} setCorrectoFormato={setCorrectoFormato} validacionesBoss={validacionesBoss}/>
                 </div>
                 <div className="row rows">
                     <div className="container Comments">
