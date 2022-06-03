@@ -24,7 +24,6 @@ export default function WelcomeProcess () {
         }
         )
     },[setVerified])
-
     return(
         <LayoutBasic>
             <ToastContainer/>
@@ -62,11 +61,13 @@ export default function WelcomeProcess () {
                         </p> 
                     </div>
                 </div>
+
                 <div className="row rows boton">
-                    <Button className="btn btn-primary" disabled={{verified}} style={{width:"20%",marginRight:"50px"}} onClick={()=>setShow(true)}>No cuento con los documentos</Button>
+
+                    <Button className="btn btn-primary" disabled={verified} style={{width:"20%",marginRight:"50px"}} onClick={()=>setShow(true)}>No cuento con los documentos</Button>
                     <ModalNoAgreement show={show} setShow={setShow} user={user}showSm={showSm}setShowSm={setShowSm}></ModalNoAgreement>
                     <ModalNoAgreementMail show={showSm} setShow={setShowSm}></ModalNoAgreementMail>
-                    <Button className="btn btn-primary" disabled={{verified}} style={{width:"20%"}} href={link}>Sí cuento con los documentos</Button>
+                    <Button className="btn btn-primary" disabled={verified} style={{width:"20%"}} href={link}>Sí cuento con los documentos</Button>
                 </div>
                 <div>
                     {verified

@@ -74,10 +74,10 @@ export default function StudentAgreement () {
     let typeApprovalState = "pending";
     let observaciones=data[numFiles].observaciones;
     console.log("lenght",numFiles);
-    if(data[numFiles].estadoFaci === "o" || data[numFiles].estadoEspecialidad === "o"){
+    if(data[numFiles].estadoFaci === "O" || data[numFiles].estadoEspecialidad === "O"){
         approvalState = "Observado"
     }
-    else if(data[numFiles].estadoFaci === "a" || data[numFiles].estadoEspecialidad ==="a"  ){
+    else if(data[numFiles].estadoFaci === "A" || data[numFiles].estadoEspecialidad ==="A"  ){
         approvalState= "Aprobado"
     }
     else if(data[numFiles].estadoFaci === "P" || data[numFiles].estadoEspecialidad ==="P"){
