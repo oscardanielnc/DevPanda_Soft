@@ -6,7 +6,7 @@ export default function AddSpecialty () {
         window.location.href = `/`
     } else {
         if(user.tipoPersona==="e")
-            window.location.href = `/welcome-process/phase=WPRO`;
+            window.location.href = `/welcome-process/phase=NCON`;
         else {
             switch (user.tipoPersonal) {
                 case 'S':  

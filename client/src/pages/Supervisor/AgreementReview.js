@@ -44,15 +44,15 @@ export default function AgreementReview (){
             if(result1.success) {  
                 setData(result1.agreement[0]);            
             }
-            const result2 = await getAllDocsApi(`${user.fidProceso}-${dataTemporal.idEspecialidad}-CONV`, 0)
+            const result2 = await getAllDocsApi(`${user.fidProceso}-CONV`, 0)
             if(result2.success) {
                 setDocs(result2.docs)
             }
-            const result3 = await getAllDocsApi(`${user.fidProceso}-${dataTemporal.idEspecialidad}-CONV-${idAlumno}`, 1)
+            const result3 = await getAllDocsApi(`${user.fidProceso}-CONV-${idAlumno}`, 1)
             if(result3.success) {
                 setDocsStudent(result3.docs)
             }
-            const result4 = await getAllDocsApi(`${user.fidProceso}-${dataTemporal.idEspecialidad}-CONV-${idAlumno}`, 0)
+            const result4 = await getAllDocsApi(`${user.fidProceso}-CONV-${idAlumno}`, 0)
             if(result4.success) {
                 setDocsCoord(result4.docs)
             }
@@ -125,7 +125,7 @@ export default function AgreementReview (){
                 dataForApi.estadoEspecialidad = data.estadoEspecialidad
                 dataForApi.observaciones = data.observaciones           
                 console.log(dataForApi)
-                const response1 = await uploadDocsApi(fileList, `${user.fidProceso}-${dataTemporal.idEspecialidad}-CONV-${idAlumno}`, 0);
+                const response1 = await uploadDocsApi(fileList, `${user.fidProceso}-CONV-${idAlumno}`, 0);
                 if(response1.success){
                     console.log(dataForApi)
                     const response2 = await agreementReviewUpdateApi(dataForApi)
@@ -181,7 +181,7 @@ export default function AgreementReview (){
             dataForApi.estadoFaci = data.estadoFaci
             dataForApi.estadoEspecialidad = data.estadoEspecialidad
             dataForApi.observaciones = data.observaciones            
-            //const response1 = await uploadDocsApi(fileList, `1-${user.fidEspecialidad}-CONV-${idAlumno}`, 0);            
+            //const response1 = await uploadDocsApi(fileList, `${user.fidProceso}-CONV-${idAlumno}`, 0);            
             const response2 = await agreementReviewUpdateApi(dataForApi)
             if(response2.success){                    
                 toast.success(`Información actualizada con éxito.`, {

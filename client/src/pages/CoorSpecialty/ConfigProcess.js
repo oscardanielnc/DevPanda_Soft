@@ -4,12 +4,15 @@ import LayoutAdministrative from '../../layouts/LayoutAdministrative';
 import { DragDropContext, Droppable, Draggable} from "react-beautiful-dnd";
 import "./scss/ConfigProcess.scss";
 import { Link } from 'react-router-dom';
+import useAuth from '../../hooks/useAuth';
+import { createProcessApi } from '../../api/process';
+import { ToastContainer, toast } from 'react-toastify';
 
 const dummyFlows = [
     {
-        name: "Inicio del Proceso",
+        name: "Iniciar Proceso Con o Sin Convenio",
         checked: true,
-        code: "WPRO",
+        code: "NCON",
         id: 0
     },
     {
@@ -46,6 +49,7 @@ const dummyFlows = [
 
 export default function ConfigProcess() {
     const [flows, setFlows] = useState(dummyFlows);
+    const {user} = useAuth();
 
     const order = (list, startIndex, endIndex) => {
         const result = [...list];
@@ -73,7 +77,7 @@ export default function ConfigProcess() {
         })
         setFlows(newChecks)
     }
-    const handleSave = () => {
+    const handleSave = async () => {
         const finalFlow = [];
         let counter = 1;
         
@@ -96,18 +100,27 @@ export default function ConfigProcess() {
         finalFlow.push(ifin);
 
         const process = {
-            anio: 2020, //necesitamos conseguir el anio
-            cicle: 2, //necesitamos conseguir el ciclo
+            anio: 2022, //necesitamos conseguir el anio
+            cicle: 1, //necesitamos conseguir el ciclo
+            specialty: user.fidEspecialidad,
+            ini: null,
+            fin: null,
             flow: finalFlow
         }
         console.log(process)
-        // aqui insertamos en BD
-        // no debe permitir insertar si ya existe este anio y este ciclo juntos
+        
+        const result = await createProcessApi(process);
+        const typeToast = result.success? "success": "error";
+        toast[typeToast](result.message, {
+            position: "top-right",
+            autoClose: 3000,
+        });
         // si es exitoso regresar a listConfig
     }
 
     return(
         <LayoutAdministrative>
+            <ToastContainer />  
             <div className="container configProcess">
                 <Row className="rows">
                     <h1>Configuración del Nuevo Proceso</h1>
@@ -153,7 +166,7 @@ export default function ConfigProcess() {
                         </Droppable>
                     </DragDropContext>
                     <InputGroup className="configProcess__flow-flows-item">
-                        <InputGroup.Checkbox checked/>
+                        <InputGroup.Checkbox checked readOnly/>
                         <div className="configProcess__flow-flows-name"><span>Informe Final</span></div>
                     </InputGroup>
                 </Row>

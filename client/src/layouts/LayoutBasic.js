@@ -14,7 +14,7 @@ export default function LayoutBasic (props) {
 
        
     // solo almnos pueden acceder a esta pagina 
-    if(user.tipoPersona !== 'e') 
+    if(!user || user.tipoPersona !== 'e') 
         return <ForbiddenPage />
 
     return (

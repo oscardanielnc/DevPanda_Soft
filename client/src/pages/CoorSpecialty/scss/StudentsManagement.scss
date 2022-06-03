@@ -1,6 +1,7 @@
 @import "../../../App.scss";
 .studentsManagement {
     &__excel {
+        box-shadow: inset 0px 0px 20px 8px #fff;
         background-color: #efefef;
         border-radius: 5px;
         padding: 1em !important;

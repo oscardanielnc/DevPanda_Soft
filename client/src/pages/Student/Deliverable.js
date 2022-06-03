@@ -78,7 +78,7 @@ export default function DeliverablesStudent(){
     }, [setData])
     
     useEffect(() => {
-        getAllDocsApi(`1-${user.fidEspecialidad}-ENT${idEntregable}`, 0).then(response => {
+        getAllDocsApi(`${user.fidProceso}-ENT${idEntregable}`, 0).then(response => {
             if(response.success) {
                 setDocs(response.docs)
             }
@@ -86,7 +86,7 @@ export default function DeliverablesStudent(){
     },[setDocs])
     
     useEffect(() => {
-        getAllDocsApi(`1-${user.fidEspecialidad}-ENT${idEntregable}-${user.idPersona}`, 1).then(response => {
+        getAllDocsApi(`${user.fidProceso}-ENT${idEntregable}-${user.idPersona}`, 1).then(response => {
             if(response.success) {
                 setStudentDocs(response.docs)
             }
@@ -96,7 +96,7 @@ export default function DeliverablesStudent(){
     const deliver = async() => {
         
         if(fileList.length === maxFiles) {
-            const response = await uploadDocsApi(fileList, `1-${user.fidEspecialidad}-ENT${idEntregable}-${user.idPersona}`, 1);
+            const response = await uploadDocsApi(fileList, `${user.fidProceso}-ENT${idEntregable}-${user.idPersona}`, 1);
             const newData = {
                 ...data,
                 deliverableResponse:{

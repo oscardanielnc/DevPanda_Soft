@@ -32,7 +32,7 @@ export default function StudentAgreement () {
     const {user} = useAuth();
     const fidAlumno=user.idPersona;
     useEffect(() => {
-        getAllDocsApi(`1-${user.fidEspecialidad}-CONV`, 0).then(response => {
+        getAllDocsApi(`${user.fidProceso}-CONV`, 0).then(response => {
             if(response.success) {
                 setDocs(response.docs)
             }
@@ -40,7 +40,7 @@ export default function StudentAgreement () {
     },[setDocs])
     
     useEffect(() => {
-        getAllDocsApi(`1-${user.fidEspecialidad}-CONV-${user.idPersona}`, 1).then(response => {
+        getAllDocsApi(`${user.fidProceso}-CONV-${user.idPersona}`, 1).then(response => {
             if(response.success) {
                 setStudentDocs(response.docs)
                 if(response.docs.length>0){
@@ -108,7 +108,7 @@ export default function StudentAgreement () {
 
     const deliver = async () => {
         if(fileList.length === maxFiles) {
-            const response = await uploadDocsApi(fileList, `1-${user.fidEspecialidad}-CONV-${user.idPersona}`, 1);
+            const response = await uploadDocsApi(fileList, `${user.fidProceso}-CONV-${user.idPersona}`, 1);
             if(response.success) {
                 toast.success(response.msg, {
                     position: "top-right",

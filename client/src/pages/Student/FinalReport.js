@@ -53,7 +53,7 @@ export default function AgreementReview(){
     
     useEffect(() => {                           //se debe cambiar por INFI   
         const fetchData = async () => { 
-            const result = await getAllDocsApi(`${user.fidProceso}-${user.fidEspecialidad}-IFIN`, 0);
+            const result = await getAllDocsApi(`${user.fidProceso}-IFIN`, 0);
             if(result.success) {
                 setDocs(result.docs)                
             }
@@ -64,7 +64,7 @@ export default function AgreementReview(){
    
    useEffect(() => {     
         const fetchData = async () => {         
-            const result = await getAllDocsApi(`${user.fidProceso}-${user.fidEspecialidad}-IFIN-${user.idPersona}`, 1);                        
+            const result = await getAllDocsApi(`${user.fidProceso}-IFIN-${user.idPersona}`, 1);                        
             if(result.success) {                                           
                 setDocsStudent(result.docs);                                                
             }    
@@ -112,7 +112,7 @@ export default function AgreementReview(){
                 if(response1.success){
                     const response2 = await updatefieldsDeliverables(newData2)   
                     if(response2.success){
-                        const response3 = await uploadDocsApi(fileList, `${user.fidProceso}-${user.fidEspecialidad}-IFIN-${user.idPersona}`, 1);
+                        const response3 = await uploadDocsApi(fileList, `${user.fidProceso}-IFIN-${user.idPersona}`, 1);
                         if(response3.success){
                             window.location.reload()
                             toast.success(`Datos registrados con éxito.`, {

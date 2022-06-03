@@ -11,7 +11,7 @@ const radios = [
   ];
 
 export default function ModalStudentManagement (props) {
-    const {show, setShow, updateStudent, newDataStudent, setNewDataStudent} = props;
+    const {show, setShow, updateStudent, newDataStudent, setNewDataStudent, matr} = props;
 
     const handleChangeToggleButton = e => {
         const grupo = (e.currentTarget.value === '0')? null: e.currentTarget.value;
@@ -65,13 +65,16 @@ export default function ModalStudentManagement (props) {
                 </Form.Group>
 
                 <div className="modalStudentManagement__switches">
-                    <Form.Group className="modalStudentManagement__switches-group">
-                        <Form.Label className="modalStudentManagement__switches-label">
-                            Matriculado: 
-                        </Form.Label>
-                        <Form.Switch name="enrolled" className="modalStudentManagement__switches-group-input" 
-                            defaultChecked={newDataStudent.estadoMatriculado===1} onChange={handleChangeSwitch}/>
-                    </Form.Group>
+                    {
+                        matr && 
+                        <Form.Group className="modalStudentManagement__switches-group">
+                            <Form.Label className="modalStudentManagement__switches-label">
+                                Matriculado: 
+                            </Form.Label>
+                            <Form.Switch name="enrolled" className="modalStudentManagement__switches-group-input" 
+                                defaultChecked={newDataStudent.estadoMatriculado===1} onChange={handleChangeSwitch}/>
+                        </Form.Group>
+                    }
 
                     <Form.Group className="modalStudentManagement__switches-group">
                         <Form.Label className="modalStudentManagement__switches-label">

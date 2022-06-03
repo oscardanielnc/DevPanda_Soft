@@ -209,7 +209,7 @@ export default function StudentRegistrationForm () {
     //sacamos los documentos subidos por el encargado
     useEffect(() => {
         const fetchData = async () => {
-            const result = await getAllDocsApi(`1-${user.fidEspecialidad}-RFOR`, 0);
+            const result = await getAllDocsApi(`${user.fidProceso}-FINS`, 0);
             if(result.success) {
                 setDocs(result.docs)
             }
@@ -219,7 +219,7 @@ export default function StudentRegistrationForm () {
     //sacamos los documentos subidor por el alumno
     useEffect(() => {
         const fetchData = async () => {
-            const result = await getAllDocsApi(`1-${user.fidEspecialidad}-RFOR-${idAlumno}`, 1);
+            const result = await getAllDocsApi(`${user.fidProceso}-FINS-${idAlumno}`, 1);
             if(result.success) {
                 setStudentDocs(result.docs)
             }
@@ -271,7 +271,7 @@ export default function StudentRegistrationForm () {
     }
     const deliver = async () => {
         if(fileList.length <= maxFiles && fileList.length!==0) {
-            const response = await uploadDocsApi(fileList, `1-${user.fidEspecialidad}-RFOR-${idAlumno}`, 1);
+            const response = await uploadDocsApi(fileList, `${user.fidProceso}-FINS-${idAlumno}`, 1);
             if(response.success) {
                 toast.success(response.msg, {
                     position: "top-right",
