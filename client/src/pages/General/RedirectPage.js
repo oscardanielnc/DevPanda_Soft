@@ -9,8 +9,8 @@ export default function AddSpecialty () {
             window.location.href = `/welcome-process/phase=WPRO`;
         else {
             switch (user.tipoPersonal) {
-                case 'S': 
-                    window.location.href = `/meetings-management/permissions=S&idSupervisor=${user.idPersona}&idProcess=${user.fidProceso}`; break;
+                case 'S':  
+                    window.location.href = `/meetings-management/permissions=SC&idSupervisor=${user.idPersona}`; break;
                 case 'E': window.location.href = `/students-management/permissions=E`; break;
                 case 'F': window.location.href = `/list-students-agreement/permissions=EF`; break;
                 case 'A': window.location.href = `/specialty-management/permissions=A`; break;
