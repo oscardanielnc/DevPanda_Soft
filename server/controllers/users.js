@@ -84,7 +84,7 @@ async function createAdministrative(req, res) {
 function getCoordinators(req, res) {
     const connection = mysql.createConnection(MYSQL_CREDENTIALS);
 
-    const sqlQuery = `SELECT idPersona,nombres,apellidos,fidEspecialidad, nombreEsp, activo, correo, estado FROM PersonalAdministrativo A 
+    const sqlQuery = `SELECT idPersona,nombres,apellidos,fidEspecialidad, nombreEsp, P.activo, correo, estado FROM PersonalAdministrativo A 
         INNER JOIN Persona P ON A.idPersonal = P.idPersona INNER JOIN Especialidad E ON E.idEspecialidad = P.fidEspecialidad
         WHERE tipoPersonal='E';`;
 
@@ -94,6 +94,7 @@ function getCoordinators(req, res) {
 
     connection.query(sqlQuery, (err, result) => {
         if (err) {
+            console.log(err)
             res.status(505).send({
                 success: false,
                 message: "Error inesperado en el servidor"
@@ -102,9 +103,9 @@ function getCoordinators(req, res) {
         else if(result.length === 0) {
             res.status(404).send({
                 success: false,
-                message: "No se han encontrados coordinadores para esta especialidad"
+                message: "No se han encontrados coordinadores"
             })
-        } else {            
+        } else {      
             res.status(200).send({
                 success: true,
                 result
