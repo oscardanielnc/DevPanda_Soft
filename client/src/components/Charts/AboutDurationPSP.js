@@ -9,7 +9,7 @@ import es from 'date-fns/locale/es';
 registerLocale('es', es);
 
 
-export default function AboutDurationPSP ({data, setData, notgrabado,correctoFormato,setCorrectoFormato,validacionesPSP}) {
+export default function AboutDurationPSP ({data, setData, notgrabado,validacionesPSP}) {
     const {aboutPSP} = data;
 
     const handleChangeText = (e) => {
@@ -17,7 +17,6 @@ export default function AboutDurationPSP ({data, setData, notgrabado,correctoFor
             if(e.target.valueAsNumber>=0 && e.target.valueAsNumber<=10){
                 e.target.classList.add("success");
                 validacionesPSP[0]=true;
-                setCorrectoFormato(true);
                 setData({
                     ...data,
                     aboutPSP: {
@@ -31,11 +30,9 @@ export default function AboutDurationPSP ({data, setData, notgrabado,correctoFor
                 if(e.target.valueAsNumber>=0){
                     e.target.classList.add("success");
                     validacionesPSP[0]=true;
-                    setCorrectoFormato(true);
                 }else{
                     e.target.classList.add("error");
                     validacionesPSP[0]=false;
-                    setCorrectoFormato(false);
                 }
             }
         }else{
@@ -43,7 +40,6 @@ export default function AboutDurationPSP ({data, setData, notgrabado,correctoFor
                 if(e.target.valueAsNumber>=0 && e.target.valueAsNumber<=30){
                     e.target.classList.add("success");
                     validacionesPSP[1]=true;
-                    setCorrectoFormato(true);
                     setData({
                         ...data,
                         aboutPSP: {
@@ -57,11 +53,9 @@ export default function AboutDurationPSP ({data, setData, notgrabado,correctoFor
                     if(e.target.valueAsNumber>=0){
                         e.target.classList.add("success");
                         validacionesPSP[1]=true;
-                        setCorrectoFormato(true);
                     }else{
                         e.target.classList.add("error");
                         validacionesPSP[1]=false;
-                        setCorrectoFormato( false);
                     }
                 }
             }else{

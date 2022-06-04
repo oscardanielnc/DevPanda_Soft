@@ -4,7 +4,7 @@ import { Button, Table,Form,InputGroup,FormControl } from 'react-bootstrap';
 import './AboutJob.scss';
 
 
-export default function AboutJob ({data, setData, notgrabado,correctoFormato,setCorrectoFormato}) {
+export default function AboutJob ({data, setData, notgrabado}) {
     const {aboutJob} = data;
 
     const handleChange = (e) => {

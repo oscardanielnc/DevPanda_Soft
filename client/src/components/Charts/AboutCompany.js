@@ -4,7 +4,7 @@ import {numberValidation,maxLengthValidation,minLengthValidation} from "../../ut
 import './AboutCompany.scss';
 
 
-export default function AboutCompany ({data, setData, notgrabado,countries,lineBusiness, correctoFormato,setCorrectoFormato,validacionesCompany}) {
+export default function AboutCompany ({data, setData, notgrabado,countries,lineBusiness,validacionesCompany}) {
     const {aboutCompany} = data;
     //console.log("Countries es: ",countries);
     //console.log("Lineas de negocio son: ",lineBusiness);
@@ -15,11 +15,9 @@ export default function AboutCompany ({data, setData, notgrabado,countries,lineB
                 if(minLengthValidation(e.target,9)){
                     e.target.classList.add("success");
                     validacionesCompany[0]=true;
-                    setCorrectoFormato(true);
                 }else{
                     e.target.classList.add("error");
                     validacionesCompany[0]=false;
-                    setCorrectoFormato(false);
                 }
                 setData({
                     ...data,
@@ -34,11 +32,9 @@ export default function AboutCompany ({data, setData, notgrabado,countries,lineB
                     if(numberValidation(e.target) && maxLengthValidation(e.target,11)){
                         e.target.classList.add("success");
                         validacionesCompany[0]=true;
-                        setCorrectoFormato(true);
                     }else{
                         e.target.classList.add("error");
                         validacionesCompany[0]=false;
-                        setCorrectoFormato(false);
                     }
                 }else{
                     setData({

@@ -5,7 +5,7 @@ import {emailValidation,numberValidation,maxLengthValidation} from "../../utils/
 import './GeneralData.scss';
 
 
-export default function GeneralData ({data, setData, imStudent=true,isSaved,correctoFormato,setCorrectoFormato,validacionesGenenal}) {
+export default function GeneralData ({data, setData, imStudent=true,isSaved,validacionesGenenal}) {
     const {generalData} = data;
     const handleChange = (e) => {
         if(e.target.name==="personalEmail"){
@@ -13,11 +13,9 @@ export default function GeneralData ({data, setData, imStudent=true,isSaved,corr
             if(emailValidation(e.target) || e.target.value===""){
                 e.target.classList.add("success");
                 validacionesGenenal[1]=true;
-                setCorrectoFormato(true);
             }else{
                 e.target.classList.add("error");
                 validacionesGenenal[1]=false;
-                setCorrectoFormato(false);
             }
             
             setData({
@@ -32,7 +30,6 @@ export default function GeneralData ({data, setData, imStudent=true,isSaved,corr
                 if(numberValidation(e.target) && maxLengthValidation(e.target,9)){
                     e.target.classList.add("success");
                     validacionesGenenal[0]=true;
-                    setCorrectoFormato(true);
                     setData({
                         ...data,
                         generalData: {
@@ -46,11 +43,9 @@ export default function GeneralData ({data, setData, imStudent=true,isSaved,corr
                         if(numberValidation(e.target) && maxLengthValidation(e.target,9)){
                             e.target.classList.add("success");
                             validacionesGenenal[0]=true;
-                            setCorrectoFormato(true);
                         }else{
                             e.target.classList.add("error");
                             validacionesGenenal[0]=false;
-                            setCorrectoFormato(false);
                         }
                     }else{
                         setData({

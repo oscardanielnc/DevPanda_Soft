@@ -151,7 +151,6 @@ export default function StudentRegistrationForm () {
     const [docs, setDocs] = useState([]);
     const [studentDocs, setStudentDocs] = useState([]);
     const [loading, setLoading] = useState(false);
-    const [correctoFormato,setCorrectoFormato]=useState(true);
     let typeUser=user.tipoPersona;
     //console.log("El arrayCadena es: ",window.location.pathname);
     //debugger
@@ -300,24 +299,28 @@ export default function StudentRegistrationForm () {
            }
         }
     }
+
     function validation(){
         let resultadoGeneral= validacionesGenenal[0];
         if(data.generalData.personalEmail!=="" && data.generalData.personalEmail!=null){
             resultadoGeneral=resultadoGeneral&&validacionesGenenal[1];
         }
+        console.log("En validation el resultadoGeneral es: ",resultadoGeneral);
         let resultadoCompany=true;
         if(data.aboutCompany.isNational){
             resultadoCompany= resultadoCompany&&validacionesCompany[0];
         }
+        console.log("En validation el resultadoCompany es: ",resultadoCompany);
         let resultadoPSP= validacionesPSP[0] && validacionesPSP[1];
+        console.log("En validation el resultadoPSP es: ",resultadoPSP);
         let resultadoBoss= validacionesBoss[0] && validacionesBoss[1];
+        console.log("En validation el resultadoBoss es: ",resultadoBoss);
         const resultado=resultadoGeneral&&resultadoCompany&&resultadoPSP&&resultadoBoss;
         return resultado;
     }
     const insert = async e => {
         e.preventDefault();
         if(fieldsComplete()){
-            console.log("En el insert el correctoFormato es: ",correctoFormato," y el email es: ",data.generalData.personalEmail);
             let formattCorrect=validation();
             if(formattCorrect){
                 const newData = {
@@ -452,19 +455,19 @@ export default function StudentRegistrationForm () {
                     <p style={{marginBottom:"0px"}}>Los campos que son obligatorios van a estar marcados con un *</p>
                 </div>
                 <div className="row rows">
-                    <GeneralData data={data} setData={setData} imStudent={isSaved} isSaved={isSaved} correctoFormato={correctoFormato} setCorrectoFormato={setCorrectoFormato} validacionesGenenal={validacionesGenenal}/>   
+                    <GeneralData data={data} setData={setData} imStudent={isSaved} isSaved={isSaved} validacionesGenenal={validacionesGenenal}/>   
                 </div>
                 <div className="row rows">
-                    <AboutCompany data={data} setData={setData} notgrabado={isSaved} countries={countries} lineBusiness={lineBusiness} correctoFormato={correctoFormato} setCorrectoFormato={setCorrectoFormato} validacionesCompany={validacionesCompany}/>
+                    <AboutCompany data={data} setData={setData} notgrabado={isSaved} countries={countries} lineBusiness={lineBusiness} validacionesCompany={validacionesCompany}/>
                 </div>
                 <div className="row rows">
-                    <AboutJob data={data} setData={setData} notgrabado={isSaved} correctoFormato={correctoFormato} setCorrectoFormato={setCorrectoFormato}/>
+                    <AboutJob data={data} setData={setData} notgrabado={isSaved}/>
                 </div>
                 <div className="row rows">
-                    <AboutDurationPSP data={data} setData={setData} notgrabado={isSaved} correctoFormato={correctoFormato} setCorrectoFormato={setCorrectoFormato} validacionesPSP={validacionesPSP}/>
+                    <AboutDurationPSP data={data} setData={setData} notgrabado={isSaved} validacionesPSP={validacionesPSP}/>
                 </div>
                 <div className="row rows">
-                    <DirectBoss data={data} setData={setData} notgrabado={isSaved} correctoFormato={correctoFormato} setCorrectoFormato={setCorrectoFormato} validacionesBoss={validacionesBoss}/>
+                    <DirectBoss data={data} setData={setData} notgrabado={isSaved} validacionesBoss={validacionesBoss}/>
                 </div>
                 <div className="row rows">
                     <div className="container Comments">
