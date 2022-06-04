@@ -124,7 +124,7 @@ const routes = [
     },
     // Alumno
     {
-        path: "/welcome-process/phase=WPRO",
+        path: "/welcome-process/phase=NCON",
         exact: true,
         component:WelcomeProcess,
     },

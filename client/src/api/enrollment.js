@@ -18,6 +18,7 @@ export function selectStudentsByProcessSpecialtyApi(idProceso) {
             if(data.success) {
                 return {
                     students: data.students,
+                    matr: data.matr,
                     success: true
                 }
             }

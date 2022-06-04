@@ -87,6 +87,8 @@ let textSelect = "-1"
 export default function StudentsManagement () {
     const {user} = useAuth();
     const idProcess = user.fidProceso;
+    // const idProcess = 1;
+    const [matr, setMatr] = useState(false);
     const [show, setShow] = useState(false);
     const [showExcel, setShowExcel] = useState(false);
     const [alumnos, setAlumnos] = useState([]);
@@ -106,6 +108,7 @@ export default function StudentsManagement () {
     useEffect(()=> {
         selectStudentsByProcessSpecialtyApi(idProcess).then(response => {
             if(response.success) {
+                setMatr(response.matr);
                 setAlumnos(response.students);
                 setFilteredData(response.students);
             }
@@ -167,50 +170,55 @@ export default function StudentsManagement () {
                 <Row className="rows studentsManagement">
                     <h1>Gestión de alumnos</h1>
                 </Row>
-                <Row className="rows studentsManagement__excel">
-                    <Form.Group  className="mb-3 studentsManagement__excel-title">
-                        <Form.Label>Subir excel de matriculados</Form.Label>
-                        <div className="studentsManagement__excel-input">
-                            <Form.Control type="file" size="sm" onChange={uploadExcel} id="studentsManagement_excel"/>
-                            <OverlayTrigger overlay={<Tooltip>Limpiar documento subido</Tooltip>}>
-                                <Button className="studentsManagement__excel-input-trash" onClick={trashCan}
-                                    variant="primary"><i className="bi bi-trash"></i>
-                                </Button>
-                            </OverlayTrigger>
-                        </div>
-                    </Form.Group>
-                    <Button className="studentsManagement__excel-btn" onClick={matchExcel}
-                        variant="primary" disabled={excel.length===0}>Comprobar
-                    </Button>
-                </Row>
+                {
+                    matr && 
+                    <Row className="rows studentsManagement__excel">
+                        <Form.Group  className="mb-3 studentsManagement__excel-title">
+                            <Form.Label>Subir archivo de texto de matriculados</Form.Label>
+                            <div className="studentsManagement__excel-input">
+                                <Form.Control type="file" size="sm" onChange={uploadExcel} id="studentsManagement_excel"/>
+                                <OverlayTrigger overlay={<Tooltip>Limpiar documento subido</Tooltip>}>
+                                    <Button className="studentsManagement__excel-input-trash" onClick={trashCan}
+                                        variant="primary"><i className="bi bi-trash"></i>
+                                    </Button>
+                                </OverlayTrigger>
+                            </div>
+                        </Form.Group>
+                        <Button className="studentsManagement__excel-btn" onClick={matchExcel}
+                            variant="primary" disabled={excel.length===0}>Comprobar
+                        </Button>
+                    </Row>
+                }
 
                 <div className="row rows studentManagement__actions">
-                    <h3>Alumnos del proceso actual</h3>
+                    <h3>Alumnos</h3>
                     <FormControl
                         placeholder={"Filtrar alumnos"}
                         onChange={filter}
                         name="filter"
-                        style={{width: "80%"}}
+                        style={{width: `${matr? "80%": "100%"}`}}
                     />
-                        
-                    <Form.Select className="studentManagement__select form-select" style={{width: "20%"}} onChange={filter} name="select">
-                        <option value={"-1"}>Todos</option>
-                        {
-                            states.map((element, index) => (
-                                <option value={`${element.value}`} 
-                                    key={index}>{element.name}
-                                </option>
-                            ))
-                        }
-                    </Form.Select>
+                    {
+                        matr && 
+                        <Form.Select className="studentManagement__select form-select" style={{width: "20%"}} onChange={filter} name="select">
+                            <option value={"-1"}>Todos</option>
+                            {
+                                states.map((element, index) => (
+                                    <option value={`${element.value}`} 
+                                        key={index}>{element.name}
+                                    </option>
+                                ))
+                            }
+                        </Form.Select>
+                    }
                 </div>
 
                 <Row className="rows">
-                    <TableEnrollment rows={filteredData} setShow={setShow} setNewDataStudent={setNewDataStudent}/>
+                    <TableEnrollment rows={filteredData} setShow={setShow} setNewDataStudent={setNewDataStudent} matr={matr}/>
                 </Row>
                 
                 <ModalStudentManagement show={show} setShow={setShow} updateStudent={updateStudent}
-                    newDataStudent={newDataStudent} setNewDataStudent={setNewDataStudent}/>
+                    newDataStudent={newDataStudent} setNewDataStudent={setNewDataStudent} matr={matr}/>
                 <ModalExcel show={showExcel} setShow={setShowExcel} students={alumnos} excel={excel} idProcess={idProcess}/>
             </div>
         </LayoutAdministrative>

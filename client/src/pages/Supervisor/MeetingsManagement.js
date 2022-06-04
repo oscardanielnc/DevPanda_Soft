@@ -22,7 +22,7 @@ export default function MeetingsManegement() {
     const [show, setShow] = useState(false);
     const [loading, setLoading] = useState(true);
     const [hourModalSelected, setHourModalSelected] = useState(null);
-    const idSupervisor = useParams().idSupervisor
+    const idSupervisor = Number(useParams().idSupervisor);
 
     
     const callSchedule = () => {
@@ -41,7 +41,7 @@ export default function MeetingsManegement() {
         callSchedule()
     }, [setSchedule])
     
-    if(!(user.tipoPersonal === "S" && idSupervisor!== user.idPersona))
+    if(!user || (user.tipoPersonal === "S" && idSupervisor!== user.idPersona))
         return <ForbiddenPage />
         
     const handleClickCell = (hour, indexDay, indexHour) => {

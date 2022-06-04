@@ -24,7 +24,7 @@ function StudentNavbar () {
         let name = '';
         switch (code) {
             case "CONV": name="/agreement"; break;
-            case "WPRO": name="/welcome-process"; break;
+            case "NCON": name="/welcome-process"; break;
             case "MATR": name="/enrollment"; break;
             case "FINS": name="/inscription"; break;
             case "ESUP": name="/supervisor-selection"; break;

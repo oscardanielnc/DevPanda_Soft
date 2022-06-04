@@ -48,7 +48,7 @@ export default function ModalStudentMeetingStudent (props) {
     const getDocumentsOfExample = () => { //1-1-ESUP-1
         console.log(`CONSULTANDO documentos de ejemplo de ESUP`)
         setLoading(true)
-        getAllDocsApi(`1-${user.fidEspecialidad}-ESUP`, 0).then(response => {
+        getAllDocsApi(`${user.fidProceso}-ESUP`, 0).then(response => {
             setLoading(false)
             if(response.success) {
                 setDocs(response.docs)
@@ -59,7 +59,7 @@ export default function ModalStudentMeetingStudent (props) {
         if (code === null) return;
         console.log(`CONSULTANDO documentos de ESUP ${code}`)
         setLoading(true)
-        getAllDocsApi(`1-${user.fidEspecialidad}-ESUP-${code}`, 1).then(response => {
+        getAllDocsApi(`${user.fidProceso}-ESUP-${code}`, 1).then(response => {
             setLoading(false)
             getDocumentsOfExample()
             if(response.success) {
@@ -121,7 +121,7 @@ export default function ModalStudentMeetingStudent (props) {
     const deliver = async () => {
         if(fileList.length === maxFiles) {
             setLoading(true)
-            uploadDocsApi(fileList, `1-${user.fidEspecialidad}-ESUP-${user.idPersona}`, 1).then(response => {
+            uploadDocsApi(fileList, `${user.fidProceso}-ESUP-${user.idPersona}`, 1).then(response => {
                 setLoading(false)
                 console.log(response)
                 if(response.success) {

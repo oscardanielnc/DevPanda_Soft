@@ -11,7 +11,7 @@ export default function ModalAgreementRequest (props) {
     const [docs, setDocs] = useState([])
     console.log("alumno",student)
     useEffect(() => {
-        getAllDocsApi(`1-${user.fidEspecialidad}-NCON-${student.idAlumno}`, 0).then(response => {
+        getAllDocsApi(`${user.fidProceso}-NCON-${student.idAlumno}`, 0).then(response => {
             if(response.success) {
                 setDocs(response.docs)
             }

@@ -10,12 +10,16 @@ async function selectStudentsByProcessSpecialty(req, res) {
         if (err) throw err;
     });
     try{
+        const sqlMATR = `SELECT * FROM EtapaProceso WHERE codigo='MATR' and fidProceso=${fidProceso};`
+        const resultMATR  = await sqlAsync(sqlMATR, connection);
+
         const sqlQueryAlumno = `SELECT idPersona,nombres,apellidos,correo,estadoMatriculado,codigo,grupoAsignado,estado 
                     FROM Alumno A INNER JOIN AlumnoProceso AP ON A.idAlumno = AP.fidAlumno INNER JOIN Persona P ON A.idAlumno = P.idPersona 
                     WHERE AP.fidProceso = ${fidProceso} AND P.tipoPersona='e' AND P.activo=1;`
         const resultAlumno  = await sqlAsync(sqlQueryAlumno, connection);
         res.status(200).send({
             success: true,
+            matr: resultMATR.length>0,
             students: resultAlumno
         })
 

@@ -82,7 +82,7 @@ export default function ModalStudentMeetingSupervisor (props) {
         if (code === null) return;
         console.log(`CONSULTANDO documentos de ${code}`)
         setLoading(true)
-        getAllDocsApi(`1-${user.fidEspecialidad}-ESUP-${code}`, 1).then(response => {
+        getAllDocsApi(`${user.fidProceso}-ESUP-${code}`, 1).then(response => {
             setLoading(false)
             if(response.success) {
                 setDocs(response.docs)

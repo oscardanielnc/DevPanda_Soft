@@ -11,7 +11,7 @@ export default function LayoutAdministrative (props) {
     const {children} = props;
 
     // solo administrativos pueden acceder a esta pagina 
-    if(user.tipoPersona === 'e' || !isAllowed(user.tipoPersonal)) 
+    if(!user|| user.tipoPersona === 'e' || !isAllowed(user.tipoPersonal)) 
         return <ForbiddenPage />
 
     return (
