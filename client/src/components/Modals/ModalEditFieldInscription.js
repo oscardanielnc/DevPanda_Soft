@@ -11,7 +11,7 @@ import PandaLoaderPage from "../../pages/General/PandaLoaderPage";
 import { isNotEmptyObj } from "../../utils/objects";
 import ShowFiles from "../../components/FileManagement/ShowFiles";
 import ModalBasic from "./ModalBasic";
-import './ModalAddFieldInscription.scss';
+import './ModalEditFieldInscription.scss';
 import { getstudentInscriptionForm } from "../../api/registrationForm";
 import useAuth from "../../hooks/useAuth";
 
@@ -22,16 +22,17 @@ const dataDummy = {
 const maxFiles = 1;
 let saved=false;
 let obligatorio=true;
-export default function ModalAddFieldInscription (props) {
+export default function ModalEditFieldInscription (props) {
     const {show, setShow,data,setData} = props;
     const {user} = useAuth();
     const idAlumno= useParams().idStudent;
-    
     let typeUser=user.tipoPersona;
     if(typeUser==="p"){
         typeUser=user.tipoPersonal;
     }
     console.log("La data es: ",data);
+    obligatorio=data.obligatorio==="obligatorio"?true:false;
+    //console.log("El obligatorio es: ",obligatorio);
     const handleEnviar = async e =>{
         e.preventDefault();
         let response=null;
@@ -40,7 +41,7 @@ export default function ModalAddFieldInscription (props) {
             idEspecialidad: user.fidEspecialidad,
             idProceso:user.fidProceso,
         }
-        //response = await registrationFieldInscription(objeto);
+        //response = await editFieldInscription(objeto);
         if(!response.success){
             toast.error(response.msg, {
                 position: "top-right",
@@ -95,12 +96,14 @@ export default function ModalAddFieldInscription (props) {
         }
     }
     
+    let indexCountry=(data.seccion!==null && data.seccion!=="")?data.seccion:-1;
+    
     return (
         <ModalBasic
             show={show}
             setShow={setShow}
             handlePrimaryAction={handleEnviar}
-            title="Agregar campo Ficha de Inscripción"
+            title="Editar campo Ficha de Inscripción"
             primaryAction="Guardar"
             secundaryAction="Cancelar"
         >
@@ -113,6 +116,7 @@ export default function ModalAddFieldInscription (props) {
                         <Form.Control placeholder={"Ingrese el nombre del camp"}
                         onChange={handleChange}
                         disabled={saved}
+                        value={data.nameField}
                         name="nameField"/>
                     </div>
                 </div>
@@ -121,7 +125,7 @@ export default function ModalAddFieldInscription (props) {
                         Seccion: 
                     </div>
                     <div className="col-sm-8 subtitles">
-                    <Form.Select className="select" disabled={saved} name="seccion"  onChange={handleChangeSection} >
+                    <Form.Select className="select" defaultValue={indexCountry} disabled={saved} name="seccion"  onChange={handleChangeSection} >
                         <option value="Datos Generales">Datos Generales</option>
                         <option value="Sobre la empresa">Sobre la empresa</option>
                         <option value="Sobre el puesto">Sobre el puesto</option>

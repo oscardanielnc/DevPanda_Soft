@@ -16,16 +16,16 @@ const dataDummy = [
     {
         idField: 1,
         nameField: "Nombre",
-        seccion: "aaaa",
+        seccion: "Sobre la PSP",
         fijo: true,
         obligatorio: ""
     },
     {
         idField: 2,
         nameField: "Apellido",
-        seccion: "bbbb",
+        seccion: "Sobre la empresa",
         fijo: false,
-        obligatorio: ""
+        obligatorio: "obligatorio"
     }
 ]
 
@@ -44,7 +44,9 @@ export default function ConfigInscription () {
     //const [fields,setFields]=useState([]);
     const [newDataStudent, setNewDataStudent] = useState({
         nameField: "",
-        seccion: ""
+        seccion: "",
+        fijo: false,
+        obligatorio: true
     });
     const [loading, setLoading] = useState(false);
     let typeUser=user.tipoPersona;
