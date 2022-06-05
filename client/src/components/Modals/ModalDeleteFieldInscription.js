@@ -78,7 +78,7 @@ export default function ModalDeleteFieldInscription (props) {
             <Modal.Body>
                 <div className="row rows" style={{"paddingTop":"10px !important"}}>
                     <div className="col-sm-4 subtitles">
-                        <img className="image" alt="Imagen" src={successImg}></img>
+                        <img className="imageWarning" alt="Imagen" src={successImg}></img>
                     </div>
                     <div className="col-sm-8 subtitles textDelete">
                         <div>¿Está seguro de querer eliminar el campo?</div>

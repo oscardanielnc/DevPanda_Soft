@@ -543,10 +543,10 @@ function getListOfLineBusiness(req, res){
 async function getAllFields(req, res){
 
     const connection = mysql.createConnection(MYSQL_CREDENTIALS);
-
     const fidEspecialidad = req.params.idEspecialidad
     const fidProceso = req.params.idProceso;
 
+    console.log(fidEspecialidad," y ",fidProceso);
     sqlQuery = `SELECT CF.idCampo as idField,  CF.nombreCampo as nameField, CF.seccion, CF.flag as activo, CP.flag as tipo, false as fijo
                 FROM CampoFichaInscripcion CF, CampoFichaInscripcionProceso CP
                 WHERE CF.idCampo = CP.fidCampoFicha
@@ -558,7 +558,8 @@ async function getAllFields(req, res){
         
     }catch(e){
         res.status(505).send({ 
-            message: "Error en el servidor " + e.message
+            message: "Error en el servidor " + e.message,
+            success:false
         })
     }
     let arregloFixedFields = [
@@ -750,8 +751,12 @@ async function getAllFields(req, res){
     
     arregloFixedFields = arregloFixedFields.concat(resultVariableFields);
 
-
-    res.status(200).send(arregloFixedFields);
+    console.log("El arregloFixedFields es: ",arregloFixedFields);
+    res.status(200).send(
+        {
+            arregloFixedFields,
+            success: true
+        });
     connection.end();
 }
 
@@ -852,7 +857,6 @@ module.exports = {
     getListOfCountry,
     getAllFields,
     insertField,
-    updateField
 
 }
 

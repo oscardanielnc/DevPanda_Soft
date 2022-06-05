@@ -196,3 +196,39 @@ export function getLineBusinessList(){
             }
         })
 }
+
+
+export function getAllFieldsInscriptionForm(idEspecialidad,idProceso) {
+    const url = `${BASE_PATH}/${API_VERSION}/fieldsList/${idEspecialidad}/${idProceso}`;
+    const params = {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            //Authorization: PANDA_KEY
+        }
+    }
+
+    return fetch(url, params)
+        .then(response => {
+            return response.json()
+        })
+        .then(infoFicha => {
+            console.log("El infoFicha es: ",infoFicha);
+            if(infoFicha.success) {
+                return {
+                    infoFicha,
+                    success: true
+                }
+            }
+            return {
+                errMsg: infoFicha.message,
+                success: false
+            }
+        })
+        .catch(errMsg => {
+            return {
+                errMsg,
+                success: false
+            }
+        })
+}

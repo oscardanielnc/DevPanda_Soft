@@ -14,6 +14,7 @@ import ModalBasic from "./ModalBasic";
 import './ModalNoAgreementReview.scss';
 import { getstudentInscriptionForm } from "../../api/registrationForm";
 const dataDummy = {
+    "idStudent":"",
     "approvalState": "",
     "nameStudent": "",
     "codeStudent":""
@@ -122,10 +123,10 @@ export default function ModalNoAgreementReview (props) {
                     {texto2}
                 </div>
                 <div className="row" style={{textAlign: "left"}}>
-                    <div className="col-sm-2 subtitles">
+                    <div className="col-sm-2 subtitlesDeleteFieldDeleteField">
                         <div className="texts">Estado:</div>
                     </div>
-                    <div className="col-sm-10 subtitles">
+                    <div className="col-sm-10 subtitlesDeleteField">
                         <Form>
                             <div key={`inline-radio`} className="mb-3">
                             <Form.Check
