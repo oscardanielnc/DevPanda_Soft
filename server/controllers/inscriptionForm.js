@@ -3,9 +3,9 @@ const { now } = require('moment');
 const mysql = require('mysql');
 const { DATE } = require('mysql/lib/protocol/constants/types');
 const {MYSQL_CREDENTIALS, API_VERSION, PORT_SERVER, IP_SERVER} = require("../config");
+const {sqlAsync} = require("../utils/async.js")
 
-
-//Te permite actualizar los campos de la ficha de inscripcion
+//Te permite actualizar los campos de la ficha de inscripcion de un alumno
 async function updateFieldsInscriptionForm(req, res){
     const connection = mysql.createConnection(MYSQL_CREDENTIALS);
 
@@ -111,7 +111,7 @@ async function updateFieldsInscriptionForm(req, res){
     connection.end();
 }
 
-//Te permite actualizar los datos de la ficha de inscripcion
+//Te permite actualizar los datos de la ficha de inscripcion de un alumno
 async function updateInscriptionForm(req, res){
     const connection = mysql.createConnection(MYSQL_CREDENTIALS);
     const idFicha = req.body.idFicha;
@@ -539,6 +539,300 @@ function getListOfLineBusiness(req, res){
     connection.end();
 }
 
+//Obtener todos los campos de un proceso y una especialidad
+async function getAllFields(req, res){
+
+    const connection = mysql.createConnection(MYSQL_CREDENTIALS);
+
+    const fidEspecialidad = req.params.idEspecialidad
+    const fidProceso = req.params.idProceso;
+
+    sqlQuery = `SELECT CF.idCampo as idField,  CF.nombreCampo as nameField, CF.seccion, CF.flag as activo, CP.flag as tipo, false as fijo
+                FROM CampoFichaInscripcion CF, CampoFichaInscripcionProceso CP
+                WHERE CF.idCampo = CP.fidCampoFicha
+                AND CP.fidProceso = ${fidProceso}
+                AND CF.fidEspecialidad = ${ fidEspecialidad}`;
+
+    try{
+        resultVariableFields= await sqlAsync(sqlQuery, connection);
+        
+    }catch(e){
+        res.status(505).send({ 
+            message: "Error en el servidor " + e.message
+        })
+    }
+    let arregloFixedFields = [
+        {
+            idField: 0,
+            nameField: "Nombres",
+            seccion: "Datos Generales",
+            fijo: true,
+            tipo: "obligatorio",
+            activo: "activo"
+        },
+        {
+            idField: 0,
+            nameField: "Apellidos",
+            seccion: "Datos Generales",
+            fijo: true,
+            tipo: "obligatorio",
+            activo: "activo"
+        },
+        {
+            idField: 0,
+            nameField: "Código PUCP",
+            seccion: "Datos Generales",
+            fijo: true,
+            tipo: "obligatorio",
+            activo: "activo"
+        },
+        {
+            idField: 0,
+            nameField: "Correo PUCP",
+            seccion: "Datos Generales",
+            fijo: true,
+            tipo: "obligatorio",
+            activo: "activo"
+        },
+        {
+            idField: 0,
+            nameField: "Teléfono",
+            seccion: "Datos Generales",
+            fijo: true,
+            tipo: "obligatorio",
+            activo: "activo"
+        },
+        {
+            idField: 0,
+            nameField: "Correo Personal",
+            seccion: "Datos Generales",
+            fijo: true,
+            tipo: "opcional",
+            activo: "activo"
+        },
+        {
+            idField: 0,
+            nameField: "Tipo de empresa",
+            seccion: "Sobre la empresa",
+            fijo: true,
+            tipo: "obligatorio",
+            activo: "activo"
+        },
+        {
+            idField: 0,
+            nameField: "RUC",
+            seccion: "Sobre la empresa",
+            fijo: true,
+            tipo: "opcional",
+            activo: "activo"
+        },
+        {
+            idField: 0,
+            nameField: "Nombre de Empresa",
+            seccion: "Sobre la empresa",
+            fijo: true,
+            tipo: "obligatorio",
+            activo: "activo"
+        },
+        {
+            idField: 0,
+            nameField: "País de la Empresa",
+            seccion: "Sobre la empresa",
+            fijo: true,
+            tipo: "obligatorio",
+            activo: "activo"
+        },
+        {
+            idField: 0,
+            nameField: "Giro de la empresa",
+            seccion: "Sobre la empresa",
+            fijo: true,
+            tipo: "obligatorio",
+            activo: "activo"
+        },
+        {
+            idField: 0,
+            nameField: "Dirección de la Empresa",
+            seccion: "Sobre la empresa",
+            fijo: true,
+            tipo: "obligatorio",
+            activo: "activo"
+        },
+        {
+            idField: 0,
+            nameField: "Nombre del área",
+            seccion: "Sobre el puesto",
+            fijo: true,
+            tipo: "obligatorio",
+            activo: "activo"
+        },
+        {
+            idField: 0,
+            nameField: "Puesto",
+            seccion: "Sobre el puesto",
+            fijo: true,
+            tipo: "obligatorio",
+            activo: "activo"
+        },
+        {
+            idField: 0,
+            nameField: "Funciones Actividades",
+            seccion: "Sobre el puesto",
+            fijo: true,
+            tipo: "obligatorio",
+            activo: "activo"
+        },
+        {
+            idField: 0,
+            nameField: "Fecha de inicio",
+            seccion: "Sobre la PSP",
+            fijo: true,
+            tipo: "obligatorio",
+            activo: "activo"
+        },
+        {
+            idField: 0,
+            nameField: "Fecha de fin",
+            seccion: "Sobre la PSP",
+            fijo: true,
+            tipo: "obligatorio",
+            activo: "activo"
+        },
+        {
+            idField: 0,
+            nameField: "Horas diarias promedio",
+            seccion: "Sobre la PSP",
+            fijo: true,
+            tipo: "obligatorio",
+            activo: "activo"
+        },
+        {
+            idField: 0,
+            nameField: "Horas semanales promedio",
+            seccion: "Sobre la PSP",
+            fijo: true,
+            tipo: "obligatorio",
+            activo: "activo"
+        },
+        {
+            idField: 0,
+            nameField: "Nombre del Responsable/Tutor",
+            seccion: "Sobre el jefe",
+            fijo: true,
+            tipo: "obligatorio",
+            activo: "activo"
+        },
+        {
+            idField: 0,
+            nameField: "Área o Departamento",
+            seccion: "Sobre la PSP",
+            fijo: true,
+            tipo: "obligatorio",
+            activo: "activo"
+        },
+        {
+            idField: 0,
+            nameField: "Correo",
+            seccion: "Sobre la PSP",
+            fijo: true,
+            tipo: "obligatorio",
+            activo: "activo"
+        },
+        {
+            idField: 0,
+            nameField: "Teléfono",
+            seccion: "Sobre la PSP",
+            fijo: true,
+            tipo: "obligatorio",
+            activo: "activo"
+        }
+    ];
+    
+    arregloFixedFields = arregloFixedFields.concat(resultVariableFields);
+
+
+    res.status(200).send(arregloFixedFields);
+    connection.end();
+}
+
+async function insertField(req, res){
+    const connection = mysql.createConnection(MYSQL_CREDENTIALS);
+
+    const idEspecialidad = req.body.idEspecialidad;
+    const nombreCampo = req.body.nombreCampo;
+    const seccion = req.body.seccion;
+    const idProceso = req.body.idProceso;
+    const obligatorio = req.body.obligatorio;
+    let idCampo;
+    let sqlQuery = `insert into CampoFichaInscripcion(fidEspecialidad, nombreCampo, seccion, flag) 
+                    values (${idEspecialidad}, "${nombreCampo}", "${seccion}", "activo")`;
+
+    try{
+        let resultField= await sqlAsync(sqlQuery, connection);
+        if(!resultField.insertId){
+            res.status(404).send({ 
+                success: false,
+                message: "No se pudo insertar el campo correctamente"
+            })
+            return 
+        }
+        idCampo= resultField.insertId;
+    }catch(e){
+        res.status(505).send({ 
+            message: "Error en el servidor " + e.message
+        })
+    }
+
+    
+    sqlQuery = `insert into CampoFichaInscripcionProceso(fidProceso, fidCampoFicha, flag) 
+                values (${idProceso},${idCampo}, "${obligatorio}");`;
+
+    try{
+        let resultField= await sqlAsync(sqlQuery, connection);
+        if(!resultField.insertId){
+            res.status(404).send({ 
+                success: false,
+                message: "No se pudo insertar el campo correctamente"
+            })
+            return 
+        }
+    }catch(e){
+        res.status(505).send({ 
+            message: "Error en el servidor " + e.message
+        })
+    }
+
+    res.status(200).send({
+        success: true
+    });
+    connection.end();
+}
+
+// function updateField(req, res){
+//     const connection = mysql.createConnection(MYSQL_CREDENTIALS);
+
+//     const idEspecialidad = req.body.idEspecialidad;
+//     const nombreCampo = req.body.nombreCampo;
+//     const seccion = req.body.seccion;
+//     const idProceso = req.body.idProceso;
+//     const obligatorio = req.body.obligatorio;
+//     const idCampo = req.body.idCampo;
+
+//     let sqlQuery = `update CampoFichaInscripcion 
+//                     set nombreCampo= "${nombreCampo}", seccion = "${seccion}"
+//                     where idCampo = ${idCampo}`;
+
+    
+
+
+//     res.status(200).send({
+//         success: true
+//     });
+//     connection.end();
+// }
+
+
+
 module.exports = {
     // selectSubmittedInscriptionForm,
     // selectFieldsInscriptionFormSpecialty,
@@ -555,7 +849,11 @@ module.exports = {
     updateFieldsInscriptionForm,
     getListStudentsInscriptionForm,
     getListOfLineBusiness,
-    getListOfCountry
+    getListOfCountry,
+    getAllFields,
+    insertField,
+    updateField
+
 }
 
 

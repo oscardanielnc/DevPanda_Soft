@@ -25,6 +25,9 @@ api.get("/lineBusinessList",inscriptionFormController.getListOfLineBusiness);
 api.put("/studentDataInscriptionForm",inscriptionFormController.updateInscriptionForm);
 api.put("/studentFieldsInscriptionForm",inscriptionFormController.updateFieldsInscriptionForm);
 
+api.get("/fieldsList/:idEspecialidad/:idProceso", inscriptionFormController.getAllFields);
+
+api.post("/field", inscriptionFormController.insertField);
 
 
 module.exports = api;
