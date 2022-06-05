@@ -14,6 +14,7 @@
     "jwt-simple": "^0.5.6",
     "moment": "^2.29.3",
     "mysql": "^2.18.1",
+    "nodemailer": "^6.7.5",
     "nodemon": "^2.0.15"
   },
   "scripts": {
