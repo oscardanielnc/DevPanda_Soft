@@ -332,6 +332,7 @@ async function getstudentInscriptionForm(req, res){
                     and A.fidProceso = P.idProceso
                     AND CF.idCampo = CP.fidCampoFicha
                     AND CF.flag = "activo"
+                    AND CP.flagActivo = "activo"
                     order by CF.seccion`;
 
         try{
@@ -422,6 +423,7 @@ async function getstudentInscriptionForm(req, res){
                     WHERE CF.idCampo = CP.fidCampoFicha
                     AND CP.idCampoProceso = CL.fidCampoProceso
                     AND CF.flag = "activo"
+                    AND CP.flagActivo = "activo"
                     AND CL.fidFicha = E.idFicha
                     AND E.fidAlumnoProceso = ${fidAlumnoProceso}
                     AND E.fidAlumnoProceso = A.idAlumnoProceso
@@ -546,8 +548,7 @@ async function getAllFields(req, res){
     const fidEspecialidad = req.params.idEspecialidad
     const fidProceso = req.params.idProceso;
 
-    console.log(fidEspecialidad," y ",fidProceso);
-    sqlQuery = `SELECT CF.idCampo as idField,  CF.nombreCampo as nameField, CF.seccion, CF.flag as activo, CP.flag as tipo, false as fijo
+    sqlQuery = `SELECT CF.idCampo as idField,  CF.nombreCampo as nameField, CF.seccion, CP.flagActivo as activo, CP.flag as tipo, false as fijo
                 FROM CampoFichaInscripcion CF, CampoFichaInscripcionProceso CP
                 WHERE CF.idCampo = CP.fidCampoFicha
                 AND CP.fidProceso = ${fidProceso}
@@ -813,30 +814,108 @@ async function insertField(req, res){
     connection.end();
 }
 
-// function updateField(req, res){
-//     const connection = mysql.createConnection(MYSQL_CREDENTIALS);
+async function updateField(req, res){
+    const connection = mysql.createConnection(MYSQL_CREDENTIALS);
 
-//     const idEspecialidad = req.body.idEspecialidad;
-//     const nombreCampo = req.body.nombreCampo;
-//     const seccion = req.body.seccion;
-//     const idProceso = req.body.idProceso;
-//     const obligatorio = req.body.obligatorio;
-//     const idCampo = req.body.idCampo;
+    const idEspecialidad = req.body.idEspecialidad;
+    const nombreCampo = req.body.nombreCampo;
+    const seccion = req.body.seccion;
+    const idProceso = req.body.idProceso;
+    const obligatorio = req.body.obligatorio;
+    const idCampo = req.body.idCampo;
 
-//     let sqlQuery = `update CampoFichaInscripcion 
-//                     set nombreCampo= "${nombreCampo}", seccion = "${seccion}"
-//                     where idCampo = ${idCampo}`;
+    let sqlQuery = `UPDATE CampoFichaInscripcion 
+                    SET nombreCampo= "${nombreCampo}", seccion = "${seccion}"
+                    WHERE idCampo = ${idCampo}`;
 
-    
+    try{
+        let result= await sqlAsync(sqlQuery, connection);
+            if(!result.affectedRows){
+                res.status(404).send({
+                    success: false,
+                    message: "No se actualizó ninguna fila"
+                })
+            }
+            if(result.affectedRows>1){
+                res.status(404).send({
+                    success: false,
+                    message: "Se actualizó más de una columna a la vez"
+                })
+            }  
+    }catch(e){
+        res.status(505).send({ 
+            message: "Error en el servidor " + e.message
+        })
+    }
 
+    sqlQuery = `UPDATE CampoFichaInscripcionProceso 
+                SET flag = "${obligatorio}"
+                WHERE fidCampoFicha = ${idCampo}
+                AND fidProceso = ${idProceso}`;
 
-//     res.status(200).send({
-//         success: true
-//     });
-//     connection.end();
-// }
+    try{
+        result= await sqlAsync(sqlQuery, connection);
+            if(!result.affectedRows){
+                res.status(404).send({
+                    success: false,
+                    message: "No se actualizó ninguna fila"
+                })
+            }
+            if(result.affectedRows>1){
+                res.status(404).send({
+                    success: false,
+                    message: "Se actualizó más de una columna a la vez"
+                })
+            }  
+    }catch(e){
+        res.status(505).send({ 
+            message: "Error en el servidor " + e.message
+        })
+    }
 
+    res.status(200).send({
+        success: true,
+        message: "Valores actualizados correctamente"
 
+    });
+    connection.end();
+}
+
+async function deleteField(req, res){
+    const connection = mysql.createConnection(MYSQL_CREDENTIALS);
+    const idCampo = req.body.idCampo;
+
+    let sqlQuery = `UPDATE CampoFichaInscripcionProceso 
+                    SET flagActivo = "desactivo"
+                    WHERE fidCampoFicha = ${idCampo}`;
+
+    try{
+        let result= await sqlAsync(sqlQuery, connection);
+            if(!result.affectedRows){
+                res.status(404).send({
+                    success: false,
+                    message: "No se actualizó ninguna fila"
+                })
+            }
+            if(result.affectedRows>1){
+                res.status(404).send({
+                    success: false,
+                    message: "Se actualizó más de una columna a la vez"
+                })
+            }  
+    }catch(e){
+        res.status(505).send({ 
+            message: "Error en el servidor " + e.message
+        })
+    }
+
+    res.status(200).send({
+        success: true,
+        message: "Valores actualizados correctamente"
+
+    });
+    connection.end();
+}
 
 module.exports = {
     // selectSubmittedInscriptionForm,
@@ -857,6 +936,8 @@ module.exports = {
     getListOfCountry,
     getAllFields,
     insertField,
+    updateField,
+    deleteField
 
 }
 
