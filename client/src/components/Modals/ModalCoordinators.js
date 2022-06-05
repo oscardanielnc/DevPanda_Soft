@@ -59,6 +59,7 @@ export default function ModalCoordinators (props) {
                     personalType: 'E',
                     active: newData.activo
                 }
+                console.log(personal)
                 const result = await createAdministrativeApi(personal);
                 if(result.success) {
                     const coord = {
@@ -98,7 +99,7 @@ export default function ModalCoordinators (props) {
         <ModalBasic show={show}
             setShow={setShow}
             handlePrimaryAction={handleClick}
-            title={`Datos del coordinador (${mode===update? "Editar": "Agregar"})`}
+            title={`Datos del coordinador (${mode==="update"? "Editar": "Agregar"})`}
             primaryAction="Guardar"
             secundaryAction="Cancelar"
         >

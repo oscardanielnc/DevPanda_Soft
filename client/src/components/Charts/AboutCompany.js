@@ -4,19 +4,20 @@ import {numberValidation,maxLengthValidation,minLengthValidation} from "../../ut
 import './AboutCompany.scss';
 
 
-export default function AboutCompany ({data, setData, notgrabado,countries,lineBusiness, correctoFormato,setCorrectoFormato}) {
+export default function AboutCompany ({data, setData, notgrabado,countries,lineBusiness,validacionesCompany}) {
     const {aboutCompany} = data;
     //console.log("Countries es: ",countries);
     //console.log("Lineas de negocio son: ",lineBusiness);
     const handleChangeText = (e) => {
         if(e.target.name==="ruc"){
+            console.log("El valor es: ",e.target.value);
             if(numberValidation(e.target) && maxLengthValidation(e.target,11)){
                 if(minLengthValidation(e.target,9)){
                     e.target.classList.add("success");
-                    setCorrectoFormato(true);
+                    validacionesCompany[0]=true;
                 }else{
                     e.target.classList.add("error");
-                    setCorrectoFormato(false);
+                    validacionesCompany[0]=false;
                 }
                 setData({
                     ...data,
@@ -30,10 +31,10 @@ export default function AboutCompany ({data, setData, notgrabado,countries,lineB
                     e.target.value=data.aboutCompany.ruc;
                     if(numberValidation(e.target) && maxLengthValidation(e.target,11)){
                         e.target.classList.add("success");
-                        setCorrectoFormato(true);
+                        validacionesCompany[0]=true;
                     }else{
                         e.target.classList.add("error");
-                        setCorrectoFormato(false);
+                        validacionesCompany[0]=false;
                     }
                 }else{
                     setData({
@@ -69,6 +70,10 @@ export default function AboutCompany ({data, setData, notgrabado,countries,lineB
                     companyAddress:data.aboutCompany.companyAddress
                 }
             }
+            const boxInput= document.getElementById("idFormCompanyRUC");
+            console.log("El box input es: ",boxInput);
+            boxInput.classList.remove("success");
+            boxInput.classList.remove("error");
             setData(newData);
         }else{
             console.log("Cambiando a nacional");
@@ -180,6 +185,7 @@ export default function AboutCompany ({data, setData, notgrabado,countries,lineB
                 </div>
                 <div className="col-sm-7 subtitles">
                     <Form.Control placeholder="Ingrese RUC de la empresa" 
+                        id="idFormCompanyRUC"
                         onChange={handleChangeText}
                         disabled = {!aboutCompany.isNational || notgrabado}
                         value={aboutCompany.ruc}

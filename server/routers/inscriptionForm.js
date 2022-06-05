@@ -25,6 +25,11 @@ api.get("/lineBusinessList",inscriptionFormController.getListOfLineBusiness);
 api.put("/studentDataInscriptionForm",inscriptionFormController.updateInscriptionForm);
 api.put("/studentFieldsInscriptionForm",inscriptionFormController.updateFieldsInscriptionForm);
 
+api.get("/fieldsList/:idEspecialidad/:idProceso", inscriptionFormController.getAllFields);
 
+api.post("/field", inscriptionFormController.insertField);
+api.put("/field", inscriptionFormController.updateField);
+
+api.put("/desactivateField", inscriptionFormController.deleteField);
 
 module.exports = api;

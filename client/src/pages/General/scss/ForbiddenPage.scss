@@ -19,7 +19,9 @@
         }
     }
     &__img {
-        width: 25%;
-        margin-left: 5%;
+        position: relative;
+    }
+    &__travieso {
+        color: black;
     }
 }

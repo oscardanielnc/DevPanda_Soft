@@ -131,13 +131,16 @@ const lineBussinessDummy=[
 
 ]
 
-const arrayCadena = window.location.pathname.split("/");
 //const idAlumno=parseInt(arrayCadena[2]);
 const maxFiles = 4;
+const validacionesGenenal=[false, false];
+const validacionesCompany=[false];
+const validacionesPSP=[false, false];
+const validacionesBoss=[false, false];
 
 export default function StudentRegistrationForm () {
     const {user} = useAuth();
-    const idAlumno= useParams().idStudent;
+    const idAlumno= user.idPersona;
     const [data, setData] = useState({});
     //const [data, setData] = useState(dataDummy);
     const [countries,setCountries]=useState({});
@@ -148,13 +151,7 @@ export default function StudentRegistrationForm () {
     const [docs, setDocs] = useState([]);
     const [studentDocs, setStudentDocs] = useState([]);
     const [loading, setLoading] = useState(false);
-    const [correctoFormato,setCorrectoFormato]=useState(true);
     let typeUser=user.tipoPersona;
-    if(typeUser==="p"){
-        typeUser=user.tipoPersonal;
-    }else{
-
-    }
     //console.log("El arrayCadena es: ",window.location.pathname);
     //debugger
     if(isNaN(idAlumno)) window.location.reload();
@@ -173,31 +170,28 @@ export default function StudentRegistrationForm () {
            
             if(result.success) {
                 const resData = result.infoFicha.infoFicha;
-                if(typeUser==="e"){
-                    const newData = {
-                        idAlumno: resData.idAlumno,
-                        idAlumnoProceso: resData.idAlumnoProceso,
-                        idFicha: resData.idFicha,
-                        documentsState: resData.documentsState,
-                        approvalState: resData.approvalState,
-                        generalData: {
-                            name: user.nombres,
-                            lastname:user.apellidos,
-                            code:user.codigo,
-                            email:user.correo,
-                            cellphone: resData.generalData.cellphone,
-                            personalEmail: resData.generalData.personalEmail
-                        },
-                        aboutCompany: resData.aboutCompany,
-                        aboutJob:resData.aboutJob,
-                        aboutPSP: resData.aboutPSP,
-                        aboutBoss:resData.aboutBoss,
-                        calification:resData.calification,
-                        others: resData.others,
-                    }
-                    setData(newData)
-                } else
-                    setData(resData);
+                const newData = {
+                    idAlumno: resData.idAlumno,
+                    idAlumnoProceso: resData.idAlumnoProceso,
+                    idFicha: resData.idFicha,
+                    documentsState: resData.documentsState,
+                    approvalState: resData.approvalState,
+                    generalData: {
+                        name: user.nombres,
+                        lastname:user.apellidos,
+                        code:user.codigo,
+                        email:user.correo,
+                        cellphone: resData.generalData.cellphone,
+                        personalEmail: resData.generalData.personalEmail
+                    },
+                    aboutCompany: resData.aboutCompany,
+                    aboutJob:resData.aboutJob,
+                    aboutPSP: resData.aboutPSP,
+                    aboutBoss:resData.aboutBoss,
+                    calification:resData.calification,
+                    others: resData.others,
+                }
+                setData(newData)  
             }
             
             if(resultado.success){
@@ -218,7 +212,7 @@ export default function StudentRegistrationForm () {
     //sacamos los documentos subidos por el encargado
     useEffect(() => {
         const fetchData = async () => {
-            const result = await getAllDocsApi(`1-${user.fidEspecialidad}-RFOR`, 0);
+            const result = await getAllDocsApi(`${user.fidProceso}-FINS`, 0);
             if(result.success) {
                 setDocs(result.docs)
             }
@@ -228,7 +222,7 @@ export default function StudentRegistrationForm () {
     //sacamos los documentos subidor por el alumno
     useEffect(() => {
         const fetchData = async () => {
-            const result = await getAllDocsApi(`1-${user.fidEspecialidad}-RFOR-${idAlumno}`, 1);
+            const result = await getAllDocsApi(`${user.fidProceso}-FINS-${idAlumno}`, 1);
             if(result.success) {
                 setStudentDocs(result.docs)
             }
@@ -238,7 +232,7 @@ export default function StudentRegistrationForm () {
 
     // if(!data.generalData) return null
     function fieldsComplete(){
-        const resultadoGeneral= data.generalData.cellphone!=="" && data.generalData.cellphone!=null
+        let resultadoGeneral= data.generalData.cellphone!=="" && data.generalData.cellphone!=null;
         let resultadoCompany=true;
         console.log("El resultadoGeneral es: ",resultadoGeneral);
         if(data.aboutCompany.isNational){
@@ -280,7 +274,7 @@ export default function StudentRegistrationForm () {
     }
     const deliver = async () => {
         if(fileList.length <= maxFiles && fileList.length!==0) {
-            const response = await uploadDocsApi(fileList, `1-${user.fidEspecialidad}-RFOR-${idAlumno}`, 1);
+            const response = await uploadDocsApi(fileList, `${user.fidProceso}-FINS-${idAlumno}`, 1);
             if(response.success) {
                 toast.success(response.msg, {
                     position: "top-right",
@@ -305,20 +299,30 @@ export default function StudentRegistrationForm () {
            }
         }
     }
-    function casoEspecial(){
-        if(correctoFormato===false && data.generalData.personalEmail===""){
-            console.log("Antes de setear: ",correctoFormato);
-            setCorrectoFormato(true);
-            console.log("Luego de setear: ",correctoFormato);
+
+    function validation(){
+        let resultadoGeneral= validacionesGenenal[0];
+        if(data.generalData.personalEmail!=="" && data.generalData.personalEmail!=null){
+            resultadoGeneral=resultadoGeneral&&validacionesGenenal[1];
         }
-        return true;
+        console.log("En validation el resultadoGeneral es: ",resultadoGeneral);
+        let resultadoCompany=true;
+        if(data.aboutCompany.isNational){
+            resultadoCompany= resultadoCompany&&validacionesCompany[0];
+        }
+        console.log("En validation el resultadoCompany es: ",resultadoCompany);
+        let resultadoPSP= validacionesPSP[0] && validacionesPSP[1];
+        console.log("En validation el resultadoPSP es: ",resultadoPSP);
+        let resultadoBoss= validacionesBoss[0] && validacionesBoss[1];
+        console.log("En validation el resultadoBoss es: ",resultadoBoss);
+        const resultado=resultadoGeneral&&resultadoCompany&&resultadoPSP&&resultadoBoss;
+        return resultado;
     }
     const insert = async e => {
         e.preventDefault();
         if(fieldsComplete()){
-            console.log("En el insert el correctoFormato es: ",correctoFormato," y el email es: ",data.generalData.personalEmail);
-            const responseFunction=await casoEspecial();
-            if(correctoFormato){
+            let formattCorrect=validation();
+            if(formattCorrect){
                 const newData = {
                     ...data,
                     documentsState: "Entregado",
@@ -364,9 +368,10 @@ export default function StudentRegistrationForm () {
                     });
                     deliver();
                     setData(newData);
+                    window.scrollTo(0, 0);
                 }
             }else{
-                toast.error("No está cumpliendo con los formatos establecidos", {
+                toast.warn("No está cumpliendo con los formatos establecidos", {
                     position: "top-right",
                     autoClose: 5000,
                     hideProgressBar: false,
@@ -378,7 +383,7 @@ export default function StudentRegistrationForm () {
             }
             
         }else{
-            toast.error("Faltan rellenar campo(s) obligatorio(s) de la ficha", {
+            toast.warn("Faltan rellenar campo(s) obligatorio(s) de la ficha", {
                 position: "top-right",
                 autoClose: 5000,
                 hideProgressBar: false,
@@ -392,14 +397,11 @@ export default function StudentRegistrationForm () {
     }
     let isSaved=null;
     let canUpload=null;
-    if(typeUser==="e"){
-        isSaved=((data.documentsState==="Sin entregar")||
-        (data.documentsState==="Entregado"&&data.approvalState==="Observado"))? false: true;
-        canUpload=isSaved===false?true:false;
-    }else{
-        isSaved=true;
-        canUpload=true;
-    }
+    
+    isSaved=((data.documentsState==="Sin entregar")||
+    (data.documentsState==="Entregado"&&data.approvalState==="Observado"))? false: true;
+    canUpload=isSaved===false?true:false;
+    
     console.log("La data es: ",data);
     const typeDocumentState = (data.documentsState==="Sin entregar")? "fileEmpty": "success";
     let typeApprovalState = "";
@@ -422,46 +424,13 @@ export default function StudentRegistrationForm () {
         })
     }
 
-    const insertCoordinator = async e => {
-        e.preventDefault();
-        let response=null;
-        const newData = {
-            ...data,
-            // dateModified:new Date()
-        }
-        response = await registrationUpdateApiStudent(newData);
-        if(!response.success){
-            toast.error(response.msg, {
-                position: "top-right",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-            });
-        }else{
-            toast.success(response.msg, {
-                position: "top-right",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-            });
-            deliver();
-            setData(newData);
-            isSaved=true;
-        } 
-    }
     const goBack = e => {
         window.history.back();
     }
     if(loading || !isNotEmptyObj(data)) return <PandaLoaderPage type={typeUser}/>
 
     return (
-        typeUser==="e"? <LayoutBasic>
+        <LayoutBasic>
             <div className="container principal" style={{"padding":"1px"}}>
                 <div className="row rows" style={{textAlign: "left"}}>
                     <h1>Ficha de Inscripción</h1>
@@ -486,19 +455,19 @@ export default function StudentRegistrationForm () {
                     <p style={{marginBottom:"0px"}}>Los campos que son obligatorios van a estar marcados con un *</p>
                 </div>
                 <div className="row rows">
-                    <GeneralData data={data} setData={setData} imStudent={isSaved} isSaved={isSaved} correctoFormato={correctoFormato} setCorrectoFormato={setCorrectoFormato}/>   
+                    <GeneralData data={data} setData={setData} imStudent={isSaved} isSaved={isSaved} validacionesGenenal={validacionesGenenal}/>   
                 </div>
                 <div className="row rows">
-                    <AboutCompany data={data} setData={setData} notgrabado={isSaved} countries={countries} lineBusiness={lineBusiness} correctoFormato={correctoFormato} setCorrectoFormato={setCorrectoFormato}/>
+                    <AboutCompany data={data} setData={setData} notgrabado={isSaved} countries={countries} lineBusiness={lineBusiness} validacionesCompany={validacionesCompany}/>
                 </div>
                 <div className="row rows">
-                    <AboutJob data={data} setData={setData} notgrabado={isSaved} correctoFormato={correctoFormato} setCorrectoFormato={setCorrectoFormato}/>
+                    <AboutJob data={data} setData={setData} notgrabado={isSaved}/>
                 </div>
                 <div className="row rows">
-                    <AboutDurationPSP data={data} setData={setData} notgrabado={isSaved} correctoFormato={correctoFormato} setCorrectoFormato={setCorrectoFormato}/>
+                    <AboutDurationPSP data={data} setData={setData} notgrabado={isSaved} validacionesPSP={validacionesPSP}/>
                 </div>
                 <div className="row rows">
-                    <DirectBoss data={data} setData={setData} notgrabado={isSaved} correctoFormato={correctoFormato} setCorrectoFormato={setCorrectoFormato}/>
+                    <DirectBoss data={data} setData={setData} notgrabado={isSaved} validacionesBoss={validacionesBoss}/>
                 </div>
                 <div className="row rows">
                     <div className="container Comments">
@@ -531,84 +500,7 @@ export default function StudentRegistrationForm () {
                     
                 </div>  
             </div>
-        </LayoutBasic>: <LayoutAdministrative>
-            <div className="container principal" style={{"padding":"1px"}}>
-                <div className="row rows" style={{textAlign: "left"}}>
-                    <h1>Ficha de Inscripción</h1>
-                </div>
-                <div className="row rows" style={{textAlign: "left"}}>
-                    <p>
-                    Aquí deberá de rellenar la información solicitada más abajo para poder continuar con el proceso. Una vez que la complete, esta será revisada para su aprobación.
-                    </p>
-                    <p>
-                    A continuación se presenta la rúbrica para la ficha de inscripción:
-                    </p>
-                    <ShowFiles docs={docs} />
-                </div>
-                <div className="row rows">
-                    <StateViewer states={[
-                            StatesViewType[typeDocumentState]("Documentos", data.documentsState),
-                    StatesViewType[typeApprovalState]("Aprobación", data.approvalState)]}/>
-                </div>
-                <div className="row rows" style={{textAlign: "left",marginBottom:"0px"}}>
-                    <h2 style={{marginBottom:"0px"}}>Datos por rellenar</h2>
-                </div>
-                <div className="row rows">
-                    <GeneralData data={data} setData={setData} imStudent={isSaved} isSaved={isSaved} correctoFormato={correctoFormato} setCorrectoFormato={setCorrectoFormato}/>   
-                </div>
-                <div className="row rows">
-                    <AboutCompany data={data} setData={setData} notgrabado={isSaved} countries={countries} lineBusiness={lineBusiness} correctoFormato={correctoFormato} setCorrectoFormato={setCorrectoFormato}/>
-                </div>
-                <div className="row rows">
-                    <AboutJob data={data} setData={setData} notgrabado={isSaved} correctoFormato={correctoFormato} setCorrectoFormato={setCorrectoFormato}/>
-                </div>
-                <div className="row rows">
-                    <AboutDurationPSP data={data} setData={setData} notgrabado={isSaved} correctoFormato={correctoFormato} setCorrectoFormato={setCorrectoFormato}/>
-                </div>
-                <div className="row rows">
-                    <DirectBoss data={data} setData={setData} notgrabado={isSaved} correctoFormato={correctoFormato} setCorrectoFormato={setCorrectoFormato}/>
-                </div>
-                <div className="row rows uploadRegistration" >                            
-                    <FileManagement canUpload={canUpload} docs={studentDocs} maxFiles={4} setFileList={setFileList} titleUploadedFiles="Archivos subidos por el alumno"/>
-                </div>
-                <div className="row rows">
-                    <CalificationFormStudent data={data} setData={setData} notgrabado={false}/>
-                </div> 
-                <div className="row rows">
-                    <div className="container Comments">
-                        <nav className="navbar navbar-fixed-top navbar-inverse bg-inverse "style={{ backgroundColor: "#E7E7E7"}}>
-                            <h3 style={{"marginLeft":"15px"}}>Observaciones</h3>
-                        </nav>
-                        <div className="row rows" >
-                            <Form.Control className="observaciones"
-                                    placeholder="Esciba las observaciones de la entrega" 
-                                    onChange={changeComments}
-                                    value={data.calification.comments}
-                                    name="comments"
-                                    disabled={typeUser==="e"? true: false}
-                                    style={{"marginBottom":"10px !important"}}
-                                    as="textarea"
-                                    rows={6}/>
-                        </div> 
-                    </div>
-                </div>
-                <div className="row rows" >
-                <div className="col-sm-2 subtitles">
-                </div>
-                <div className="col-sm-4 botons">
-                    <Button variant="primary" onClick={goBack} style={{"marginBottom":"4px"}}>Regresar</Button>
-                </div>
-                <div className="col-sm-4 botons">
-                    <Button variant="primary" onClick={insertCoordinator} style={{"marginBottom":"4px"}}>Guardar</Button>
-                </div>
-                <div className="col-sm-2 subtitles">
-                </div>
-                </div> 
-                <div className="row rows">
-                    
-                </div>
-            </div>
-        </LayoutAdministrative>
+        </LayoutBasic>
     )
 
 }

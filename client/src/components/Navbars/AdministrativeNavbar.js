@@ -12,7 +12,55 @@ const secretary = [
 const admin = [
     {
         title: "Gestionar Especialidades",
-        link: `/specialty-management/permissions=AF`
+        link: `/specialty-management/permissions=A`
+    },
+    {
+        title: "Gestionar Coordinadores",
+        link: `/coordinators-management/permissions=AF`
+    }
+]
+const coorSpecialty = [ 
+    {
+        title: "Gestión de alumnos",
+        link: `/students-management/permissions=E`
+    },
+    {
+        title: "Solicitudes sin convenio",
+        link: `/list-students-requests/permissions=E`
+    },
+    {
+        title: "Revisión de Convenios",
+        link: `/list-students-agreement/permissions=EF`
+    },
+    // {
+    //     title: "Entregables",
+    //     link: `/list-students-deliverables/idProcess=${idProcess}`
+    // },
+    {
+        title: "Gestión de supervisores",
+        link: `/supervisors-management/permissions=E`
+    },
+    {
+        title: "Lista de Procesos",
+        link: `/list-process/permissions=E`
+    },
+    {
+        title: "Gestión de Campos Ficha de Inscripción",
+        link: `/inscription-config/permissions=E`
+    },
+    {
+        title: "Revisión Ficha de Inscripción",
+        link: `/list-inscriptions-form/permissions=EF`
+    },
+]
+const coorFaci = [
+    {
+        title: "Revisión de Convenios",
+        link: `/list-students-agreement/permissions=EF`
+    },
+    {
+        title: "Revisión Ficha de Inscripción",
+        link: `/list-inscriptions-form/permissions=EF`
     },
     {
         title: "Gestionar Coordinadores",
@@ -27,63 +75,11 @@ export default function AdministrativeNavbar() {
     const supervisor = [
         {
             title: "Disponibilidad y Reuniones",
-            link: `/meetings-management/permissions=S&idSupervisor=${user.idPersona}&idProcess=${user.fidEspecialidad}`
+            link: `/meetings-management/permissions=SC&idSupervisor=${user.idPersona}`
         },
         {
             title: "Gestión de Entregables",
-            link: `/list-deliverables/permissions=S&idProcess=${user.fidEspecialidad}`
-        }
-    ]
-    const coorSpecialty = [ 
-        {
-            title: "Gestión de alumnos",
-            link: `/students-management/permissions=E&idProcess=${user.fidEspecialidad}`
-        },
-        {
-            title: "Solicitudes sin convenio",
-            link: `/list-students-requests/permissions=E&idProcess=${user.fidEspecialidad}`
-        },
-        {
-            title: "Revisión de Convenios",
-            link: `/list-students-agreement/permissions=EF&idProcess=${user.fidEspecialidad}`
-        },
-        // {
-        //     title: "Entregables",
-        //     link: `/list-students-deliverables/idProcess=${idProcess}`
-        // },
-        {
-            title: "Gestión de supervisores",
-            link: `/supervisors-management/permissions=E`
-        },
-        {
-            title: "Configuración del proceso",
-            link: `/config-process/permissions=E`
-        },
-        {
-            title: "Gestión de Campos Ficha de Inscripción",
-            link: `/inscription-config/permissions=E`
-        },
-        {
-            title: "Revisión Ficha de Inscripción",
-            link: `/list-inscriptions-form/permissions=EF&idProcess=${user.fidEspecialidad}`
-        },
-    ]
-    const coorFaci = [
-        {
-            title: "Revisión de Convenios",
-            link: `/list-students-agreement/permissions=EF&idProcess=${user.fidEspecialidad}`
-        },
-        {
-            title: "Revisión Ficha de Inscripción",
-            link: `/list-inscriptions-form/permissions=EF&idProcess=${user.fidEspecialidad}`
-        },
-        {
-            title: "Gestionar Especialidades",
-            link: `/specialty-management/permissions=AF`
-        },
-        {
-            title: "Gestionar Coordinadores",
-            link: `/coordinators-management/permissions=AF`
+            link: `/list-deliverables/permissions=S`
         }
     ]
 

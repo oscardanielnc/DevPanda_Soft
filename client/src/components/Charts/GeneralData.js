@@ -5,17 +5,19 @@ import {emailValidation,numberValidation,maxLengthValidation} from "../../utils/
 import './GeneralData.scss';
 
 
-export default function GeneralData ({data, setData, imStudent=true,isSaved,correctoFormato,setCorrectoFormato}) {
+export default function GeneralData ({data, setData, imStudent=true,isSaved,validacionesGenenal}) {
     const {generalData} = data;
     const handleChange = (e) => {
         if(e.target.name==="personalEmail"){
-            if(emailValidation(e.target)){
+            console.log("El valor es: ",e.target.value);
+            if(emailValidation(e.target) || e.target.value===""){
                 e.target.classList.add("success");
-                setCorrectoFormato(true);
+                validacionesGenenal[1]=true;
             }else{
                 e.target.classList.add("error");
-                setCorrectoFormato(false);
+                validacionesGenenal[1]=false;
             }
+            
             setData({
                 ...data,
                 generalData: {
@@ -27,7 +29,7 @@ export default function GeneralData ({data, setData, imStudent=true,isSaved,corr
             if(e.target.name==="cellphone"){
                 if(numberValidation(e.target) && maxLengthValidation(e.target,9)){
                     e.target.classList.add("success");
-                    setCorrectoFormato(true);
+                    validacionesGenenal[0]=true;
                     setData({
                         ...data,
                         generalData: {
@@ -40,10 +42,10 @@ export default function GeneralData ({data, setData, imStudent=true,isSaved,corr
                         e.target.value=data.generalData.cellphone;
                         if(numberValidation(e.target) && maxLengthValidation(e.target,9)){
                             e.target.classList.add("success");
-                            setCorrectoFormato(true);
+                            validacionesGenenal[0]=true;
                         }else{
                             e.target.classList.add("error");
-                            setCorrectoFormato(false);
+                            validacionesGenenal[0]=false;
                         }
                     }else{
                         setData({

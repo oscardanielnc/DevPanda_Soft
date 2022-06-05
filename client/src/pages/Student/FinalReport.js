@@ -18,7 +18,7 @@ const dataDummy = {
 }
 
 
-
+let filledFieldsFlag = 0;
 let staticDocument;
 let staticEsp;
 let disable;
@@ -36,6 +36,7 @@ export default function AgreementReview(){
     const [docsSup, setDocsSup] = useState([])
 
     useEffect(()=> {
+        console.log(user)
         const fetchData = async () => {
             const result1 = await getDeliverableStudent(user.idPersona,idEntregable);
             dataTemporal = result1.data.valor            
@@ -52,35 +53,25 @@ export default function AgreementReview(){
     
     useEffect(() => {                           //se debe cambiar por INFI   
         const fetchData = async () => { 
-            const result = await getAllDocsApi(`1-${user.fidEspecialidad}-CONV`, 0);
+            const result = await getAllDocsApi(`${user.fidProceso}-IFIN`, 0);
             if(result.success) {
-                setDocs(result.docs)
+                setDocs(result.docs)                
             }
         }
         fetchData()
     },[setDocs])    
-    
-//    useEffect(() => {                                            //PUEDO COLOCAR OTRA COSA QUE NO SEA CONV?
-//         getAllDocsApi(`${user.fidProceso}-${user.fidEspecialidad}-INFI-${user.idPersona}`, 1).then(response => {
-//             if(response.success) {
-//                 setDocsStudent(response.docs)
-//                 /* if(response.docs.length>0){
-//                     documentState="Entregado";
-//                 }
-//                 else{
-//                     documentState="Sin entregar";
-//                 } */
-//             }
-//         })
-//     },[setDocsStudent]) 
 
-    // useEffect(() => {  //mismo para alumno que para supervisor?                       
-    //     getAllDocsApi(`${user.fidProceso}-${user.fidEspecialidad}-INFI-${user.fidAsesor}`, 0).then(response => {
-    //         if(response.success) {
-    //             setDocsSup(response.docs)
-    //         }
-    //     })
-    // },[setDocsSup])      
+   
+   useEffect(() => {     
+        const fetchData = async () => {         
+            const result = await getAllDocsApi(`${user.fidProceso}-IFIN-${user.idPersona}`, 1);                        
+            if(result.success) {                                           
+                setDocsStudent(result.docs);                                                
+            }    
+        }
+        fetchData()
+    },[setDocsStudent]) 
+      
 
     
     if(flag && data.deliverableResponse){
@@ -88,50 +79,86 @@ export default function AgreementReview(){
         staticEsp =  data.deliverableResponse.evaState;
         flag=0;                               
         if(data.deliverableResponse.docState==="S"){
-            disable=false;
+            disable=false;      
         }
         else{
-            disable=true;
+            disable=true;   
+            filledFieldsFlag = 1;                     
         }       
     }
     
 
     const submit = async e => {
-        if(fileList.length === 2) {    
-            const newData1 = {
-                ...data,
-                deliverableResponse:{
+        if(fileList.length === 2) { 
+            if(filledFieldsFlag){
+                const newData1 = {
+                    ...data,
+                    deliverableResponse:{
+                        idRespuestaEntregable: data.deliverableResponse.idRespuestaEntregable,
+                        docState: "E",
+                        evaState: data.deliverableResponse.evaState,
+                        observation: data.deliverableResponse.observation,
+                        grade: data.deliverableResponse.grade,
+                        uploadDate: data.deliverableResponse.uploadDate,
+                    }                
+                }
+                
+                const newData2 = {
                     idRespuestaEntregable: data.deliverableResponse.idRespuestaEntregable,
-                    docState: "E",
-                    evaState: data.deliverableResponse.evaState,
-                    observation: data.deliverableResponse.observation,
-                    grade: data.deliverableResponse.grade,
-                    uploadDate: data.deliverableResponse.uploadDate,
-                }                
-            }
-            
-            const newData2 = {
-                idRespuestaEntregable: data.deliverableResponse.idRespuestaEntregable,
-                campos:dataFields.data                                
-            }
-            
-            
-            //const response1 = await uploadDocsApi(fileList, `${user.fidProceso}-${user.fidEspecialidad}-CONV-${user.idPersona}`, 1);
-            const response1 = await setDeliverableStudent(newData1)   
-            const repsonse2 = await updatefieldsDeliverables(newData2)    
-            if(response1.success &&repsonse2.success) {                
-                toast.success(response1.msg, {
-                    position: "top-right",
-                    autoClose: 3000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                });            
-                window.location.reload()
-            } else {
-                toast.error(response1.msg, {
+                    campos:dataFields.data                                
+                }       
+                
+                const response1 = await setDeliverableStudent(newData1)  
+                if(response1.success){
+                    const response2 = await updatefieldsDeliverables(newData2)   
+                    if(response2.success){
+                        const response3 = await uploadDocsApi(fileList, `${user.fidProceso}-IFIN-${user.idPersona}`, 1);
+                        if(response3.success){
+                            window.location.reload()
+                            toast.success(`Datos registrados con éxito.`, {
+                                position: "top-right",
+                                autoClose: 3000,
+                                hideProgressBar: false,
+                                closeOnClick: true,
+                                pauseOnHover: true,
+                                draggable: true,
+                                progress: undefined,
+                            });                        
+                        }else{
+                            toast.error(response3.msg, {
+                                position: "top-right",
+                                autoClose: 3000,
+                                hideProgressBar: false,
+                                closeOnClick: true,
+                                pauseOnHover: true,
+                                draggable: true,
+                                progress: undefined,
+                            });
+                        }
+                    }else{
+                        toast.error(response2.msg, {
+                            position: "top-right",
+                            autoClose: 3000,
+                            hideProgressBar: false,
+                            closeOnClick: true,
+                            pauseOnHover: true,
+                            draggable: true,
+                            progress: undefined,
+                        });
+                    }
+                }else{
+                    toast.error(response1.msg, {
+                        position: "top-right",
+                        autoClose: 3000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                    });
+                }
+            }else{
+                toast.warning(`Debe llenar todos los campos antes de entregar.`, {
                     position: "top-right",
                     autoClose: 3000,
                     hideProgressBar: false,
@@ -140,7 +167,7 @@ export default function AgreementReview(){
                     draggable: true,
                     progress: undefined,
                 });
-            }                        
+            }       
         }
         else {
             toast.warning(`Se requieren 2 archivos para esta entrega.`, {
@@ -210,17 +237,17 @@ export default function AgreementReview(){
     //     })        
     // }
 
-    function changeLearnLevel(e) {        
-        dataDummy.learnLevel = e.target.id;        
-        /* setData({
-            ...data,
-            estadoFaci: "P",             
-        }) */
-        console.log(dataFields)
-    }
+    // function changeLearnLevel(e) {        
+    //     dataDummy.learnLevel = e.target.id;        
+    //     /* setData({
+    //         ...data,
+    //         estadoFaci: "P",             
+    //     }) */
+    //     console.log(dataFields)
+    // }
 
-    const handleChangeCamps = (e) => {
-        console.log(dataFields)
+    const handleChangeCamps = (e) => {     
+        let counter = 0;
         const newCamps = dataFields.data.map(elem => {
             if(elem.nombreCampoEntregable === e.target.name)
                 return {                    
@@ -232,6 +259,17 @@ export default function AgreementReview(){
                 }
             return elem;
         })        
+             
+        for (const property in newCamps) {
+            if(newCamps[property].valorAlumno!== ""){
+                counter += 1;
+            }
+        }
+        if(counter === newCamps.length){
+            filledFieldsFlag = 1;
+        }else{
+            filledFieldsFlag = 0;
+        }        
         setDataFields({
             ...dataFields,        
             data: newCamps
@@ -268,7 +306,7 @@ export default function AgreementReview(){
                 </div>
                 <div className="shadowbox">
                     <div className="row row1" style={{textAlign: "left",marginTop:"25px"}}>                                       
-                        <FileManagement canUpload={true} docs={docsStudent} maxFiles={2} fileList={fileList} setFileList={setFileList} titleUpload="Subir archivos" />
+                        <FileManagement canUpload={!disable} docs={docsStudent} maxFiles={2} fileList={fileList} setFileList={setFileList} titleUpload="Subir archivos" />
                     </div>
                 </div>
                 <div className="shadowbox">
@@ -280,7 +318,7 @@ export default function AgreementReview(){
                             dataFields.data && dataFields.data.map((e,index) => {                       
                                 var texto = "Ingrese su respuesta";                                                        
                                 return (
-                                    <div className="wordAndTextBoxFirst">  
+                                    <div key={index} className="wordAndTextBoxFirst">  
                                         <div className="col-sm-5 subtitles">
                                             <h6 style={{marginTop:"10px",marginBottom:"25px"}} >{e.nombreCampoEntregable}</h6> 
                                         </div>
@@ -298,47 +336,7 @@ export default function AgreementReview(){
                                 ) 
                             })                   
                         }
-                        {/* <div className="wordAndTextBoxFirst">  
-                            <div className="col-sm-5 subtitles">
-                                <h6 style={{marginTop:"9px"}} >Sector económico:</h6> 
-                            </div>
-                            <div className="col-sm-7 subtitles">
-                                <Form.Control  
-                                    style={{width: "100%"}} 
-                                    type="text" 
-                                    placeholder="Ingrese el sector económico de la empresa." 
-                                    //defaultValue={dataFields[0]} 
-                                    //onChange = {changeEcoSector}
-                                    disabled={disable}/>
-                            </div>                   
-                        </div> 
-                        <div className="wordAndTextBox">  
-                            <div className="col-sm-5 subtitles">
-                                <h6 style={{marginTop:"9px"}}>Principal producto o servicio ofrecido:</h6> 
-                            </div>
-                            <div className="col-sm-7 subtitles">
-                                <Form.Control  
-                                    style={{width: "100%"}} 
-                                    type="text" 
-                                    placeholder="Ingrese el principal producto o servicio ofrecido por la empresa."
-                                    //onChange = {changeProdSer} 
-                                    disabled={disable}/>
-                            </div>                   
-                        </div>  
-                        <div className="wordAndTextBox">  
-                            <div className="col-sm-5 subtitles">
-                                <h6 style={{marginTop:"9px"}}>Área de influencia:</h6> 
-                            </div>
-                            <div className="col-sm-7 subtitles">
-                                <Form.Control  
-                                    style={{width: "100%"}} 
-                                    type="text" 
-                                    placeholder="Ingrese el area de influencia de la empresa." 
-                                    //onChange = {changeInfluArea}
-                                    disabled={disable}/>
-                            </div>                   
-                        </div>  
-                        <h4 className="subSubtitulo">Sobre la práctica</h4>    
+                        {/*                      
                         <div className="wordAndTextBoxFirst">  
                             <div className="col-sm-4 subtitles">
                                 <h6 style={{marginTop:"9px",textAlign:"justify"}}>Rama de la Ingeniería Informática en la que se desempeñó:</h6> 

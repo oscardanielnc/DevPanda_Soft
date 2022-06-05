@@ -4,14 +4,14 @@ import {emailValidation,numberValidation,maxLengthValidation} from "../../utils/
 import './DirectBoss.scss';
 
 
-export default function DirectBoss ({data, setData, notgrabado,correctoFormato,setCorrectoFormato}) {
+export default function DirectBoss ({data, setData, notgrabado,validacionesBoss}) {
     const {aboutBoss} = data;
 
     const handleChange = (e) => {
         if(e.target.name==="cellphone"){
             if(numberValidation(e.target)&& maxLengthValidation(e.target,9)){
                 e.target.classList.add("success");
-                setCorrectoFormato(true);
+                validacionesBoss[0]=true;
                 setData({
                     ...data,
                     aboutBoss: {
@@ -24,10 +24,10 @@ export default function DirectBoss ({data, setData, notgrabado,correctoFormato,s
                     e.target.value=data.aboutBoss.cellphone;
                     if(numberValidation(e.target) && maxLengthValidation(e.target,9)){
                         e.target.classList.add("success");
-                        setCorrectoFormato(true);
+                        validacionesBoss[0]=true;
                     }else{
                         e.target.classList.add("error");
-                        setCorrectoFormato(false);
+                        validacionesBoss[0]=false;
                     }
                 }else{
                     setData({
@@ -44,10 +44,10 @@ export default function DirectBoss ({data, setData, notgrabado,correctoFormato,s
             if(e.target.name==="email"){
                 if(emailValidation(e.target)){
                     e.target.classList.add("success");
-                    setCorrectoFormato(true);
+                    validacionesBoss[1]=true;
                 }else{
                     e.target.classList.add("error");
-                    setCorrectoFormato(false);
+                    validacionesBoss[1]=false;
                 }
                 setData({
                     ...data,

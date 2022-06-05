@@ -1,77 +1,23 @@
-import React, {useState, useEffect, createContext} from "react";
+import React, {useState, createContext} from "react";
 import { getAccessTokenApi, logout } from "../api/auth";
 import jwtDecode from "jwt-decode";
-// import {
-//     getAccessTokenApi, 
-//     getRefreshTokenApi, 
-//     refreshAccessTokenApi, 
-//     logout
-// } from '../api/auth';
+
+let preUser = null
+const accessToken = getAccessTokenApi();
+if(accessToken) {
+    preUser = jwtDecode(accessToken);
+} else {
+    logout();
+    preUser = null
+}
 
 export const AuthContext = createContext();
 export default function AuthProvider({children}) {
-    // const [userLoading, setUserLoading] = useState({
-    //     user: null,
-    //     isLoading: true
-    // }) 
+    const [user, setUser] = useState(preUser);
 
-    // useEffect(()=>{
-    //     checkUserLogin(setUserLoading)
-    // }, [setUserLoading])
-    const accessToken = getAccessTokenApi();
-    let userLoading={
-        user: null,
-        isLoading: true
-    }
-    if(accessToken) {
-        userLoading = {
-            user: jwtDecode(accessToken),
-            //user: accessToken,
-            isLoading: false
-        }
-    } else {
-        logout();
-        userLoading = {
-            user: null,
-            isLoading: false
-        }
-    }
     return (
-        <AuthContext.Provider value={userLoading}>
+        <AuthContext.Provider value={{user, setUser}}>
             {children}
         </AuthContext.Provider>
     )
-}
-
-function checkUserLogin(setUserLoading) {
-    const accessToken = getAccessTokenApi();
-    // solo si tenemos el accessToken en el localStorege lo seteamos en accessToken, que es el value de este hook
-    if(accessToken) {
-        setUserLoading({
-            user: jwtDecode(accessToken),
-            //user: accessToken,
-            isLoading: false
-        })
-    } else {
-        logout();
-        setUserLoading({
-            user: null,
-            isLoading: false
-        })
-    }
-
-    // setUser({
-    //     user: {
-    //         idPersona: 1,
-    //         fidEspecialidad: 1,
-    //         nombres: "Oscar Daniel",
-    //         apellidos: "Navarro Cieza",
-    //         correo: "oscar.navarro@pucp.edu.pe",
-    //         tipoPersona: 'A',
-    //         activo: true,
-    //         estadoMatriculado: true,
-    //         estadoProceso: 1
-    //     },
-    //     isLoading: false
-    // })
 }

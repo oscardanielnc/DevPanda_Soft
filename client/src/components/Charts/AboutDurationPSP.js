@@ -9,14 +9,14 @@ import es from 'date-fns/locale/es';
 registerLocale('es', es);
 
 
-export default function AboutDurationPSP ({data, setData, notgrabado,correctoFormato,setCorrectoFormato}) {
+export default function AboutDurationPSP ({data, setData, notgrabado,validacionesPSP}) {
     const {aboutPSP} = data;
 
     const handleChangeText = (e) => {
         if(e.target.name==="dailyHours"){
-            if(e.target.valueAsNumber>=0){
+            if(e.target.valueAsNumber>=0 && e.target.valueAsNumber<=10){
                 e.target.classList.add("success");
-                setCorrectoFormato(true);
+                validacionesPSP[0]=true;
                 setData({
                     ...data,
                     aboutPSP: {
@@ -29,17 +29,17 @@ export default function AboutDurationPSP ({data, setData, notgrabado,correctoFor
                 e.target.valueAsNumber=Number(data.aboutPSP.dailyHours);
                 if(e.target.valueAsNumber>=0){
                     e.target.classList.add("success");
-                    setCorrectoFormato(true);
+                    validacionesPSP[0]=true;
                 }else{
                     e.target.classList.add("error");
-                    setCorrectoFormato(false);
+                    validacionesPSP[0]=false;
                 }
             }
         }else{
             if(e.target.name==="weekHours"){
-                if(e.target.valueAsNumber>=0){
+                if(e.target.valueAsNumber>=0 && e.target.valueAsNumber<=30){
                     e.target.classList.add("success");
-                    setCorrectoFormato(true);
+                    validacionesPSP[1]=true;
                     setData({
                         ...data,
                         aboutPSP: {
@@ -52,10 +52,10 @@ export default function AboutDurationPSP ({data, setData, notgrabado,correctoFor
                     e.target.valueAsNumber=Number(data.aboutPSP.weekHours);
                     if(e.target.valueAsNumber>=0){
                         e.target.classList.add("success");
-                        setCorrectoFormato(true);
+                        validacionesPSP[1]=true;
                     }else{
                         e.target.classList.add("error");
-                        setCorrectoFormato( false);
+                        validacionesPSP[1]=false;
                     }
                 }
             }else{

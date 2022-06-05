@@ -2,7 +2,7 @@ const mysql = require('mysql');
 const {MYSQL_CREDENTIALS} = require("../config");
 const { sqlAsync } = require('../utils/async');
 
-//Traer los entregables de cierto proceso
+//Traer los entregables de cierto proceso sin el informe Final
 //function 
 
 function deliverablesProcess(req, res){
@@ -13,7 +13,8 @@ function deliverablesProcess(req, res){
     
     const sqlQuery = `SELECT idEntregable, nombre 
                         FROM Entregable
-                        WHERE fidProceso = ${idProceso}`;
+                        WHERE fidProceso = ${idProceso}
+                        and nombre <> "Informe Final"`;
 
 
     connection.connect(err => {
@@ -391,50 +392,87 @@ async function updatefieldsDeliverables(req,res){
     connection.end();
 }
 
-function getDeliverableByStudentSpecialty(req,res){
+async function getDeliverableByStudentSpecialty(req,res){
     const connection = mysql.createConnection(MYSQL_CREDENTIALS);
 
-    const idAlumno = req.params.idAlumno;
     const idFacultad = req.params.idFacultad;
+    const idAlumno = req.params.idAlumno;
     
-    const sqlQuery =`   select
-                            RE.idRespuestaEntregable, E.idEntregable, E.nombre, RE.aprobado, RE.estadoDocumento
-                        from
-                            RespuestaEntregable as RE inner join
-                            Entregable as E on RE.fidEntregable = E.idEntregable inner join
-                            AlumnoProceso as AP on AP.idAlumnoProceso = RE.fidAlumnoProceso inner join
-                            Persona as P on AP.fidAlumno = P.idPersona
-                        where
-                            P.idPersona = ${idAlumno} and
-                            P.fidEspecialidad = ${idFacultad}`;
+    let sqlQuery =` Select
+                        E.idEntregable, E.nombre
+                    from
+                        Entregable as E inner join Proceso as P on E.fidProceso = P.idProceso
+                        inner join Especialidad as ES on ES.idEspecialidad = P.fidEspecialidad
+                    where
+                        idEspecialidad = ${idFacultad}
+                        and E.nombre<>"Informe Final";`;
 
 
     connection.connect(err => {
         if (err) throw err;
     });
     
-    connection.query(sqlQuery, (err, result) => {
-        if(err){
-            res.status(505).send({
-                success: false,
-                message: "Error inesperado del servidor: " + err.message
-            })
-        }else{
+    try{
+        let result = await sqlAsync(sqlQuery, connection)
+        if(result.length > 0){
             const data =  result.map(e => {
                 return {
-                    idDeliverableResponse: e.idRespuestaEntregable,
+                    idDeliverableResponse: 0,
                     code: "ENT" + e.idEntregable,
                     idDeliverable:e.idEntregable,
                     nameDeiverable: e.nombre,
-                    estado: e.estadoDocumento == 'S'? 'S' : e.aprobado
+                    estado: 'S'
                 }
             });
+            for(let index = 0; index < data.length; index ++){
+                sqlQuery = `select
+                                RE.idRespuestaEntregable, RE.aprobado, RE.estadoDocumento
+                            from
+                                RespuestaEntregable as RE
+                            where
+                                RE.fidEntregable = ${data[index].idDeliverable}
+                                and RE.fidAlumnoProceso = (	select idAlumnoProceso
+                                                            from AlumnoProceso
+                                                            where
+                                                                fidAlumno = ${idAlumno}
+                                                                and estado = 'C');`                               
+                try {
+                    result = await sqlAsync(sqlQuery, connection)
+                    console.log(result.length)                 
+                    if(result.length > 0){
+                        data[index].idDeliverableResponse = result[0].idRespuestaEntregable
+                        data[index].estado = result[0].estadoDocumento == 'S'? 'S' : result[0].aprobado
+                        
+                        console.log(data[index].idDeliverableResponse) 
+                        console.log(data[index].estado)  
+
+                    }
+
+                } catch (e) {
+                    res.status(505).send({ 
+                        success: false,
+                        message: "Error en el servidor " + e.message + '!'
+                    })
+                    return 
+                }
+            }
             res.status(200).send({
                 success: true,
                 data
             })
-        }   
-    });
+        }else{
+            res.status(404).send({ 
+                success: false,
+                message: "No se encontraron entregables para la especialidad"
+            })
+        }
+    }catch(e){
+        res.status(505).send({ 
+            success: false,
+            message: "Error en el servidor " + e.message
+        })
+        return 
+    };
     connection.end();
 }
 

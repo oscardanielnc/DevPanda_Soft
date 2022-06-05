@@ -1,15 +1,36 @@
+@import "../../../App.scss";
 .studentsManagement {
-    &__title {
-        display: flex !important;
-        justify-content: space-between !important;
-
-        &-h1 {
-            width: fit-content !important;
+    &__excel {
+        box-shadow: inset 0px 0px 20px 8px #fff;
+        background-color: #efefef;
+        border-radius: 5px;
+        padding: 1em !important;
+        margin-top: 0.5em !important;
+        justify-content: center;
+        
+        &-btn {
+            width: 200px !important; 
         }
-        &-excel {
-            width: fit-content !important;
-            height: fit-content;
-            align-self: center;
+        &-title {
+            font-size: 1.2em;
+            font-weight: 500;
+        }
+        &-input {
+            display: flex;
+            &-file {
+                width: auto;
+            }
+            &-trash {
+                display: flex;
+                padding: 6px !important;
+                & i {
+                    display: flex;
+                }
+                // &:active {
+                //     transform: scale(1.15);
+                //     box-shadow: 0px 1px 12px #000 !important;
+                // }
+            }
         }
     }
 }

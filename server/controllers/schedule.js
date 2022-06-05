@@ -19,10 +19,10 @@ async function changeHoursSchedule(req, res){
                 WHERE idHorario = ${element.id}`;
             const result = await sqlAsync(sqlQuery, connection);
 
-            if(element.idAlumno && element.state===4 && result.affectedRows) {
+            if(element.idAlumno && element.idProcess && element.state===4 && result.affectedRows) {
                 // este es un alumno que esta seleccionando un supervisor
-                const sqlQueryUpdate = `UPDATE AlumnoProceso SET fidAsesor=${element.idAsesor}
-                    WHERE fidAlumno = ${element.idAlumno}`;
+                const sqlQueryUpdate = `UPDATE AlumnoProceso SET fidAsesor=${element.idAsesor}, estadoProceso=estadoProceso+1
+                    WHERE fidAlumno = ${element.idAlumno} AND fidProceso=${element.idProcess}`;
                 await sqlAsync(sqlQueryUpdate, connection);
             }
         } catch (err) {

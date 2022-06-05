@@ -23,6 +23,8 @@ import SupervisorsManagement from "../pages/CoorSpecialty/SupervisorsManagement"
 import CoordinatorsManagement from "../pages/Admin/CoordinatorsManagement";
 import MeetingsManagement from "../pages/Supervisor/MeetingsManagement";
 import DeliverablesList from "../pages/Supervisor/DeliverablesList";
+import StudentRegistrarionFormCoordinator from "../pages/CoorSpecialty/StudentRegistrarionFormCoordinator";
+import ProcessList from "../pages/CoorSpecialty/ProcessList";
 
 const routes = [ 
     // General
@@ -43,25 +45,30 @@ const routes = [
     },
     //Coordinador FACI
     {
-        path: "/list-students-agreement/permissions=EF&idProcess=:idProcess",
+        path: "/list-students-agreement/permissions=EF",
         exact: true,
         component: ListStudentsRequests,
     },
     {
-        path: "/list-inscriptions-form/permissions=EF&idProcess=:idProcess",
+        path: "/list-inscriptions-form/permissions=EF",
         exact: true,
         component: ListRegistrationForm,
     },
     {
-        path: "/agreement-review/permissions=EF&idStudent=:idStudent&idProcess=:idProcess",
+        path: "/agreement-review/permissions=EF&idStudent=:idStudent",
         exact: true,
         component: AgreementReview,
     },
     // Coordinador especialidad
     {
-        path: "/students-management/permissions=E&idProcess=:idProcess",
+        path: "/students-management/permissions=E",
         exact: true,
         component: StudentsManagement,
+    },
+    {
+        path: "/list-process/permissions=E",
+        exact: true,
+        component: ProcessList,
     },
     {
         path: "/config-process/permissions=E",
@@ -79,13 +86,18 @@ const routes = [
         component: SupervisorsManagement,
     },
     {
-        path: "/list-students-requests/permissions=E&idProcess=:idProcess",
+        path: "/list-students-requests/permissions=E",
         exact: true,
         component: ListAgreementsRequests,
     },
+    {
+        path: "/registration-review/permissions=E&idStudent=:idStudent",
+        exact: true,
+        component: StudentRegistrarionFormCoordinator,
+    },
     // Admin
     {
-        path: "/specialty-management/permissions=AF",
+        path: "/specialty-management/permissions=A",
         exact: true,
         component: SpecialtyManagement,
     },
@@ -101,53 +113,53 @@ const routes = [
     },
     // Supervisor
     {
-        path: "/meetings-management/permissions=S&idSupervisor=:idSupervisor&idProcess=:idProcess",
+        path: "/meetings-management/permissions=SC&idSupervisor=:idSupervisor",
         exact: true,
         component: MeetingsManagement,//cambiar acá
     },
     {
-        path: "/list-deliverables/permissions=S&idProcess=:idProcess",
+        path: "/list-deliverables/permissions=S",
         exact: true,
         component: DeliverablesList,//cambiar acá
     },
     // Alumno
     {
-        path: "/welcome-process/idStudent=:idStudent&idProcess=:idProcess&phase=WPRO",
+        path: "/welcome-process/phase=NCON",
         exact: true,
         component:WelcomeProcess,
     },
     {
-        path: "/agreement/idStudent=:idStudent&idProcess=:idProcess&phase=:phase",
+        path: "/agreement/phase=CONV",
         exact: true,
         component: StudentAgreement,
     },
     {
-        path: "/enrollment/idStudent=:idStudent&idProcess=:idProcess&phase=:phase",
+        path: "/enrollment/phase=MATR",
         exact: true,
         component: EnrollmentStudent,
     },
     {
-        path: "/inscription/idStudent=:idStudent&idProcess=:idProcess&phase=:phase",
+        path: "/inscription/phase=FINS",
         exact: true,
         component: StudentRegistrationForm,
     },
     {
-        path: "/supervisor-selection/idStudent=:idStudent&idProcess=:idProcess&phase=:phase",
+        path: "/supervisor-selection/phase=ESUP",
         exact: true,
         component: SupervisorSelection,
     },
     {
-        path: "/final-report/idStudent=:idStudent&idProcess=:idProcess&phase=:phase",
+        path: "/final-report/phase=IFIN",
         exact: true,
         component: FinalReport,
     },
     {
-        path: "/deliverables/idStudent=:idStudent&idProcess=:idProcess&phase=:phase",
+        path: "/deliverables/phase=ENTS",
         exact: true,
         component: DeliverablesStudent,
     },
     {
-        path: "/deliverable/idStudent=:idStudent&idProcess=:idProcess&code=:code",
+        path: "/deliverable/code=:code",
         exact: true,
         component: Deliverable,
     },
