@@ -28,6 +28,8 @@ api.put("/studentFieldsInscriptionForm",inscriptionFormController.updateFieldsIn
 api.get("/fieldsList/:idEspecialidad/:idProceso", inscriptionFormController.getAllFields);
 
 api.post("/field", inscriptionFormController.insertField);
+api.put("/field", inscriptionFormController.updateField);
 
+api.put("/desactivateField", inscriptionFormController.deleteField);
 
 module.exports = api;
