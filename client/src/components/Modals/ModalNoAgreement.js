@@ -17,7 +17,8 @@ export default function ModalNoAgreement (props) {
         fidAlumno:user.idPersona,
         fidEspecialidad:user.fidEspecialidad
     });
-
+    console.log("usuario",user);
+    console.log("objeto",alumno);
 
     // const prueba = async()=>{
     //     const responseVerify = await verifyRequest(user.idPersona);
@@ -61,12 +62,14 @@ export default function ModalNoAgreement (props) {
                 else{
                     //ser realiza la subida de archivo
                     const response = await uploadDocsApi(fileList, `${user.fidProceso}-NCON-${user.idPersona}`, 1);
-                    console.log("subio archivo",response)
+                    console.log("fidproceso",user.fidProceso);
+                    console.log("idpersona",user.idPersona);
+                    console.log("subio archivo",response.success)
                     if(response.success) {
                         //se realiza el registro de la solicitud
                         const responseReg = await registerRequestApi(alumno);
                         if(responseReg.success){
-                            console.log("Se registra bien",responseReg)
+                            console.log("Se registra bien",responseReg.success)
                             //cambio de modals
                             setShowSm(true);
                             setShow(false);

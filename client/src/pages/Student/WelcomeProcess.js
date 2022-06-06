@@ -73,7 +73,7 @@ export default function WelcomeProcess () {
                     {verified
                     ? <div className="row rows" style={{textAlign: "left"}}>
                         <p>
-                        Ya haz registrado una solicitud anteriormente. Le llegará un correo dentro de 3 días hábiles.
+                        Ya has registrado una solicitud anteriormente. Le llegará un correo dentro de 3 días hábiles.
                         Si no le ha llegado un correo dentro del plazo establecido, por favor contactar con su especialidad.
                         </p> 
                         </div>
