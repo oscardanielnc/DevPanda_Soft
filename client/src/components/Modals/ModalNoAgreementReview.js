@@ -12,74 +12,64 @@ import { isNotEmptyObj } from "../../utils/objects";
 import ShowFiles from "../../components/FileManagement/ShowFiles";
 import ModalBasic from "./ModalBasic";
 import './ModalNoAgreementReview.scss';
+import useAuth from "../../hooks/useAuth";
 import { getstudentInscriptionForm } from "../../api/registrationForm";
 const dataDummy = {
-    "idStudent":"",
-    "approvalState": "",
-    "nameStudent": "",
-    "codeStudent":""
+    "idSolicitud":"",
+    "idAlumno":"",
+    "estado": "",
+    "nombreAlumno": "",
+    "codigo":""
 }
 const maxFiles = 1;
 let savedCoordinator=false;
 
 export default function ModalNoAgreementReview (props) {
-    const {show, setShow,user,showSm,setShowSm} = props;
-    const [fileList, setFileList] = useState([]);
-    const idAlumno= useParams().idStudent;
+    const {show, setShow,data,setData,files,setFiles} = props;
+    const {user} = useAuth();
+    const idAlumno= data.idAlumno;
     const [loading, setLoading] = useState(false);
-    const [data,setData]=useState(dataDummy);
-    
+    //const [data,setData]=useState(dataDummy);
+    console.log("El data en ModalNoAgreementReview es : ",data);
+
     let typeUser=user.tipoPersona;
     if(typeUser==="p"){
         typeUser=user.tipoPersonal;
     }
 
-    let pass=(data.approvalState==="Aprobado")?true:false;
-    let disapproved=(data.approvalState==="Desaprobado")?true:false;
-    let unrated=(data.approvalState==="Sin revisar")?true:false;
+    let pass=(data.estado==="Aprobado")?true:false;
+    let disapproved=(data.estado==="Desaprobado")?true:false;
+    let unrated=(data.estado==="Sin revisar")?true:false;
 
     const changeStatePassed = e => {
         pass=!pass;
-        data.approvalState="Aprobado"
+        setData({
+            ...data,
+            estado: "Aprobado"
+        })
     }
 
     const changeStateUnrated = e => {
         unrated=!unrated;
-        data.approvalState="Sin calificar"
+        setData({
+            ...data,
+            estado: "Sin revisar"
+        })
     }
     
     const changeStateDisapproved = e => {
         disapproved=!disapproved;
-        data.approvalState="Sin revisar"
+        setData({
+            ...data,
+            estado: "Desaprobado"
+        })
     }
-    useEffect(()=> {
-        const fetchData = async () => {
-            const result = await getAllDocsApi(`${user.fidProceso}-NCON-${idAlumno}`, 1);
-            if(result.success) {
-                setFileList(result.docs)
-            }
-
-            /*const result2= await  getstudentInfo(idAlumno, user.fidProceso);
-            if(result2.success){
-                setData(data);
-            }*/
-
-            if(data.approvalState!==""&&data.approvalState!==null){
-                savedCoordinator=true;
-            }else{
-                savedCoordinator=false;
-            }
-            setLoading(true);
-        }
-        fetchData()
-        
-    }, [setFileList])
-
+    
     const handleEnviar = async e =>{
         e.preventDefault();
         let response=null;
 
-        //response = await registrationNoAgreementReview(data.approvalState,idAlumno,user.fidProceso);
+        //response = await registrationNoAgreementReview(dataReviewCopy.estado,idAlumno,user.fidProceso);
         if(!response.success){
             toast.error(response.msg, {
                 position: "top-right",
@@ -101,11 +91,12 @@ export default function ModalNoAgreementReview (props) {
                 progress: undefined,
             });
             savedCoordinator=true;
+            //setData(dataReviewCopy)
         }
     }
-    let texto= "Alumno: "+data.nameStudent;
-    let texto2="Código: "+data.codeStudent;
-    if(loading || !isNotEmptyObj(fileList)) return <PandaLoaderPage type={typeUser}/>
+    let texto= "Alumno: "+data.nombreAlumno;
+    let texto2="Código: "+data.codigo;
+
     return (
         <ModalBasic
             show={show}
@@ -116,20 +107,21 @@ export default function ModalNoAgreementReview (props) {
             secundaryAction="Cancelar"
         >
             <Modal.Body>
-                <div className="row" style={{textAlign: "left"}}>
+                <div className="row rowsNoAgreementReview" style={{textAlign: "left"}}>
                     {texto}
                 </div>
-                <div className="row" style={{textAlign: "left"}}>
+                <div className="row rowsNoAgreementReview" style={{textAlign: "left"}}>
                     {texto2}
                 </div>
-                <div className="row" style={{textAlign: "left"}}>
-                    <div className="col-sm-2 subtitlesDeleteFieldDeleteField">
+                <div className="row rowsNoAgreementReviewRaddio" style={{textAlign: "left"}}>
+                    <div className="col-sm-1 subtitlesDeleteFieldDeleteField">
                         <div className="texts">Estado:</div>
                     </div>
-                    <div className="col-sm-10 subtitlesDeleteField">
+                    <div className="col-sm-11 subtitlesDeleteField">
                         <Form>
-                            <div key={`inline-radio`} className="mb-3">
+                            <div key={`inline-radio`} className="mb-3 rowRaddioNoAgreement">
                             <Form.Check
+                                className="raddioNoAgreement"
                                 inline
                                 label="Aprobado"
                                 name="Aprobado"
@@ -140,6 +132,7 @@ export default function ModalNoAgreementReview (props) {
                                 onChange={changeStatePassed}
                             />
                             <Form.Check
+                                className="raddioNoAgreement"
                                 inline
                                 label="Desaprobado"
                                 name="Desaprobado"
@@ -150,6 +143,7 @@ export default function ModalNoAgreementReview (props) {
                                 onChange={changeStateDisapproved}
                             />
                             <Form.Check
+                                className="raddioNoAgreement"
                                 inline
                                 label="Sin revisar"
                                 name="SinRevisar"
@@ -164,8 +158,8 @@ export default function ModalNoAgreementReview (props) {
                     </div>
                 </div>
                 <div className="row uploadAgreement" >        
-                    <ShowFiles docs={fileList}/>
-                    <FileManagement canUpload={false}  maxFiles={maxFiles} fileList={fileList} setFileList={setFileList} titleUpload="Archivos subidos por el alumno" titleUploadedFiles="Archivos subidos por el alumno"/>
+                    <ShowFiles docs={files}/>
+                    <FileManagement canUpload={false}  maxFiles={maxFiles} files={files} setfiles={setFiles} titleUpload="Archivos subidos por el alumno" titleUploadedFiles="Archivos subidos por el alumno"/>
                 </div>
             </Modal.Body>
         </ModalBasic>

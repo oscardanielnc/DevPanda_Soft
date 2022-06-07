@@ -47,7 +47,7 @@ const routes = [
     {
         path: "/list-students-agreement/permissions=EF",
         exact: true,
-        component: ListStudentsRequests,
+        component: ListAgreementsRequests,
     },
     {
         path: "/list-inscriptions-form/permissions=EF",
@@ -88,7 +88,7 @@ const routes = [
     {
         path: "/list-students-requests/permissions=E",
         exact: true,
-        component: ListAgreementsRequests,
+        component: ListStudentsRequests,
     },
     {
         path: "/registration-review/permissions=E&idStudent=:idStudent",
