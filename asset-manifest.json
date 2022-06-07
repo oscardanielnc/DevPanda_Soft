@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/DevPanda_Soft/static/css/main.46ae838e.css",
-    "main.js": "/DevPanda_Soft/static/js/main.60d15c80.js",
+    "main.js": "/DevPanda_Soft/static/js/main.47d1a69d.js",
     "static/js/787.c4e7f8f9.chunk.js": "/DevPanda_Soft/static/js/787.c4e7f8f9.chunk.js",
     "static/media/404.gif": "/DevPanda_Soft/static/media/404.1800fd75df43304d379c.gif",
     "static/media/loading.gif": "/DevPanda_Soft/static/media/loading.565056f595ad6e372c08.gif",
@@ -21,11 +21,11 @@
     "static/media/file-earmark-word.svg": "/DevPanda_Soft/static/media/file-earmark-word.e0d2ec8dfa6dd076ac4b9b19829b5ca2.svg",
     "static/media/file-earmark-arrow-up.svg": "/DevPanda_Soft/static/media/file-earmark-arrow-up.f2cbc1284c00309ebac60cb28394c6c4.svg",
     "main.46ae838e.css.map": "/DevPanda_Soft/static/css/main.46ae838e.css.map",
-    "main.60d15c80.js.map": "/DevPanda_Soft/static/js/main.60d15c80.js.map",
+    "main.47d1a69d.js.map": "/DevPanda_Soft/static/js/main.47d1a69d.js.map",
     "787.c4e7f8f9.chunk.js.map": "/DevPanda_Soft/static/js/787.c4e7f8f9.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.46ae838e.css",
-    "static/js/main.60d15c80.js"
+    "static/js/main.47d1a69d.js"
   ]
 }
