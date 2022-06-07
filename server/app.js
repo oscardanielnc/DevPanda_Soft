@@ -19,6 +19,7 @@ const scheduleRoutes =  require('./routers/schedule');
 const deliverablesRoutes = require('./routers/deliverable');
 const enrollmentRoutes = require('./routers/enrollment');
 const requestRoutes = require('./routers/request');
+const emailRoutes = require('./routers/email');
 const processRoutes = require('./routers/process');
 
 app.use(bodyParser.urlencoded({extended: false}));
@@ -48,6 +49,7 @@ app.use(`/api/${API_VERSION}`, scheduleRoutes);
 app.use(`/api/${API_VERSION}`, deliverablesRoutes);
 app.use(`/api/${API_VERSION}`, enrollmentRoutes);
 app.use(`/api/${API_VERSION}`, requestRoutes);
+app.use(`/api/${API_VERSION}`, emailRoutes);
 app.use(`/api/${API_VERSION}`, processRoutes);
 
 module.exports = app;
