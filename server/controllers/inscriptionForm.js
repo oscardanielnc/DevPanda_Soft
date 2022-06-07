@@ -769,6 +769,8 @@ async function insertField(req, res){
     const seccion = req.body.seccion;
     const idProceso = req.body.idProceso;
     const obligatorio = req.body.obligatorio;
+
+    console.log("Los datos en el insert son: ",idEspecialidad,"-",nombreCampo,"-",seccion,"-",idProceso,"-",obligatorio);
     let idCampo;
     let sqlQuery = `insert into CampoFichaInscripcion(fidEspecialidad, nombreCampo, seccion, flag) 
                     values (${idEspecialidad}, "${nombreCampo}", "${seccion}", "activo")`;

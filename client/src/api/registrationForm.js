@@ -232,3 +232,89 @@ export function getAllFieldsInscriptionForm(idEspecialidad,idProceso) {
             }
         })
 }
+
+export function addFieldInscriptionForm(data) {
+    const url = `${BASE_PATH}/${API_VERSION}/field`;
+    const params = {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            authorization: PANDA_KEY
+       },
+        body: JSON.stringify(data)
+    }
+    return fetch(url, params)
+        .then(response => {
+            return response.json()
+        })
+        .then(result => {
+            return {
+                msg: result.message,
+                success: result.success
+            }
+        })
+        .catch(err => {
+            return {
+                msg: err.message,
+                success: false
+            }
+        })
+}
+
+export function editFieldInscriptionForm(data) {
+    const url = `${BASE_PATH}/${API_VERSION}/field`;
+    const params = {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+            authorization: PANDA_KEY
+       },
+        body: JSON.stringify(data)
+    }
+
+    return fetch(url, params)
+        .then(response => {
+            return response.json()
+        })
+        .then(result => {
+            return {
+                msg: result.message,
+                success: result.success
+            }
+        })
+        .catch(err => {
+            return {
+                msg: err.message,
+                success: false
+            }
+        })
+}
+
+export function deleteFieldInscriptionForm(data) {
+    const url = `${BASE_PATH}/${API_VERSION}/desactivateField`;
+    const params = {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+            authorization: PANDA_KEY
+       },
+        body: JSON.stringify(data)
+    }
+
+    return fetch(url, params)
+        .then(response => {
+            return response.json()
+        })
+        .then(result => {
+            return {
+                msg: result.message,
+                success: result.success
+            }
+        })
+        .catch(err => {
+            return {
+                msg: err.message,
+                success: false
+            }
+        })
+}

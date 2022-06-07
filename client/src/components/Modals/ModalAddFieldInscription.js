@@ -12,12 +12,14 @@ import { isNotEmptyObj } from "../../utils/objects";
 import ShowFiles from "../../components/FileManagement/ShowFiles";
 import ModalBasic from "./ModalBasic";
 import './ModalAddFieldInscription.scss';
-import { getstudentInscriptionForm } from "../../api/registrationForm";
+import { addFieldInscriptionForm } from "../../api/registrationForm";
 import useAuth from "../../hooks/useAuth";
 
 const dataDummy = {
+    "idField":"",
     "nameField": "",
-    "seccion": ""
+    "seccion": "",
+    "obligatorio":""
 }
 const maxFiles = 1;
 let saved=false;
@@ -36,11 +38,15 @@ export default function ModalAddFieldInscription (props) {
         e.preventDefault();
         let response=null;
         const objeto={
-            data,
+            idCampo:data.idField,
             idEspecialidad: user.fidEspecialidad,
+            nombreCampo:data.nameField,
+            seccion:data.seccion,
             idProceso:user.fidProceso,
+            obligatorio:data.obligatorio
         }
-        //response = await registrationFieldInscription(objeto);
+        console.log("El objeto enviado es: ",objeto);
+        response = await addFieldInscriptionForm(objeto);
         if(!response.success){
             toast.error(response.msg, {
                 position: "top-right",

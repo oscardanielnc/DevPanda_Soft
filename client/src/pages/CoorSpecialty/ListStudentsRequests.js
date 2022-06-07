@@ -9,53 +9,62 @@ import FilterData from "../../components/Filters/FilterData";
 import {Form, FormControl} from 'react-bootstrap';
 import useWindowDimensions from "../../hooks/useWindowResize";
 
-import {getListStudentsAgreement} from  "../../api/agreementList";
+import {getListStudentsRequests} from  "../../api/request";
 
 
 const dataDummy = [
     /*
     {
-        idAlumno : "1",
+        idSolicitud: 1,
+        idAlumno : 1,
         nombreAlumno: "Javier Palacios",
         estado: "Aprobado"
     },
     {
-        idAlumno : "2",
+        idSolicitud: 2,
+        idAlumno : 2,
         nombreAlumno: "Gianfranco Montoya",
         estado: "Aprobado"
     },
     {
-        idAlumno : "3",
+        idSolicitud: 3,
+        idAlumno : 3,
         nombreAlumno: "Oscar Navarro",
         estado: "Sin Calificar"
     },
     {
-        idAlumno : "4",
+        idSolicitud: 4,
+        idAlumno : 4,
         nombreAlumno: "Christian Ramirez",
         estado: "Sin Calificar"
     },
     {
-        idAlumno : "5",
+        idSolicitud: 5,
+        idAlumno : 5,
         nombreAlumno: "Jeison Romero",
         estado: "Aprobado"
     },
     {
-        idAlumno : "6",
+        idSolicitud: 6,
+        idAlumno : 6,
         nombreAlumno: "Marcelo Hurtado",
         estado: "Aprobado"
     },
     {
-        idAlumno : "7",
+        idSolicitud: 7,
+        idAlumno : 7,
         nombreAlumno: "Leandro Saenz",
         estado: "Desaprobado"
     },
     {
-        idAlumno : "8",
+        idSolicitud: 8,
+        idAlumno : 8,
         nombreAlumno: "José Huertas",
         estado: "Aprobado"
     },
     {
-        idAlumno : "9",
+        idSolicitud: 9,
+        idAlumno : 9,
         nombreAlumno: "Diego Rodriguez",
         estado: "Aprobado"
     }
@@ -96,7 +105,7 @@ export default function ListStudentsRequests () {
     
     useEffect(()=> {
         
-        getListStudentsAgreement(user.fidEspecialidad).then(response => {
+        getListStudentsRequests(user.fidEspecialidad).then(response => {
             console.log(response)            
             if(response.success===true) {
                 console.log("En el success el response es: ",response);
