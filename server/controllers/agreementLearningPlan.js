@@ -523,7 +523,7 @@ function requestListAgreement(req, res){
                     idPersona: e.idPersona,
                     nombres: e.nombres,
                     estadoMatriculado: e.estadoMatriculado? "Matriculado" : "Sin matricular",
-                    fechaSubida: new Date(e.fechaSubida)
+                    fechaSubida: e.fechaSubida? new Date(e.fechaSubida).toLocaleDateString() : ""
                 }
             });
             res.status(200).send({

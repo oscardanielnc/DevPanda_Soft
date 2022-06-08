@@ -12,8 +12,8 @@ api.get("/agreementLearningPlan-select", AgreementLearningPlanController.select)
 api.get("/agreementLearningPlan-selectDocumentsInfoByProcess/:fidAlumno", AgreementLearningPlanController.selectDocumentsInfoByProcess);
 api.get("/agreementLearningPlan-selectDocumentsInfoByProcessOnlyStudent/:fidAlumno", AgreementLearningPlanController.selectDocumentsInfoByProcessOnlyStudent);
 api.get("/agreementLearningPlan-selectAgreementByStudent/:fidEspecialidad", AgreementLearningPlanController.selectAgreementByStudent);
+api.get("/requestListAgreement/:idProceso",AgreementLearningPlanController.requestListAgreement);
 
-api.get("/requestListAgreement/:idEspecialidad",AgreementLearningPlanController.requestListAgreement);
 api.put("/agreementLearningPlan-updateInfoByStudent", AgreementLearningPlanController.updateInfoByStudent);
 api.put("/agreementLearningPlan-updateDocumentByAgreement", AgreementLearningPlanController.updateDocumentByAgreement);
 
