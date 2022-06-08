@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import { specialtySelectAllApi } from "../../api/specialty";
-import TableAgreement from "../../components/Tables/TableAgreement";
+import TableAgreementsRequests from "../../components/Tables/TableAgreementsRequests";
 import LayoutAdministrative from '../../layouts/LayoutAdministrative';
 import "./scss/ListStudentsRequests.scss";
 import useAuth from "../../hooks/useAuth";
@@ -9,67 +9,85 @@ import FilterData from "../../components/Filters/FilterData";
 import {Form, FormControl} from 'react-bootstrap';
 import useWindowDimensions from "../../hooks/useWindowResize";
 
-import {getListStudentsAgreement} from  "../../api/agreementList";
+import {getListStudentsRequests} from  "../../api/request";
 
 
 const dataDummy = [
     /*
     {
-        idAlumno : "1",
+        idSolicitud: 1,
+        idAlumno : 1,
         nombreAlumno: "Javier Palacios",
-        estado: "Aprobado"
+        estado: "Aprobado",
+        codigo:""
     },
     {
-        idAlumno : "2",
+        idSolicitud: 2,
+        idAlumno : 2,
         nombreAlumno: "Gianfranco Montoya",
-        estado: "Aprobado"
+        estado: "Aprobado",
+        codigo:""
     },
     {
-        idAlumno : "3",
+        idSolicitud: 3,
+        idAlumno : 3,
         nombreAlumno: "Oscar Navarro",
-        estado: "Sin Calificar"
+        estado: "Sin Calificar",
+        codigo:""
     },
     {
-        idAlumno : "4",
+        idSolicitud: 4,
+        idAlumno : 4,
         nombreAlumno: "Christian Ramirez",
-        estado: "Sin Calificar"
+        estado: "Sin Calificar",
+        codigo:""
     },
     {
-        idAlumno : "5",
+        idSolicitud: 5,
+        idAlumno : 5,
         nombreAlumno: "Jeison Romero",
-        estado: "Aprobado"
+        estado: "Aprobado",
+        codigo:""
     },
     {
-        idAlumno : "6",
+        idSolicitud: 6,
+        idAlumno : 6,
         nombreAlumno: "Marcelo Hurtado",
-        estado: "Aprobado"
+        estado: "Aprobado",
+        codigo:""
     },
     {
-        idAlumno : "7",
+        idSolicitud: 7,
+        idAlumno : 7,
         nombreAlumno: "Leandro Saenz",
-        estado: "Desaprobado"
+        estado: "Desaprobado",
+        codigo:""
     },
     {
-        idAlumno : "8",
+        idSolicitud: 8,
+        idAlumno : 8,
         nombreAlumno: "José Huertas",
-        estado: "Aprobado"
+        estado: "Aprobado",
+        codigo:""
     },
     {
-        idAlumno : "9",
+        idSolicitud: 9,
+        idAlumno : 9,
         nombreAlumno: "Diego Rodriguez",
-        estado: "Aprobado"
+        estado: "Aprobado",
+        codigo:""
     }
     */
 ]
 
 const states = [
     {
-        name: "Aceptado",
-        value: "Aceptado"
+        name: "Aprobado",
+        value: "Aprobado"
     },
     {
-        name: "Rechazado",
-        value: "Rechazado"
+        name: "Desaprobado",
+        value: "Desaprobado"
     },
     {
         name: "Sin revisar",
@@ -95,18 +113,18 @@ export default function ListStudentsRequests () {
     console.log("El user tiene: ",user);   
     
     useEffect(()=> {
-        
-        getListStudentsAgreement(user.fidEspecialidad).then(response => {
-            console.log(response)            
-            if(response.success===true) {
-                console.log("En el success el response es: ",response);
-                setAlumnos(response.data);
-                setFilteredData(response.data);
-            }
+        const fetchData = async () => {
+            getListStudentsRequests(user.fidEspecialidad).then(response => {
+                console.log(response)            
+                if(response.success===true) {
+                    console.log("En el success el response es: ",response);
+                    setAlumnos(response.data);
+                    setFilteredData(response.data);
+                }
 
-        })
-
-        
+            })
+        }
+        fetchData()
     }, [setAlumnos])
 
     const filter = e => {
@@ -136,7 +154,7 @@ export default function ListStudentsRequests () {
             
             <div className="container principal">
                 <div className="row rows studentManagement__title">
-                    <h1>Listado de alumnos por convenio</h1>
+                    <h1>Solicitudes para realizar PSP sin convenio</h1>
                 </div>
                 <div className="row rows studentRequests__title">
                     Buscar por Nombre, Apellidos o Estado
@@ -162,7 +180,7 @@ export default function ListStudentsRequests () {
                     
                 </div>
                 <div className="row rows">
-                    <TableAgreement rows={filteredData}/>
+                    <TableAgreementsRequests rows={filteredData}/>
                 </div>
 
             </div>

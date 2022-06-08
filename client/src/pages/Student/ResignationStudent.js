@@ -15,9 +15,9 @@ import useAuth from "../../hooks/useAuth";
 
 let docuemntsState ="";
 let approvalState = ""
-const maxFiles = 2;
+const maxFiles = 1;
 const idAlumno=1;
-export default function StudentAgreement () {
+export default function ResignationStudent () {
     const [fileList, setFileList] = useState([])
     const [docs, setDocs] = useState([])
     const [studentDocs, setStudentDocs] = useState([])
@@ -56,7 +56,6 @@ export default function StudentAgreement () {
 
     useEffect(()=>{
         selectDocumentsInfoByProcessOnlyStudent(fidAlumno).then(response => {
-            console.log("response:",response);
             if(response.success) {
                 setData(response.files)
                 if(response.files.length>0){
@@ -109,7 +108,7 @@ export default function StudentAgreement () {
 
     const deliver = async () => {
         if(fileList.length === maxFiles) {
-            const response = await uploadDocsApi(fileList, `${user.fidProceso}-CONV-${user.idPersona}`, 1);
+            const response = await uploadDocsApi(fileList, `${user.fidProceso}-RNCI-${user.idPersona}`, 1);
             if(response.success) {
                 toast.success(response.msg, {
                     position: "top-right",
@@ -163,16 +162,15 @@ export default function StudentAgreement () {
             <div className="container"  style={{"padding":"1px"}}>
                 <div className="row rows" style={{textAlign: "left"}}>
                     <h1>
-                        Convenio y Plan de Aprendizaje
+                        Renuncia
                     </h1>
                 </div>
                 <div className="shadowbox">
                     <div className="row rows" style={{textAlign: "left"}}>
                         <p>
-                        Aquí podrá ingresar su Convenio y Plan de aprendizaje, una vez esten firmados por tu empresa y por ti, para que la universidad lo revise y puedas obtener la aprobación de los mismos. Adicionalmente, debes de completar la información que se solicita en el apartado “Información sobre el convenio”. 
+                        Aquí podrá ingresar su carta de renuncia, esta debe estar firmada y sellada por la empresa que labora para ser válida. En caso esta renuncia sea aceptada, se le enviará un correo.”. 
                         </p>
                         <p>
-                        A continuación se presenta el modelo para convenio y plan de aprendizaje:
                         </p>
                         <ShowFiles docs={docs} />
                     </div>
@@ -206,7 +204,7 @@ export default function StudentAgreement () {
                 </div>
 
                 <div className="row rows boton">
-                    <Button className="btn btn-primary" style={{width:"40%"}} onClick={deliver}>Entregar</Button>
+                    <Button className="btn btn-primary" style={{width:"40%"}} onClick={deliver}>Registrar solicitud</Button>
                 </div>
             </div>
         </LayoutBasic>

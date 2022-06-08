@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Button, OverlayTrigger, ProgressBar, Tooltip } from 'react-bootstrap';
-import { NavLink } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 import './StudentNavbar.scss';
 import useAuth from "../../hooks/useAuth"
     
@@ -85,7 +85,8 @@ function StudentNavbar () {
             })}
             </ul>
         </nav>
-        <Button variant='secondary' className='studentNavBar__renuncia'>Renuncia</Button>
+        <Link to ={`/resignation/phase=RNCI`} 
+                            className= "btn btn-secondary studentNavBar__renuncia">Renuncia</Link>
     </div>
 
     )
