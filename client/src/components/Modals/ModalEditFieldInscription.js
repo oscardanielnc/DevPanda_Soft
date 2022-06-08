@@ -12,7 +12,7 @@ import { isNotEmptyObj } from "../../utils/objects";
 import ShowFiles from "../../components/FileManagement/ShowFiles";
 import ModalBasic from "./ModalBasic";
 import './ModalEditFieldInscription.scss';
-import { getstudentInscriptionForm } from "../../api/registrationForm";
+import { editFieldInscriptionForm } from "../../api/registrationForm";
 import useAuth from "../../hooks/useAuth";
 
 const dataDummy = {
@@ -37,11 +37,14 @@ export default function ModalEditFieldInscription (props) {
         e.preventDefault();
         let response=null;
         const objeto={
-            data,
+            idCampo:data.idField,
             idEspecialidad: user.fidEspecialidad,
+            nombreCampo:data.nameField,
+            seccion:data.seccion,
             idProceso:user.fidProceso,
+            obligatorio:data.obligatorio
         }
-        //response = await editFieldInscription(objeto);
+        response = await editFieldInscriptionForm(objeto);
         if(!response.success){
             toast.error(response.msg, {
                 position: "top-right",
@@ -63,7 +66,8 @@ export default function ModalEditFieldInscription (props) {
                 progress: undefined,
             });
             saved=true;
-            setShow(false);
+            //setShow(false);
+            window.location.reload();
         }
     }
     const handleChange = (e) => {

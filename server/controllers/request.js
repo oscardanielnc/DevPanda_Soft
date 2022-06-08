@@ -9,7 +9,7 @@ function requestList(req, res){
     const fidEspecialidad = req.params.idEspecialidad;
     
     
-    const sqlQuery = `SELECT idSolicitud, fidAlumno as idAlumno, concat(P.nombres, " ", P.Apellidos) as nombreAlumno, estado
+    const sqlQuery = `SELECT idSolicitud, fidAlumno as idAlumno, concat(P.nombres, " ", P.Apellidos) as nombreAlumno, estado, A.codigo
                         FROM SolicitudesSinConvenio S, Persona P, Alumno A
                         WHERE S.fidEspecialidad = ${fidEspecialidad}
                         AND A.idAlumno = S.fidAlumno
@@ -38,7 +38,45 @@ function requestList(req, res){
 }
 
 //Traer una solicitud en especifico 
-//TO DO:
+function getRequest(req, res){
+    const connection = mysql.createConnection(MYSQL_CREDENTIALS);
+
+    const idSolicitud= req.params.idSolicitud;
+
+    let sqlQuery = `SELECT  idAlumno, estado, concat(P.nombres, " ", P.Apellidos) as nombreAlumno, codigo
+                    FROM SolicitudesSinConvenio S, Persona P, Alumno A
+                    WHERE S.idSolicitud = ${idSolicitud}
+                    AND A.idAlumno = S.fidAlumno
+                    AND P.idPersona = S.fidAlumno;`
+    
+    connection.connect(err => {
+        if (err) throw err;
+    });
+    
+    connection.query(sqlQuery, (err, result) => {
+        if (err) {
+            res.status(505).send({
+                success: false,
+                message: "Error inesperado en el servidor" + err.message
+            })
+        }else{
+            if(result.length===1){
+                res.status(200).send({
+                    success: true,
+                    result
+                })   
+            }else{
+                res.status(404).send({
+                    success: false,
+                    message: "Se encontró más de una solicitud con ese identificador"
+                })   
+            }
+            
+        }
+    });
+
+    connection.end();
+}
 
 //Verificador de solicitud de un alumno
 function verifyRequest(req, res){
@@ -143,9 +181,48 @@ async function insertRequest(req, res){
     })
 }
 
+//Actualizar una solicitud
+function updateRequest(req, res){
+    const connection = mysql.createConnection(MYSQL_CREDENTIALS);
+
+    const estado= req.body.estado;
+    const idSolicitud = req.body.idSolicitud;
+
+    let sqlQuery = `UPDATE SolicitudesSinConvenio set estado = "${estado}"
+                    where idSolicitud = ${idSolicitud}`
+    
+    connection.connect(err => {
+        if (err) throw err;
+    });
+    
+    connection.query(sqlQuery, (err, result) => {
+        if (err) {
+            res.status(505).send({
+                success: false,
+                message: "Error inesperado en el servidor" + err.message
+            })
+        }else{
+            if(result.affectedRows===1){
+                res.status(200).send({
+                    success: true,
+                    message: "Se actualizó el valor correctamente"
+                })
+            }else{
+                res.status(404).send({
+                    success: false,
+                    message: "Se actualizó más de una fila"
+                })
+            }        
+        }
+    });
+
+    connection.end();
+}
 
 module.exports = {
     insertRequest,
     requestList,
-    verifyRequest
+    verifyRequest,
+    getRequest,
+    updateRequest
 }

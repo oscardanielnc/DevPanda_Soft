@@ -545,7 +545,6 @@ function getListOfLineBusiness(req, res){
 async function getAllFields(req, res){
 
     const connection = mysql.createConnection(MYSQL_CREDENTIALS);
-
     const fidEspecialidad = req.params.idEspecialidad
     const fidProceso = req.params.idProceso;
 
@@ -553,14 +552,16 @@ async function getAllFields(req, res){
                 FROM CampoFichaInscripcion CF, CampoFichaInscripcionProceso CP
                 WHERE CF.idCampo = CP.fidCampoFicha
                 AND CP.fidProceso = ${fidProceso}
-                AND CF.fidEspecialidad = ${ fidEspecialidad}`;
+                AND CF.fidEspecialidad = ${ fidEspecialidad}
+                AND CP.flagActivo = "activo"`;
 
     try{
         resultVariableFields= await sqlAsync(sqlQuery, connection);
         
     }catch(e){
         res.status(505).send({ 
-            message: "Error en el servidor " + e.message
+            message: "Error en el servidor " + e.message,
+            success:false
         })
     }
     let arregloFixedFields = [
@@ -752,8 +753,12 @@ async function getAllFields(req, res){
     
     arregloFixedFields = arregloFixedFields.concat(resultVariableFields);
 
-
-    res.status(200).send(arregloFixedFields);
+    console.log("El arregloFixedFields es: ",arregloFixedFields);
+    res.status(200).send(
+        {
+            arregloFixedFields,
+            success: true
+        });
     connection.end();
 }
 
@@ -765,6 +770,8 @@ async function insertField(req, res){
     const seccion = req.body.seccion;
     const idProceso = req.body.idProceso;
     const obligatorio = req.body.obligatorio;
+
+    console.log("Los datos en el insert son: ",idEspecialidad,"-",nombreCampo,"-",seccion,"-",idProceso,"-",obligatorio);
     let idCampo;
     let sqlQuery = `insert into CampoFichaInscripcion(fidEspecialidad, nombreCampo, seccion, flag) 
                     values (${idEspecialidad}, "${nombreCampo}", "${seccion}", "activo")`;
@@ -786,8 +793,8 @@ async function insertField(req, res){
     }
 
     
-    sqlQuery = `insert into CampoFichaInscripcionProceso(fidProceso, fidCampoFicha, flag) 
-                values (${idProceso},${idCampo}, "${obligatorio}");`;
+    sqlQuery = `insert into CampoFichaInscripcionProceso(fidProceso, fidCampoFicha, flag,flagActivo) 
+                values (${idProceso},${idCampo}, "${obligatorio}","activo");`;
 
     try{
         let resultField= await sqlAsync(sqlQuery, connection);
@@ -907,7 +914,7 @@ async function deleteField(req, res){
 
     res.status(200).send({
         success: true,
-        message: "Valores actualizados correctamente"
+        message: "Se eliminó el campo de forma correcta."
 
     });
     connection.end();
