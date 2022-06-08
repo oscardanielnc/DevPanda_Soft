@@ -8,12 +8,15 @@ import './scss/SignUp.scss';
 import { Link } from "react-router-dom";
 import { isNumber } from "../../utils/objects";
 import { signUpApi } from "../../api/auth";
+import jwtDecode from "jwt-decode";
+import { GOOGLE_ID } from "../../api/config";
 
 const dataDummy = {
     firstName: "Campo autocompletado",
     lastName: "Campo autocompletado",
     email: "Campo autocompletado",
     specialty: -1,
+    photo: null,
     code: "",
 }
 
@@ -29,6 +32,16 @@ export default function SignUp (){
         }
         fetchData()
     }, [setSpecialties])
+    useEffect(()=> {
+        /* global google */
+        google.accounts.id.initialize({
+            client_id: GOOGLE_ID,
+            callback: responseGoogle
+        })
+        google.accounts.id.renderButton(document.getElementById("google-btn-signup"),
+            {theme: "outline", size: "large"}
+        )
+    }, [])
     console.log(data)
 
     const handleCode = e => {
@@ -44,16 +57,17 @@ export default function SignUp (){
         })
     }
     const responseGoogle = async (response) => {
-        const basicData = response.profileObj;
-
+        const basicData = jwtDecode(response.credential);
         const emailDomain = basicData.email.split("@")[1];
+        const ph = basicData.picture? basicData.picture: null;
 
         if(emailDomain /*emailDomain === "pucp.edu.pe"*/) {
             setData({
                 ...data,
                 email: basicData.email,
-                firstName: basicData.givenName,
-                lastName: basicData.familyName
+                firstName: basicData.given_name,
+                lastName: basicData.family_name,
+                photo: ph
             })
         } else {
             toast.warning("Tiene que registarse con un correo PUCP", {
@@ -111,14 +125,15 @@ export default function SignUp (){
                         <Row><h6>Inicia el registro con tu correo PUCP</h6></Row>
                     </div>
                     <Row>
-                        <GoogleLogin
+                        <div id="google-btn-signup"></div>
+                        {/* <GoogleLogin
                             className="signUp__google"
                             clientId="217315516782-dimqetb06qceps0d7su07rtlmr4s1bli.apps.googleusercontent.com"
                             buttonText="Iniciar registro"
                             onSuccess={responseGoogle}
                             onFailure={responseGoogle}
                             cookiePolicy={'single_host_origin'}
-                        />
+                        /> */}
                     </Row>
                     <ToastContainer /> 
                     <Form>
