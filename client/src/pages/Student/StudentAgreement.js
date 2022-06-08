@@ -56,6 +56,7 @@ export default function StudentAgreement () {
 
     useEffect(()=>{
         selectDocumentsInfoByProcessOnlyStudent(fidAlumno).then(response => {
+            console.log("response:",response);
             if(response.success) {
                 setData(response.files)
                 if(response.files.length>0){
