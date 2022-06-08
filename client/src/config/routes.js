@@ -26,7 +26,8 @@ import MeetingsManagement from "../pages/Supervisor/MeetingsManagement";
 import DeliverablesList from "../pages/Supervisor/DeliverablesList";
 import StudentRegistrarionFormCoordinator from "../pages/CoorSpecialty/StudentRegistrarionFormCoordinator";
 import ProcessList from "../pages/CoorSpecialty/ProcessList";
-
+import FinalReportList from "../pages/Supervisor/FinalReportList";
+import FinalReportReview from "../pages/Supervisor/FinalReportReview";
 const routes = [ 
     // General
     {
@@ -122,6 +123,16 @@ const routes = [
         path: "/list-deliverables/permissions=S",
         exact: true,
         component: DeliverablesList,//cambiar acá
+    },
+    {
+        path: "/list-final-report/permissions=S",
+        exact: true,
+        component: FinalReportList,//cambiar acá
+    },
+    {   
+        path: "/final-report-review/permissions=S&idStudent=:idStudent",
+        exact: true,
+        component: FinalReportReview,
     },
     // Alumno
     {
