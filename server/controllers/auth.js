@@ -6,7 +6,9 @@ const { sqlAsync } = require('../utils/async');
 
 async function singIn(req, res) { 
     const connection = mysql.createConnection(MYSQL_CREDENTIALS);
-    const email = req.params.email;
+    // const email = req.params.email;
+    // const photo = req.params.photo;
+    const {email, photo} = req.body;
 
     connection.connect(err => {
         if (err) throw err;
@@ -28,7 +30,7 @@ async function singIn(req, res) {
                     nombres: dbUser.nombres,
                     apellidos: dbUser.apellidos,
                     correo: dbUser.correo,
-                    foto: dbUser.foto,
+                    foto: photo,
                     tipoPersona: dbUser.tipoPersona,
                     activo: 1,
                     expire: moment().add(8, 'hours').unix(),
@@ -117,7 +119,7 @@ async function singIn(req, res) {
                         if(dbPersonal.tipoPersonal === "F") {
                             user = {
                                 ...user,
-                                fidProceso: 1
+                                fidProceso: 6
                             }
                         }
                         const accessToken = jwt.encode(user, PANDA_KEY);
@@ -175,8 +177,8 @@ async function signUp(req, res) {
     
                     if(resultAlumnos.length === 0) {
                         // Iniciamos el registro
-                        const sqlQueryPersona = `INSERT INTO Persona(fidEspecialidad, nombres, apellidos, correo, contrasena, tipoPersona, activo, foto) 
-                                                        values(${specialty},'${firstName}','${lastName}','${email}',null,'e',1, '${photo}');`
+                        const sqlQueryPersona = `INSERT INTO Persona(fidEspecialidad, nombres, apellidos, correo, contrasena, tipoPersona, activo) 
+                                                        values(${specialty},'${firstName}','${lastName}','${email}',null,'e',1);`
                         const resultPersona  = await sqlAsync(sqlQueryPersona, connection);
             
                         const idPersona = resultPersona.insertId;

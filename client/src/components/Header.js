@@ -91,7 +91,8 @@ function HeaderNotLogged () {
     }, [])
     const responseGoogle = async (response) => {
         const jwtResponse = jwtDecode(response.credential);
-        const result = await signInApi(jwtResponse.email);
+        console.log(jwtResponse.email, jwtResponse.picture)
+        const result = await signInApi(jwtResponse.email, jwtResponse.picture);
         console.log(result)
 
         if(result.success) {
