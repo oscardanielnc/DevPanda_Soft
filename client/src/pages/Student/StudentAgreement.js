@@ -14,7 +14,8 @@ import useAuth from "../../hooks/useAuth";
 
 
 let docuemntsState ="";
-let approvalState = ""
+let approvalState = "";
+let approvalStateFACI="";
 const maxFiles = 2;
 const idAlumno=1;
 export default function StudentAgreement () {
@@ -73,28 +74,53 @@ export default function StudentAgreement () {
     
     const typeDocumentState = (docuemntsState==="Sin entregar")? "fileEmpty": "success";
     let typeApprovalState = "pending";
+    let typeApprovalStateFACI="pending";
     let observaciones=data[numFiles].observaciones;
     console.log("lenght",numFiles);
-    if(data[numFiles].estadoFaci === "O" || data[numFiles].estadoEspecialidad === "O"){
+    //aprobado especialidad
+    if( data[numFiles].estadoEspecialidad === "O"){
         approvalState = "Observado"
     }
-    else if(data[numFiles].estadoFaci === "A" || data[numFiles].estadoEspecialidad ==="A"  ){
+    else if(data[numFiles].estadoEspecialidad ==="A"  ){
         approvalState= "Aprobado"
     }
-    else if(data[numFiles].estadoFaci === "P" || data[numFiles].estadoEspecialidad ==="P"){
+    else if(data[numFiles].estadoEspecialidad ==="P"){
         approvalState= "Pendiente"
         console.log("holi");
     }
     else{
         approvalState= "Sin entrega"
     }
-    
+    //aprobado FACI
+    if(data[numFiles].estadoFaci === "O" ){
+        approvalStateFACI = "Observado"
+    }
+    else if(data[numFiles].estadoFaci === "A" ){
+        approvalStateFACI= "Aprobado"
+    }
+    else if(data[numFiles].estadoFaci === "P"){
+        approvalStateFACI= "Pendiente"
+        console.log("holi2");
+    }
+    else{
+        approvalStateFACI= "Sin entrega"
+    }
+    //switch especialidad
     switch(approvalState) {
         case "Observado": typeApprovalState = "warning"; break;
         case "Sin entrega": typeApprovalState = "fileEmpty"; break;
         case "Pendiente": typeApprovalState="pending";break;
         default: typeApprovalState = "success"; break;
     }
+
+    //switch faci
+    switch(approvalStateFACI) {
+        case "Observado": typeApprovalStateFACI = "warning"; break;
+        case "Sin entrega": typeApprovalStateFACI = "fileEmpty"; break;
+        case "Pendiente": typeApprovalStateFACI="pending";break;
+        default: typeApprovalStateFACI = "success"; break;
+    }
+
 /*
     const datadummy = {
         "idAlumno":1,
@@ -183,10 +209,11 @@ export default function StudentAgreement () {
                             Estado de la entrega
                         </h2>
                     </div>
-                    <div className="row rows">
+                    <div className="row">
                         <StateViewer states={[
                             StatesViewType[typeDocumentState]("Documentos", docuemntsState),
-                            StatesViewType[typeApprovalState]("Aprobación", approvalState)]}/>
+                            StatesViewType[typeApprovalState]("Aprobación Especialidad", approvalState),
+                            StatesViewType[typeApprovalStateFACI]("Aprobación Faci", approvalStateFACI),]}/>
                     </div>
                 </div>
                 <div className="shadowbox">
