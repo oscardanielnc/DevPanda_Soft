@@ -14,11 +14,10 @@ import useAuth from "../../hooks/useAuth";
 
 
 let docuemntsState ="";
-let approvalState = "";
-let approvalStateFACI="";
-const maxFiles = 2;
+let approvalState = ""
+const maxFiles = 1;
 const idAlumno=1;
-export default function StudentAgreement () {
+export default function ResignationStudent () {
     const [fileList, setFileList] = useState([])
     const [docs, setDocs] = useState([])
     const [studentDocs, setStudentDocs] = useState([])
@@ -57,7 +56,6 @@ export default function StudentAgreement () {
 
     useEffect(()=>{
         selectDocumentsInfoByProcessOnlyStudent(fidAlumno).then(response => {
-            console.log("response:",response);
             if(response.success) {
                 setData(response.files)
                 if(response.files.length>0){
@@ -74,53 +72,28 @@ export default function StudentAgreement () {
     
     const typeDocumentState = (docuemntsState==="Sin entregar")? "fileEmpty": "success";
     let typeApprovalState = "pending";
-    let typeApprovalStateFACI="pending";
     let observaciones=data[numFiles].observaciones;
     console.log("lenght",numFiles);
-    //aprobado especialidad
-    if( data[numFiles].estadoEspecialidad === "O"){
+    if(data[numFiles].estadoFaci === "O" || data[numFiles].estadoEspecialidad === "O"){
         approvalState = "Observado"
     }
-    else if(data[numFiles].estadoEspecialidad ==="A"  ){
+    else if(data[numFiles].estadoFaci === "A" || data[numFiles].estadoEspecialidad ==="A"  ){
         approvalState= "Aprobado"
     }
-    else if(data[numFiles].estadoEspecialidad ==="P"){
+    else if(data[numFiles].estadoFaci === "P" || data[numFiles].estadoEspecialidad ==="P"){
         approvalState= "Pendiente"
         console.log("holi");
     }
     else{
         approvalState= "Sin entrega"
     }
-    //aprobado FACI
-    if(data[numFiles].estadoFaci === "O" ){
-        approvalStateFACI = "Observado"
-    }
-    else if(data[numFiles].estadoFaci === "A" ){
-        approvalStateFACI= "Aprobado"
-    }
-    else if(data[numFiles].estadoFaci === "P"){
-        approvalStateFACI= "Pendiente"
-        console.log("holi2");
-    }
-    else{
-        approvalStateFACI= "Sin entrega"
-    }
-    //switch especialidad
+    
     switch(approvalState) {
         case "Observado": typeApprovalState = "warning"; break;
         case "Sin entrega": typeApprovalState = "fileEmpty"; break;
         case "Pendiente": typeApprovalState="pending";break;
         default: typeApprovalState = "success"; break;
     }
-
-    //switch faci
-    switch(approvalStateFACI) {
-        case "Observado": typeApprovalStateFACI = "warning"; break;
-        case "Sin entrega": typeApprovalStateFACI = "fileEmpty"; break;
-        case "Pendiente": typeApprovalStateFACI="pending";break;
-        default: typeApprovalStateFACI = "success"; break;
-    }
-
 /*
     const datadummy = {
         "idAlumno":1,
@@ -135,7 +108,7 @@ export default function StudentAgreement () {
 
     const deliver = async () => {
         if(fileList.length === maxFiles) {
-            const response = await uploadDocsApi(fileList, `${user.fidProceso}-CONV-${user.idPersona}`, 1);
+            const response = await uploadDocsApi(fileList, `${user.fidProceso}-RNCI-${user.idPersona}`, 1);
             if(response.success) {
                 toast.success(response.msg, {
                     position: "top-right",
@@ -189,16 +162,15 @@ export default function StudentAgreement () {
             <div className="container"  style={{"padding":"1px"}}>
                 <div className="row rows" style={{textAlign: "left"}}>
                     <h1>
-                        Convenio y Plan de Aprendizaje
+                        Renuncia
                     </h1>
                 </div>
                 <div className="shadowbox">
                     <div className="row rows" style={{textAlign: "left"}}>
                         <p>
-                        Aquí podrá ingresar su Convenio y Plan de aprendizaje, una vez esten firmados por tu empresa y por ti, para que la universidad lo revise y puedas obtener la aprobación de los mismos. Adicionalmente, debes de completar la información que se solicita en el apartado “Información sobre el convenio”. 
+                        Aquí podrá ingresar su carta de renuncia, esta debe estar firmada y sellada por la empresa que labora para ser válida. En caso esta renuncia sea aceptada, se le enviará un correo.”. 
                         </p>
                         <p>
-                        A continuación se presenta el modelo para convenio y plan de aprendizaje:
                         </p>
                         <ShowFiles docs={docs} />
                     </div>
@@ -209,11 +181,10 @@ export default function StudentAgreement () {
                             Estado de la entrega
                         </h2>
                     </div>
-                    <div className="row">
+                    <div className="row rows">
                         <StateViewer states={[
                             StatesViewType[typeDocumentState]("Documentos", docuemntsState),
-                            StatesViewType[typeApprovalState]("Aprobación Especialidad", approvalState),
-                            StatesViewType[typeApprovalStateFACI]("Aprobación Faci", approvalStateFACI),]}/>
+                            StatesViewType[typeApprovalState]("Aprobación", approvalState)]}/>
                     </div>
                 </div>
                 <div className="shadowbox">
@@ -233,7 +204,7 @@ export default function StudentAgreement () {
                 </div>
 
                 <div className="row rows boton">
-                    <Button className="btn btn-primary" style={{width:"40%"}} onClick={deliver}>Entregar</Button>
+                    <Button className="btn btn-primary" style={{width:"40%"}} onClick={deliver}>Registrar solicitud</Button>
                 </div>
             </div>
         </LayoutBasic>

@@ -87,3 +87,32 @@ export function registerRequestApi (alumno) {
         })
         
 }
+
+export function updateRequestReviewApi (alumno) {
+    const url = `${BASE_PATH}/${API_VERSION}/updateRequest`
+
+    const params = {
+        method: "PUT",
+        headers: {
+            'Content-type': 'application/json'
+        },
+        body: JSON.stringify(alumno)
+    }
+    return fetch(url, params)
+        .then(response => {
+            return response.json()
+        })
+        .then(result => {
+            return {
+                msg: result.message,
+                success: result.success
+            }
+        })
+        .catch(err => {
+            return {
+                msg: err.message,
+                success: false
+            }
+        })
+        
+}

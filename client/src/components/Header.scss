@@ -5,22 +5,32 @@
     background: $primary-color;
     display: flex;
     justify-content: space-between;
-   
+
+    
     &__left{
+        width: 408px;
         &titulo{
             color: white;
             margin-left: 1em;
             font-size: .5em;
         }
     }
-
+    
     &__right{
         display: flex;
-
+        width: 100%;
+        
+        &-specialty {
+            color: white;
+            font-size: 1.35em;
+            margin: auto;
+            letter-spacing: 1px;
+            color: #fff;
+        }
         &nombreUsuario{
             background: $primary-color;
             color:#f8f9fa;
-            margin: auto;
+            margin: auto 0;
             margin-right: 30px;
         }
 
@@ -29,10 +39,22 @@
         	color: #f8f9fa;
             display: flex;
 
+            &-img {
+                border-radius: 50px;
+                width: 66px;
+                height: 66px;
+                margin: auto;
+                margin-right: 0.75em;
+                &:hover {
+                    box-shadow: #fff 0px 0px 3px 0px;
+                    transform: scale(1.02);
+                }
+            }
+
             &-user {
                 background-color: #fff;
                 color: $primary-color;
-                font-size: 48px;
+                font-size: 46px;
                 display: flex;
                 border-radius: 50px;
                 padding: 10px;

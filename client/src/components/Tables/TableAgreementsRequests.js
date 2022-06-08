@@ -1,28 +1,35 @@
 import React from "react";
 import { Button, Table } from 'react-bootstrap';
-import { useNavigate,Link } from "react-router-dom";
-import ModalAgreementRequest from "../Modals/ModalAgreementRequest";
+import ModalNoAgreementReview from "../Modals/ModalNoAgreementReview";
 import './TableAgreementsRequests.scss';
 import { useState } from "react";
 import useAuth from "../../hooks/useAuth";
-
+import {getAllDocsApi,uploadDocsApi } from "../../api/files";
 
 export default function TableAgreementsRequests ({rows, idProcess=1, phase="CONV"}) {
     const {user} = useAuth();
     const [show,setShow]=useState(false);
-    const [showSm,setShowSm]=useState(false);
-    
-
+    const [dataReview,setDatareview]=useState([]);
+    const [dataReviewCopy,setDatareviewCopy]=useState([]);
+    const [fileList, setFileList] = useState([]);
     if(rows.length === 0) {
         return (
             <p>No se han registrado entregas todavía.</p>
         )
     }
 
-    console.log("Solis:",rows);
+    const handleClick = async(student) => {
+        setShow(true);
+        setDatareview(student);
+        setDatareviewCopy(student);
+        const result = await getAllDocsApi(`${user.fidProceso}-NCON-${student.idAlumno}`, 1);
+        if(result.success) {
+            setFileList(result.docs)
+        }
+    }
 
     return (
-        <Table striped bordered hover className="TableAgreementsRequests">
+        <Table striped bordered hover className="">
             <thead>
                 <tr>
                     <th>#</th>
@@ -32,20 +39,21 @@ export default function TableAgreementsRequests ({rows, idProcess=1, phase="CONV
             </thead>
             <tbody>
             {
-                rows.map((row, index) => (
+                rows.map((row, index) => {
+                    return (
                     <tr key={index}>
                         <td>{index+1}</td>
                         <td>{row.nombreAlumno}</td>
                         <td>{row.estado}</td>
-                        <td className="buttonRequest">
-                            <Button className="btn btn-primary" style={{width:"30%",marginRight:"50px"}} onClick={()=>setShow(true)}>Visualizar</Button>
-                            <ModalAgreementRequest show={show} setShow={setShow} user={user}showSm={showSm}setShowSm={setShowSm}student={row}></ModalAgreementRequest>
+                        <td>
+                            <Button className="btn btn-primary" style={{width:"80%",marginRight:"25px",marginLeft:"25px",textAlign:"center !important"}} onClick={()=>handleClick(row)}>Visualizar</Button>
                         </td>
                     </tr>
-                ))
+                )})
             }
-                
             </tbody>
+            <ModalNoAgreementReview show={show} setShow={setShow} files={fileList} setFiles={setFileList}
+                data={dataReviewCopy} setData={setDatareviewCopy}></ModalNoAgreementReview>
         </Table>
     )
 }
