@@ -6,8 +6,6 @@ function uploadDocs(req, res) {
     const code = req.params.code;
     const isStudent = Number(req.params.isStudent);
     const files = req.files;
-    console.log("files",files )
-    console.log("req.params",req.params )
 
     // for (const doc in files) {
     //     const objDoc = files[doc];
@@ -38,7 +36,6 @@ function uploadDocs(req, res) {
 
         for (const doc in files) {
             const objDoc = files[doc];
-            console.log("objDoc",objDoc )
             const docPathName = objDoc.path.split("/")[2];
             const docOriginalName = objDoc.originalFilename;
 
