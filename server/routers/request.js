@@ -7,6 +7,10 @@ api.get("/requestList/:idEspecialidad",RequestController.requestList);
 
 api.get("/verifyRequest/:fidAlumno",RequestController.verifyRequest);
 
-api.post("/request", RequestController.insertRequest)
+api.get("/getRequest/:idSolicitud",RequestController.getRequest);
+
+api.post("/request", RequestController.insertRequest);
+
+api.put("/updateRequest", RequestController.updateRequest);
 
 module.exports = api;
