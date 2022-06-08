@@ -204,12 +204,13 @@ function updateRequest(req, res){
         }else{
             if(result.affectedRows===1){
                 res.status(200).send({
-                    success: true
+                    success: true,
+                    message: "Se actualizó el valor correctamente"
                 })
             }else{
                 res.status(404).send({
                     success: false,
-                    message: "Se actulizó más de una fila"
+                    message: "Se actualizó más de una fila"
                 })
             }        
         }

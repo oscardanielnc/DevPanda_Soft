@@ -157,7 +157,8 @@ export default function StudentRegistrationForm () {
     if(isNaN(idAlumno)) window.location.reload();
 
     console.log("El idAlumno es: ",idAlumno);
-    
+    console.log("El user es: ",user);
+
     useEffect(()=> {
         const fetchData = async () => {
             setLoading(true);

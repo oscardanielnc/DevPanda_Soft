@@ -80,6 +80,10 @@ export default function AdministrativeNavbar() {
         {
             title: "Gestión de Entregables",
             link: `/list-deliverables/permissions=S`
+        },
+        {
+            title: "Revisión de Informe Final",
+            link: `/list-final-report/permissions=S`
         }
     ]
 

@@ -412,7 +412,7 @@ async function selectDocumentsInfoByProcessOnlyStudent(req, res){
             }
             //insert a la tabla
             sqlQuery = `INSERT INTO EntregaConvenioYPlan (fidConvenioYPlan, fidAlumnoProceso, estadoFaci, estadoEspecialidad, observaciones)
-                        values(1,${idAlumnoProceso},'P','P',"") `
+                        values(2,${idAlumnoProceso},'P','P',"") `
             try {
                 resultado  = await sqlAsync(sqlQuery, connection)
                 if(!resultado){
