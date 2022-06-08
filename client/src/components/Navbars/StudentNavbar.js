@@ -46,7 +46,7 @@ function StudentNavbar () {
         else return 'Bloqueado';
     }
     
-    const transformText = `rotate(90deg) scale(${navbar.length/6},0.3) translate(${(navbar.length-6)*30}px, 410px)`;
+    const transformText = `rotate(90deg) scale(${navbar.length/6},0.3) translate(${(navbar.length-6)*30}px, 446px)`;
 
     return(
     <div className="studentNavBar">
