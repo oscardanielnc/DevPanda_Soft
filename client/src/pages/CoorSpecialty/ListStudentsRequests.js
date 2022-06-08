@@ -82,12 +82,12 @@ const dataDummy = [
 
 const states = [
     {
-        name: "Aceptado",
-        value: "Aceptado"
+        name: "Aprobado",
+        value: "Aprobado"
     },
     {
-        name: "Rechazado",
-        value: "Rechazado"
+        name: "Desaprobado",
+        value: "Desaprobado"
     },
     {
         name: "Sin revisar",

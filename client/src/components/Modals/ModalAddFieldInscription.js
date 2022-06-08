@@ -47,6 +47,7 @@ export default function ModalAddFieldInscription (props) {
         }
         console.log("El objeto enviado es: ",objeto);
         response = await addFieldInscriptionForm(objeto);
+        console.log("El response en ADd es: ",response);
         if(!response.success){
             toast.error(response.msg, {
                 position: "top-right",
@@ -58,7 +59,7 @@ export default function ModalAddFieldInscription (props) {
                 progress: undefined,
             });
         }else{
-            toast.success(response.msg, {
+            toast.success("Se insertó con éxito", {
                 position: "top-right",
                 autoClose: 5000,
                 hideProgressBar: false,
@@ -68,7 +69,8 @@ export default function ModalAddFieldInscription (props) {
                 progress: undefined,
             });
             saved=true;
-            setShow(false);
+            //setShow(false);
+            window.location.reload();
         }
     }
     const handleChange = (e) => {

@@ -66,7 +66,8 @@ export default function ModalEditFieldInscription (props) {
                 progress: undefined,
             });
             saved=true;
-            setShow(false);
+            //setShow(false);
+            window.location.reload();
         }
     }
     const handleChange = (e) => {

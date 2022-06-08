@@ -13,7 +13,7 @@ import ShowFiles from "../../components/FileManagement/ShowFiles";
 import ModalBasic from "./ModalBasic";
 import './ModalNoAgreementReview.scss';
 import useAuth from "../../hooks/useAuth";
-import { getstudentInscriptionForm } from "../../api/registrationForm";
+import { updateRequestReviewApi } from "../../api/request";
 const dataDummy = {
     "idSolicitud":"",
     "idAlumno":"",
@@ -69,7 +69,14 @@ export default function ModalNoAgreementReview (props) {
         e.preventDefault();
         let response=null;
 
-        //response = await registrationNoAgreementReview(dataReviewCopy.estado,idAlumno,user.fidProceso);
+        const objeto={
+            estado:data.estado,
+            idSolicitud:data.idSolicitud,
+            idAlumno: idAlumno,
+            fidProceso:user.fidProceso
+        }
+
+        response = await updateRequestReviewApi(objeto);
         if(!response.success){
             toast.error(response.msg, {
                 position: "top-right",
@@ -91,6 +98,7 @@ export default function ModalNoAgreementReview (props) {
                 progress: undefined,
             });
             savedCoordinator=true;
+            window.location.reload();
             //setData(dataReviewCopy)
         }
     }
@@ -159,7 +167,6 @@ export default function ModalNoAgreementReview (props) {
                 </div>
                 <div className="row uploadAgreement" >        
                     <ShowFiles docs={files}/>
-                    <FileManagement canUpload={false}  maxFiles={maxFiles} files={files} setfiles={setFiles} titleUpload="Archivos subidos por el alumno" titleUploadedFiles="Archivos subidos por el alumno"/>
                 </div>
             </Modal.Body>
         </ModalBasic>

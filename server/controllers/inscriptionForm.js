@@ -552,7 +552,8 @@ async function getAllFields(req, res){
                 FROM CampoFichaInscripcion CF, CampoFichaInscripcionProceso CP
                 WHERE CF.idCampo = CP.fidCampoFicha
                 AND CP.fidProceso = ${fidProceso}
-                AND CF.fidEspecialidad = ${ fidEspecialidad}`;
+                AND CF.fidEspecialidad = ${ fidEspecialidad}
+                AND CP.flagActivo = "activo"`;
 
     try{
         resultVariableFields= await sqlAsync(sqlQuery, connection);
@@ -792,8 +793,8 @@ async function insertField(req, res){
     }
 
     
-    sqlQuery = `insert into CampoFichaInscripcionProceso(fidProceso, fidCampoFicha, flag) 
-                values (${idProceso},${idCampo}, "${obligatorio}");`;
+    sqlQuery = `insert into CampoFichaInscripcionProceso(fidProceso, fidCampoFicha, flag,flagActivo) 
+                values (${idProceso},${idCampo}, "${obligatorio}","activo");`;
 
     try{
         let resultField= await sqlAsync(sqlQuery, connection);
@@ -913,7 +914,7 @@ async function deleteField(req, res){
 
     res.status(200).send({
         success: true,
-        message: "Valores actualizados correctamente"
+        message: "Se eliminó el campo de forma correcta."
 
     });
     connection.end();

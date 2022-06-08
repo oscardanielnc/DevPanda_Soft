@@ -59,7 +59,8 @@ export default function ModalDeleteFieldInscription (props) {
                 draggable: true,
                 progress: undefined,
             });
-            setShow(false);
+            //setShow(false);
+            window.location.reload();
         }
     }
 
