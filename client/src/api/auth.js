@@ -23,14 +23,16 @@ export function logout() {
     localStorage.removeItem("ACCESS_TOKEN")
 }
 
-export function signInApi (email) {
-    const url = `${BASE_PATH}/${API_VERSION}/sign-in/${email}`
+export function signInApi (email, photo) {
+    const url = `${BASE_PATH}/${API_VERSION}/sign-in`
+    const data = {email,photo}
 
     const params = {
-        method: "GET",
+        method: "POST",
         headers: {
             'Content-type': 'application/json'
-        }
+        },
+        body: JSON.stringify(data)
     }
 
     return fetch(url, params)

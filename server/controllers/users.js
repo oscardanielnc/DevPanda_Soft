@@ -81,6 +81,7 @@ async function createAdministrative(req, res) {
     connection.end();
 }
 
+
 function getCoordinators(req, res) {
     const connection = mysql.createConnection(MYSQL_CREDENTIALS);
 
@@ -179,9 +180,42 @@ function getSupervisorByID(req, res) {
     });
 }
 
+//Devuelve todos las Personas que sean del tipo Personal Administrativo:
+function getAdministrives(req, res){
+    const connection = mysql.createConnection(MYSQL_CREDENTIALS);
+
+    const sqlQuery = `SELECT idPersona, fidEspecialidad, concat(nombres, " ", apellidos) as nombre, DNI, correo, tipoPersonal, activo, estado
+                        FROM Persona P, PersonalAdministrativo PA
+                        WHERE P.idPersona = PA.idPersonal;`
+
+    connection.connect(err => {
+        if (err) throw err;
+    });
+
+    connection.query(sqlQuery, (err, result) => {
+        if (err) {
+            res.status(505).send({
+                success: false,
+                message: "Error inesperado en el servidor " + err.message
+            })
+        }
+        else if(result.length === 0) {
+            res.status(404).send({
+                success: false,
+                message: "No se ha encontrado personal administrativo"
+            })
+        } else {            
+            res.status(200).send({
+                success: true,
+                result
+            })
+        }
+    });
+}
 module.exports = {
     createAdministrative,
     getCoordinators,
     getSupervisors,
-    getSupervisorByID
+    getSupervisorByID,
+    getAdministrives
 }
