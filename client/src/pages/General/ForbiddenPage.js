@@ -4,6 +4,7 @@ import panda403 from "../../assets/gif/403.gif"
 import "./scss/ForbiddenPage.scss";
 import {Link} from "react-router-dom";
 import { getRandomInt } from "../../utils/objects";
+import { OverlayTrigger, Tooltip } from "react-bootstrap";
 
 export default function ForbiddenPage () {
     const changePosition = e => {
@@ -25,8 +26,10 @@ export default function ForbiddenPage () {
             </div>
             <h2 className="forbiddenPage__travieso">Captura al panda travieso para regresar al Landing Page 😁</h2>
             <Link to="/"  onMouseOver={changePosition}>
-                <img src={panda403} alt="Panda Not Found"
-                    className="forbiddenPage__img" />
+                <OverlayTrigger overlay={<Tooltip>¡Atrapada!</Tooltip>}>
+                    <img src={panda403} alt="Panda Not Found"
+                        className="forbiddenPage__img" />
+                </OverlayTrigger>
             </Link>
         </div>
     )
