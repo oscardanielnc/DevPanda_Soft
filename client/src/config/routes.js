@@ -7,6 +7,7 @@ import SupervisorSelection from "../pages/Student/SupervisorSelection";
 import RedirectPage from "../pages/General/RedirectPage";
 import AgreementReview from "../pages/Supervisor/AgreementReview";
 import StudentAgreement from "../pages/Student/StudentAgreement";
+import ResignationStudent from "../pages/Student/ResignationStudent";
 import DeliverablesStudent from "../pages/Student/DeliverablesStudent";
 import Deliverable from "../pages/Student/Deliverable";
 import FinalReport from "../pages/Student/FinalReport"
@@ -162,6 +163,11 @@ const routes = [
         path: "/deliverable/code=:code",
         exact: true,
         component: Deliverable,
+    },
+    {
+        path: "/resignation/phase=RNCI",
+        exact: true,
+        component: ResignationStudent,
     },
     //Error 404
     {
