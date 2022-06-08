@@ -176,7 +176,7 @@ async function signUp(req, res) {
                     if(resultAlumnos.length === 0) {
                         // Iniciamos el registro
                         const sqlQueryPersona = `INSERT INTO Persona(fidEspecialidad, nombres, apellidos, correo, contrasena, tipoPersona, activo, foto) 
-                                                        values(${specialty},'${firstName}','${lastName}','${email}',null,'e',1, ${photo});`
+                                                        values(${specialty},'${firstName}','${lastName}','${email}',null,'e',1, '${photo}');`
                         const resultPersona  = await sqlAsync(sqlQueryPersona, connection);
             
                         const idPersona = resultPersona.insertId;
