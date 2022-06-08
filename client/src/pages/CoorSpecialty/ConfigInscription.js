@@ -10,7 +10,7 @@ import { toast, ToastContainer } from "react-toastify";
 import useAuth from "../../hooks/useAuth";
 import { isNotEmptyObj } from "../../utils/objects";
 import PandaLoaderPage from "../General/PandaLoaderPage";
-
+import {getAllFieldsInscriptionForm} from "../../api/registrationForm";
 
 const dataDummy = [
     {
@@ -48,6 +48,8 @@ export default function ConfigInscription () {
         fijo: false,
         obligatorio: true
     });
+
+    console.log("El user es: ",user);
     const [loading, setLoading] = useState(false);
     let typeUser=user.tipoPersona;
     if(typeUser==="p"){
@@ -59,11 +61,12 @@ export default function ConfigInscription () {
     useEffect(()=> {
         const fetchData = async () => {
             setLoading(true);
-            /*
-            const result = await getFildsInscriptionForm(idProcess,user.fidEspecialidad);
+            //console.log("Estoy enviando: ",user.fidEspecialidad, " y ",idProcess);
+            const result = await getAllFieldsInscriptionForm(user.fidEspecialidad,idProcess);
+            console.log("El result es: ",result);
             if(result.success) {
-                setFields(fields)  
-            }*/
+                setFields(result.infoFicha.arregloFixedFields)  
+            }
             setLoading(false);
         }
         fetchData()
