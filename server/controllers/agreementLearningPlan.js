@@ -494,17 +494,17 @@ function selectAgreementByStudent(req, res){
 function requestListAgreement(req, res){
     const connection = mysql.createConnection(MYSQL_CREDENTIALS);
 
-    const fidEspecialidad = req.params.idEspecialidad;
+    const idProceso = req.params.idProceso;
     
     
     const sqlQuery = `  select
-                            P.idPersona, concat(P.nombres, " ", P.Apellidos) "nombres", AP.estadoMatriculado
+                            P.idPersona, concat(P.nombres, ' ', P.apellidos) nombres, ECP.fechaSubida, AP.estadoMatriculado
                         from
-                            Persona as P inner join AlumnoProceso as AP on P.idPersona = AP.fidAlumno
-                        where
-                            idPersona not in( SELECT A.idAlumno
-                                                FROM SolicitudesSinConvenio S inner join Alumno as A on S.fidAlumno = A.idAlumno
-                                                WHERE S.fidEspecialidad = ${fidEspecialidad});`;
+                            EntregaConvenioYPlan AS ECP INNER JOIN AlumnoProceso AS AP ON ECP.fidAlumnoProceso = AP.idAlumnoProceso
+                            inner join Persona as P on AP.fidAlumno = P.idPersona
+                            INNER JOIN Proceso AS PR ON PR.idProceso = AP.fidProceso
+                        WHERE
+                            AP.fidProceso = ${idProceso};`;
 
 
     connection.connect(err => {
@@ -522,7 +522,8 @@ function requestListAgreement(req, res){
                 return {
                     idPersona: e.idPersona,
                     nombres: e.nombres,
-                    estadoMatriculado: e.estadoMatriculado? "Matriculado" : "Sin matricular"
+                    estadoMatriculado: e.estadoMatriculado? "Matriculado" : "Sin matricular",
+                    fechaSubida: e.fechaSubida? new Date(e.fechaSubida).toLocaleDateString() : ""
                 }
             });
             res.status(200).send({
