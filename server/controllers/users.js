@@ -212,6 +212,8 @@ function getAdministrives(req, res){
         }
     });
 }
+
+
 module.exports = {
     createAdministrative,
     getCoordinators,

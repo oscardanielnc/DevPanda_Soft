@@ -30,6 +30,7 @@ import FinalReportList from "../pages/Supervisor/FinalReportList";
 import FinalReportReview from "../pages/Supervisor/FinalReportReview";
 import DeliverablesCoordinator from "../pages/CoorSpecialty/DeliverableConfig";
 import DeliverableConfig from "../pages/CoorSpecialty/DeliverableConfig";
+import ListResignationRequests from "../pages/CoorFACI/ListResignationForm";
 const routes = [ 
     // General
     {
@@ -62,6 +63,11 @@ const routes = [
         path: "/agreement-review/permissions=EF&idStudent=:idStudent",
         exact: true,
         component: AgreementReview,
+    },
+    {
+        path: "/list-resignations-form/permissions=EF",
+        exact: true,
+        component: ListResignationRequests,
     },
     // Coordinador especialidad
     {

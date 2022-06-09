@@ -88,6 +88,7 @@ let textSelect = "-1"
 
 export default function ListRegistrationForm () {
     
+    const {user} = useAuth();
     const [alumnos, setAlumnos] = useState([]);
     const [filteredData, setFilteredData] = useState(dataDummy);
     // const [textFilter, setTextFilter] = useState("");
@@ -98,7 +99,7 @@ export default function ListRegistrationForm () {
 
 
     useEffect(()=> {
-        getListStudentsInscriptionForm(1).then(response => {
+        getListStudentsInscriptionForm(user.fidEspecialidad).then(response => {
             if(response.success===true) {
                 console.log("En el success el response es: ",response);
                 setAlumnos(response.data);

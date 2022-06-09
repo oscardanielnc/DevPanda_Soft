@@ -32,7 +32,7 @@ export default function ResignationStudent () {
     const {user} = useAuth();
     const fidAlumno=user.idPersona;
     useEffect(() => {
-        getAllDocsApi(`${user.fidProceso}-CONV`, 0).then(response => {
+        getAllDocsApi(`${user.fidProceso}-RNCI`, 0).then(response => {
             if(response.success) {
                 setDocs(response.docs)
             }
@@ -40,7 +40,7 @@ export default function ResignationStudent () {
     },[setDocs])
     
     useEffect(() => {
-        getAllDocsApi(`${user.fidProceso}-CONV-${user.idPersona}`, 1).then(response => {
+        getAllDocsApi(`${user.fidProceso}-RNCI-${user.idPersona}`, 1).then(response => {
             if(response.success) {
                 setStudentDocs(response.docs)
                 if(response.docs.length>0){
@@ -74,13 +74,13 @@ export default function ResignationStudent () {
     let typeApprovalState = "pending";
     let observaciones=data[numFiles].observaciones;
     console.log("lenght",numFiles);
-    if(data[numFiles].estadoFaci === "O" || data[numFiles].estadoEspecialidad === "O"){
+    if(data[numFiles].estadoFaci === "O"){
         approvalState = "Observado"
     }
-    else if(data[numFiles].estadoFaci === "A" || data[numFiles].estadoEspecialidad ==="A"  ){
+    else if(data[numFiles].estadoFaci === "A"){
         approvalState= "Aprobado"
     }
-    else if(data[numFiles].estadoFaci === "P" || data[numFiles].estadoEspecialidad ==="P"){
+    else if(data[numFiles].estadoFaci === "P"){
         approvalState= "Pendiente"
         console.log("holi");
     }
@@ -172,7 +172,6 @@ export default function ResignationStudent () {
                         </p>
                         <p>
                         </p>
-                        <ShowFiles docs={docs} />
                     </div>
                 </div>
                 <div className="shadowbox">
@@ -192,16 +191,7 @@ export default function ResignationStudent () {
                         <FileManagement canUpload={true} docs={studentDocs} maxFiles={maxFiles} fileList={fileList} setFileList={setFileList}/>
                     </div>
                 </div>
-                <div className="shadowbox">
-                    <div className="row rows" style={{textAlign: "left",marginTop:"25px"}}>
-                        <h2>Observaciones</h2>  
-                        <Form>                        
-                            <Form.Group className="mb-3" controlId="ControlTextarea1">                            
-                                <Form.Control  disabled placeholder={`${observaciones}`} as="textarea" rows={8}/>
-                            </Form.Group>
-                        </Form>                           
-                    </div>
-                </div>
+
 
                 <div className="row rows boton">
                     <Button className="btn btn-primary" style={{width:"40%"}} onClick={deliver}>Registrar solicitud</Button>
