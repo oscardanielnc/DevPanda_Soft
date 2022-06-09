@@ -63,6 +63,11 @@ const coorFaci = [
         link: `/list-inscriptions-form/permissions=EF`
     },
     {
+        title: "Gestionar renuncias",
+        link: `/list-resignations-form/permissions=EF`
+    },
+
+    {
         title: "Gestionar Coordinadores",
         link: `/coordinators-management/permissions=AF`
     }
