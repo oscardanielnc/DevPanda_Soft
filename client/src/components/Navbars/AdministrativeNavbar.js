@@ -52,6 +52,10 @@ const coorSpecialty = [
         title: "Revisión Ficha de Inscripción",
         link: `/list-inscriptions-form/permissions=EF`
     },
+    {
+        title: "Gestión de Campos de Entregables",
+        link: `/deliverables-config/permissions=E`
+    },
 ]
 const coorFaci = [
     {

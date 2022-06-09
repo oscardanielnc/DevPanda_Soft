@@ -28,6 +28,8 @@ import StudentRegistrarionFormCoordinator from "../pages/CoorSpecialty/StudentRe
 import ProcessList from "../pages/CoorSpecialty/ProcessList";
 import FinalReportList from "../pages/Supervisor/FinalReportList";
 import FinalReportReview from "../pages/Supervisor/FinalReportReview";
+import DeliverablesCoordinator from "../pages/CoorSpecialty/DeliverableConfig";
+import DeliverableConfig from "../pages/CoorSpecialty/DeliverableConfig";
 const routes = [ 
     // General
     {
@@ -96,6 +98,16 @@ const routes = [
         path: "/registration-review/permissions=E&idStudent=:idStudent",
         exact: true,
         component: StudentRegistrarionFormCoordinator,
+    },
+    {
+        path: "/deliverables-config/permissions=E",
+        exact: true,
+        component: DeliverablesCoordinator,
+    },
+    {
+        path: "/deliverable-config/code=:idDeliverable",
+        exact: true,
+        component: DeliverableConfig,
     },
     // Admin
     {
