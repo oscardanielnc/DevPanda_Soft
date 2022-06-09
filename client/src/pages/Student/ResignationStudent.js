@@ -74,13 +74,13 @@ export default function ResignationStudent () {
     let typeApprovalState = "pending";
     let observaciones=data[numFiles].observaciones;
     console.log("lenght",numFiles);
-    if(data[numFiles].estadoFaci === "O" || data[numFiles].estadoEspecialidad === "O"){
+    if(data[numFiles].estadoFaci === "O"){
         approvalState = "Observado"
     }
-    else if(data[numFiles].estadoFaci === "A" || data[numFiles].estadoEspecialidad ==="A"  ){
+    else if(data[numFiles].estadoFaci === "A"){
         approvalState= "Aprobado"
     }
-    else if(data[numFiles].estadoFaci === "P" || data[numFiles].estadoEspecialidad ==="P"){
+    else if(data[numFiles].estadoFaci === "P"){
         approvalState= "Pendiente"
         console.log("holi");
     }
