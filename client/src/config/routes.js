@@ -7,6 +7,7 @@ import SupervisorSelection from "../pages/Student/SupervisorSelection";
 import RedirectPage from "../pages/General/RedirectPage";
 import AgreementReview from "../pages/Supervisor/AgreementReview";
 import StudentAgreement from "../pages/Student/StudentAgreement";
+import ResignationStudent from "../pages/Student/ResignationStudent";
 import DeliverablesStudent from "../pages/Student/DeliverablesStudent";
 import Deliverable from "../pages/Student/Deliverable";
 import FinalReport from "../pages/Student/FinalReport"
@@ -25,7 +26,11 @@ import MeetingsManagement from "../pages/Supervisor/MeetingsManagement";
 import DeliverablesList from "../pages/Supervisor/DeliverablesList";
 import StudentRegistrarionFormCoordinator from "../pages/CoorSpecialty/StudentRegistrarionFormCoordinator";
 import ProcessList from "../pages/CoorSpecialty/ProcessList";
-
+import FinalReportList from "../pages/Supervisor/FinalReportList";
+import FinalReportReview from "../pages/Supervisor/FinalReportReview";
+import DeliverablesCoordinator from "../pages/CoorSpecialty/DeliverableConfig";
+import DeliverableConfig from "../pages/CoorSpecialty/DeliverableConfig";
+import ListResignationRequests from "../pages/CoorFACI/ListResignationForm";
 const routes = [ 
     // General
     {
@@ -47,7 +52,7 @@ const routes = [
     {
         path: "/list-students-agreement/permissions=EF",
         exact: true,
-        component: ListStudentsRequests,
+        component: ListAgreementsRequests,
     },
     {
         path: "/list-inscriptions-form/permissions=EF",
@@ -58,6 +63,11 @@ const routes = [
         path: "/agreement-review/permissions=EF&idStudent=:idStudent",
         exact: true,
         component: AgreementReview,
+    },
+    {
+        path: "/list-resignations-form/permissions=EF",
+        exact: true,
+        component: ListResignationRequests,
     },
     // Coordinador especialidad
     {
@@ -88,12 +98,22 @@ const routes = [
     {
         path: "/list-students-requests/permissions=E",
         exact: true,
-        component: ListAgreementsRequests,
+        component: ListStudentsRequests,
     },
     {
         path: "/registration-review/permissions=E&idStudent=:idStudent",
         exact: true,
         component: StudentRegistrarionFormCoordinator,
+    },
+    {
+        path: "/deliverables-config/permissions=E",
+        exact: true,
+        component: DeliverablesCoordinator,
+    },
+    {
+        path: "/deliverable-config/code=:idDeliverable",
+        exact: true,
+        component: DeliverableConfig,
     },
     // Admin
     {
@@ -121,6 +141,16 @@ const routes = [
         path: "/list-deliverables/permissions=S",
         exact: true,
         component: DeliverablesList,//cambiar acá
+    },
+    {
+        path: "/list-final-report/permissions=S",
+        exact: true,
+        component: FinalReportList,//cambiar acá
+    },
+    {   
+        path: "/final-report-review/permissions=S&idStudent=:idStudent",
+        exact: true,
+        component: FinalReportReview,
     },
     // Alumno
     {
@@ -162,6 +192,11 @@ const routes = [
         path: "/deliverable/code=:code",
         exact: true,
         component: Deliverable,
+    },
+    {
+        path: "/resignation/phase=RNCI",
+        exact: true,
+        component: ResignationStudent,
     },
     //Error 404
     {

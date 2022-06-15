@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { logout } from "../api/auth";
 import Logo from "../assets/png/logoPUCP.PNG";
 import useAuth from "../hooks/useAuth";
@@ -7,6 +7,8 @@ import GoogleLogin from 'react-google-login';
 import { Link } from "react-router-dom";
 import { ToastContainer, toast } from 'react-toastify';
 import './Header.scss';
+import jwtDecode from "jwt-decode";
+import { GOOGLE_ID } from "../api/config";
 
 export default function Header () {
     const {user} = useAuth();
@@ -46,6 +48,7 @@ function HeaderLogged ({user}) {
     const fullName = `${user.nombres.split(' ')[0]}  ${user.apellidos.split(' ')[0]}`;
     return (
         <div className="header__right">
+            <div className="header__right-specialty"><span>{user.nombreEsp && user.nombreEsp.toUpperCase()}</span></div>
             <div className="header__rightnombreUsuario">
                 <div>
                     {typeUser}: <br/>
@@ -57,7 +60,8 @@ function HeaderLogged ({user}) {
             </div>
             <div className="header__rightusuarioImagen"
                 onClick={()=> document.getElementById("logout").classList.toggle('hidden')}>
-                <i className="bi bi-person header__rightusuarioImagen-user"></i>
+                    {user.foto? <img src={user.foto} className="header__rightusuarioImagen-img"/>: 
+                        <i className="bi bi-person header__rightusuarioImagen-user"></i>}
             </div>
             <div className="header__logout hidden" id="logout">
                 <div className="header__logout-info">
@@ -75,8 +79,20 @@ function HeaderLogged ({user}) {
     )
 }
 function HeaderNotLogged () {
+    useEffect(()=> {
+        /* global google */
+        google.accounts.id.initialize({
+            client_id: GOOGLE_ID,
+            callback: responseGoogle
+        })
+        google.accounts.id.renderButton(document.getElementById("google-btn-signin"),
+            {theme: "outline", size: "large"}
+        )
+    }, [])
     const responseGoogle = async (response) => {
-        const result = await signInApi(response.profileObj.email);
+        const jwtResponse = jwtDecode(response.credential);
+        console.log(jwtResponse.email, jwtResponse.picture)
+        const result = await signInApi(jwtResponse.email, jwtResponse.picture);
         console.log(result)
 
         if(result.success) {
@@ -94,14 +110,15 @@ function HeaderNotLogged () {
 
     return(
         <div className="header__right-notlogged">
-            <GoogleLogin
+            {/* <GoogleLogin
                 className="btn btn-light header__right-notlogged-btn" 
                 clientId="217315516782-dimqetb06qceps0d7su07rtlmr4s1bli.apps.googleusercontent.com"
                 buttonText="Iniciar sesión"
                 onSuccess={responseGoogle}
                 onFailure={responseGoogle}
                 cookiePolicy={'single_host_origin'}
-            />
+            /> */}
+            <div id="google-btn-signin"></div>
             <Link className="btn btn-danger header__right-notlogged-btn" 
                 to="/sign-up">
                 Registrarse

@@ -52,6 +52,10 @@ const coorSpecialty = [
         title: "Revisión Ficha de Inscripción",
         link: `/list-inscriptions-form/permissions=EF`
     },
+    {
+        title: "Gestión de Campos de Entregables",
+        link: `/deliverables-config/permissions=E`
+    },
 ]
 const coorFaci = [
     {
@@ -62,6 +66,11 @@ const coorFaci = [
         title: "Revisión Ficha de Inscripción",
         link: `/list-inscriptions-form/permissions=EF`
     },
+    {
+        title: "Gestionar renuncias",
+        link: `/list-resignations-form/permissions=EF`
+    },
+
     {
         title: "Gestionar Coordinadores",
         link: `/coordinators-management/permissions=AF`
@@ -80,6 +89,10 @@ export default function AdministrativeNavbar() {
         {
             title: "Gestión de Entregables",
             link: `/list-deliverables/permissions=S`
+        },
+        {
+            title: "Revisión de Informe Final",
+            link: `/list-final-report/permissions=S`
         }
     ]
 

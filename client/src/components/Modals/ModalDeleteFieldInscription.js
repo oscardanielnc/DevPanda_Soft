@@ -12,7 +12,7 @@ import { isNotEmptyObj } from "../../utils/objects";
 import ShowFiles from "../../components/FileManagement/ShowFiles";
 import ModalBasic from "./ModalBasic";
 import './ModalDeleteFieldInscription.scss';
-import { getstudentInscriptionForm } from "../../api/registrationForm";
+import { deleteFieldInscriptionForm } from "../../api/registrationForm";
 import useAuth from "../../hooks/useAuth";
 import successImg from "../../assets/png/Logowarning.png";
 
@@ -36,11 +36,9 @@ export default function ModalDeleteFieldInscription (props) {
         e.preventDefault();
         let response=null;
         const objeto={
-            data,
-            idEspecialidad: user.fidEspecialidad,
-            idProceso:user.fidProceso,
+            idCampo:data.idField
         }
-        //response = await deleteFieldInscription(objeto);
+        response = await deleteFieldInscriptionForm(objeto);
         if(!response.success){
             toast.error(response.msg, {
                 position: "top-right",
@@ -61,7 +59,8 @@ export default function ModalDeleteFieldInscription (props) {
                 draggable: true,
                 progress: undefined,
             });
-            setShow(false);
+            //setShow(false);
+            window.location.reload();
         }
     }
 
@@ -78,7 +77,7 @@ export default function ModalDeleteFieldInscription (props) {
             <Modal.Body>
                 <div className="row rows" style={{"paddingTop":"10px !important"}}>
                     <div className="col-sm-4 subtitles">
-                        <img className="image" alt="Imagen" src={successImg}></img>
+                        <img className="imageWarning" alt="Imagen" src={successImg}></img>
                     </div>
                     <div className="col-sm-8 subtitles textDelete">
                         <div>¿Está seguro de querer eliminar el campo?</div>

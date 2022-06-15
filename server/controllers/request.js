@@ -9,11 +9,12 @@ function requestList(req, res){
     const fidEspecialidad = req.params.idEspecialidad;
     
     
-    const sqlQuery = `SELECT idSolicitud, fidAlumno as idAlumno, concat(P.nombres, " ", P.Apellidos) as nombreAlumno, estado
-                        FROM SolicitudesSinConvenio S, Persona P, Alumno A
+    const sqlQuery = `SELECT idSolicitud, fidAlumno as idAlumno, concat(P.nombres, " ", P.Apellidos) as nombreAlumno, S.estado, A.codigo
+                        FROM SolicitudesSinConvenio S, Persona P, Alumno A, AlumnoProceso AP
                         WHERE S.fidEspecialidad = ${fidEspecialidad}
-                        AND A.idAlumno = S.fidAlumno
-                        AND P.idPersona = S.fidAlumno`;
+                        AND AP.idAlumnoProceso = S.fidAlumnoProceso
+                        AND A.idAlumno = AP.fidAlumno
+                        AND P.idPersona = A.idAlumno`;
 
 
     connection.connect(err => {
@@ -38,18 +39,17 @@ function requestList(req, res){
 }
 
 //Traer una solicitud en especifico 
-//TO DO:
-
-//Verificador de solicitud de un alumno
-function verifyRequest(req, res){
+function getRequest(req, res){
     const connection = mysql.createConnection(MYSQL_CREDENTIALS);
 
-    const fidAlumno= req.params.fidAlumno;
+    const idSolicitud= req.params.idSolicitud;
 
-    let sqlQuery = `SELECT idSolicitud 
-                    FROM SolicitudesSinConvenio 
-                    WHERE fidAlumno = ${fidAlumno}
-                    AND estado = "Sin revisar"`
+    let sqlQuery = `SELECT  idAlumno, S.estado, concat(P.nombres, " ", P.Apellidos) as nombreAlumno, codigo
+                    FROM SolicitudesSinConvenio S, Persona P, Alumno A, AlumnoProceso AP
+                    WHERE S.idSolicitud = ${idSolicitud}
+                    AND AP.idAlumnoProceso = S.fidAlumnoProceso
+                    AND A.idAlumno = AP.fidAlumno
+                    AND P.idPersona = A.idAlumno`
     
     connection.connect(err => {
         if (err) throw err;
@@ -62,16 +62,61 @@ function verifyRequest(req, res){
                 message: "Error inesperado en el servidor" + err.message
             })
         }else{
+            if(result.length===1){
+                res.status(200).send({
+                    success: true,
+                    result
+                })   
+            }else{
+                res.status(404).send({
+                    success: false,
+                    message: "Se encontró más de una solicitud con ese identificador"
+                })   
+            }
             
+        }
+    });
+
+    connection.end();
+}
+
+//Verificador del estado de una solicitud de un alumno
+function verifyRequest(req, res){
+    const connection = mysql.createConnection(MYSQL_CREDENTIALS);
+
+    const fidAlumno= req.params.fidAlumno;
+
+    let sqlQuery = `SELECT S.idSolicitud, S.estado
+                    FROM SolicitudesSinConvenio S, AlumnoProceso AP
+                    WHERE AP.fidAlumno = ${fidAlumno}
+                    and S.fidAlumnoProceso = AP.idAlumnoProceso
+                    order by idSolicitud DESC
+                    LIMIT 1`
+    
+    connection.connect(err => {
+        if (err) throw err;
+    });
+    
+    connection.query(sqlQuery, (err, result) => {
+        if (err) {
+            res.status(505).send({
+                success: false,
+                message: "Error inesperado en el servidor" + err.message
+            })
+        }else{
             if(result[0]){
                 res.status(200).send({
                     success: true,
-                    conSolicitud: true
+                    data: result[0]
                 })
             }else{
                 res.status(200).send({
                     success: true,
-                    conSolicitud: false
+                    data:
+                    {
+                        idSolicitud: 0,
+                        estado: "Sin enviar"
+                    }
                 })
             }        
         }
@@ -85,9 +130,10 @@ async function insertRequest(req, res){
     const connection = mysql.createConnection(MYSQL_CREDENTIALS);
 
     const fidEspecialidad = req.body.fidEspecialidad;
-    const fidAlumno= req.body.fidAlumno;
+    const fidAlumnoProceso= req.body.fidAlumnoProceso;
     const estado = "Sin revisar";
     let resultCoordinador;
+
     let sqlQuery = `SELECT idPersona
                     FROM Persona P, PersonalAdministrativo PA
                     WHERE P.fidEspecialidad = ${fidEspecialidad}
@@ -116,8 +162,8 @@ async function insertRequest(req, res){
     const fidCoordinadorEspecialidad = resultCoordinador[0].idPersona;
 
     sqlQuery = `INSERT INTO 
-                SolicitudesSinConvenio(fidEspecialidad, fidCoordinadorEspecialidad, fidAlumno, estado) 
-                values(${fidEspecialidad}, ${fidCoordinadorEspecialidad}, ${fidAlumno}, "${estado}")`
+                SolicitudesSinConvenio(fidEspecialidad, fidCoordinadorEspecialidad, fidAlumnoProceso, estado) 
+                values(${fidEspecialidad}, ${fidCoordinadorEspecialidad}, ${fidAlumnoProceso}, "${estado}")`
 
     try{
         const resultElement  = await sqlAsync(sqlQuery, connection);
@@ -143,9 +189,48 @@ async function insertRequest(req, res){
     })
 }
 
+//Actualizar una solicitud
+function updateRequest(req, res){
+    const connection = mysql.createConnection(MYSQL_CREDENTIALS);
+
+    const estado= req.body.estado;
+    const idSolicitud = req.body.idSolicitud;
+
+    let sqlQuery = `UPDATE SolicitudesSinConvenio set estado = "${estado}"
+                    where idSolicitud = ${idSolicitud}`
+    
+    connection.connect(err => {
+        if (err) throw err;
+    });
+    
+    connection.query(sqlQuery, (err, result) => {
+        if (err) {
+            res.status(505).send({
+                success: false,
+                message: "Error inesperado en el servidor" + err.message
+            })
+        }else{
+            if(result.affectedRows===1){
+                res.status(200).send({
+                    success: true,
+                    message: "Se actualizó el valor correctamente"
+                })
+            }else{
+                res.status(404).send({
+                    success: false,
+                    message: "Se actualizó más de una fila"
+                })
+            }        
+        }
+    });
+
+    connection.end();
+}
 
 module.exports = {
     insertRequest,
     requestList,
-    verifyRequest
+    verifyRequest,
+    getRequest,
+    updateRequest
 }

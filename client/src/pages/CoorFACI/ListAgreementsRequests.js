@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import { specialtySelectAllApi } from "../../api/specialty";
-import TableAgreementsRequests from "../../components/Tables/TableAgreementsRequests";
+import TableAgreement from "../../components/Tables/TableAgreement";
 import LayoutAdministrative from "../../layouts/LayoutAdministrative";
 import './scss/ListAgreementsRequests.scss';
 import useAuth from "../../hooks/useAuth";
@@ -133,7 +133,7 @@ export default function ListAgreementsRequests () {
         <LayoutAdministrative>
             <div className="container principal">
                 <div className="row rows studentRequests__title">
-                    <h1>Solicitudes para realizar PSP sin convenio</h1>
+                    <h1>Listado de alumnos por convenio</h1>
                 </div>
                 <div className="row rows studentRequests__title">
                     Buscar por Nombre, Apellidos o Estado
@@ -158,7 +158,7 @@ export default function ListAgreementsRequests () {
                     </Form.Select>
                 </div>
                 <div className="row rows">
-                    <TableAgreementsRequests rows={filteredData}/>
+                    <TableAgreement rows={filteredData}/>
                 </div>
 
             </div>
